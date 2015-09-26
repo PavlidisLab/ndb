@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:view contentType="text/html">
+	<ui:insert name="metadata" />
+	<h:head>
+		<title><ui:insert name="pageTitle" /></title>
+		
+		<link rel="icon" type="image/x-icon" href="#{resource['img/favicon.ico']}"/>
+		<link rel="icon" type="image/png" href="#{resource['img/favicon-32x32.png']}" sizes="32x32"/>
+		<link rel="icon" type="image/png" href="#{resource['img/favicon-96x96.png']}" sizes="96x96"/>
+		<link rel="icon" type="image/png" href="#{resource['img/favicon-16x16.png']}" sizes="16x16"/>
+
+		<h:outputStylesheet library="css" name="mainTemplate.css" />
+		<ui:insert name="css" />
+
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<!-- Prevents caching at the Proxy Server -->
+		<meta http-equiv="Expires" content="0" />
+
+		<meta name="description"
+			content="NDB is a curated, web-based database housing ASD-linked genes created from the meta-analysis of -omic sequencing literature" />
+
+		<meta name="keywords"
+			content="asd,autism,curated,genomics,bioinformatics,genetics,gene,medicine,biomedical,meta-analysis,statistics,search,open source,database,software" />
+		<meta name="author" content="NDB Admin (jacobsonmt+ndb@gmail.com)" />
+
+		<ui:insert name="js" />
+
+	</h:head>
+
+	<h:body>
+	<div id="site-wrapper">
+		<div id="header">
+			<div id="top">
+			<!-- Green graphic by <a href="undefined">undefined</a> from <a href="http://logomakr.com">Logomakr</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>.Science graphic by <a href="http://www.freepik.com/">Freepik</a> from <a href="http://www.flaticon.com/">Flaticon</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Made with <a href="http://logomakr.com" title="Logo Maker">Logo Maker</a> -->
+				<div class="left" id="logo">
+					<h:graphicImage library="img" width="130" height="110"
+						name="logo.png" />
+				</div>
+				<div class="left navigation" id="main-nav">
+					<ul class="tabbed">
+						<li class="#{view.viewId=='/index.xhtml'?'current-tab':''}"><h:link value="Home" outcome="index.xhtml" /></li>
+						<li class="#{view.viewId=='/about.xhtml'?'current-tab':''}"><h:link value="About" outcome="about.xhtml" /></li>
+						<li class="#{view.viewId=='/downloads.xhtml'?'current-tab':''}"><h:link value="Downloads" outcome="downloads.xhtml" /></li>
+						<li class="#{view.viewId=='/faq.xhtml'?'current-tab':''}"><h:link value="FAQ" outcome="faq.xhtml" /></li>
+						<li class="#{view.viewId=='/contact.xhtml'?'current-tab':''}"><h:link value="Contact" outcome="contact.xhtml" /></li>
+					</ul>
+					<div class="clearer">&nbsp;</div>
+				</div>
+				<div class="clearer">&nbsp;</div>
+			</div>
+		</div>
+		<div id="content">
+			<ui:insert name="content" />
+		</div>
+		</div>
+		
+	</h:body>
+
+</f:view>
+
+
+</html>
