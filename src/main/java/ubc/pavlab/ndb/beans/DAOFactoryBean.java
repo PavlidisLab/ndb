@@ -50,7 +50,7 @@ public class DAOFactoryBean implements Serializable {
 
     private static final String PROPERTY_DB = "ndb.db";
 
-    private static DAOFactory gotrack;
+    private static DAOFactory daoFactory;
 
     @ManagedProperty("#{applicationProperties}")
     private ApplicationProperties applicationProperties;
@@ -72,13 +72,13 @@ public class DAOFactoryBean implements Serializable {
                     + " is missing in properties file '" + applicationProperties.getPropertiesFile() + "'." );
         }
 
-        gotrack = DAOFactory.getInstance( dbKey );
+        daoFactory = DAOFactory.getInstance( dbKey );
 
-        log.info( "DAOFactory successfully obtained: " + gotrack );
+        log.info( "DAOFactory successfully obtained: " + daoFactory );
     }
 
-    public DAOFactory getGotrack() {
-        return gotrack;
+    public DAOFactory getDAOFactory() {
+        return daoFactory;
     }
 
     public void setSettingsCache( ApplicationProperties applicationProperties ) {
