@@ -21,7 +21,9 @@ package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
@@ -31,10 +33,12 @@ import javax.faces.bean.ManagedProperty;
 import org.apache.log4j.Logger;
 
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
+import ubc.pavlab.ndb.dao.AnnovarDAO;
 import ubc.pavlab.ndb.dao.GeneDAO;
 import ubc.pavlab.ndb.exceptions.DAOException;
 import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.Gene.GeneBuilder;
+import ubc.pavlab.ndb.model.dto.AnnovarDTO;
 import ubc.pavlab.ndb.model.dto.GeneDTO;
 
 /**
@@ -56,6 +60,7 @@ public class GeneService implements Serializable {
     private DAOFactoryBean daoFactoryBean;
 
     private GeneDAO geneDAO;
+    private AnnovarDAO annovarDAO;
 
     /**
      * 
@@ -68,6 +73,7 @@ public class GeneService implements Serializable {
     public void init() {
         log.info( "GeneService init" );
         geneDAO = daoFactoryBean.getDAOFactory().getGeneDAO();
+        annovarDAO = daoFactoryBean.getDAOFactory().getAnnovarDAO();
 
     }
 
@@ -101,15 +107,49 @@ public class GeneService implements Serializable {
      * @throws DAOException If something fails at database level.
      */
     public List<Gene> listGenes() {
-        List<Gene> geneList = new ArrayList<>();
-        for ( GeneDTO dto : geneDAO.list() ) {
-            geneList.add( map( dto ) );
+        // Done in this manner to minimize DB hits
+        Map<Integer, GeneBuilder> builderMap = new LinkedHashMap<>();
+
+        List<GeneDTO> geneDTOs = geneDAO.list();
+
+        for ( GeneDTO dto : geneDTOs ) {
+            builderMap.put( dto.getId(), new GeneBuilder( dto.getId(), dto.getSymbol() ) );
         }
+
+        geneDTOs.clear();
+
+        List<AnnovarDTO> annovarDTOs = annovarDAO.list();
+
+        for ( AnnovarDTO dto : annovarDTOs ) {
+            GeneBuilder builder = builderMap.get( dto.getGeneId() );
+            if ( builder != null ) {
+                builder.annovarSymbol( dto.getSymbol() );
+            } else {
+                log.warn( String.format( "Annovar Symbol matched to non-existent Gene ID: %s", dto.getGeneId() ) );
+            }
+        }
+
+        annovarDTOs.clear();
+
+        List<Gene> geneList = new ArrayList<>();
+
+        for ( GeneBuilder builder : builderMap.values() ) {
+            geneList.add( builder.build() );
+        }
+
         return geneList;
     }
 
-    private static Gene map( GeneDTO dto ) {
-        GeneBuilder builder = new GeneBuilder( dto.getId(), dto.getSymbol() );
+    private Gene map( GeneDTO geneDTO ) {
+        if ( geneDTO == null ) {
+            return null;
+        }
+        List<AnnovarDTO> annovarDTOs = annovarDAO.findByGeneId( geneDTO.getId() );
+
+        GeneBuilder builder = new GeneBuilder( geneDTO.getId(), geneDTO.getSymbol() );
+        for ( AnnovarDTO annovarDTO : annovarDTOs ) {
+            builder.annovarSymbol( annovarDTO.getSymbol() );
+        }
         return builder.build();
     }
 

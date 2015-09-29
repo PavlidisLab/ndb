@@ -19,6 +19,11 @@
 
 package ubc.pavlab.ndb.model;
 
+import java.util.Set;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSet.Builder;
+
 /**
  * Represents a Gene. Thread-safe.
  * 
@@ -28,10 +33,12 @@ package ubc.pavlab.ndb.model;
 public final class Gene {
     private final Integer id;
     private final String symbol;
+    private final Set<String> annovarSymbols;
 
     private Gene( GeneBuilder builder ) {
         this.id = builder.id;
         this.symbol = builder.symbol;
+        this.annovarSymbols = builder.annovarSymbols.build();
     }
 
     public Integer getId() {
@@ -40,6 +47,10 @@ public final class Gene {
 
     public String getSymbol() {
         return symbol;
+    }
+
+    public Set<String> getAnnovarSymbols() {
+        return annovarSymbols;
     }
 
     @Override
@@ -70,10 +81,16 @@ public final class Gene {
     public static class GeneBuilder {
         private final Integer id;
         private final String symbol;
+        private Builder<String> annovarSymbols = new ImmutableSet.Builder<String>();
 
         public GeneBuilder( Integer id, String symbol ) {
             this.id = id;
             this.symbol = symbol;
+        }
+
+        public GeneBuilder annovarSymbol( String symbol ) {
+            this.annovarSymbols.add( symbol );
+            return this;
         }
 
         public Gene build() {
