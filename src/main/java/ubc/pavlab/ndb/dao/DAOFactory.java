@@ -159,6 +159,10 @@ public abstract class DAOFactory {
     public PaperDAO getPaperDAO() {
         return new PaperDAOImpl( this );
     }
+    
+    public AnnovarDAO getAnnovarDAO() {
+        return new AnnovarDAOImpl( this );
+    }
 
     // You can add more DAO implementation getters here.
 
