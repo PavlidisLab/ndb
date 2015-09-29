@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="pageTitle">Nate DB!</ui:define>
+	
+	<ui:define name="css">
+		<h:outputStylesheet library="css" name="index.css" />
+	</ui:define>
+	
+	<ui:define name="content">
+	<br/>
+	<p:growl id="msgs" showDetail="true" />
+    <h3 style="margin-top:0">Search for variants</h3>
+    <h:form>    
+	    <p:accordionPanel multiple="true">
+	        <p:tab title="Basic search">
+	            <h:panelGrid columns="3" cellpadding="10">
+	                <!--  <p:graphicImage name="images/search_icon.jpg" />  -->
+	                <h:outputText value="Search for your favourite Gene, Cohort and/or Paper &nbsp;" /> 
+	                <p:inputTextarea rows="1" cols="30" completeMethod="#{searchSuggestionView.completeArea}" queryDelay="750" minQueryLength="4" />
+ 
+	            </h:panelGrid>
+	        </p:tab>
+	        
+	        <p:tab title="Filters">
+	        <h:outputText value="Refine your search between a range of genomic coordinates, variant type or predicted effect." />	             
+				    
+	            <h:panelGrid columns="5" cellpadding="50">
+	                <!--  <p:graphicImage name="images/filter_icon.jpg" />  -->
+	                <h:panelGrid columns="2" cellpadding="5">
+					                   
+				        <h:outputLabel for="variantEffects" value="Variant effect" />
+				        <br/>
+				        <p:selectCheckboxMenu id="variantEffects" value="#{filterView.selectedVariants}" label="Variants"
+				                              filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+				            <f:selectItems value="#{filterView.variants}" />
+				        </p:selectCheckboxMenu>
+				         
+						<p:outputPanel id="display" style="width:250px;padding-left:5px;margin-top:10px">
+					       	<p:dataList value="#{filterView.selectedVariants}" var="variant" emptyMessage="Show any effect type.">
+					           	#{variant}
+					       	</p:dataList>
+					    </p:outputPanel>
+				        <p:commandLink value="Update" update="display" />
+				      
+				    </h:panelGrid>
+				    
+				    
+				    <p:outputPanel>
+				    	<br/>
+				    </p:outputPanel>
+				    
+				    
+				    <p:outputPanel id="coordinates" style="width:250px;padding-left:5px;margin-top:10px">
+				    	<h:outputLabel for="coordinates" value="Genomic coordinate range" />
+				    	<br/>
+				        Start: <p:inputText />
+				        <br/>
+				         Stop: <p:inputText />
+				    </p:outputPanel>
+				    
+				    
+				    				    			    				
+	            </h:panelGrid>
+	        </p:tab>
+	    </p:accordionPanel>
+	    <br/>
+	    <p:growl id="growl" life="2000" />
+     	<p:commandButton value="Search"
+     					 actionListener="#{searchSuggestionView.buttonAction}" 
+     	    			 id="searchButton" 
+     	    			 update="growl"  
+     	    			 title="Search" />     	    				 
+     	    			 <!-- icon="ui-icon-disk" -->
+	    
+    </h:form>
+    
+ 
+	</ui:define>
+
+</ui:composition>
