@@ -145,7 +145,7 @@
 
 	<build>
 		<directory>target</directory>
-		<finalName>gotrack</finalName>
+		<finalName>ndb</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<outputDirectory>target/classes</outputDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
@@ -173,7 +173,7 @@
 			</testResource>
 			<testResource>
 				<targetPath>WEB-INF</targetPath>
-				<directory>target/gotrack/WEB-INF</directory>
+				<directory>target/ndb/WEB-INF</directory>
 				<includes>
 					<include>**/*.xml</include>
 				</includes>
