@@ -34,6 +34,8 @@ public class SearchSuggestionView implements Serializable {
     private List<String> authors = null;
     // private List<String> anotherTypeOfResult = null;
 
+    private static SearchSuggestionView searchSuggestionView;
+
     public SearchSuggestionView() {
         log.info( "SearchSuggestionView created" );
     }
@@ -69,5 +71,13 @@ public class SearchSuggestionView implements Serializable {
     public void addMessage( String summary ) {
         FacesMessage message = new FacesMessage( FacesMessage.SEVERITY_INFO, summary, null );
         FacesContext.getCurrentInstance().addMessage( null, message );
+    }
+
+    public static SearchSuggestionView getSearchSuggestionView() {
+        return searchSuggestionView;
+    }
+
+    public static void setSearchSuggestionView( SearchSuggestionView searchSuggestionView ) {
+        SearchSuggestionView.searchSuggestionView = searchSuggestionView;
     }
 }
