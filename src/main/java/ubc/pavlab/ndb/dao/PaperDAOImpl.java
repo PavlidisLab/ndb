@@ -45,9 +45,9 @@ public class PaperDAOImpl implements PaperDAO {
 
     // Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_FIND_BY_ID = "SELECT id, url, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, reported_effects FROM paper WHERE id = ?";
-    private static final String SQL_FIND_BY_AUTHOR = "SELECT id, url, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, reported_effects FROM paper WHERE author = ?";
-    private static final String SQL_LIST_ORDER_BY_ID = "SELECT id, url, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, reported_effects FROM paper ORDER BY id";
+    private static final String SQL_FIND_BY_ID = "SELECT id, url, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, reported_effects FROM papers WHERE id = ?";
+    private static final String SQL_FIND_BY_AUTHOR = "SELECT id, url, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, reported_effects FROM papers WHERE author = ?";
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT id, url, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, reported_effects FROM papers ORDER BY id";
 
     // Vars ---------------------------------------------------------------------------------------
 

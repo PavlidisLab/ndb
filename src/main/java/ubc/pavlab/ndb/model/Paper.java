@@ -28,26 +28,26 @@ package ubc.pavlab.ndb.model;
 public final class Paper {
     private final Integer id;
     private final String author;
-    private final String paper_table;
-    private final String mut_reporting;
+    private final String paperTable;
+    private final String mutReporting;
     private final String scope;
     private final boolean parents;
     private final String cohort;
-    private final String cohort_source;
-    private final Integer cohort_size;
-    private final String reported_effects;
+    private final String cohortSource;
+    private final Integer cohortSize;
+    private final String reportedEffects;
 
     private Paper( PaperBuilder builder ) {
         this.id = builder.id;
         this.author = builder.author;
-        this.paper_table = builder.paper_table;
-        this.mut_reporting = builder.mut_reporting;
+        this.paperTable = builder.paperTable;
+        this.mutReporting = builder.mutReporting;
         this.scope = builder.scope;
         this.parents = builder.parents;
         this.cohort = builder.cohort;
-        this.cohort_source = builder.cohort_source;
-        this.cohort_size = builder.cohort_size;
-        this.reported_effects = builder.reported_effects;
+        this.cohortSource = builder.cohortSource;
+        this.cohortSize = builder.cohortSize;
+        this.reportedEffects = builder.reportedEffects;
     }
 
     public Integer getId() {
@@ -58,12 +58,12 @@ public final class Paper {
         return author;
     }
 
-    public String getPaper_table() {
-        return paper_table;
+    public String getPaperTable() {
+        return paperTable;
     }
 
-    public String getMut_reporting() {
-        return mut_reporting;
+    public String getMutReporting() {
+        return mutReporting;
     }
 
     public String getScope() {
@@ -78,16 +78,16 @@ public final class Paper {
         return cohort;
     }
 
-    public String getCohort_source() {
-        return cohort_source;
+    public String getCohortSource() {
+        return cohortSource;
     }
 
-    public Integer getCohort_size() {
-        return cohort_size;
+    public Integer getCohortSize() {
+        return cohortSize;
     }
 
-    public String getReported_effects() {
-        return reported_effects;
+    public String getReportedEffects() {
+        return reportedEffects;
     }
 
     @Override
@@ -118,28 +118,28 @@ public final class Paper {
     public static class PaperBuilder {
         private final Integer id;
         private final String author;
-        private final String paper_table;
-        private final String mut_reporting;
+        private final String paperTable;
+        private final String mutReporting;
         private final String scope;
         private final boolean parents;
         private final String cohort;
-        private final String cohort_source;
-        private final Integer cohort_size;
-        private final String reported_effects;
+        private final String cohortSource;
+        private final Integer cohortSize;
+        private final String reportedEffects;
 
-        public PaperBuilder( Integer id, String author, String paper_table, String mut_reporting, String scope,
-                boolean parents, String cohort, String cohort_source, Integer cohort_size, String reported_effects ) {
+        public PaperBuilder( Integer id, String author, String paperTable, String mutReporting, String scope,
+                boolean parents, String cohort, String cohortSource, Integer cohortSize, String reportedEffects ) {
             super();
             this.id = id;
             this.author = author;
-            this.paper_table = paper_table;
-            this.mut_reporting = mut_reporting;
+            this.paperTable = paperTable;
+            this.mutReporting = mutReporting;
             this.scope = scope;
             this.parents = parents;
             this.cohort = cohort;
-            this.cohort_source = cohort_source;
-            this.cohort_size = cohort_size;
-            this.reported_effects = reported_effects;
+            this.cohortSource = cohortSource;
+            this.cohortSize = cohortSize;
+            this.reportedEffects = reportedEffects;
         }
 
         public Paper build() {
