@@ -81,7 +81,7 @@ public class DAOFactoryBean implements Serializable {
         return daoFactory;
     }
 
-    public void setSettingsCache( ApplicationProperties applicationProperties ) {
+    public void setApplicationProperties( ApplicationProperties applicationProperties ) {
         this.applicationProperties = applicationProperties;
     }
 
