@@ -19,6 +19,8 @@
 
 package ubc.pavlab.ndb.model.dto;
 
+import ubc.pavlab.ndb.model.Gene;
+
 /**
  * Data Transfer Object for {@link Gene}
  * 
@@ -28,10 +30,12 @@ package ubc.pavlab.ndb.model.dto;
 public final class GeneDTO {
     private final Integer id;
     private final String symbol;
+    private final Integer size;
 
-    public GeneDTO( Integer id, String symbol ) {
+    public GeneDTO( Integer id, String symbol, Integer size ) {
         this.id = id;
         this.symbol = symbol;
+        this.size = size;
     }
 
     public String getSymbol() {
@@ -40,5 +44,9 @@ public final class GeneDTO {
 
     public Integer getId() {
         return id;
+    }
+
+    public Integer getSize() {
+        return size;
     }
 }
