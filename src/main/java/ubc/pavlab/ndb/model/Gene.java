@@ -33,11 +33,13 @@ import com.google.common.collect.ImmutableSet.Builder;
 public final class Gene {
     private final Integer id;
     private final String symbol;
+    private final Integer size;
     private final Set<String> annovarSymbols;
 
     private Gene( GeneBuilder builder ) {
         this.id = builder.id;
         this.symbol = builder.symbol;
+        this.size = builder.size;
         this.annovarSymbols = builder.annovarSymbols.build();
     }
 
@@ -47,6 +49,10 @@ public final class Gene {
 
     public String getSymbol() {
         return symbol;
+    }
+
+    public Integer getSize() {
+        return size;
     }
 
     public Set<String> getAnnovarSymbols() {
@@ -81,11 +87,13 @@ public final class Gene {
     public static class GeneBuilder {
         private final Integer id;
         private final String symbol;
+        private final Integer size;
         private Builder<String> annovarSymbols = new ImmutableSet.Builder<String>();
 
-        public GeneBuilder( Integer id, String symbol ) {
+        public GeneBuilder( Integer id, String symbol, Integer size ) {
             this.id = id;
             this.symbol = symbol;
+            this.size = size;
         }
 
         public GeneBuilder annovarSymbol( String symbol ) {

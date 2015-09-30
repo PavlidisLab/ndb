@@ -113,7 +113,7 @@ public class GeneService implements Serializable {
         List<GeneDTO> geneDTOs = geneDAO.list();
 
         for ( GeneDTO dto : geneDTOs ) {
-            builderMap.put( dto.getId(), new GeneBuilder( dto.getId(), dto.getSymbol() ) );
+            builderMap.put( dto.getId(), new GeneBuilder( dto.getId(), dto.getSymbol(), dto.getSize() ) );
         }
 
         geneDTOs.clear();
@@ -146,7 +146,7 @@ public class GeneService implements Serializable {
         }
         List<AnnovarDTO> annovarDTOs = annovarDAO.findByGeneId( geneDTO.getId() );
 
-        GeneBuilder builder = new GeneBuilder( geneDTO.getId(), geneDTO.getSymbol() );
+        GeneBuilder builder = new GeneBuilder( geneDTO.getId(), geneDTO.getSymbol(), geneDTO.getSize() );
         for ( AnnovarDTO annovarDTO : annovarDTOs ) {
             builder.annovarSymbol( annovarDTO.getSymbol() );
         }

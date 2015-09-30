@@ -45,9 +45,9 @@ public class GeneDAOImpl implements GeneDAO {
 
     // Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_FIND_BY_ID = "SELECT id, symbol FROM genes WHERE id = ?";
-    private static final String SQL_FIND_BY_SYMBOL = "SELECT id, symbol FROM genes WHERE symbol = ?";
-    private static final String SQL_LIST_ORDER_BY_ID = "SELECT id, symbol FROM genes ORDER BY id";
+    private static final String SQL_FIND_BY_ID = "SELECT id, symbol, gene_size FROM genes WHERE id = ?";
+    private static final String SQL_FIND_BY_SYMBOL = "SELECT id, symbol, gene_size FROM genes WHERE symbol = ?";
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT id, symbol, gene_size FROM genes ORDER BY id";
 
     // Vars ---------------------------------------------------------------------------------------
 
@@ -129,7 +129,8 @@ public class GeneDAOImpl implements GeneDAO {
      * @throws SQLException If something fails at database level.
      */
     private static GeneDTO map( ResultSet resultSet ) throws SQLException {
-        return new GeneDTO( resultSet.getInt( "id" ), resultSet.getString( "symbol" ) );
+        return new GeneDTO( resultSet.getInt( "id" ), resultSet.getString( "symbol" ),
+                resultSet.getInt( "gene_size" ) );
     }
 
 }
