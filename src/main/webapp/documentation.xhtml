@@ -8,7 +8,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:define name="pageTitle">Downloads</ui:define>
+	<ui:define name="pageTitle">Documentation</ui:define>
 	
 	<ui:define name="css">
 		<h:outputStylesheet library="css" name="index.css" />
@@ -16,35 +16,40 @@
 	
 	<ui:define name="content">
 	<br/>
-	<h3>Download an export of the NateDB data.</h3>
+	<h3>Documentation, tips, link to relevant publications.</h3>
 	<h:panelGrid columns="1" cellpadding="15">
                 <p:layout style="min-width:400px;min-height:50px;">
 				    <p:layoutUnit collapsible="true" gutter="0" style="text-align:left" position="west" resizable="true" size="100" minSize="40" maxSize="200">
-				        <strong>File1</strong>
+				        <strong>Instructions</strong>
 				    </p:layoutUnit>
 				 
 				    <p:layoutUnit position="center">
-				        Raw data for thing \# 1.				       
+				        Download the user manual for NateDB.				       
 				    </p:layoutUnit>
 				</p:layout>
                 <br/>
                  <p:layout style="min-width:400px;min-height:50px;">
 				    <p:layoutUnit collapsible="true" gutter="0" style="text-align:left" position="west" resizable="true" size="100" minSize="40" maxSize="200">
-				        <strong>File2</strong>
+				        <strong>Summary of data</strong>
 				    </p:layoutUnit>
 				 
 				    <p:layoutUnit position="center">
-				       Metadata for thing \#2.
+				       What is in our data, exactly.
 				    </p:layoutUnit>
 				</p:layout>
 				<br/>
 				 <p:layout style="min-width:400px;min-height:50px;">
 				    <p:layoutUnit collapsible="true" gutter="0" style="text-align:left" position="west" resizable="true" size="100" minSize="40" maxSize="200">
-				        <strong>File3</strong>
+				        <strong>Link to publications</strong>
 				    </p:layoutUnit>
 				 
 				    <p:layoutUnit position="center">
-				       This file is important to do thing \# 3.
+				       <p>Listed here is the literature relevant to our data:</p>
+				       <ul>
+				       <li>Author 1</li>
+				       <li>Author 2</li>
+				       <li>Author 3</li>				       
+				       </ul>
 				    </p:layoutUnit>
 				</p:layout>
 				<br/>
