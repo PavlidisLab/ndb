@@ -8,7 +8,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:define name="pageTitle">Nate DB!</ui:define>
+	<ui:define name="pageTitle">Search database</ui:define>
 	
 	<ui:define name="css">
 		<h:outputStylesheet library="css" name="index.css" />
@@ -23,14 +23,14 @@
 	        <p:tab title="Basic search">
 	            <h:panelGrid columns="3" cellpadding="10">
 	                <!--  <p:graphicImage name="images/search_icon.jpg" />  -->
-	                <h:outputText value="Search for your favourite Gene, Cohort and/or Paper &nbsp;" /> 
+	                <h:outputText value="Search for your choice of Gene, Cohort and/or Paper &nbsp;" /> 
 	                <p:inputTextarea rows="1" cols="30" completeMethod="#{searchSuggestionView.completeArea}" queryDelay="750" minQueryLength="4" />
  
 	            </h:panelGrid>
 	        </p:tab>
 	        
 	        <p:tab title="Filters">
-	        <h:outputText value="Refine your search between a range of genomic coordinates, variant type or predicted effect." />	             
+	        <h:outputText value="Refine your search using variant type or a range of genomic coordinates." />	             
 				    
 	            <h:panelGrid columns="5" cellpadding="50">
 	                <!--  <p:graphicImage name="images/filter_icon.jpg" />  -->
