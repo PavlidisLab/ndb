@@ -168,6 +168,10 @@ public abstract class DAOFactory {
         return new MutationDAOImpl( this );
     }
 
+    public LOFBreakdownDAO getLOFBreakdownDAO() {
+        return new LOFBreakdownDAOImpl( this );
+    }
+
     // You can add more DAO implementation getters here.
 
 }
