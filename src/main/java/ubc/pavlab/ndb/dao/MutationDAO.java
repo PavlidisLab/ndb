@@ -54,7 +54,7 @@ public interface MutationDAO {
     /**
      * Returns a list of mutations from the database matching the given paper ID.
      * 
-     * @param geneId The paper ID of the mutations to be returned.
+     * @param paperId The paper ID of the mutations to be returned.
      * @return A list of mutations from the database matching the given paper ID.
      * @throws DAOException If something fails at database level.
      */
