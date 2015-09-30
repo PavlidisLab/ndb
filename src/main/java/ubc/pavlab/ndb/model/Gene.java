@@ -24,6 +24,8 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
 
+import ubc.pavlab.ndb.model.dto.LOFBreakdownDTO;
+
 /**
  * Represents a Gene. Thread-safe.
  * 
@@ -34,12 +36,32 @@ public final class Gene {
     private final Integer id;
     private final String symbol;
     private final Integer size;
+    private final LOFBreakdown lofBreakdown;
     private final Set<String> annovarSymbols;
 
     private Gene( GeneBuilder builder ) {
         this.id = builder.id;
         this.symbol = builder.symbol;
         this.size = builder.size;
+        this.lofBreakdown = builder.lofBreakdownDTO == null ? null
+                : new LOFBreakdown( builder.lofBreakdownDTO.getId(), this, builder.lofBreakdownDTO.getScore(),
+                        builder.lofBreakdownDTO.getCount_denovo(), builder.lofBreakdownDTO.getCount_other(),
+                        builder.lofBreakdownDTO.getCount_lof(),
+                        builder.lofBreakdownDTO.getDenovo_miss_inframe_deletion(),
+                        builder.lofBreakdownDTO.getOther_miss_inframe_deletion(),
+                        builder.lofBreakdownDTO.getMiss_inframe_cadd_total(),
+                        builder.lofBreakdownDTO.getExac_frequency_gt_point01(),
+                        builder.lofBreakdownDTO.getExac_frequency_gt_point001(),
+                        builder.lofBreakdownDTO.getExac_frequency_gt_point0001(),
+                        builder.lofBreakdownDTO.getCount_lof_in_exac_genename(),
+                        builder.lofBreakdownDTO.getCount_lof_in_exac_annovarname(),
+                        builder.lofBreakdownDTO.getSFARI_ASD_gene_score_genename(),
+                        builder.lofBreakdownDTO.getSFARI_ASD_gene_score_annovarname(),
+                        builder.lofBreakdownDTO.getMiss_inframe_in_SSC(),
+                        builder.lofBreakdownDTO.getPostsynaptic_density_associated(),
+                        builder.lofBreakdownDTO.getInteraction_with_FMRPL(),
+                        builder.lofBreakdownDTO.getInteraction_PTEN(),
+                        builder.lofBreakdownDTO.getInteraction_NLGN3() );
         this.annovarSymbols = builder.annovarSymbols.build();
     }
 
@@ -53,6 +75,10 @@ public final class Gene {
 
     public Integer getSize() {
         return size;
+    }
+
+    public LOFBreakdown getLofBreakdown() {
+        return lofBreakdown;
     }
 
     public Set<String> getAnnovarSymbols() {
@@ -88,6 +114,7 @@ public final class Gene {
         private final Integer id;
         private final String symbol;
         private final Integer size;
+        private LOFBreakdownDTO lofBreakdownDTO;
         private Builder<String> annovarSymbols = new ImmutableSet.Builder<String>();
 
         public GeneBuilder( Integer id, String symbol, Integer size ) {
@@ -98,6 +125,11 @@ public final class Gene {
 
         public GeneBuilder annovarSymbol( String symbol ) {
             this.annovarSymbols.add( symbol );
+            return this;
+        }
+
+        public GeneBuilder lofBreakdown( LOFBreakdownDTO dto ) {
+            this.lofBreakdownDTO = dto;
             return this;
         }
 

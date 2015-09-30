@@ -35,11 +35,13 @@ import org.apache.log4j.Logger;
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
 import ubc.pavlab.ndb.dao.AnnovarDAO;
 import ubc.pavlab.ndb.dao.GeneDAO;
+import ubc.pavlab.ndb.dao.LOFBreakdownDAO;
 import ubc.pavlab.ndb.exceptions.DAOException;
 import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.Gene.GeneBuilder;
 import ubc.pavlab.ndb.model.dto.AnnovarDTO;
 import ubc.pavlab.ndb.model.dto.GeneDTO;
+import ubc.pavlab.ndb.model.dto.LOFBreakdownDTO;
 
 /**
  * Service layer on top of GeneDAO. Contains methods for fetching information related to genes from the database
@@ -61,6 +63,7 @@ public class GeneService implements Serializable {
 
     private GeneDAO geneDAO;
     private AnnovarDAO annovarDAO;
+    private LOFBreakdownDAO lofBreakdownDAO;
 
     /**
      * 
@@ -74,6 +77,7 @@ public class GeneService implements Serializable {
         log.info( "GeneService init" );
         geneDAO = daoFactoryBean.getDAOFactory().getGeneDAO();
         annovarDAO = daoFactoryBean.getDAOFactory().getAnnovarDAO();
+        lofBreakdownDAO = daoFactoryBean.getDAOFactory().getLOFBreakdownDAO();
 
     }
 
@@ -131,6 +135,17 @@ public class GeneService implements Serializable {
 
         annovarDTOs.clear();
 
+        List<LOFBreakdownDTO> lofDTOs = lofBreakdownDAO.list();
+
+        for ( LOFBreakdownDTO dto : lofDTOs ) {
+            GeneBuilder builder = builderMap.get( dto.getGene_id() );
+            if ( builder != null ) {
+                builder.lofBreakdown( dto );
+            } else {
+                log.warn( String.format( "LOF Breakdown matched to non-existent Gene ID: %s", dto.getGene_id() ) );
+            }
+        }
+
         List<Gene> geneList = new ArrayList<>();
 
         for ( GeneBuilder builder : builderMap.values() ) {
@@ -150,6 +165,11 @@ public class GeneService implements Serializable {
         for ( AnnovarDTO annovarDTO : annovarDTOs ) {
             builder.annovarSymbol( annovarDTO.getSymbol() );
         }
+
+        LOFBreakdownDTO lof = lofBreakdownDAO.findByGeneId( geneDTO.getId() );
+
+        builder.lofBreakdown( lof );
+
         return builder.build();
     }
 
