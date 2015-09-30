@@ -57,7 +57,7 @@ public interface AnnovarDAO {
      * Returns a list of AnnovarDTO from the database matching any of the given gene IDs. The list is never null and
      * is empty when the database does not contain any annovars matching these gene IDs.
      * 
-     * @param id The list of gene IDs of the annovars to be returned.
+     * @param ids The list of gene IDs of the annovars to be returned.
      * @return The list of AnnovarDT from the database matching the given gene IDs.
      * @throws DAOException If something fails at database level.
      */
@@ -66,7 +66,7 @@ public interface AnnovarDAO {
     /**
      * Returns the AnnovarDTO from the database matching the given annovar symbol, otherwise null.
      * 
-     * @param symbol The symbol of the annovar to be returned.
+     * @param annovarSymbol The symbol of the annovar to be returned.
      * @return The AnnovarDTO from the database matching the given annovar symbol, otherwise null.
      * @throws DAOException If something fails at database level.
      */
