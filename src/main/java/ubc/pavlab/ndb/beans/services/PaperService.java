@@ -109,7 +109,7 @@ public class PaperService implements Serializable {
     }
 
     private static Paper map( PaperDTO dto ) {
-        PaperBuilder builder = new PaperBuilder( dto.getId(), dto.getAuthor(), dto.getPaper_table(),
+        PaperBuilder builder = new PaperBuilder( dto.getId(), dto.getUrl(), dto.getAuthor(), dto.getPaper_table(),
                 dto.getMut_reporting(), dto.getScope(), dto.isParents(), dto.getCohort(), dto.getCohort_source(),
                 dto.getCohort_size(), dto.getReported_effects() );
         return builder.build();

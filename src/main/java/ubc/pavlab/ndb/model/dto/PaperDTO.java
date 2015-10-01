@@ -29,6 +29,7 @@ import ubc.pavlab.ndb.model.Gene;
  */
 public final class PaperDTO {
     private final Integer id;
+    private final String url;
     private final String author;
     private final String paper_table;
     private final String mut_reporting;
@@ -39,10 +40,11 @@ public final class PaperDTO {
     private final Integer cohort_size;
     private final String reported_effects;
 
-    public PaperDTO( Integer id, String author, String paper_table, String mut_reporting, String scope, boolean parents,
-            String cohort, String cohort_source, Integer cohort_size, String reported_effects ) {
+    public PaperDTO( Integer id, String url, String author, String paper_table, String mut_reporting, String scope,
+            boolean parents, String cohort, String cohort_source, Integer cohort_size, String reported_effects ) {
         super();
         this.id = id;
+        this.url = url;
         this.author = author;
         this.paper_table = paper_table;
         this.mut_reporting = mut_reporting;
@@ -56,6 +58,10 @@ public final class PaperDTO {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public String getAuthor() {

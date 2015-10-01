@@ -127,7 +127,7 @@ public class PaperDAOImpl implements PaperDAO {
      * @throws SQLException If something fails at database level.
      */
     private static PaperDTO map( ResultSet resultSet ) throws SQLException {
-        return new PaperDTO( resultSet.getInt( "id" ), resultSet.getString( "author" ),
+        return new PaperDTO( resultSet.getInt( "id" ), resultSet.getString( "url" ), resultSet.getString( "author" ),
                 resultSet.getString( "paper_table" ), resultSet.getString( "mut_reporting" ),
                 resultSet.getString( "scope" ), resultSet.getBoolean( "parents" ), resultSet.getString( "cohort" ),
                 resultSet.getString( "cohort_source" ), resultSet.getInt( "cohort_size" ),
