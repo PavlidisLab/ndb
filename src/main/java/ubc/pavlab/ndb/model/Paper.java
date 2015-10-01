@@ -27,6 +27,7 @@ package ubc.pavlab.ndb.model;
  */
 public final class Paper {
     private final Integer id;
+    private final String url;
     private final String author;
     private final String paperTable;
     private final String mutReporting;
@@ -39,6 +40,7 @@ public final class Paper {
 
     private Paper( PaperBuilder builder ) {
         this.id = builder.id;
+        this.url = builder.url;
         this.author = builder.author;
         this.paperTable = builder.paperTable;
         this.mutReporting = builder.mutReporting;
@@ -52,6 +54,10 @@ public final class Paper {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public String getAuthor() {
@@ -117,6 +123,7 @@ public final class Paper {
 
     public static class PaperBuilder {
         private final Integer id;
+        private final String url;
         private final String author;
         private final String paperTable;
         private final String mutReporting;
@@ -127,10 +134,12 @@ public final class Paper {
         private final Integer cohortSize;
         private final String reportedEffects;
 
-        public PaperBuilder( Integer id, String author, String paperTable, String mutReporting, String scope,
+        public PaperBuilder( Integer id, String url, String author, String paperTable, String mutReporting,
+                String scope,
                 boolean parents, String cohort, String cohortSource, Integer cohortSize, String reportedEffects ) {
             super();
             this.id = id;
+            this.url = url;
             this.author = author;
             this.paperTable = paperTable;
             this.mutReporting = mutReporting;
