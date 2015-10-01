@@ -76,31 +76,32 @@ public class CacheService implements Serializable {
         cacheDAO = daoFactoryBean.getDAOFactory().getCacheDAO();
         List<Tuple2<Integer, String>> symbolIdTuples = cacheDAO.listSymbolId();
         for ( Tuple2<Integer, String> tuple2 : symbolIdTuples ) {
-            geneSymbolToIdTree.put( tuple2.getT2(), tuple2.getT1() );
+            geneSymbolToIdTree.put( tuple2.getT2().toUpperCase(), tuple2.getT1() );
         }
 
         List<Tuple2<Integer, String>> authorIdTuples = cacheDAO.listAuthorId();
         for ( Tuple2<Integer, String> tuple2 : authorIdTuples ) {
-            paperAuthorToIdTree.put( tuple2.getT2(), tuple2.getT1() );
+            paperAuthorToIdTree.put( tuple2.getT2().toUpperCase(), tuple2.getT1() );
         }
     }
 
     public List<KeyValuePair<Integer>> searchGeneIdBySymbol( String query ) {
-        Iterable<KeyValuePair<Integer>> iter = geneSymbolToIdTree.getKeyValuePairsForClosestKeys( query );
+        Iterable<KeyValuePair<Integer>> iter = geneSymbolToIdTree.getKeyValuePairsForClosestKeys( query.toUpperCase() );
         return Lists.newArrayList( iter );
     }
 
     public Integer getGeneIdForExactSymbol( String symbol ) {
-        return geneSymbolToIdTree.getValueForExactKey( symbol );
+        return geneSymbolToIdTree.getValueForExactKey( symbol.toUpperCase() );
     }
 
     public List<KeyValuePair<Integer>> searchPaperIdByAuthor( String query ) {
-        Iterable<KeyValuePair<Integer>> iter = paperAuthorToIdTree.getKeyValuePairsForClosestKeys( query );
+        Iterable<KeyValuePair<Integer>> iter = paperAuthorToIdTree
+                .getKeyValuePairsForClosestKeys( query.toUpperCase() );
         return Lists.newArrayList( iter );
     }
 
     public Integer getPaperIdForExactAuthor( String author ) {
-        return paperAuthorToIdTree.getValueForExactKey( author );
+        return paperAuthorToIdTree.getValueForExactKey( author.toUpperCase() );
     }
 
     public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {
