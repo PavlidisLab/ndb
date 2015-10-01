@@ -172,6 +172,10 @@ public abstract class DAOFactory {
         return new LOFBreakdownDAOImpl( this );
     }
 
+    public CacheDAO getCacheDAO() {
+        return new CacheDAOImpl( this );
+    }
+
     // You can add more DAO implementation getters here.
 
 }
