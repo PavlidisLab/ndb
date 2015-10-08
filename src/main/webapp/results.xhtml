@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="pageTitle">Results</ui:define>
+	
+	<ui:define name="css">
+		<h:outputStylesheet library="css" name="index.css" />
+	</ui:define>
+	
+	<ui:define name="content">
+	<br/>
+	<p:growl id="msgs" showDetail="true" />
+    <h3 style="margin-top:0">Results for  <h:outputText value="#{resultsView.query}" /> </h3>
+		<h:form>
+		    <p:dataTable id="tbl" var="mutation" value="#{resultsView.mutations}"
+		                 paginatorTemplate="{Exporters}"
+		                 paginator="true" rows="25" style="margin-bottom:20px">
+		 
+		        <f:facet name="{Exporters}">
+		            <h:commandLink>
+		                <p:graphicImage library="img" name="excel.png" width="24"/>
+		                <p:dataExporter type="xls" target="tbl" fileName="mutations" />
+		            </h:commandLink>
+		 		
+		            <h:commandLink>
+		                <p:graphicImage library="img" name="pdf.png" width="24"/>
+		                <p:dataExporter type="pdf" target="tbl" fileName="mutations"/>
+		            </h:commandLink>
+		 
+		            <h:commandLink>
+		                <p:graphicImage library="img" name="csv.png" width="24"/>
+		                <p:dataExporter type="csv" target="tbl" fileName="mutations" />
+		            </h:commandLink>
+		 
+		            <h:commandLink>
+		                <p:graphicImage library="img" name="xml.png" width="24"/>
+		                <p:dataExporter type="xml" target="tbl" fileName="mutations" />
+		            </h:commandLink>
+		        </f:facet>
+		 
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Id" value="Id" />
+    					<p:tooltip id="toolTipId" for="Id" value="Database identifier for each variant." />		                
+		            </f:facet>
+		            <h:outputText value="#{mutation.id}" />
+		        </p:column>
+ 
+		 
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Gene" value="Gene"/>
+		                <p:tooltip id="toolTipGene" for="Gene" value="Gene symbole on which the variant is located" />
+		            </f:facet>
+		            <h:outputText value="#{mutation.gene.name}" />
+		        </p:column>
+		        		       
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Sample" value="Sample"/>
+		                <p:tooltip id="toolTipSample" for="Sample" value="Identifier for the proband tied to a cohort or group" />
+		            </f:facet>
+		            <h:outputText value="#{mutation.sampleIdentifier}" />
+		        </p:column>
+		        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="REF" value="REF"/>
+		                <p:tooltip id="toolTipREF" for="REF" value="Reference base(s) affected by the variant" />
+		            </f:facet>
+		            <h:outputText value="#{mutation.ref}" />
+		        </p:column>
+		        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="ALT" value="ALT"/>
+		                <p:tooltip id="toolTipALT" for="ALT" value="Modified base(s) caused by the variant" />
+		            </f:facet>
+		            <h:outputText value="#{mutation.alt}" />
+		        </p:column>
+		        
+		         <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="CHR" value="CHR"/>
+		                <p:tooltip id="toolTipCHR" for="CHR" value="Chromosome affected by the variant" />
+		            </f:facet>
+		            <h:outputText value="#{mutation.chromosome}" />
+		        </p:column>
+		               
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Start" value="Start"/>
+		                <p:tooltip id="toolTipStart" for="Start" value="Start coordinate (inclusive) of the REF under Hg19" />
+		            </f:facet>
+		            <h:outputText value="#{mutation.hg19Start}" />		            		            
+		        </p:column>
+		        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Stop" value="Stop"/>
+		            	<p:tooltip id="toolTipStop" for="Stop" value="Stop coordinate (inclusive) of the REF under Hg19" />	
+		            </f:facet>
+		            <h:outputText value="#{mutation.hg19Stop}" />
+		        </p:column>
+		        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Effect" value="Effect"/>
+		                <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect" />	
+		           
+		            </f:facet>
+		            <h:outputText value="#{mutation.mutationEffect}" />
+		        </p:column>
+		        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Source" value="Source"/>
+		                <p:tooltip id="toolTipSource" for="Source" value="Source where the variant is reported from" />		           
+		            </f:facet>
+		            <h:outputText value="#{mutation.paper.name}" />
+		        </p:column>
+		        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Occurences" value="Occurences"/>
+		                <p:tooltip id="toolTipOccurences" for="Occurences" value="Number of time this mutation has been reported across different samples." />			           
+		            </f:facet>
+		            
+		        </p:column>
+		 
+		    </p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
