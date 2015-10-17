@@ -71,8 +71,11 @@
 			<version>3.0.0</version> </dependency> -->
 
 		<!-- Font Awesome -->
-		<!-- <dependency> <groupId>org.webjars</groupId> <artifactId>font-awesome</artifactId> 
-			<version>4.2.0</version> </dependency> -->
+		<dependency> 
+			<groupId>org.webjars</groupId> 
+			<artifactId>font-awesome</artifactId> 
+			<version>4.2.0</version> 
+		</dependency>
 
 		<!-- PDF Exporting -->
 		<!-- <dependency> <groupId>com.lowagie</groupId> <artifactId>itext</artifactId> 
