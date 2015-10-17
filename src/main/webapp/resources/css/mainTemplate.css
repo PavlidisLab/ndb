@@ -352,3 +352,10 @@ img.alignright, img.right {margin: 0 0 1em 1.5em;}
 * html .navigation, * html #footer, * html #splash, * html .comment ul, * html .archive-pagination {height: 0.01%;}
 .navigation, #splash, .comment ul, .archive-pagination {min-height: 0.01%;}
 * html #footer-left {width: 500px;}
+
+/*  Font-Awesome Fix ------------------------------------------------------------------- */
+
+.ui-icon.fa {
+     text-indent:0px;
+     background-image:none;
+}
