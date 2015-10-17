@@ -40,4 +40,32 @@ public class MutationService {
         }
         return list;
     }
+
+    public List<Mutation> getRawMutations( int idx ) {
+        List<Mutation> list = new ArrayList<Mutation>();
+
+        // TODO: Normally, idx would be used to fetch a specific set of raw variants
+        if ( idx == 6 ) {
+            for ( int i = 0; i < 10; i++ ) {
+
+                list.add( new Mutation( i, new Paper( "paper" + i ), new Gene( "gene1" + idx ), "sampleIdentifier",
+                        "chromosome12", 12837123 + i, 12837128 + i, "AAT", "-", "Missense", "GarbleGableCodeChange",
+                        "garblegarbleprotchange", "0.9", "No idea", "Maybe", true ) );
+            }
+        }
+        return list;
+    }
+
+    public Mutation getTrunkMutation( int idx ) {
+        Mutation trunk = null;
+
+        if ( idx == 6 ) {
+            trunk = new Mutation( idx, new Paper( "paper" + idx ), new Gene( "gene1" + idx ), "sampleIdentifier",
+                    "chromosome12", 12837123 + idx, 12837128 + idx, "AAT", "-", "Missense", "GarbleGableCodeChange",
+                    "garblegarbleprotchange", "0.9", "No idea", "Maybe", true );
+        }
+
+        return trunk;
+    }
+
 }

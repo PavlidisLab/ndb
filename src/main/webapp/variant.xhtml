@@ -17,9 +17,34 @@
 	<ui:define name="content">
 	<br/>
 	<p:growl id="msgs" showDetail="true" />
-    <h3 style="margin-top:0">Results for  <h:outputText value="#{resultsView.query}" /> </h3>
+    <h3 style="margin-top:0">Details for variant #<h:outputText value="#{param['id']}" /> </h3>
+    
+    <p:dataTable var="trunk" value="#{variantView.trunk}">
+	    <p:column headerText="Id">
+	        <h:outputText value="#{trunk.id}" />
+	    </p:column>
+	 
+	    <p:column headerText="Sample">
+	        <h:outputText value="#{trunk.sampleIdentifier}" />
+	    </p:column>
+	 
+	    <p:column headerText="Gene">
+	        <h:outputText value="#{trunk.gene.name}" />
+	    </p:column>	 
+	 
+		<p:column headerText="Chromosome">
+	        <h:outputText value="#{trunk.chromosome}" />
+	    </p:column>
+	    
+	    <p:column headerText="Occurences">
+	        <h:outputText value="#{variantView.occurences}" />
+	    </p:column>	    
+	    
+	</p:dataTable>
+    <br/>
+    <h3 style="margin-top:0"> Also reported as:</h3>
 		<h:form>
-		    <p:dataTable id="tbl" var="mutation" value="#{resultsView.mutations}"
+		    <p:dataTable id="tbl" var="mutation" value="#{variantView.mutations}"
 		                 paginatorTemplate="{Exporters}"
 		                 paginator="true" rows="25" style="margin-bottom:20px">
 		 
@@ -45,33 +70,22 @@
 		            </h:commandLink>
 		        </f:facet>
 		 
-		        <p:column>
+		 		<p:column>
 		            <f:facet name="header">
 		                <h:outputText id="Id" value="Id" />
-    					<p:tooltip id="toolTipId" for="Id" value="Database identifier for each variant." />		                
+    					<p:tooltip id="toolTipId" for="Id" value="Database identifier for each unique variant." />		                
 		            </f:facet>
-		            <h:outputLink value="variant.xhtml?id=#{mutation.id}">
-						<h:outputText value="#{mutation.id}" />
-					</h:outputLink>		            
+					<h:outputText value="#{param['id']}" />
 		        </p:column>
- 
-		 
+
 		        <p:column>
 		            <f:facet name="header">
-		                <h:outputText id="Gene" value="Gene"/>
-		                <p:tooltip id="toolTipGene" for="Gene" value="Gene symbole on which the variant is located" />
+		                <h:outputText id="RawId" value="Raw Id" />
+    					<p:tooltip id="toolTipRawId" for="RawId" value="Identifier for each (non-unique) reported variants." />		                
 		            </f:facet>
-		            <h:outputText value="#{mutation.gene.name}" />
+					<h:outputText value="#{mutation.id}" />
 		        </p:column>
-		        		       
-		        <p:column>
-		            <f:facet name="header">
-		                <h:outputText id="Sample" value="Sample"/>
-		                <p:tooltip id="toolTipSample" for="Sample" value="Identifier for the proband tied to a cohort or group" />
-		            </f:facet>
-		            <h:outputText value="#{mutation.sampleIdentifier}" />
-		        </p:column>
-		        
+		      	        
 		        <p:column>
 		            <f:facet name="header">
 		                <h:outputText id="REF" value="REF"/>
@@ -86,14 +100,6 @@
 		                <p:tooltip id="toolTipALT" for="ALT" value="Modified base(s) caused by the variant" />
 		            </f:facet>
 		            <h:outputText value="#{mutation.alt}" />
-		        </p:column>
-		        
-		         <p:column>
-		            <f:facet name="header">
-		                <h:outputText id="CHR" value="CHR"/>
-		                <p:tooltip id="toolTipCHR" for="CHR" value="Chromosome affected by the variant" />
-		            </f:facet>
-		            <h:outputText value="#{mutation.chromosome}" />
 		        </p:column>
 		               
 		        <p:column>
@@ -119,23 +125,18 @@
 		           
 		            </f:facet>
 		            <h:outputText value="#{mutation.mutationEffect}" />
-		        </p:column>
+		        </p:column>		    
 		        
-		        <p:column>
+				<p:column>
 		            <f:facet name="header">
-		                <h:outputText id="Source" value="Source"/>
-		                <p:tooltip id="toolTipSource" for="Source" value="Source where the variant is reported from" />		           
+		                <h:outputText id="More" value="More"/>
+		                <p:tooltip id="toolTipMore" for="More" value="Click this field for additional data about specific reported variants." />	
+		           
 		            </f:facet>
-		            <h:outputText value="#{mutation.paper.name}" />
-		        </p:column>
-		        
-		        <p:column>
-		            <f:facet name="header">
-		                <h:outputText id="Occurences" value="Occurences"/>
-		                <p:tooltip id="toolTipOccurences" for="Occurences" value="Number of time this mutation has been reported across different samples." />			           
-		            </f:facet>
-		            
-		        </p:column>
+		            <h:outputLink value="zombo.com">
+			        	<h:graphicImage library="img" name="at.gif" />
+			        </h:outputLink>
+		        </p:column>		    
 		 
 		    </p:dataTable>
 		</h:form>
