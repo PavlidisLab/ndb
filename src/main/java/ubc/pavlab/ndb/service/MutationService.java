@@ -6,6 +6,7 @@ import java.util.List;
 import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.Mutation;
 import ubc.pavlab.ndb.model.Paper;
+import ubc.pavlab.ndb.model.SourceMutation;
 
 public class MutationService {
 
@@ -42,6 +43,10 @@ public class MutationService {
     }
 
     public List<Mutation> getRawMutations( int idx ) {
+        /*
+         * Get list of mutations tied to an ALPHA mutation
+         */
+
         List<Mutation> list = new ArrayList<Mutation>();
 
         // TODO: Normally, idx would be used to fetch a specific set of raw variants
@@ -58,7 +63,7 @@ public class MutationService {
 
     public Mutation getTrunkMutation( int idx ) {
         Mutation trunk = null;
-
+        // TODO: Return appropriate trunk mutation
         if ( idx == 6 ) {
             trunk = new Mutation( idx, new Paper( "paper" + idx ), new Gene( "gene1" + idx ), "sampleIdentifier",
                     "chromosome12", 12837123 + idx, 12837128 + idx, "AAT", "-", "Missense", "GarbleGableCodeChange",
@@ -66,6 +71,22 @@ public class MutationService {
         }
 
         return trunk;
+    }
+
+    public SourceMutation getSourceMutation() { // String idx ) {
+        /*
+         * Return the key-value pairs stored as metadata for the raw variants.
+         */
+        SourceMutation raw = null;
+        // TODO: Return appropriate metadata for variant id
+        // ( Integer.parseInt( idx ) == 0 ) {
+        // Hashtable<String, String> kv = new Hashtable<String, String>();
+        String idx = "0";
+        raw = new SourceMutation( Integer.parseInt( idx ), new Paper( "paper" + idx ), null );
+        // }
+
+        return raw;
+
     }
 
 }
