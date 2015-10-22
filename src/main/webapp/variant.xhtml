@@ -44,7 +44,10 @@
     <br/>
     <h3 style="margin-top:0"> Also reported as:</h3>
 		<h:form>
-		    <p:dataTable id="tbl" var="mutation" value="#{variantView.mutations}"
+			<ui:insert name="modalSourceVariant">
+				<ui:include src="modal_source.xhtml" />
+			</ui:insert>
+			<p:dataTable id="tbl" var="mutation" value="#{variantView.mutations}"
 		                 paginatorTemplate="{Exporters}"
 		                 paginator="true" rows="25" style="margin-bottom:20px">
 		 
@@ -133,13 +136,20 @@
 		                <p:tooltip id="toolTipMore" for="More" value="Click this field for additional data about specific reported variants." />	
 		           
 		            </f:facet>
+
+    				<p:commandButton value="Source" type="button" onclick="PF('dlg').show();" />
+		            <!--
 		            <h:outputLink value="zombo.com">
 			        	<h:graphicImage library="img" name="at.gif" />
 			        </h:outputLink>
+			          -->
 		        </p:column>		    
 		 
 		    </p:dataTable>
+ 
 		</h:form>
+		
+		
 	</ui:define>
 
 </ui:composition>

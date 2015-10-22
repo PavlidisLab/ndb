@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 
 //TODO: add DAO and 
 import ubc.pavlab.ndb.model.Mutation;
+import ubc.pavlab.ndb.model.SourceMutation;
 import ubc.pavlab.ndb.service.MutationService;
 
 @ManagedBean(name = "variantView")
@@ -22,6 +23,7 @@ public class VariantView implements Serializable {
 
     private List<Mutation> mutations;
     private Mutation trunk;
+    private SourceMutation sourceMutation;
 
     @ManagedProperty("#{mutationService}")
     private MutationService service;
@@ -33,6 +35,7 @@ public class VariantView implements Serializable {
         String variantId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get( "id" );
         trunk = service.getTrunkMutation( Integer.parseInt( variantId ) );
         mutations = service.getRawMutations( Integer.parseInt( variantId ) );
+        sourceMutation = service.getSourceMutation(); // variantId );
     }
 
     public int getOccurences() {
@@ -49,6 +52,14 @@ public class VariantView implements Serializable {
 
     public List<Mutation> getMutations() {
         return mutations;
+    }
+
+    public SourceMutation getSourceMutation() {
+        return sourceMutation;
+    }
+
+    public void setSourceMutation( SourceMutation source ) {
+        this.sourceMutation = source;
     }
 
     public void setService( MutationService service ) {
