@@ -22,18 +22,33 @@
 	    <p:accordionPanel multiple="true">
 	        <p:tab title="Basic search">
 	            <h:panelGrid columns="3" cellpadding="10">
-	                <!--  <p:graphicImage name="images/search_icon.jpg" />  -->
-	                <h:outputText value="Search for your choice of Gene, Cohort and/or Paper &nbsp;" /> 
-	                <p:inputTextarea rows="1" cols="30" completeMethod="#{searchSuggestionView.completeArea}" queryDelay="750" minQueryLength="4" />
- 
+
+	                <h:outputText value="Search by Gene" style="font-weight:bold;text-decoration:underline;" />
+	                <span/>
+ 					<h:outputText value="Search by coordinates" style="font-weight:bold;text-decoration:underline;" />	                
+					
+					<p:outputPanel id="gene" style="width:250px;padding-left:5px;margin-top:10px">
+				    	<h:outputLabel for="gene" value="e.g. SYNGAP1, ENSG000000042 " />				             	                
+	                	<p:inputTextarea rows="1" cols="30" completeMethod="#{searchSuggestionView.completeArea}" queryDelay="750" minQueryLength="4" />
+	                </p:outputPanel> 			                	                
+	                <span> &nbsp;&nbsp;&nbsp; or &nbsp;&nbsp;&nbsp; </span>			              
+ 					<p:outputPanel id="coordinates" style="width:250px;padding-left:5px;margin-top:10px">
+				    	<h:outputLabel for="coordinates" value="e.g. 20, 123456789, 987654321" />				    	
+		            		<h:panelGrid columns="2" cellpadding="10">					    	
+						         <h:outputText value="Chromosome:"/><p:inputText />					        
+						         <h:outputText value="Start:"/><p:inputText />					        
+						         <h:outputText value="Stop:"/> <p:inputText />					         
+		            		</h:panelGrid>
+				    </p:outputPanel>
 	            </h:panelGrid>
 	        </p:tab>
 	        
-	        <p:tab title="Filters">
+	        <p:tab title="Filters (coming soon!)">
+	        <!-- 
 	        <h:outputText value="Refine your search using variant type or a range of genomic coordinates." />	             
 				    
 	            <h:panelGrid columns="5" cellpadding="50">
-	                <!--  <p:graphicImage name="images/filter_icon.jpg" />  -->
+	                <!  <p:graphicImage name="images/filter_icon.jpg" />  >
 	                <h:panelGrid columns="2" cellpadding="5">
 					                   
 				        <h:outputLabel for="variantEffects" value="Variant effect" />
@@ -58,17 +73,11 @@
 				    </p:outputPanel>
 				    
 				    
-				    <p:outputPanel id="coordinates" style="width:250px;padding-left:5px;margin-top:10px">
-				    	<h:outputLabel for="coordinates" value="Genomic coordinate range" />
-				    	<br/>
-				        Start: <p:inputText />
-				        <br/>
-				         Stop: <p:inputText />
-				    </p:outputPanel>
-				    
+				   
 				    
 				    				    			    				
 	            </h:panelGrid>
+	        -->
 	        </p:tab>
 	    </p:accordionPanel>
 	    <br/>
@@ -77,6 +86,7 @@
      					 actionListener="#{searchSuggestionView.buttonAction}" 
      	    			 id="searchButton" 
      	    			 update="growl"  
+     	    			  action="results"
      	    			 title="Search" />     	    				 
      	    			 <!-- icon="ui-icon-disk" -->
 	    

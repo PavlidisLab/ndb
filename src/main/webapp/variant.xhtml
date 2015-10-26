@@ -128,6 +128,15 @@
 		           
 		            </f:facet>
 		            <h:outputText value="#{mutation.mutationEffect}" />
+		        </p:column>		
+		            
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Paper" value="Paper"/>
+		                <p:tooltip id="toolTipPaper" for="Paper" value="Paper which reported this specific instance" />	
+		           
+		            </f:facet>
+		            <h:outputText value="#{mutation.paper.name}" />
 		        </p:column>		    
 		        
 				<p:column>
@@ -138,11 +147,6 @@
 		            </f:facet>
 
     				<p:commandButton value="Source" type="button" onclick="PF('dlg').show();" />
-		            <!--
-		            <h:outputLink value="zombo.com">
-			        	<h:graphicImage library="img" name="at.gif" />
-			        </h:outputLink>
-			          -->
 		        </p:column>		    
 		 
 		    </p:dataTable>

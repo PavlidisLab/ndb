@@ -61,7 +61,23 @@
 		                <h:outputText id="Gene" value="Gene"/>
 		                <p:tooltip id="toolTipGene" for="Gene" value="Gene symbole on which the variant is located" />
 		            </f:facet>
-		            <h:outputText value="#{mutation.gene.name}" />
+		            
+		            
+		            <center> <h:outputText value="#{mutation.gene.name}" /> 
+		            <br/> 
+		            <h:outputLink value="http://www.ncbi.nlm.nih.gov/gene?cmd=search&amp;term=#{mutation.gene.ensembl_id}">		                
+		            	<h:graphicImage border="5"  library="img" name="NCBI.gif" width="30"/>
+		            </h:outputLink> 
+		            &nbsp;
+		            <h:outputLink value="http://GRCH37.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=#{mutation.gene.name}">		                
+		            	<h:graphicImage border="5"  library="img" name="ensembl.png" height="15"/>
+		            </h:outputLink> 
+		            &nbsp;
+		             <h:outputLink value="http://exac.broadinstitute.org/gene/#{mutation.gene.ensembl_id}">		                
+		            	<h:graphicImage border="5"  library="img" name="exac.png" height="10"/>
+		            </h:outputLink> 
+		            &nbsp;
+		            </center>
 		        </p:column>
 		        		       
 		        <p:column>
@@ -69,7 +85,7 @@
 		                <h:outputText id="Sample" value="Sample"/>
 		                <p:tooltip id="toolTipSample" for="Sample" value="Identifier for the proband tied to a cohort or group" />
 		            </f:facet>
-		            <h:outputText value="#{mutation.sampleIdentifier}" />
+		            <h:outputText value="#{mutation.sampleIdentifier}" />		            
 		        </p:column>
 		        
 		        <p:column>
@@ -101,7 +117,9 @@
 		                <h:outputText id="Start" value="Start"/>
 		                <p:tooltip id="toolTipStart" for="Start" value="Start coordinate (inclusive) of the REF under Hg19" />
 		            </f:facet>
-		            <h:outputText value="#{mutation.hg19Start}" />		            		            
+		            <h:outputLink value="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&amp;position=chr#{mutation.chromosome}%3A#{mutation.hg19Start}-#{mutation.hg19Stop}">	
+		            	<h:outputText value="#{mutation.hg19Start}" />
+		            </h:outputLink>	  
 		        </p:column>
 		        
 		        <p:column>
@@ -109,7 +127,9 @@
 		                <h:outputText id="Stop" value="Stop"/>
 		            	<p:tooltip id="toolTipStop" for="Stop" value="Stop coordinate (inclusive) of the REF under Hg19" />	
 		            </f:facet>
-		            <h:outputText value="#{mutation.hg19Stop}" />
+		            <h:outputLink value="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&amp;position=chr#{mutation.chromosome}%3A#{mutation.hg19Start}-#{mutation.hg19Stop}">			            
+		            	<h:outputText value="#{mutation.hg19Stop}" />
+		            </h:outputLink>
 		        </p:column>
 		        
 		        <p:column>
@@ -126,7 +146,9 @@
 		                <h:outputText id="Source" value="Source"/>
 		                <p:tooltip id="toolTipSource" for="Source" value="Source where the variant is reported from" />		           
 		            </f:facet>
-		            <h:outputText value="#{mutation.paper.name}" />
+		             <h:outputLink value="#{mutation.paper.url}">			            
+		            	<h:outputText value="#{mutation.paper.name}" />
+		            </h:outputLink>
 		        </p:column>
 		        
 		        <p:column>
