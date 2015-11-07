@@ -17,17 +17,22 @@
  *
  */
 
-package ubc.pavlab.ndb.model.dto;
+package ubc.pavlab.ndb.model;
 
-import ubc.pavlab.ndb.model.Gene;
+import java.util.List;
+
+import com.google.common.collect.ImmutableList;
+
+import ubc.pavlab.ndb.model.dto.AnnovarDTO;
+import ubc.pavlab.ndb.model.enums.Category;
 
 /**
- * Data Transfer Object for annovar property of {@link Gene}
+ * Represents the annovar information for a specific @Variant
  * 
  * @author mjacobson
  * @version $Id$
  */
-public final class AnnovarDTO {
+public class Annovar {
     private final Integer id;
     private final Integer variantId;
     private final String chr;
@@ -35,11 +40,11 @@ public final class AnnovarDTO {
     private final Integer end;
     private final String ref;
     private final String alt;
-    private final String funcRefGene;
-    private final String geneRefGene;
+    private final List<String> funcRefGene;
+    private final List<String> geneRefGene;
     private final String geneDetailRefGene;
-    private final String exonicFuncRefGene;
-    private final String aaChangeRefGene;
+    private final List<String> exonicFuncRefGene;
+    private final List<String> aaChangeRefGene;
     private final String cytoBand;
     private final String genomicSuperDups;
     private final Double esp6500siv2All;
@@ -76,64 +81,63 @@ public final class AnnovarDTO {
     private final Double exac03;
     private final String clinvar20150629;
 
-    public AnnovarDTO( Integer id, Integer variantId, String chr, Integer start, Integer end, String ref, String alt,
-            String funcRefGene, String geneRefGene, String geneDetailRefGene, String exonicFuncRefGene,
-            String aaChangeRefGene, String cytoBand, String genomicSuperDups, Double esp6500siv2All,
-            Double octAll1000g2014, Double octAfr1000g2014, Double octEas1000g2014, Double octEur1000g2014,
-            String snp138, Double siftScore, String siftPred, Double polyphen2hdivScore, String polyphen2hdivPred,
-            Double polyphen2hvarScore, String polyphen2hvarPred, Double lrtScore, String lrtPred,
-            Double mutationTasterScore, String mutationTasterPred, Double mutationAssessorScore,
-            String mutationAssessorPred, Double fathmmScore, String fathmmPred, Double radialSVMScore,
-            String radialSVMPred, Double lrScore, String lrPred, Double vest3Score, Double caddRaw, Double caddPhred,
-            Double gerpRs, Double phyloP46wayPlacental, Double phyloP100wayVertebrate, Double siphy29wayLogOdds,
-            Double exac03, String clinvar20150629 ) {
-        this.id = id;
-        this.variantId = variantId;
-        this.chr = chr;
-        this.start = start;
-        this.end = end;
-        this.ref = ref;
-        this.alt = alt;
+    private final List<Gene> genes;
+    private final List<Category> categories;
+
+    public Annovar( AnnovarDTO dto,
+            List<String> funcRefGene, List<String> geneRefGene,
+            List<String> exonicFuncRefGene, List<String> aaChangeRefGene, List<Gene> genes,
+            List<Category> categories ) {
+        this.id = dto.getId();
+        this.variantId = dto.getVariantId();
+        this.chr = dto.getChr();
+        this.start = dto.getStart();
+        this.end = dto.getEnd();
+        this.ref = dto.getRef();
+        this.alt = dto.getAlt();
         this.funcRefGene = funcRefGene;
         this.geneRefGene = geneRefGene;
-        this.geneDetailRefGene = geneDetailRefGene;
+        this.geneDetailRefGene = dto.getGeneDetailRefGene();
         this.exonicFuncRefGene = exonicFuncRefGene;
         this.aaChangeRefGene = aaChangeRefGene;
-        this.cytoBand = cytoBand;
-        this.genomicSuperDups = genomicSuperDups;
-        this.esp6500siv2All = esp6500siv2All;
-        this.octAll1000g2014 = octAll1000g2014;
-        this.octAfr1000g2014 = octAfr1000g2014;
-        this.octEas1000g2014 = octEas1000g2014;
-        this.octEur1000g2014 = octEur1000g2014;
-        this.snp138 = snp138;
-        this.siftScore = siftScore;
-        this.siftPred = siftPred;
-        this.polyphen2hdivScore = polyphen2hdivScore;
-        this.polyphen2hdivPred = polyphen2hdivPred;
-        this.polyphen2hvarScore = polyphen2hvarScore;
-        this.polyphen2hvarPred = polyphen2hvarPred;
-        this.lrtScore = lrtScore;
-        this.lrtPred = lrtPred;
-        this.mutationTasterScore = mutationTasterScore;
-        this.mutationTasterPred = mutationTasterPred;
-        this.mutationAssessorScore = mutationAssessorScore;
-        this.mutationAssessorPred = mutationAssessorPred;
-        this.fathmmScore = fathmmScore;
-        this.fathmmPred = fathmmPred;
-        this.radialSVMScore = radialSVMScore;
-        this.radialSVMPred = radialSVMPred;
-        this.lrScore = lrScore;
-        this.lrPred = lrPred;
-        this.vest3Score = vest3Score;
-        this.caddRaw = caddRaw;
-        this.caddPhred = caddPhred;
-        this.gerpRs = gerpRs;
-        this.phyloP46wayPlacental = phyloP46wayPlacental;
-        this.phyloP100wayVertebrate = phyloP100wayVertebrate;
-        this.siphy29wayLogOdds = siphy29wayLogOdds;
-        this.exac03 = exac03;
-        this.clinvar20150629 = clinvar20150629;
+        this.cytoBand = dto.getCytoBand();
+        this.genomicSuperDups = dto.getGenomicSuperDups();
+        this.esp6500siv2All = dto.getEsp6500siv2All();
+        this.octAll1000g2014 = dto.getOctAll1000g2014();
+        this.octAfr1000g2014 = dto.getOctAfr1000g2014();
+        this.octEas1000g2014 = dto.getOctEas1000g2014();
+        this.octEur1000g2014 = dto.getOctEur1000g2014();
+        this.snp138 = dto.getSnp138();
+        this.siftScore = dto.getSiftScore();
+        this.siftPred = dto.getSiftPred();
+        this.polyphen2hdivScore = dto.getPolyphen2hdivScore();
+        this.polyphen2hdivPred = dto.getPolyphen2hdivPred();
+        this.polyphen2hvarScore = dto.getPolyphen2hvarScore();
+        this.polyphen2hvarPred = dto.getPolyphen2hvarPred();
+        this.lrtScore = dto.getLrtScore();
+        this.lrtPred = dto.getLrtPred();
+        this.mutationTasterScore = dto.getMutationTasterScore();
+        this.mutationTasterPred = dto.getMutationTasterPred();
+        this.mutationAssessorScore = dto.getMutationAssessorScore();
+        this.mutationAssessorPred = dto.getMutationAssessorPred();
+        this.fathmmScore = dto.getFathmmScore();
+        this.fathmmPred = dto.getFathmmPred();
+        this.radialSVMScore = dto.getRadialSVMScore();
+        this.radialSVMPred = dto.getRadialSVMPred();
+        this.lrScore = dto.getLrScore();
+        this.lrPred = dto.getLrPred();
+        this.vest3Score = dto.getVest3Score();
+        this.caddRaw = dto.getCaddRaw();
+        this.caddPhred = dto.getCaddPhred();
+        this.gerpRs = dto.getGerpRs();
+        this.phyloP46wayPlacental = dto.getPhyloP46wayPlacental();
+        this.phyloP100wayVertebrate = dto.getPhyloP100wayVertebrate();
+        this.siphy29wayLogOdds = dto.getSiphy29wayLogOdds();
+        this.exac03 = dto.getExac03();
+        this.clinvar20150629 = dto.getClinvar20150629();
+
+        this.genes = ImmutableList.copyOf( genes );
+        this.categories = ImmutableList.copyOf( categories );
     }
 
     public Integer getId() {
@@ -164,11 +168,11 @@ public final class AnnovarDTO {
         return alt;
     }
 
-    public String getFuncRefGene() {
+    public List<String> getFuncRefGene() {
         return funcRefGene;
     }
 
-    public String getGeneRefGene() {
+    public List<String> getGeneRefGene() {
         return geneRefGene;
     }
 
@@ -176,11 +180,11 @@ public final class AnnovarDTO {
         return geneDetailRefGene;
     }
 
-    public String getExonicFuncRefGene() {
+    public List<String> getExonicFuncRefGene() {
         return exonicFuncRefGene;
     }
 
-    public String getAaChangeRefGene() {
+    public List<String> getAaChangeRefGene() {
         return aaChangeRefGene;
     }
 
@@ -322,6 +326,39 @@ public final class AnnovarDTO {
 
     public String getClinvar20150629() {
         return clinvar20150629;
+    }
+
+    public List<Gene> getGenes() {
+        return genes;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    @Override
+    public String toString() {
+        return "Annovar [id=" + id + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ( ( id == null ) ? 0 : id.hashCode() );
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( this == obj ) return true;
+        if ( obj == null ) return false;
+        if ( getClass() != obj.getClass() ) return false;
+        Annovar other = ( Annovar ) obj;
+        if ( id == null ) {
+            if ( other.id != null ) return false;
+        } else if ( !id.equals( other.id ) ) return false;
+        return true;
     }
 
 }

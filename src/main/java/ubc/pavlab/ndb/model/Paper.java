@@ -19,6 +19,8 @@
 
 package ubc.pavlab.ndb.model;
 
+import ubc.pavlab.ndb.model.dto.PaperDTO;
+
 /**
  * Represents a Paper. Thread-safe.
  * 
@@ -38,18 +40,19 @@ public final class Paper {
     private final Integer cohortSize;
     private final String reportedEffects;
 
-    private Paper( PaperBuilder builder ) {
-        this.id = builder.id;
-        this.url = builder.url;
-        this.author = builder.author;
-        this.paperTable = builder.paperTable;
-        this.mutReporting = builder.mutReporting;
-        this.scope = builder.scope;
-        this.parents = builder.parents;
-        this.cohort = builder.cohort;
-        this.cohortSource = builder.cohortSource;
-        this.cohortSize = builder.cohortSize;
-        this.reportedEffects = builder.reportedEffects;
+    public Paper( PaperDTO dto ) {
+        this.id = dto.getId();
+        this.url = dto.getUrl();
+        this.author = dto.getAuthor();
+        this.paperTable = dto.getPaper_table();
+        this.mutReporting = dto.getMut_reporting();
+        this.scope = dto.getScope();
+        this.parents = dto.isParents();
+        this.cohort = dto.getCohort();
+        this.cohortSource = dto.getCohort_source();
+        this.cohortSize = dto.getCohort_size();
+        this.reportedEffects = dto.getReported_effects();
+
     }
 
     public Integer getId() {
@@ -119,41 +122,6 @@ public final class Paper {
             if ( other.id != null ) return false;
         } else if ( !id.equals( other.id ) ) return false;
         return true;
-    }
-
-    public static class PaperBuilder {
-        private final Integer id;
-        private final String url;
-        private final String author;
-        private final String paperTable;
-        private final String mutReporting;
-        private final String scope;
-        private final boolean parents;
-        private final String cohort;
-        private final String cohortSource;
-        private final Integer cohortSize;
-        private final String reportedEffects;
-
-        public PaperBuilder( Integer id, String url, String author, String paperTable, String mutReporting,
-                String scope,
-                boolean parents, String cohort, String cohortSource, Integer cohortSize, String reportedEffects ) {
-            super();
-            this.id = id;
-            this.url = url;
-            this.author = author;
-            this.paperTable = paperTable;
-            this.mutReporting = mutReporting;
-            this.scope = scope;
-            this.parents = parents;
-            this.cohort = cohort;
-            this.cohortSource = cohortSource;
-            this.cohortSize = cohortSize;
-            this.reportedEffects = reportedEffects;
-        }
-
-        public Paper build() {
-            return new Paper( this );
-        }
     }
 
 }

@@ -30,6 +30,7 @@ import ubc.pavlab.ndb.utility.Tuples;
  * @author mjacobson
  * @version $Id$
  */
+@Deprecated
 public interface CacheDAO {
     // Actions ------------------------------------------------------------------------------------
 

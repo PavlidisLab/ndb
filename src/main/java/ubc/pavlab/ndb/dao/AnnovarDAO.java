@@ -20,6 +20,7 @@
 package ubc.pavlab.ndb.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import ubc.pavlab.ndb.exceptions.DAOException;
 import ubc.pavlab.ndb.model.dto.AnnovarDTO;
@@ -44,33 +45,23 @@ public interface AnnovarDAO {
     public AnnovarDTO find( Integer id ) throws DAOException;
 
     /**
-     * Returns a list of AnnovarDTO from the database matching the given gene ID. The list is never null and
-     * is empty when the database does not contain any annovars matching this gene ID.
+     * Returns the AnnovarDTO from the database matching the given Variant ID, otherwise null.
      * 
-     * @param id The gene ID of the annovars to be returned.
-     * @return The list of AnnovarDT from the database matching the given gene ID.
+     * @param id The Variant ID of the annovar to be returned.
+     * @return The AnnovarDTO from the database matching the given Variant ID, otherwise null.
      * @throws DAOException If something fails at database level.
      */
-    public List<AnnovarDTO> findByGeneId( Integer id ) throws DAOException;
+    public AnnovarDTO findByVariantId( Integer id ) throws DAOException;
 
     /**
-     * Returns a list of AnnovarDTO from the database matching any of the given gene IDs. The list is never null and
-     * is empty when the database does not contain any annovars matching these gene IDs.
+     * Returns a list of AnnovarDTO from the database matching any of the given Variant IDs. The list is never null and
+     * is empty when the database does not contain any annovars matching these Variant IDs.
      * 
-     * @param ids The list of gene IDs of the annovars to be returned.
-     * @return The list of AnnovarDT from the database matching the given gene IDs.
+     * @param ids The list of Variant IDs of the annovars to be returned.
+     * @return The list of AnnovarDTO from the database matching the given Variant IDs.
      * @throws DAOException If something fails at database level.
      */
-    public List<AnnovarDTO> findByGeneId( List<Integer> ids ) throws DAOException;
-
-    /**
-     * Returns the AnnovarDTO from the database matching the given annovar symbol, otherwise null.
-     * 
-     * @param annovarSymbol The symbol of the annovar to be returned.
-     * @return The AnnovarDTO from the database matching the given annovar symbol, otherwise null.
-     * @throws DAOException If something fails at database level.
-     */
-    public AnnovarDTO find( String annovarSymbol ) throws DAOException;
+    public List<AnnovarDTO> findByVariantId( List<Integer> ids ) throws DAOException;
 
     /**
      * Returns a list of all AnnovarDTO from the database ordered by ID. The list is never null and
@@ -80,4 +71,31 @@ public interface AnnovarDAO {
      * @throws DAOException If something fails at database level.
      */
     public List<AnnovarDTO> list() throws DAOException;
+
+    /**
+     * Returns a list of all Gene Ids from the database matching the given Annovar Id. The list is never null and
+     * is empty when the database does not contain any Gene Ids matching this Annovar Id.
+     * 
+     * @return A list of all Gene Ids from the database matching the given Annovar Id.
+     * @throws DAOException If something fails at database level.
+     */
+    public List<Integer> findGeneIdsForAnnovarId( Integer id ) throws DAOException;
+
+    /**
+     * Returns a list of all Variant Ids from the database matching the given Gene Id. The list is never null and
+     * is empty when the database does not contain any Variant Ids matching this Gene Id.
+     * 
+     * @return A list of all Variant Ids from the database matching the given Gene Id.
+     * @throws DAOException If something fails at database level.
+     */
+    public List<Integer> findVariantIdsByGeneId( Integer id ) throws DAOException;
+
+    /**
+     * Returns a map of all Annovar Id to List of Gene Ids from the database. The map is never null and
+     * is empty when the database does not contain any Annovar to Gene mapping.
+     * 
+     * @return A map of all Annovar Id to List of Gene Ids from the database.
+     * @throws DAOException If something fails at database level.
+     */
+    public Map<Integer, List<Integer>> listGeneMap() throws DAOException;
 }

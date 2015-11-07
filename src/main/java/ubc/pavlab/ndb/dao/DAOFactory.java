@@ -164,12 +164,8 @@ public abstract class DAOFactory {
         return new AnnovarDAOImpl( this );
     }
 
-    public MutationDAO getMutationDAO() {
-        return new MutationDAOImpl( this );
-    }
-
-    public LOFBreakdownDAO getLOFBreakdownDAO() {
-        return new LOFBreakdownDAOImpl( this );
+    public VariantDAO getVariantDAO() {
+        return new VariantDAOImpl( this );
     }
 
     public CacheDAO getCacheDAO() {

@@ -34,7 +34,6 @@ import ubc.pavlab.ndb.beans.DAOFactoryBean;
 import ubc.pavlab.ndb.dao.PaperDAO;
 import ubc.pavlab.ndb.exceptions.DAOException;
 import ubc.pavlab.ndb.model.Paper;
-import ubc.pavlab.ndb.model.Paper.PaperBuilder;
 import ubc.pavlab.ndb.model.dto.PaperDTO;
 
 /**
@@ -78,7 +77,7 @@ public class PaperService implements Serializable {
      * @return The paper from the database matching the given ID, otherwise null.
      * @throws DAOException If something fails at database level.
      */
-    public Paper fetchPaper( Integer id ) {
+    protected Paper fetchPaper( Integer id ) {
         return map( paperDAO.find( id ) );
     }
 
@@ -89,7 +88,7 @@ public class PaperService implements Serializable {
      * @return The paper from the database matching the given author, otherwise null.
      * @throws DAOException If something fails at database level.
      */
-    public Paper fetchPaper( String author ) {
+    protected Paper fetchPaper( String author ) {
         return map( paperDAO.find( author ) );
     }
 
@@ -100,7 +99,7 @@ public class PaperService implements Serializable {
      * @return A list of all papers from the database ordered by paper ID.
      * @throws DAOException If something fails at database level.
      */
-    public List<Paper> listPapers() {
+    protected List<Paper> listPapers() {
         List<Paper> paperList = new ArrayList<>();
         for ( PaperDTO dto : paperDAO.list() ) {
             paperList.add( map( dto ) );
@@ -109,10 +108,7 @@ public class PaperService implements Serializable {
     }
 
     private static Paper map( PaperDTO dto ) {
-        PaperBuilder builder = new PaperBuilder( dto.getId(), dto.getUrl(), dto.getAuthor(), dto.getPaper_table(),
-                dto.getMut_reporting(), dto.getScope(), dto.isParents(), dto.getCohort(), dto.getCohort_source(),
-                dto.getCohort_size(), dto.getReported_effects() );
-        return builder.build();
+        return new Paper( dto );
     }
 
     public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {

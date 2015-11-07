@@ -43,11 +43,17 @@ public class GeneDAOImpl implements GeneDAO {
 
     private static final Logger log = Logger.getLogger( GeneDAOImpl.class );
 
-    // Constants ----------------------------------------------------------------------------------
+    // SQL Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_FIND_BY_ID = "SELECT id, symbol, gene_size FROM genes WHERE id = ?";
-    private static final String SQL_FIND_BY_SYMBOL = "SELECT id, symbol, gene_size FROM genes WHERE symbol = ?";
-    private static final String SQL_LIST_ORDER_BY_ID = "SELECT id, symbol, gene_size FROM genes ORDER BY id";
+    private static final String SQL_STAR = "gene_id, symbol, synonyms, xrefs, chromosome, map_location, description, type_of_gene, Symbol_from_nomenclature_authority, Full_name_from_nomenclature_authority, modification_date";
+    private static final String SQL_TABLE = "gene";
+    // SQL Statements
+
+    private static final String SQL_FIND_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE gene_id = ?";
+    private static final String SQL_FIND_BY_SYMBOL = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
+            + " WHERE symbol = ?";
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
+            + " ORDER BY gene_id";
 
     // Vars ---------------------------------------------------------------------------------------
 
@@ -129,8 +135,12 @@ public class GeneDAOImpl implements GeneDAO {
      * @throws SQLException If something fails at database level.
      */
     private static GeneDTO map( ResultSet resultSet ) throws SQLException {
-        return new GeneDTO( resultSet.getInt( "id" ), resultSet.getString( "symbol" ),
-                resultSet.getInt( "gene_size" ) );
+        return new GeneDTO( resultSet.getInt( "gene_id" ), resultSet.getString( "symbol" ),
+                resultSet.getString( "synonyms" ), resultSet.getString( "xrefs" ), resultSet.getString( "chromosome" ),
+                resultSet.getString( "map_location" ), resultSet.getString( "description" ),
+                resultSet.getString( "type_of_gene" ), resultSet.getString( "Symbol_from_nomenclature_authority" ),
+                resultSet.getString( "Full_name_from_nomenclature_authority" ),
+                resultSet.getString( "modification_date" ) );
     }
 
 }
