@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -9,13 +9,113 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="pageTitle">Nate DB!</ui:define>
-	
+
 	<ui:define name="css">
 		<h:outputStylesheet library="css" name="index.css" />
 	</ui:define>
-	
+
 	<ui:define name="content">
-	<p>This is the index content.</p>
+		<h:form>
+			<p:growl id="msgs" showDetail="true" />
+
+			<h:panelGrid columns="1" cellpadding="5">
+
+				<p:outputLabel value="Gene:" for="gene" />
+				<p:autoComplete id="gene" value="#{indexView.gene}"
+					completeMethod="#{indexView.completeSymbol}" queryDelay="600"
+					maxResults="20" minQueryLength="2" forceSelection="true" label="ID"
+					emptyMessage="No gene suggestions available, please try again."
+					var="g" itemLabel="#{g.symbol}" itemValue="#{g}"
+					converter="geneConverter" style="margin-right:8px;">
+
+					<p:column>
+						<h:outputText value="#{g.label}" />
+					</p:column>
+				</p:autoComplete>
+
+			</h:panelGrid>
+
+			<p:commandButton value="Submit" update="variantTable" action="#{indexView.loadGene()}" oncomplete="PF('variantdlg').show()" icon="ui-icon-check" />
+
+
+     <p:dialog header="Variants" modal="true" showEffect="bounce" widgetVar="variantdlg" resizable="false" width="900">
+		<p:dataTable id="variantTable" var="variant" value="#{indexView.variants}">
+		    <p:column headerText="Id">
+		        <h:outputText value="#{variant.id}" />
+		    </p:column>
+		 
+		    <p:column headerText="Chromosome">
+		        <h:outputText value="#{variant.chromosome}" />
+		    </p:column>
+		 
+		    <p:column headerText="Start">
+		        <h:outputText value="#{variant.startHg19}" />
+		    </p:column>
+		 
+		    <p:column headerText="Stop">
+		        <h:outputText value="#{variant.stopHg19}" />
+		    </p:column>
+		    <p:column headerText="Ref">
+		        <h:outputText value="#{variant.ref}" />
+		    </p:column>
+		    <p:column headerText="Alt">
+		        <h:outputText value="#{variant.alt}" />
+		    </p:column>
+		    <p:column headerText="Paper">
+		        <h:outputText value="#{variant.paper.author}" />
+		    </p:column>
+		</p:dataTable>
+    </p:dialog>
+
+		</h:form>
+		
+<h:form>
+    <p:messages autoUpdate="true" />
+ 
+    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+        <p:outputLabel for="chromosome" value="chromosome:" />
+        <p:inputText id="chromosome" value="#{indexView.chromosome}" style="width:125px"/>
+
+ 
+        <p:outputLabel for="start" value="start:" />
+        <p:inputText id="start" value="#{indexView.start}" style="width:125px"/>
+        
+        <p:outputLabel for="stop" value="stop:" />
+        <p:inputText id="stop" value="#{indexView.stop}" style="width:125px"/>
+    </h:panelGrid>
+ 
+    <p:commandButton value="Submit" update="variantTable2" action="#{indexView.submit()}" oncomplete="PF('variantdlg2').show()" icon="ui-icon-check" />
+    
+     <p:dialog header="Variants" modal="true" showEffect="bounce" widgetVar="variantdlg2" resizable="false" width="900">
+		<p:dataTable id="variantTable2" var="variant" value="#{indexView.variants}">
+		    <p:column headerText="Id">
+		        <h:outputText value="#{variant.id}" />
+		    </p:column>
+		 
+		    <p:column headerText="Chromosome">
+		        <h:outputText value="#{variant.chromosome}" />
+		    </p:column>
+		 
+		    <p:column headerText="Start">
+		        <h:outputText value="#{variant.startHg19}" />
+		    </p:column>
+		 
+		    <p:column headerText="Stop">
+		        <h:outputText value="#{variant.stopHg19}" />
+		    </p:column>
+		    <p:column headerText="Ref">
+		        <h:outputText value="#{variant.ref}" />
+		    </p:column>
+		    <p:column headerText="Alt">
+		        <h:outputText value="#{variant.alt}" />
+		    </p:column>
+		    <p:column headerText="Paper">
+		        <h:outputText value="#{variant.paper.author}" />
+		    </p:column>
+		</p:dataTable>
+    </p:dialog>
+    </h:form>
+    
 	</ui:define>
 
 </ui:composition>

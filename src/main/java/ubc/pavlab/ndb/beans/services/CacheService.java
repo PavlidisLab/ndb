@@ -21,6 +21,8 @@ package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
@@ -30,14 +32,13 @@ import javax.faces.bean.ManagedProperty;
 import org.apache.log4j.Logger;
 
 import com.google.common.collect.Lists;
-import com.googlecode.concurrenttrees.common.KeyValuePair;
 import com.googlecode.concurrenttrees.radix.ConcurrentRadixTree;
 import com.googlecode.concurrenttrees.radix.RadixTree;
 import com.googlecode.concurrenttrees.radix.node.concrete.DefaultCharArrayNodeFactory;
 
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
-import ubc.pavlab.ndb.dao.CacheDAO;
-import ubc.pavlab.ndb.utility.Tuples.Tuple2;
+import ubc.pavlab.ndb.model.Gene;
+import ubc.pavlab.ndb.model.Paper;
 
 /**
  * TODO Document Me
@@ -56,12 +57,19 @@ public class CacheService implements Serializable {
     @ManagedProperty("#{daoFactoryBean}")
     private DAOFactoryBean daoFactoryBean;
 
-    private CacheDAO cacheDAO;
+    @ManagedProperty("#{geneService}")
+    private GeneService geneService;
 
-    private RadixTree<Integer> geneSymbolToIdTree = new ConcurrentRadixTree<Integer>(
+    @ManagedProperty("#{paperService}")
+    private PaperService paperService;
+
+    //
+    private RadixTree<Gene> geneTreeBySymbol = new ConcurrentRadixTree<Gene>(
             new DefaultCharArrayNodeFactory() );
-    private RadixTree<Integer> paperAuthorToIdTree = new ConcurrentRadixTree<Integer>(
+    private Map<Integer, Gene> geneCache = new ConcurrentHashMap<>();
+    private RadixTree<Paper> paperTreeByAuthor = new ConcurrentRadixTree<Paper>(
             new DefaultCharArrayNodeFactory() );
+    private Map<Integer, Paper> paperCache = new ConcurrentHashMap<>();
 
     /**
      * 
@@ -73,38 +81,59 @@ public class CacheService implements Serializable {
     @PostConstruct
     public void init() {
         log.info( "CacheService init" );
-        cacheDAO = daoFactoryBean.getDAOFactory().getCacheDAO();
-        List<Tuple2<Integer, String>> symbolIdTuples = cacheDAO.listSymbolId();
-        for ( Tuple2<Integer, String> tuple2 : symbolIdTuples ) {
-            geneSymbolToIdTree.put( tuple2.getT2().toUpperCase(), tuple2.getT1() );
+
+        for ( Gene g : geneService.listGenes() ) {
+            geneTreeBySymbol.put( g.getSymbol().toUpperCase(), g );
+            geneCache.put( g.getGeneId(), g );
         }
 
-        List<Tuple2<Integer, String>> authorIdTuples = cacheDAO.listAuthorId();
-        for ( Tuple2<Integer, String> tuple2 : authorIdTuples ) {
-            paperAuthorToIdTree.put( tuple2.getT2().toUpperCase(), tuple2.getT1() );
+        log.info( "Gene Cache loaded with " + geneCache.size() + " genes." );
+
+        for ( Paper p : paperService.listPapers() ) {
+            paperTreeByAuthor.put( p.getAuthor(), p );
+            paperCache.put( p.getId(), p );
         }
+
+        log.info( "Paper Cache loaded with " + paperCache.size() + " papers." );
+
     }
 
-    public List<KeyValuePair<Integer>> searchGeneIdBySymbol( String query ) {
-        Iterable<KeyValuePair<Integer>> iter = geneSymbolToIdTree.getKeyValuePairsForClosestKeys( query.toUpperCase() );
+    public List<Gene> searchGeneBySymbol( String query ) {
+        Iterable<Gene> iter = geneTreeBySymbol.getValuesForClosestKeys( query.toUpperCase() );
         return Lists.newArrayList( iter );
     }
 
-    public Integer getGeneIdForExactSymbol( String symbol ) {
-        return geneSymbolToIdTree.getValueForExactKey( symbol.toUpperCase() );
+    public Gene getGeneForExactSymbol( String symbol ) {
+        return geneTreeBySymbol.getValueForExactKey( symbol.toUpperCase() );
     }
 
-    public List<KeyValuePair<Integer>> searchPaperIdByAuthor( String query ) {
-        Iterable<KeyValuePair<Integer>> iter = paperAuthorToIdTree
-                .getKeyValuePairsForClosestKeys( query.toUpperCase() );
+    public Gene getGeneById( Integer id ) {
+        return geneCache.get( id );
+    }
+
+    public List<Paper> searchPaperByAuthor( String query ) {
+        Iterable<Paper> iter = paperTreeByAuthor
+                .getValuesForClosestKeys( query.toUpperCase() );
         return Lists.newArrayList( iter );
     }
 
-    public Integer getPaperIdForExactAuthor( String author ) {
-        return paperAuthorToIdTree.getValueForExactKey( author.toUpperCase() );
+    public Paper getPaperForExactAuthor( String author ) {
+        return paperTreeByAuthor.getValueForExactKey( author.toUpperCase() );
+    }
+
+    public Paper getPaperById( Integer id ) {
+        return paperCache.get( id );
     }
 
     public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {
         this.daoFactoryBean = daoFactoryBean;
+    }
+
+    public void setGeneService( GeneService geneService ) {
+        this.geneService = geneService;
+    }
+
+    public void setPaperService( PaperService paperService ) {
+        this.paperService = paperService;
     }
 }

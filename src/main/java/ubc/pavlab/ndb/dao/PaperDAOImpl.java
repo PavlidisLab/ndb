@@ -43,11 +43,16 @@ public class PaperDAOImpl implements PaperDAO {
 
     private static final Logger log = Logger.getLogger( PaperDAOImpl.class );
 
-    // Constants ----------------------------------------------------------------------------------
+    // SQL Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_FIND_BY_ID = "SELECT id, url, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, reported_effects FROM papers WHERE id = ?";
-    private static final String SQL_FIND_BY_AUTHOR = "SELECT id, url, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, reported_effects FROM papers WHERE author = ?";
-    private static final String SQL_LIST_ORDER_BY_ID = "SELECT id, url, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, reported_effects FROM papers ORDER BY id";
+    private static final String SQL_STAR = "id, url, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, reported_effects";
+    private static final String SQL_TABLE = "papers";
+
+    // SQL Statements
+
+    private static final String SQL_FIND_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE id = ?";
+    private static final String SQL_FIND_BY_AUTHOR = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE author = ?";
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id";
 
     // Vars ---------------------------------------------------------------------------------------
 

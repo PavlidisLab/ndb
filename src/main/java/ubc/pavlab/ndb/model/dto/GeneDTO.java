@@ -28,25 +28,76 @@ import ubc.pavlab.ndb.model.Gene;
  * @version $Id$
  */
 public final class GeneDTO {
-    private final Integer id;
+    private final Integer geneId;
     private final String symbol;
-    private final Integer size;
+    private final String synonyms;
+    private final String xrefs;
+    private final String chromose;
+    private final String mapLocation;
+    private final String description;
+    private final String type;
+    private final String symbolNomenclatureAuthority;
+    private final String fullNameNomenclatureAuthority;
+    private final String modificationDate;
 
-    public GeneDTO( Integer id, String symbol, Integer size ) {
-        this.id = id;
+    public GeneDTO( Integer geneId, String symbol, String synonyms, String xrefs, String chromose, String mapLocation,
+            String description, String type, String symbolNomenclatureAuthority, String fullNameNomenclatureAuthority,
+            String modificationDate ) {
+        this.geneId = geneId;
         this.symbol = symbol;
-        this.size = size;
+        this.synonyms = synonyms;
+        this.xrefs = xrefs;
+        this.chromose = chromose;
+        this.mapLocation = mapLocation;
+        this.description = description;
+        this.type = type;
+        this.symbolNomenclatureAuthority = symbolNomenclatureAuthority;
+        this.fullNameNomenclatureAuthority = fullNameNomenclatureAuthority;
+        this.modificationDate = modificationDate;
+    }
+
+    public Integer getGeneId() {
+        return geneId;
     }
 
     public String getSymbol() {
         return symbol;
     }
 
-    public Integer getId() {
-        return id;
+    public String getSynonyms() {
+        return synonyms;
     }
 
-    public Integer getSize() {
-        return size;
+    public String getXrefs() {
+        return xrefs;
     }
+
+    public String getChromose() {
+        return chromose;
+    }
+
+    public String getMapLocation() {
+        return mapLocation;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getSymbolNomenclatureAuthority() {
+        return symbolNomenclatureAuthority;
+    }
+
+    public String getFullNameNomenclatureAuthority() {
+        return fullNameNomenclatureAuthority;
+    }
+
+    public String getModificationDate() {
+        return modificationDate;
+    }
+
 }

@@ -38,6 +38,7 @@ import ubc.pavlab.ndb.utility.Tuples.Tuple2;
  * @author mjacobson
  * @version $Id$
  */
+@Deprecated
 public class CacheDAOImpl implements CacheDAO {
     private static final Logger log = Logger.getLogger( CacheDAOImpl.class );
 
