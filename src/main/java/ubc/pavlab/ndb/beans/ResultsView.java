@@ -2,14 +2,15 @@ package ubc.pavlab.ndb.beans;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.context.FacesContext;
 
-//TODO: add DAO and 
-import ubc.pavlab.ndb.model.Mutation;
-import ubc.pavlab.ndb.service.MutationService;
+import ubc.pavlab.ndb.beans.services.VariantService;
+import ubc.pavlab.ndb.model.Variant;
 
 @ManagedBean(name = "resultsView")
 public class ResultsView implements Serializable {
@@ -19,25 +20,25 @@ public class ResultsView implements Serializable {
      */
     private static final long serialVersionUID = -506601459390058684L;
 
-    private List<Mutation> mutations;
+    private List<Variant> mutations;
+
     private String query;
 
-    @ManagedProperty("#{mutationService}")
-    private MutationService service;
+    @ManagedProperty("#{variantService}")
+    private VariantService variantService;
 
     @PostConstruct
     public void init() {
-        this.setQuery( "SEARCH QUERY" );
-        service = new MutationService();
-        mutations = service.createMutations();
+        Map<String, String> requestParams = FacesContext.getCurrentInstance().getExternalContext()
+                .getRequestParameterMap();
+
+        this.query = requestParams.get( "query" );
+        mutations = this.variantService.fetchByGeneId( Integer.parseInt( this.query ) );
+
     }
 
-    public List<Mutation> getMutations() {
+    public List<Variant> getMutations() {
         return mutations;
-    }
-
-    public void setService( MutationService service ) {
-        this.service = service;
     }
 
     public String getQuery() {
@@ -47,4 +48,9 @@ public class ResultsView implements Serializable {
     public void setQuery( String query ) {
         this.query = query;
     }
+
+    public void setVariantService( VariantService variantService ) {
+        this.variantService = variantService;
+    }
+
 }

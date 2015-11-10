@@ -39,8 +39,8 @@ import ubc.pavlab.ndb.model.Variant;
 import ubc.pavlab.ndb.model.dto.VariantDTO;
 
 /**
- * Service layer on top of VariantDAO. Contains methods for fetching information related to variants from
- * the database and creating Variant objects.
+ * Service layer on top of VariantDAO. Contains methods for fetching information related to variants from the database
+ * and creating Variant objects.
  * 
  * @author mjacobson
  * @version $Id$

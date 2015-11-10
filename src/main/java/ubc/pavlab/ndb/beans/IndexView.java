@@ -83,12 +83,12 @@ public class IndexView implements Serializable {
         log.info( "Load Gene " + gene.getGeneId() );
         variants = variantService.fetchByGeneId( gene.getGeneId() );
         log.info( variants.size() );
-        //gene = cacheService.getGeneById( geneId );
+        // gene = cacheService.getGeneById( geneId );
     }
 
     public void loadPaper() {
         log.info( "Load Paper" );
-        //paper = cacheService.getPaperById( paperId );
+        // paper = cacheService.getPaperById( paperId );
     }
 
     public List<Gene> completeSymbol( String query ) {
@@ -155,5 +155,9 @@ public class IndexView implements Serializable {
 
     public void setVariantService( VariantService variantService ) {
         this.variantService = variantService;
+    }
+
+    public String go() {
+        return "results?faces-redirect=true&query=" + gene.getGeneId();
     }
 }
