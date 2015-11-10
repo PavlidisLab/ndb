@@ -31,8 +31,8 @@ public class Mutation {
     private final Gene gene;
     private final String sampleIdentifier;
     private final String chromosome;
-    private final Integer hg19Start;
-    private final Integer hg19Stop;
+    private final Integer startHg19;
+    private final Integer stopHg19;
     private final String ref;
     private final String alt;
     private final String mutationEffect;
@@ -43,8 +43,8 @@ public class Mutation {
     private final String polyphen;
     private final Boolean goodmut;
 
-    public Mutation( Integer id, Paper paper, Gene gene, String sampleIdentifier, String chromosome, Integer hg19Start,
-            Integer hg19Stop, String ref, String alt, String mutationEffect, String codeChange, String protChange,
+    public Mutation( Integer id, Paper paper, Gene gene, String sampleIdentifier, String chromosome, Integer startHg19,
+            Integer stopHg19, String ref, String alt, String mutationEffect, String codeChange, String protChange,
             String qvalue, String sift, String polyphen, Boolean goodmut ) {
         super();
         this.id = id;
@@ -52,8 +52,8 @@ public class Mutation {
         this.gene = gene;
         this.sampleIdentifier = sampleIdentifier;
         this.chromosome = chromosome;
-        this.hg19Start = hg19Start;
-        this.hg19Stop = hg19Stop;
+        this.startHg19 = startHg19;
+        this.stopHg19 = stopHg19;
         this.ref = ref;
         this.alt = alt;
         this.mutationEffect = mutationEffect;
@@ -85,12 +85,12 @@ public class Mutation {
         return chromosome;
     }
 
-    public Integer getHg19Start() {
-        return hg19Start;
+    public Integer getstartHg19() {
+        return startHg19;
     }
 
-    public Integer getHg19Stop() {
-        return hg19Stop;
+    public Integer getstopHg19() {
+        return stopHg19;
     }
 
     public String getRef() {

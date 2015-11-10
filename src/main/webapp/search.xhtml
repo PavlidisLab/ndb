@@ -26,13 +26,28 @@
 	                <h:outputText value="Search by Gene" style="font-weight:bold;text-decoration:underline;" />
 	                <span/>
  					<h:outputText value="Search by coordinates" style="font-weight:bold;text-decoration:underline;" />	                
-					
-					<p:outputPanel id="gene" style="width:250px;padding-left:5px;margin-top:10px">
-				    	<h:outputLabel for="gene" value="e.g. SYNGAP1, ENSG000000042 " />				             	                
-	                	<p:inputTextarea rows="1" cols="30" completeMethod="#{searchSuggestionView.completeArea}" queryDelay="750" minQueryLength="4" />
-	                </p:outputPanel> 			                	                
-	                <span> &nbsp;&nbsp;&nbsp; or &nbsp;&nbsp;&nbsp; </span>			              
+
+					<p:outputPanel id="genePanel" style="width:250px;padding-left:5px;margin-top:10px">					
+					<!-- SEARCH BY CHROMOSOME -->
+				    	<h:outputLabel for="gene" value="e.g. SYNGAP1, ENSG000000042 " />	
+				    	<p:autoComplete id="gene" value="#{indexView.gene}" 
+				    					completeMethod="#{indexView.completeSymbol}" queryDelay="600" 
+				    					maxResults="20" minQueryLength="2" 
+				    					forceSelection="true" label="ID" 
+				    					emptyMessage="No gene suggestions available, please try again." var="g" 
+				    					itemLabel="#{g.symbol}" itemValue="#{g}" 
+				    					converter="geneConverter" style="margin-right:8px;">
+				    					<p:column>
+                 					 		<h:outputText value="#{g.label}" />
+               							</p:column>				    	
+				    	</p:autoComplete>
+	                </p:outputPanel> 
+	                			                	                
+	                <span> &nbsp;&nbsp;&nbsp; or &nbsp;&nbsp;&nbsp; </span>		
+	                
+	                           
  					<p:outputPanel id="coordinates" style="width:250px;padding-left:5px;margin-top:10px">
+					<!-- SEARCH BY COORDINATES -->	   
 				    	<h:outputLabel for="coordinates" value="e.g. 20, 123456789, 987654321" />				    	
 		            		<h:panelGrid columns="2" cellpadding="10">					    	
 						         <h:outputText value="Chromosome:"/><p:inputText />					        
@@ -41,7 +56,7 @@
 		            		</h:panelGrid>
 				    </p:outputPanel>
 	            </h:panelGrid>
-	        </p:tab>
+			</p:tab>
 	        
 	        <p:tab title="Filters (coming soon!)">
 	        <!-- 
@@ -76,12 +91,13 @@
 				   
 				    
 				    				    			    				
-	            </h:panelGrid>
-	        -->
+	            </h:panelGrid> -->
 	        </p:tab>
 	    </p:accordionPanel>
 	    <br/>
 	    <p:growl id="growl" life="2000" />
+	    <p:commandButton value="Submit" action="#{indexView.go}" oncomplete="PF('variantdlg').show()" icon="ui-icon-check" />
+	        
      	<p:commandButton value="Search"
      					 actionListener="#{searchSuggestionView.buttonAction}" 
      	    			 id="searchButton" 

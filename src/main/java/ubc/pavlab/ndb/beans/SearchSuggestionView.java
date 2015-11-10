@@ -1,7 +1,6 @@
 package ubc.pavlab.ndb.beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -40,29 +39,29 @@ public class SearchSuggestionView implements Serializable {
         log.info( "SearchSuggestionView created" );
     }
 
-    public List<String> completeArea( String query ) {
-        List<String> results = new ArrayList<String>();
-
-        // TODO: Query Genes
-
-        // TODO: Query Authors
-
-        // TODO: Assemble suggestions into /results/
-
-        if ( query.startsWith( "PrimeFaces" ) ) {
-            results.add( "PrimeFaces Crocs!!!" );
-            results.add( "PrimeFaces has 100+ components." );
-            results.add( "PrimeFaces is lightweight." );
-            results.add( "PrimeFaces is easy to use." );
-            results.add( "PrimeFaces is developed with passion!" );
-        } else {
-            for ( int i = 0; i < 10; i++ ) {
-                results.add( query + i );
-            }
-        }
-
-        return results;
-    }
+    // public List<String> completeArea( String query ) {
+    // List<String> results = new ArrayList<String>();
+    //
+    // // TODO: Query Genes
+    //
+    // // TODO: Query Authors
+    //
+    // // TODO: Assemble suggestions into /results/
+    //
+    // if ( query.startsWith( "PrimeFaces" ) ) {
+    // results.add( "PrimeFaces Crocs!!!" );
+    // results.add( "PrimeFaces has 100+ components." );
+    // results.add( "PrimeFaces is lightweight." );
+    // results.add( "PrimeFaces is easy to use." );
+    // results.add( "PrimeFaces is developed with passion!" );
+    // } else {
+    // for ( int i = 0; i < 10; i++ ) {
+    // results.add( query + i );
+    // }
+    // }
+    //
+    // return results;
+    // }
 
     public void buttonAction() { // ActionEvent actionEvent ) {
         addMessage( "Searching database for mutations." );

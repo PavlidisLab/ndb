@@ -21,15 +21,21 @@
     
     <p:dataTable var="trunk" value="#{variantView.trunk}">
 	    <p:column headerText="Id">
-	        <h:outputText value="#{trunk.id}" />
+	    	<ui:remove>
+	    		<h:outputText value="#{trunk.id}" />
+	    	</ui:remove>	    	
+			<h:outputText value="#{trunk.eventId}" />
+	        
 	    </p:column>
 	 
 	    <p:column headerText="Sample">
-	        <h:outputText value="#{trunk.sampleIdentifier}" />
+	        <h:outputText value="#{trunk.sampleId}" />
 	    </p:column>
 	 
 	    <p:column headerText="Gene">
-	        <h:outputText value="#{trunk.gene.name}" />
+	    	<ui:repeat var="g" value="#{trunk.annovar.genes}">
+	    		<h:outputText value="#{g.symbol}" />
+	    	</ui:repeat>	        
 	    </p:column>	 
 	 
 		<p:column headerText="Chromosome">
@@ -39,7 +45,7 @@
 	    
 	</p:dataTable>
     <br/>
-    <h3 style="margin-top:0"> Also reported as:</h3>
+    <h3 style="margin-top:0"> Reported as:</h3>
 		<h:form>
 			<ui:insert name="modalSourceVariant">
 				<ui:include src="modal_source.xhtml" />
@@ -75,7 +81,7 @@
 		                <h:outputText id="Id" value="Id" />
     					<p:tooltip id="toolTipId" for="Id" value="Database identifier for each unique variant." />		                
 		            </f:facet>
-					<h:outputText value="#{param['id']}" />
+					<h:outputText value="#{mutation.eventId}" />
 		        </p:column>
 
 		        <p:column>
@@ -107,7 +113,7 @@
 		                <h:outputText id="Start" value="Start"/>
 		                <p:tooltip id="toolTipStart" for="Start" value="Start coordinate (inclusive) of the REF under Hg19" />
 		            </f:facet>
-		            <h:outputText value="#{mutation.hg19Start}" />		            		            
+		            <h:outputText value="#{mutation.startHg19}" />		            		            
 		        </p:column>
 		        
 		        <p:column>
@@ -115,7 +121,7 @@
 		                <h:outputText id="Stop" value="Stop"/>
 		            	<p:tooltip id="toolTipStop" for="Stop" value="Stop coordinate (inclusive) of the REF under Hg19" />	
 		            </f:facet>
-		            <h:outputText value="#{mutation.hg19Stop}" />
+		            <h:outputText value="#{mutation.stopHg19}" />
 		        </p:column>
 		        
 		        <p:column>
@@ -124,17 +130,24 @@
 		                <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect" />	
 		           
 		            </f:facet>
-		            <h:outputText value="#{mutation.mutationEffect}" />
+	            	
+	            	<ui:repeat var="c" value="#{mutation.annovar.categories.toArray()}" varStatus="status">   
+	            		<h:outputText value="#{c.label}" /> &nbsp;
+	            		<h:outputText value="" rendered="#{not status.last}" /> 	            		          			            			          
+	            	</ui:repeat>
+	            	
 		        </p:column>		
 		            
 		        <p:column>
 		            <f:facet name="header">
-		                <h:outputText id="Paper" value="Paper"/>
-		                <p:tooltip id="toolTipPaper" for="Paper" value="Paper which reported this specific instance" />	
-		           
+		                <h:outputText id="Source" value="Source"/>
+		                <p:tooltip id="toolTipSource" for="Source" value="Source where the variant is reported from" />		           
 		            </f:facet>
-		            <h:outputText value="#{mutation.paper.name}" />
-		        </p:column>		    
+		             <h:outputLink value="#{mutation.paper.url}">			            
+		            	<h:outputText value="#{mutation.paper.author}" />
+		            </h:outputLink>
+		        </p:column>
+		            
 		        
 				<p:column>
 		            <f:facet name="header">

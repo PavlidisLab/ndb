@@ -8,10 +8,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 
-//TODO: add DAO and 
-import ubc.pavlab.ndb.model.Mutation;
+import ubc.pavlab.ndb.beans.services.VariantService;
 import ubc.pavlab.ndb.model.SourceMutation;
-import ubc.pavlab.ndb.service.MutationService;
+import ubc.pavlab.ndb.model.Variant;
 
 @ManagedBean(name = "variantView")
 public class VariantView implements Serializable {
@@ -21,36 +20,37 @@ public class VariantView implements Serializable {
      */
     private static final long serialVersionUID = 4032558721810259504L;
 
-    private List<Mutation> mutations;
-    private Mutation trunk;
+    private List<Variant> mutations;
+    private Variant trunk;
     private SourceMutation sourceMutation;
 
-    @ManagedProperty("#{mutationService}")
-    private MutationService service;
+    @ManagedProperty("#{variantService}")
+    private VariantService service;
 
     @PostConstruct
     public void init() {
-        service = new MutationService();
+        String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get( "id" );
 
-        String variantId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get( "id" );
-        trunk = service.getTrunkMutation( Integer.parseInt( variantId ) );
-        mutations = service.getRawMutations( Integer.parseInt( variantId ) );
-        sourceMutation = service.getSourceMutation(); // variantId );
+        mutations = service.fetchByEventId( Integer.parseInt( id ) );
+        // TODO: Make sure this makes sense
+        if ( !mutations.isEmpty() ) {
+            trunk = ( Variant ) mutations.toArray()[0];
+        }
     }
 
     public int getOccurences() {
         return mutations.size();
     }
 
-    public Mutation getTrunk() {
+    public Variant getTrunk() {
         return trunk;
     }
 
-    public void setTrunk( Mutation trunk ) {
+    public void setTrunk( Variant trunk ) {
         this.trunk = trunk;
     }
 
-    public List<Mutation> getMutations() {
+    public List<Variant> getMutations() {
         return mutations;
     }
 
@@ -62,7 +62,7 @@ public class VariantView implements Serializable {
         this.sourceMutation = source;
     }
 
-    public void setService( MutationService service ) {
+    public void setService( VariantService service ) {
         this.service = service;
     }
 }
