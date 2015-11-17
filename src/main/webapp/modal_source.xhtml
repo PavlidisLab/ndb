@@ -14,11 +14,11 @@
     	   		<h:outputText value="Variant reported in: " />
     	   		<h:outputLink value="http://zombo.com">
     	   			Jiang YH et al. Am J Hum Genet. 2013
-    	   			<!-- <h:outputText value="#{variantView.sourceMutation.paper.name}" />  -->
 	       		</h:outputLink>
 			</p:outputPanel>    
-		
-			<p:dataList value="#{variantView.sourceMutation.entries}" var="variant" type="definition">
+			
+			<ui:remove>
+			<p:dataList value="#{resultView.events}" var="variant" type="definition">
 	
 	    		<p:outputPanel>
 	                <h:panelGrid columns="3" cellpadding="15">
@@ -26,10 +26,11 @@
 					    <!--  <span>&nbsp;&nbsp;&nbsp;</span> -->
 	                    <h:outputText value="#{variant.value}" />	                    
 	                </h:panelGrid>
-	           </p:outputPanel>
-	           
+	           </p:outputPanel>	           
 	       	</p:dataList>
-	       	
+	       	</ui:remove>
+	
+			       	
     	   	 
 		</p:dialog>
 

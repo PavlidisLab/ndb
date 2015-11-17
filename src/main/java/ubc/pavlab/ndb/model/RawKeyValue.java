@@ -39,52 +39,6 @@ public class RawKeyValue {
         this.entries = entries;
     }
 
-    // public void makeMockRaw() {
-    // /*
-    // * Chr (hg18) Pos (hg18) Chr (hg19) Pos (hg19) Ref Alt rsIDv132 dbSNP Accension Gene Brain_expressed Effect
-    // * Initial_Codon Initial_AA New_Codon New_AA AA_Change BP_Change GranthamScore SIFT SIFT Score Median
-    // * Information Content # Seqs at position PolyPhen2 pph2_prob pph2_FPR pph2_TPR PhyloP GERP Risk 10 108437954
-    // * chr10 108447964 C T 0 Novel NM_001013031 SORCS1 Yes Missense GTG V ATG M V516M G1546A 21 TOLERATED 0.07 3.02
-    // * 20 possiblydamaging 0.689 0.0801 0.863 1.642 5.71 0.000107685
-    // */
-    //
-    // Hashtable<String, String> raw = new Hashtable<String, String>();
-    // raw.put( "Child_ID", "11000.p1" );
-    // raw.put( "Family_Type", "Quartet" );
-    // raw.put( "Chr", "(hg18)" );
-    // raw.put( "Pos", "(hg18)" );
-    // raw.put( "Chr", "(hg19)" );
-    // raw.put( "Pos", "(hg19)" );
-    // raw.put( "Ref", "C" );
-    // raw.put( "Alt", "T" );
-    // raw.put( "rsIDv132", "0" );
-    // raw.put( "dbSNP", "Novel" );
-    // raw.put( "Accension", "NM_001013031" );
-    // raw.put( "Gene", "SORCS1" );
-    // raw.put( "Brain_expressed", "Yes" );
-    // raw.put( "Effect", "Missense" );
-    // raw.put( "Initial_Codon", "GTG" );
-    // raw.put( "Initial_AA", "V" );
-    // raw.put( "New_Codon", "ATG" );
-    // raw.put( "New_AA", "M" );
-    // raw.put( "AA_Change", "V516M" );
-    // raw.put( "BP_Change", "G1546A" );
-    // raw.put( "GranthamScore", "21" );
-    // raw.put( "SIFT", "TOLERATED" );
-    // raw.put( "SIFT", "Score" );
-    // raw.put( "Median", "Information" );
-    // raw.put( "PolyPhen2", "possiblydamaging" );
-    // raw.put( "pph2_prob", "0.689" );
-    // raw.put( "pph2_FPR", "0.0801" );
-    // raw.put( "pph2_TPR", "0.863" );
-    // raw.put( "PhyloP", "1.642" );
-    // raw.put( "GERP", "5.71" );
-    // raw.put( "Risk", "0.000107685" );
-    //
-    // this.source = raw;
-    // entries = new ArrayList<>( raw.entrySet() );
-    // }
-
     public Integer getId() {
         return id;
     }
