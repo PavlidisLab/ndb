@@ -9,7 +9,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 
 import ubc.pavlab.ndb.beans.services.VariantService;
-import ubc.pavlab.ndb.model.SourceMutation;
+import ubc.pavlab.ndb.model.RawKeyValue;
 import ubc.pavlab.ndb.model.Variant;
 
 @ManagedBean(name = "variantView")
@@ -22,7 +22,7 @@ public class VariantView implements Serializable {
 
     private List<Variant> mutations;
     private Variant trunk;
-    private SourceMutation sourceMutation;
+    private RawKeyValue sourceMutation;
 
     @ManagedProperty("#{variantService}")
     private VariantService service;
@@ -36,6 +36,7 @@ public class VariantView implements Serializable {
         if ( !mutations.isEmpty() ) {
             trunk = ( Variant ) mutations.toArray()[0];
         }
+        // sourceMutation = service.
     }
 
     public int getOccurences() {
@@ -54,11 +55,11 @@ public class VariantView implements Serializable {
         return mutations;
     }
 
-    public SourceMutation getSourceMutation() {
+    public RawKeyValue getSourceMutation() {
         return sourceMutation;
     }
 
-    public void setSourceMutation( SourceMutation source ) {
+    public void setSourceMutation( RawKeyValue source ) {
         this.sourceMutation = source;
     }
 

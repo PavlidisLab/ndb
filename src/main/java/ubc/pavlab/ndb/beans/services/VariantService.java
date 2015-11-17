@@ -35,6 +35,7 @@ import ubc.pavlab.ndb.beans.DAOFactoryBean;
 import ubc.pavlab.ndb.dao.VariantDAO;
 import ubc.pavlab.ndb.model.Annovar;
 import ubc.pavlab.ndb.model.Paper;
+import ubc.pavlab.ndb.model.RawKeyValue;
 import ubc.pavlab.ndb.model.Variant;
 import ubc.pavlab.ndb.model.dto.VariantDTO;
 
@@ -58,6 +59,9 @@ public class VariantService implements Serializable {
 
     @ManagedProperty("#{annovarService}")
     private AnnovarService annovarService;
+
+    @ManagedProperty("#{rawKeyValueService}")
+    private RawKeyValueService rawKeyValueService;
 
     @ManagedProperty("#{cacheService}")
     private CacheService cacheService;
@@ -130,6 +134,7 @@ public class VariantService implements Serializable {
             return Lists.newArrayList();
         }
         List<Integer> variantIds = annovarService.fetchVariantIdsByGeneId( id );
+
         log.info( variantIds.size() );
         log.info( variantIds );
 
@@ -143,14 +148,15 @@ public class VariantService implements Serializable {
         }
 
         // Get Annovar Information
-
         Annovar annovar = annovarService.fetchByVariantId( dto.getId() );
 
         // Get paper Information from cache
-
         Paper paper = cacheService.getPaperById( dto.getPaperId() );
 
-        return new Variant( dto, annovar, paper );
+        // Get raw key-value store
+        RawKeyValue rawKeyValue = rawKeyValueService.fetchById( dto.getRawVariantId() );
+
+        return new Variant( dto, annovar, paper, rawKeyValue );
     }
 
     private List<Variant> map( List<VariantDTO> dtos ) {
@@ -170,6 +176,10 @@ public class VariantService implements Serializable {
 
     public void setAnnovarService( AnnovarService annovarService ) {
         this.annovarService = annovarService;
+    }
+
+    public void setRawKeyValueService( RawKeyValueService rawKeyValueService ) {
+        this.rawKeyValueService = rawKeyValueService;
     }
 
     public void setCacheService( CacheService cacheService ) {

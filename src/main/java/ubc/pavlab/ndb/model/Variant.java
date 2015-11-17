@@ -41,8 +41,9 @@ public class Variant {
     private final String alt;
     private final Annovar annovar;
     private final Paper paper;
+    private final RawKeyValue rawKeyValue;
 
-    public Variant( VariantDTO dto, Annovar annovar, Paper paper ) {
+    public Variant( VariantDTO dto, Annovar annovar, Paper paper, RawKeyValue rawKeyValue ) {
         this.id = dto.getId();
         this.rawVariantId = dto.getRawVariantId();
         this.eventId = dto.getEventId();
@@ -55,6 +56,7 @@ public class Variant {
         this.alt = dto.getAlt();
         this.annovar = annovar;
         this.paper = paper;
+        this.rawKeyValue = rawKeyValue;
     }
 
     public Integer getId() {
@@ -65,7 +67,7 @@ public class Variant {
         return paper;
     }
 
-    public Integer getRawVariantId() {
+    public Integer getRawVariantId() { // TODO: Retwen rawKeyValue.id instead?
         return rawVariantId;
     }
 
@@ -105,12 +107,15 @@ public class Variant {
         return annovar;
     }
 
+    public RawKeyValue getRawKeyValue() {
+        return rawKeyValue;
+    }
+
     @Override
     public String toString() {
         return "Variant [id=" + id + ", paper=" + paper.getAuthor() + ", eventId=" + eventId + ", subjectId="
-                + subjectId
-                + ", sampleId=" + sampleId + ", chromosome=" + chromosome + ", startHg19=" + startHg19 + ", stopHg19="
-                + stopHg19 + ", ref=" + ref + ", alt=" + alt + "]";
+                + subjectId + ", sampleId=" + sampleId + ", chromosome=" + chromosome + ", startHg19=" + startHg19
+                + ", stopHg19=" + stopHg19 + ", ref=" + ref + ", alt=" + alt + "]";
     }
 
     @Override
