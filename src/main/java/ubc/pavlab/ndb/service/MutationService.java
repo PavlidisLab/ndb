@@ -6,7 +6,7 @@ import java.util.List;
 import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.Mutation;
 import ubc.pavlab.ndb.model.Paper;
-import ubc.pavlab.ndb.model.SourceMutation;
+import ubc.pavlab.ndb.model.RawKeyValue;
 
 public class MutationService {
 
@@ -78,16 +78,16 @@ public class MutationService {
         return trunk;
     }
 
-    public SourceMutation getSourceMutation() { // String idx ) {
+    public RawKeyValue getSourceMutation() { // String idx ) {
         /*
          * Return the key-value pairs stored as metadata for the raw variants.
          */
-        SourceMutation raw = null;
+        RawKeyValue raw = null;
         // TODO: Return appropriate metadata for variant id
         // ( Integer.parseInt( idx ) == 0 ) {
         // Hashtable<String, String> kv = new Hashtable<String, String>();
         String idx = "0";
-        raw = new SourceMutation( Integer.parseInt( idx ), new Paper( "paper" + idx, null ), null );
+        raw = new RawKeyValue( Integer.parseInt( idx ), new Paper( "paper" + idx, null ), null );
         // }
 
         return raw;

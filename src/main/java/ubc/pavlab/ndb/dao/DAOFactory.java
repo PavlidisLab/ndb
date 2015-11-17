@@ -168,6 +168,10 @@ public abstract class DAOFactory {
         return new VariantDAOImpl( this );
     }
 
+    public RawKeyValueDAO getRawKeyValueDAO() {
+        return new RawKeyValueDAOImpl( this );
+    }
+
     public CacheDAO getCacheDAO() {
         return new CacheDAOImpl( this );
     }
