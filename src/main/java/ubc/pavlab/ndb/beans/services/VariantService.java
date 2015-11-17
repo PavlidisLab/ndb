@@ -20,6 +20,8 @@
 package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -27,6 +29,7 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.google.common.collect.Lists;
@@ -34,9 +37,11 @@ import com.google.common.collect.Lists;
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
 import ubc.pavlab.ndb.dao.VariantDAO;
 import ubc.pavlab.ndb.model.Annovar;
+import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.Paper;
 import ubc.pavlab.ndb.model.Variant;
 import ubc.pavlab.ndb.model.dto.VariantDTO;
+import ubc.pavlab.ndb.model.enums.Category;
 
 /**
  * Service layer on top of VariantDAO. Contains methods for fetching information related to variants from
@@ -125,14 +130,12 @@ public class VariantService implements Serializable {
         return map( variantDAO.findByPosition( chr, start, stop ) );
     }
 
-    public List<Variant> fetchByGeneId( Integer id ) {
-        if ( id == null ) {
+    public List<Variant> fetchByGeneId( Integer geneId ) {
+        if ( geneId == null ) {
             return Lists.newArrayList();
         }
-        List<Integer> variantIds = annovarService.fetchVariantIdsByGeneId( id );
-        log.info( variantIds.size() );
-        log.info( variantIds );
-
+        //TODO Inefficient; too many lookups... find a clean way of implementing normalized lookups for this kind of use case
+        List<Integer> variantIds = variantDAO.findVariantIdsForGeneId( geneId );
         return fetchById( variantIds );
 
     }
@@ -142,15 +145,36 @@ public class VariantService implements Serializable {
             return null;
         }
 
-        // Get Annovar Information
+        // Populate Categories
+        List<String> exonicFuncRefGene = StringUtils.isBlank( dto.getCategory() ) ? new ArrayList<String>()
+                : Arrays.asList( dto.getCategory().split( ";" ) );
 
+        List<Category> categories = new ArrayList<>();
+
+        for ( String func : exonicFuncRefGene ) {
+            try {
+                categories.add( Category.getEnum( func ) );
+            } catch ( IllegalArgumentException e ) {
+                log.warn( "Unknown Category (" + func + " )" );
+            }
+        }
+
+        // Populate Genes
+
+        List<Integer> geneIds = variantDAO.findGeneIdsForVariantId( dto.getId() );
+        List<Gene> genes = new ArrayList<>();
+
+        for ( Integer geneId : geneIds ) {
+            genes.add( cacheService.getGeneById( geneId ) );
+        }
+
+        // Get Annovar Information
         Annovar annovar = annovarService.fetchByVariantId( dto.getId() );
 
         // Get paper Information from cache
-
         Paper paper = cacheService.getPaperById( dto.getPaperId() );
 
-        return new Variant( dto, annovar, paper );
+        return new Variant( dto, annovar, paper, genes, categories );
     }
 
     private List<Variant> map( List<VariantDTO> dtos ) {

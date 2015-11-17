@@ -19,7 +19,14 @@
 
 package ubc.pavlab.ndb.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
 import ubc.pavlab.ndb.model.dto.VariantDTO;
+import ubc.pavlab.ndb.model.enums.Category;
 
 /**
  * Represents a variant-subject pairing
@@ -42,7 +49,14 @@ public class Variant {
     private final Annovar annovar;
     private final Paper paper;
 
-    public Variant( VariantDTO dto, Annovar annovar, Paper paper ) {
+    private final List<Gene> genes;
+    private final List<Category> categories;
+    private final String geneDetail;
+    private final List<String> funcs;
+    private final List<String> aaChanges;
+    private final String cytoband;
+
+    public Variant( VariantDTO dto, Annovar annovar, Paper paper, List<Gene> genes, List<Category> categories ) {
         this.id = dto.getId();
         this.rawVariantId = dto.getRawVariantId();
         this.eventId = dto.getEventId();
@@ -55,6 +69,17 @@ public class Variant {
         this.alt = dto.getAlt();
         this.annovar = annovar;
         this.paper = paper;
+
+        this.genes = genes;
+        this.categories = categories;
+        this.geneDetail = dto.getGeneDetail();
+        this.funcs = StringUtils.isBlank( dto.getFunc() ) ? new ArrayList<String>()
+                : Arrays.asList( dto.getFunc().split( ";" ) );
+
+        this.aaChanges = StringUtils.isBlank( dto.getAaChange() ) ? new ArrayList<String>()
+                : Arrays.asList( dto.getAaChange().split( ";" ) );
+
+        this.cytoband = dto.getCytoband();
     }
 
     public Integer getId() {
@@ -103,6 +128,30 @@ public class Variant {
 
     public Annovar getAnnovar() {
         return annovar;
+    }
+
+    public List<Gene> getGenes() {
+        return genes;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public String getGeneDetail() {
+        return geneDetail;
+    }
+
+    public List<String> getFuncs() {
+        return funcs;
+    }
+
+    public List<String> getAaChanges() {
+        return aaChanges;
+    }
+
+    public String getCytoband() {
+        return cytoband;
     }
 
     @Override

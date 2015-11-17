@@ -20,24 +20,18 @@
 package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
 import ubc.pavlab.ndb.dao.AnnovarDAO;
 import ubc.pavlab.ndb.model.Annovar;
-import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.dto.AnnovarDTO;
-import ubc.pavlab.ndb.model.enums.Category;
 
 /**
  * Service layer on top of AnnovarDAO. Contains methods for fetching information related to annovar from
@@ -94,48 +88,12 @@ public class AnnovarService implements Serializable {
 
     }
 
-    protected List<Integer> fetchVariantIdsByGeneId( Integer id ) {
-        if ( id == null ) {
-            return null;
-        }
-
-        return annovarDAO.findVariantIdsByGeneId( id );
-
-    }
-
     private Annovar map( AnnovarDTO dto ) {
         if ( dto == null ) {
             return null;
         }
 
-        List<String> funcRefGene = StringUtils.isBlank( dto.getFuncRefGene() ) ? new ArrayList<String>()
-                : Arrays.asList( dto.getFuncRefGene().split( ";" ) );
-        List<String> geneRefGene = StringUtils.isBlank( dto.getGeneRefGene() ) ? new ArrayList<String>()
-                : Arrays.asList( dto.getGeneRefGene().split( ";" ) );
-        List<String> exonicFuncRefGene = StringUtils.isBlank( dto.getExonicFuncRefGene() ) ? new ArrayList<String>()
-                : Arrays.asList( dto.getExonicFuncRefGene().split( ";" ) );
-        List<String> aaChangeRefGene = StringUtils.isBlank( dto.getAaChangeRefGene() ) ? new ArrayList<String>()
-                : Arrays.asList( dto.getAaChangeRefGene().split( ";" ) );
-
-        List<Category> categories = new ArrayList<>();
-
-        for ( String func : exonicFuncRefGene ) {
-            try {
-                categories.add( Category.getEnum( func ) );
-            } catch ( IllegalArgumentException e ) {
-                log.warn( "Unknown Category (" + func + " )" );
-            }
-        }
-
-        List<Integer> geneIds = annovarDAO.findGeneIdsForAnnovarId( dto.getId() );
-        List<Gene> genes = new ArrayList<>();
-
-        for ( Integer geneId : geneIds ) {
-            genes.add( cacheService.getGeneById( geneId ) );
-        }
-
-        return new Annovar( dto, funcRefGene, geneRefGene, exonicFuncRefGene, aaChangeRefGene, genes,
-                categories );
+        return new Annovar( dto );
 
     }
 
