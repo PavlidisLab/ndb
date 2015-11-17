@@ -251,14 +251,20 @@
 				            	<h:outputText value="#{variants.paper.author}" />
 				            </h:outputLink>
 				        </p:column>
-				        
+				        <p:column>
+				            <f:facet name="header">
+				                <h:outputText id="More" value="More"/>
+				                <p:tooltip id="toolTipMore" for="More" value="Click this field for additional data about specific reported variants." />		           
+				            </f:facet>
+		    				<p:commandButton value="Source" type="button" onclick="PF('dlg').show();" />
+						</p:column>				
 					</p:dataTable>
 		        </p:rowExpansion>		 
 		    </p:dataTable>
-		    
-		    
-        
-		    
+		    	
+						<ui:insert name="modalSourceVariant">
+							<ui:include src="modal_source.xhtml" />
+						</ui:insert>
 		</h:form>
 	</ui:define>
 
