@@ -105,4 +105,22 @@ public interface VariantDAO {
      */
     public List<VariantDTO> list() throws DAOException;
 
+    /**
+     * Returns a list of all Gene Ids from the database matching the given Variant Id. The list is never null and
+     * is empty when the database does not contain any Gene Ids matching this Variant Id.
+     * 
+     * @return A list of all Gene Ids from the database matching the given Variant Id.
+     * @throws DAOException If something fails at database level.
+     */
+    public List<Integer> findGeneIdsForVariantId( Integer id ) throws DAOException;
+
+    /**
+     * Returns a list of all Variant Ids from the database matching the given Gene Id. The list is never null and
+     * is empty when the database does not contain any Variant Ids matching this Gene Id.
+     * 
+     * @return A list of all Variant Ids from the database matching the given Gene Id.
+     * @throws DAOException If something fails at database level.
+     */
+    public List<Integer> findVariantIdsForGeneId( Integer id ) throws DAOException;
+
 }
