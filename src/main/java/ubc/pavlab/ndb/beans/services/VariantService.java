@@ -37,7 +37,9 @@ import com.google.common.collect.Lists;
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
 import ubc.pavlab.ndb.dao.VariantDAO;
 import ubc.pavlab.ndb.model.Annovar;
+import ubc.pavlab.ndb.model.CglibProxyFactory;
 import ubc.pavlab.ndb.model.Gene;
+import ubc.pavlab.ndb.model.LazilyLoadedObject;
 import ubc.pavlab.ndb.model.Paper;
 import ubc.pavlab.ndb.model.Variant;
 import ubc.pavlab.ndb.model.dto.VariantDTO;
@@ -58,6 +60,8 @@ public class VariantService implements Serializable {
 
     private static final Logger log = Logger.getLogger( VariantService.class );
 
+    private static final boolean LAZY_LOAD_ANNOVAR = true;
+
     @ManagedProperty("#{daoFactoryBean}")
     private DAOFactoryBean daoFactoryBean;
 
@@ -68,6 +72,8 @@ public class VariantService implements Serializable {
     private CacheService cacheService;
 
     private VariantDAO variantDAO;
+
+    private CglibProxyFactory proxyFactory = new CglibProxyFactory();
 
     /**
      * 
@@ -169,7 +175,32 @@ public class VariantService implements Serializable {
         }
 
         // Get Annovar Information
-        Annovar annovar = annovarService.fetchByVariantId( dto.getId() );
+        Annovar annovar = null;
+        if ( LAZY_LOAD_ANNOVAR ) {
+            final int vid = dto.getId();
+
+            // This version requires a no argument constructor for the proxied object
+            //            annovar = ( Annovar ) Enhancer.create(
+            //                    Annovar.class,
+            //                    new LazyLoader() {
+            //
+            //                        @Override
+            //                        public Object loadObject() throws Exception {
+            //                            return annovarService.fetchByVariantId( vid );
+            //                        }
+            //                    } );
+
+            annovar = proxyFactory.createProxy( Annovar.class, new LazilyLoadedObject( vid) {
+                @Override
+                protected Object loadObject() {
+                    log.info( "VariantId: " + this.id );
+                    return annovarService.fetchByVariantId( this.id );
+                }
+            } );
+
+        } else {
+            annovar = annovarService.fetchByVariantId( dto.getId() );
+        }
 
         // Get paper Information from cache
         Paper paper = cacheService.getPaperById( dto.getPaperId() );
