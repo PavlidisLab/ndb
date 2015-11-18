@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
@@ -61,12 +62,16 @@ public class VariantService implements Serializable {
     private static final Logger log = Logger.getLogger( VariantService.class );
 
     private static final boolean LAZY_LOAD_ANNOVAR = true;
+    private static final boolean LAZY_LOAD_RAWKV = true;
 
     @ManagedProperty("#{daoFactoryBean}")
     private DAOFactoryBean daoFactoryBean;
 
     @ManagedProperty("#{annovarService}")
     private AnnovarService annovarService;
+
+    @ManagedProperty("#{rawKVService}")
+    private RawKVService rawKVService;
 
     @ManagedProperty("#{cacheService}")
     private CacheService cacheService;
@@ -146,6 +151,7 @@ public class VariantService implements Serializable {
 
     }
 
+    @SuppressWarnings("unchecked")
     private Variant map( VariantDTO dto ) {
         if ( dto == null ) {
             return null;
@@ -177,7 +183,31 @@ public class VariantService implements Serializable {
         // Get Annovar Information
         Annovar annovar = null;
         if ( LAZY_LOAD_ANNOVAR ) {
-            final int vid = dto.getId();
+            // This version requires a no argument constructor for the proxied object
+            //            annovar = ( Annovar ) Enhancer.create(
+            //                    Annovar.class,
+            //                    new LazyLoader() {
+            //
+            //                        @Override
+            //                        public Object loadObject() throws Exception {
+            //                            return annovarService.fetchByVariantId( vid );
+            //                        }
+            //                    } );
+
+            annovar = proxyFactory.createProxy( Annovar.class, new LazilyLoadedObject( dto.getId()) {
+                @Override
+                protected Object loadObject() {
+                    return annovarService.fetchByVariantId( ( Integer ) this.ids[0] );
+                }
+            } );
+
+        } else {
+            annovar = annovarService.fetchByVariantId( dto.getId() );
+        }
+
+        // Get RawKV Information
+        Map<String, String> rawKV = null;
+        if ( LAZY_LOAD_RAWKV ) {
 
             // This version requires a no argument constructor for the proxied object
             //            annovar = ( Annovar ) Enhancer.create(
@@ -190,22 +220,22 @@ public class VariantService implements Serializable {
             //                        }
             //                    } );
 
-            annovar = proxyFactory.createProxy( Annovar.class, new LazilyLoadedObject( vid) {
-                @Override
-                protected Object loadObject() {
-                    log.info( "VariantId: " + this.id );
-                    return annovarService.fetchByVariantId( this.id );
-                }
-            } );
+            rawKV = proxyFactory.createProxy( Map.class,
+                    new LazilyLoadedObject( dto.getPaperId(), dto.getRawVariantId()) {
+                        @Override
+                        protected Object loadObject() {
+                            return rawKVService.fetchByPaperAndRaw( ( Integer ) this.ids[0], ( Integer ) this.ids[1] );
+                        }
+                    } );
 
         } else {
-            annovar = annovarService.fetchByVariantId( dto.getId() );
+            rawKV = rawKVService.fetchByPaperAndRaw( dto.getPaperId(), dto.getRawVariantId() );
         }
 
         // Get paper Information from cache
         Paper paper = cacheService.getPaperById( dto.getPaperId() );
 
-        return new Variant( dto, annovar, paper, genes, categories );
+        return new Variant( dto, annovar, rawKV, paper, genes, categories );
     }
 
     private List<Variant> map( List<VariantDTO> dtos ) {
@@ -225,6 +255,10 @@ public class VariantService implements Serializable {
 
     public void setAnnovarService( AnnovarService annovarService ) {
         this.annovarService = annovarService;
+    }
+
+    public void setRawKVService( RawKVService rawKVService ) {
+        this.rawKVService = rawKVService;
     }
 
     public void setCacheService( CacheService cacheService ) {

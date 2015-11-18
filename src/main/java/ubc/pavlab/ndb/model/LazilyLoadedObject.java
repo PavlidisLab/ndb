@@ -32,10 +32,10 @@ import net.sf.cglib.proxy.InvocationHandler;
 public abstract class LazilyLoadedObject implements InvocationHandler {
 
     private Object target;
-    protected int id;
+    protected Object[] ids;
 
-    public LazilyLoadedObject( int id ) {
-        this.id = id;
+    public LazilyLoadedObject( final Object... ids ) {
+        this.ids = ids;
     }
 
     @Override

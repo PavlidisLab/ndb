@@ -168,8 +168,8 @@ public abstract class DAOFactory {
         return new VariantDAOImpl( this );
     }
 
-    public CacheDAO getCacheDAO() {
-        return new CacheDAOImpl( this );
+    public RawKVDAOImpl getRawKVDAO() {
+        return new RawKVDAOImpl( this );
     }
 
     // You can add more DAO implementation getters here.

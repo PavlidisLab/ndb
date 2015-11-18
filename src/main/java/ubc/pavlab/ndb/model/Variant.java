@@ -22,6 +22,7 @@ package ubc.pavlab.ndb.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -56,7 +57,10 @@ public class Variant {
     private final List<String> aaChanges;
     private final String cytoband;
 
-    public Variant( VariantDTO dto, Annovar annovar, Paper paper, List<Gene> genes, List<Category> categories ) {
+    private final Map<String, String> rawKV;
+
+    public Variant( VariantDTO dto, Annovar annovar, Map<String, String> rawKV, Paper paper, List<Gene> genes,
+            List<Category> categories ) {
         this.id = dto.getId();
         this.rawVariantId = dto.getRawVariantId();
         this.eventId = dto.getEventId();
@@ -80,6 +84,8 @@ public class Variant {
                 : Arrays.asList( dto.getAaChange().split( ";" ) );
 
         this.cytoband = dto.getCytoband();
+
+        this.rawKV = rawKV;
     }
 
     public Integer getId() {
@@ -152,6 +158,10 @@ public class Variant {
 
     public String getCytoband() {
         return cytoband;
+    }
+
+    public Map<String, String> getRawKV() {
+        return rawKV;
     }
 
     @Override
