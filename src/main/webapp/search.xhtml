@@ -57,55 +57,52 @@
 				    </p:outputPanel>
 	            </h:panelGrid>
 			</p:tab>
-	        
-	        <p:tab title="Filters (coming soon!)">
-	        <!-- 
-	        <h:outputText value="Refine your search using variant type or a range of genomic coordinates." />	             
-				    
-	            <h:panelGrid columns="5" cellpadding="50">
-	                <!  <p:graphicImage name="images/filter_icon.jpg" />  >
-	                <h:panelGrid columns="2" cellpadding="5">
-					                   
-				        <h:outputLabel for="variantEffects" value="Variant effect" />
-				        <br/>
-				        <p:selectCheckboxMenu id="variantEffects" value="#{filterView.selectedVariants}" label="Variants"
-				                              filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-				            <f:selectItems value="#{filterView.variants}" />
-				        </p:selectCheckboxMenu>
-				         
-						<p:outputPanel id="display" style="width:250px;padding-left:5px;margin-top:10px">
-					       	<p:dataList value="#{filterView.selectedVariants}" var="variant" emptyMessage="Show any effect type.">
-					           	#{variant}
-					       	</p:dataList>
+	        <ui:remove>
+		        <p:tab title="Filters (coming soon!)">
+		        <!-- 
+		        <h:outputText value="Refine your search using variant type or a range of genomic coordinates." />	             
+					    
+		            <h:panelGrid columns="5" cellpadding="50">
+		                <!  <p:graphicImage name="images/filter_icon.jpg" />  >
+		                <h:panelGrid columns="2" cellpadding="5">
+						                   
+					        <h:outputLabel for="variantEffects" value="Variant effect" />
+					        <br/>
+					        <p:selectCheckboxMenu id="variantEffects" value="#{filterView.selectedVariants}" label="Variants"
+					                              filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+					            <f:selectItems value="#{filterView.variants}" />
+					        </p:selectCheckboxMenu>
+					         
+							<p:outputPanel id="display" style="width:250px;padding-left:5px;margin-top:10px">
+						       	<p:dataList value="#{filterView.selectedVariants}" var="variant" emptyMessage="Show any effect type.">
+						           	#{variant}
+						       	</p:dataList>
+						    </p:outputPanel>
+					        <p:commandLink value="Update" update="display" />
+					      
+					    </h:panelGrid>
+					    
+					    
+					    <p:outputPanel>
+					    	<br/>
 					    </p:outputPanel>
-				        <p:commandLink value="Update" update="display" />
-				      
-				    </h:panelGrid>
-				    
-				    
-				    <p:outputPanel>
-				    	<br/>
-				    </p:outputPanel>
-				    
-				    
-				   
-				    
-				    				    			    				
-	            </h:panelGrid> -->
-	        </p:tab>
+					    
+					    
+					   
+					    
+					    				    			    				
+		            </h:panelGrid> -->
+	        	</p:tab>	        
+		    </ui:remove>
 	    </p:accordionPanel>
 	    <br/>
 	    <p:growl id="growl" life="2000" />
-	    <p:commandButton value="Submit" action="#{indexView.go}" oncomplete="PF('variantdlg').show()" icon="ui-icon-check" />
-	        
-     	<p:commandButton value="Search"
-     					 actionListener="#{searchSuggestionView.buttonAction}" 
-     	    			 id="searchButton" 
-     	    			 update="growl"  
-     	    			  action="results"
-     	    			 title="Search" />     	    				 
-     	    			 <!-- icon="ui-icon-disk" -->
-	    
+	    <p:commandButton value="Submit" 
+	    					action="#{indexView.go}" 
+	    					oncomplete="PF('variantdlg').show()" 
+	    					icon="ui-icon-check" 
+	    					/>
+
     </h:form>
     
  
