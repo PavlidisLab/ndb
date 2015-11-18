@@ -42,13 +42,20 @@ public class GeneConverter implements Converter {
 
     private static final Logger log = Logger.getLogger( GeneConverter.class );
 
+    private static CacheService cache = null;
+
     @Override
     public Object getAsObject( FacesContext fc, UIComponent uic, String value ) {
+
         if ( value != null && value.trim().length() > 0 ) {
             try {
                 //Integer species = ( Integer ) uic.getAttributes().get( "species" );
                 log.info( value );
-                CacheService cache = ( CacheService ) fc.getExternalContext().getApplicationMap().get( "cacheService" );
+                if ( cache == null ) {
+                    log.info( "null" );
+                    cache = ( CacheService ) fc.getExternalContext().getApplicationMap().get( "cacheService" );
+                }
+                //CacheService cache = ( CacheService ) fc.getExternalContext().getApplicationMap().get( "cacheService" );
                 return cache.getGeneById( Integer.valueOf( value ) );
             } catch ( NumberFormatException e ) {
                 throw new ConverterException(

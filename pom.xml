@@ -141,6 +141,23 @@
 		    <artifactId>concurrent-trees</artifactId>
 		    <version>2.4.0</version>
 		</dependency>
+		
+		<!-- Dynamic Proxies -->
+		
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+		
+		<!-- Constructorless Object Creation (used for dynamically proxies to immutable objects) -->
+		<dependency>
+			<groupId>org.objenesis</groupId>
+			<artifactId>objenesis</artifactId>
+			<version>2.2</version>
+		</dependency>
+				
+
 
 	</dependencies>
 

@@ -26,9 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -47,26 +45,16 @@ public class AnnovarDAOImpl implements AnnovarDAO {
 
     // SQL Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_STAR = "id, variant_id, Chr, Start, End, Ref, Alt, Func_refGene, Gene_refGene, GeneDetail_refGene, ExonicFunc_refGene, AAChange_refGene, cytoBand, genomicSuperDups, esp6500siv2_all, 1000g2014oct_all, 1000g2014oct_afr, 1000g2014oct_eas, 1000g2014oct_eur, snp138, SIFT_score, SIFT_pred, Polyphen2_HDIV_score, Polyphen2_HDIV_pred, Polyphen2_HVAR_score, Polyphen2_HVAR_pred, LRT_score, LRT_pred, MutationTaster_score, MutationTaster_pred, MutationAssessor_score, MutationAssessor_pred, FATHMM_score, FATHMM_pred, RadialSVM_score, RadialSVM_pred, LR_score, LR_pred, VEST3_score, CADD_raw, CADD_phred, GERP_RS, phyloP46way_placental, phyloP100way_vertebrate, SiPhy_29way_logOdds, exac03, clinvar_20150629";
-    private static final String SQL_TABLE = "annovar";
-    private static final String SQL_MAP_TABLE = "annovar_gene";
+    private static final String SQL_STAR = "id, variant_id, genomicSuperDups, esp6500siv2_all, 1000g2014oct_all, 1000g2014oct_afr, 1000g2014oct_eas, 1000g2014oct_eur, snp138, SIFT_score, SIFT_pred, Polyphen2_HDIV_score, Polyphen2_HDIV_pred, Polyphen2_HVAR_score, Polyphen2_HVAR_pred, LRT_score, LRT_pred, MutationTaster_score, MutationTaster_pred, MutationAssessor_score, MutationAssessor_pred, FATHMM_score, FATHMM_pred, RadialSVM_score, RadialSVM_pred, LR_score, LR_pred, VEST3_score, CADD_raw, CADD_phred, GERP_RS, phyloP46way_placental, phyloP100way_vertebrate, SiPhy_29way_logOdds, exac03, clinvar_20150629";
+    private static final String SQL_TABLE = "annovar_scores";
     // SQL Statements
 
     private static final String SQL_FIND_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE id = ?";
     private static final String SQL_FIND_BY_VARIANT_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
-            + " WHERE variant_id = ?";;
+            + " WHERE variant_id = ?";
     private static final String SQL_FIND_BY_MULTIPLE_VARIANT_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
             + " WHERE variant_id in (%s)";
     private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id";
-
-    private static final String SQL_MAP_FIND_VARIANT_BY_GENE_ID = "select variant_id from " + SQL_MAP_TABLE
-            + " ag inner join " + SQL_TABLE + " anno on ag.annovar_id = anno.id where gene_id = ?";
-
-    private static final String SQL_MAP_GENE_BY_ANNOVAR_ID = "SELECT gene_id FROM " + SQL_MAP_TABLE
-            + " where annovar_id = ?";
-
-    private static final String SQL_MAP_GENE = "SELECT annovar_id, gene_id FROM " + SQL_MAP_TABLE
-            + " ORDER BY annovar_id";
 
     // Vars ---------------------------------------------------------------------------------------
 
@@ -171,89 +159,6 @@ public class AnnovarDAOImpl implements AnnovarDAO {
         return annovars;
     }
 
-    @Override
-    public List<Integer> findGeneIdsForAnnovarId( Integer id ) throws DAOException {
-        if ( id == null ) {
-            return new ArrayList<>();
-        }
-
-        List<Integer> geneIds = new ArrayList<>();
-        try (
-                Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_MAP_GENE_BY_ANNOVAR_ID, false, id );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
-                geneIds.add( resultSet.getInt( "gene_id" ) );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-
-        return geneIds;
-    }
-
-    @Override
-    public List<Integer> findVariantIdsByGeneId( Integer geneId ) throws DAOException {
-        if ( geneId == null ) {
-            return new ArrayList<>();
-        }
-        List<Integer> annovarIds = new ArrayList<>();
-        try (
-                Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_MAP_FIND_VARIANT_BY_GENE_ID, false,
-                        geneId );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
-                annovarIds.add( resultSet.getInt( "variant_id" ) );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-
-        return annovarIds;
-    }
-
-    @Override
-    public Map<Integer, List<Integer>> listGeneMap() throws DAOException {
-        Map<Integer, List<Integer>> annovarGene = new HashMap<>();
-
-        try (
-                Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_MAP_GENE );
-                ResultSet resultSet = statement.executeQuery();) {
-            Integer prevAnnovarId = null;
-            List<Integer> geneIds = new ArrayList<>();
-            if ( resultSet.next() ) {
-                prevAnnovarId = resultSet.getInt( "annovar_id" );
-                geneIds.add( resultSet.getInt( "gene_id" ) );
-            }
-
-            while ( resultSet.next() ) {
-                // Rows ordered by key, thus allowing a nice method for creating the map
-                Integer annovarId = resultSet.getInt( "annovar_id" );
-                Integer geneId = resultSet.getInt( "gene_id" );
-
-                if ( !annovarId.equals( prevAnnovarId ) ) {
-                    // New key, save previous one
-                    annovarGene.put( prevAnnovarId, geneIds );
-                    geneIds = new ArrayList<>();
-                }
-
-                geneIds.add( geneId );
-
-                prevAnnovarId = annovarId;
-
-            }
-            if ( !geneIds.isEmpty() ) {
-                // Save last entry
-                annovarGene.put( prevAnnovarId, geneIds );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-        return annovarGene;
-    }
-
     // Helpers ------------------------------------------------------------------------------------
 
     /**
@@ -264,12 +169,8 @@ public class AnnovarDAOImpl implements AnnovarDAO {
      * @throws SQLException If something fails at database level.
      */
     private static AnnovarDTO map( ResultSet resultSet ) throws SQLException {
-        return new AnnovarDTO( resultSet.getInt( "id" ), resultSet.getInt( "variant_id" ), resultSet.getString( "Chr" ),
-                resultSet.getInt( "Start" ), resultSet.getInt( "End" ), resultSet.getString( "Ref" ),
-                resultSet.getString( "Alt" ), resultSet.getString( "Func_refGene" ),
-                resultSet.getString( "Gene_refGene" ), resultSet.getString( "GeneDetail_refGene" ),
-                resultSet.getString( "ExonicFunc_refGene" ), resultSet.getString( "AAChange_refGene" ),
-                resultSet.getString( "cytoBand" ), resultSet.getString( "genomicSuperDups" ),
+        return new AnnovarDTO( resultSet.getInt( "id" ), resultSet.getInt( "variant_id" ),
+                resultSet.getString( "genomicSuperDups" ),
                 resultSet.getDouble( "esp6500siv2_all" ), resultSet.getDouble( "1000g2014oct_all" ),
                 resultSet.getDouble( "1000g2014oct_afr" ), resultSet.getDouble( "1000g2014oct_eas" ),
                 resultSet.getDouble( "1000g2014oct_eur" ), resultSet.getString( "snp138" ),

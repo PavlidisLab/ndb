@@ -20,7 +20,6 @@
 package ubc.pavlab.ndb.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import ubc.pavlab.ndb.exceptions.DAOException;
 import ubc.pavlab.ndb.model.dto.AnnovarDTO;
@@ -72,30 +71,4 @@ public interface AnnovarDAO {
      */
     public List<AnnovarDTO> list() throws DAOException;
 
-    /**
-     * Returns a list of all Gene Ids from the database matching the given Annovar Id. The list is never null and
-     * is empty when the database does not contain any Gene Ids matching this Annovar Id.
-     * 
-     * @return A list of all Gene Ids from the database matching the given Annovar Id.
-     * @throws DAOException If something fails at database level.
-     */
-    public List<Integer> findGeneIdsForAnnovarId( Integer id ) throws DAOException;
-
-    /**
-     * Returns a list of all Variant Ids from the database matching the given Gene Id. The list is never null and
-     * is empty when the database does not contain any Variant Ids matching this Gene Id.
-     * 
-     * @return A list of all Variant Ids from the database matching the given Gene Id.
-     * @throws DAOException If something fails at database level.
-     */
-    public List<Integer> findVariantIdsByGeneId( Integer id ) throws DAOException;
-
-    /**
-     * Returns a map of all Annovar Id to List of Gene Ids from the database. The map is never null and
-     * is empty when the database does not contain any Annovar to Gene mapping.
-     * 
-     * @return A map of all Annovar Id to List of Gene Ids from the database.
-     * @throws DAOException If something fails at database level.
-     */
-    public Map<Integer, List<Integer>> listGeneMap() throws DAOException;
 }
