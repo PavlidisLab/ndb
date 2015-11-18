@@ -47,8 +47,10 @@ public class VariantDAOImpl implements VariantDAO {
 
     // SQL Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_STAR = "id, paper_id, raw_variant_id, event_id, subject_id, sample_id, chromosome, start_hg19, stop_hg19, ref, alt";
-    private static final String SQL_TABLE = "variant";
+    private static final String SQL_STAR = "id, paper_id, raw_variant_id, event_id, subject_id, sample_id, chromosome, start_hg19, stop_hg19, ref, alt, gene, category, gene_detail, func, aa_change, cytoband";
+    private static final String SQL_TABLE = "variant_new";
+
+    private static final String SQL_GENE_MAP_TABLE = "variant_gene";
 
     // SQL Statements
 
@@ -64,6 +66,12 @@ public class VariantDAOImpl implements VariantDAO {
     private static final String SQL_FIND_BY_POSITION = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
             + " WHERE chromosome = ? and start_hg19 >= ? and stop_hg19 <= ?";
     private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id";
+
+    private static final String SQL_MAP_GENE_IDS_BY_VARIANT_ID = "SELECT gene_id FROM " + SQL_GENE_MAP_TABLE
+            + " WHERE variant_id = ?";
+
+    private static final String SQL_MAP_VARIANT_IDS_BY_GENE_ID = "SELECT variant_id FROM " + SQL_GENE_MAP_TABLE
+            + " WHERE gene_id = ?";
 
     // Vars ---------------------------------------------------------------------------------------
 
@@ -195,6 +203,50 @@ public class VariantDAOImpl implements VariantDAO {
         return annovars;
     }
 
+    // GENE MAP TABLE METHODS ---------------------------------------------------------------------
+
+    @Override
+    public List<Integer> findGeneIdsForVariantId( Integer id ) throws DAOException {
+        if ( id == null ) {
+            return new ArrayList<>();
+        }
+
+        List<Integer> geneIds = new ArrayList<>();
+        try (
+                Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = prepareStatement( connection, SQL_MAP_GENE_IDS_BY_VARIANT_ID, false, id );
+                ResultSet resultSet = statement.executeQuery();) {
+            while ( resultSet.next() ) {
+                geneIds.add( resultSet.getInt( "gene_id" ) );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+
+        return geneIds;
+    }
+
+    @Override
+    public List<Integer> findVariantIdsForGeneId( Integer geneId ) throws DAOException {
+        if ( geneId == null ) {
+            return new ArrayList<>();
+        }
+        List<Integer> variantIds = new ArrayList<>();
+        try (
+                Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = prepareStatement( connection, SQL_MAP_VARIANT_IDS_BY_GENE_ID, false,
+                        geneId );
+                ResultSet resultSet = statement.executeQuery();) {
+            while ( resultSet.next() ) {
+                variantIds.add( resultSet.getInt( "variant_id" ) );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+
+        return variantIds;
+    }
+
     // Helpers ------------------------------------------------------------------------------------
 
     /**
@@ -209,7 +261,9 @@ public class VariantDAOImpl implements VariantDAO {
                 resultSet.getInt( "raw_variant_id" ), resultSet.getInt( "event_id" ), resultSet.getInt( "subject_id" ),
                 resultSet.getString( "sample_id" ), resultSet.getString( "chromosome" ),
                 resultSet.getInt( "start_hg19" ), resultSet.getInt( "stop_hg19" ), resultSet.getString( "ref" ),
-                resultSet.getString( "alt" ) );
+                resultSet.getString( "alt" ), resultSet.getString( "gene" ), resultSet.getString( "category" ),
+                resultSet.getString( "gene_detail" ),
+                resultSet.getString( "func" ), resultSet.getString( "aa_change" ), resultSet.getString( "cytoband" ) );
     }
 
 }

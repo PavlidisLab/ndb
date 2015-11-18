@@ -19,12 +19,7 @@
 
 package ubc.pavlab.ndb.model;
 
-import java.util.List;
-
-import com.google.common.collect.ImmutableList;
-
 import ubc.pavlab.ndb.model.dto.AnnovarDTO;
-import ubc.pavlab.ndb.model.enums.Category;
 
 /**
  * Represents the annovar information for a specific @Variant
@@ -35,17 +30,6 @@ import ubc.pavlab.ndb.model.enums.Category;
 public class Annovar {
     private final Integer id;
     private final Integer variantId;
-    private final String chr;
-    private final Integer start;
-    private final Integer end;
-    private final String ref;
-    private final String alt;
-    private final List<String> funcRefGene;
-    private final List<String> geneRefGene;
-    private final String geneDetailRefGene;
-    private final List<String> exonicFuncRefGene;
-    private final List<String> aaChangeRefGene;
-    private final String cytoBand;
     private final String genomicSuperDups;
     private final Double esp6500siv2All;
     private final Double octAll1000g2014;
@@ -81,26 +65,9 @@ public class Annovar {
     private final Double exac03;
     private final String clinvar20150629;
 
-    private final List<Gene> genes;
-    private final List<Category> categories;
-
-    public Annovar( AnnovarDTO dto,
-            List<String> funcRefGene, List<String> geneRefGene,
-            List<String> exonicFuncRefGene, List<String> aaChangeRefGene, List<Gene> genes,
-            List<Category> categories ) {
+    public Annovar( AnnovarDTO dto ) {
         this.id = dto.getId();
         this.variantId = dto.getVariantId();
-        this.chr = dto.getChr();
-        this.start = dto.getStart();
-        this.end = dto.getEnd();
-        this.ref = dto.getRef();
-        this.alt = dto.getAlt();
-        this.funcRefGene = funcRefGene;
-        this.geneRefGene = geneRefGene;
-        this.geneDetailRefGene = dto.getGeneDetailRefGene();
-        this.exonicFuncRefGene = exonicFuncRefGene;
-        this.aaChangeRefGene = aaChangeRefGene;
-        this.cytoBand = dto.getCytoBand();
         this.genomicSuperDups = dto.getGenomicSuperDups();
         this.esp6500siv2All = dto.getEsp6500siv2All();
         this.octAll1000g2014 = dto.getOctAll1000g2014();
@@ -135,9 +102,6 @@ public class Annovar {
         this.siphy29wayLogOdds = dto.getSiphy29wayLogOdds();
         this.exac03 = dto.getExac03();
         this.clinvar20150629 = dto.getClinvar20150629();
-
-        this.genes = ImmutableList.copyOf( genes );
-        this.categories = ImmutableList.copyOf( categories );
     }
 
     public Integer getId() {
@@ -146,50 +110,6 @@ public class Annovar {
 
     public Integer getVariantId() {
         return variantId;
-    }
-
-    public String getChr() {
-        return chr;
-    }
-
-    public Integer getStart() {
-        return start;
-    }
-
-    public Integer getEnd() {
-        return end;
-    }
-
-    public String getRef() {
-        return ref;
-    }
-
-    public String getAlt() {
-        return alt;
-    }
-
-    public List<String> getFuncRefGene() {
-        return funcRefGene;
-    }
-
-    public List<String> getGeneRefGene() {
-        return geneRefGene;
-    }
-
-    public String getGeneDetailRefGene() {
-        return geneDetailRefGene;
-    }
-
-    public List<String> getExonicFuncRefGene() {
-        return exonicFuncRefGene;
-    }
-
-    public List<String> getAaChangeRefGene() {
-        return aaChangeRefGene;
-    }
-
-    public String getCytoBand() {
-        return cytoBand;
     }
 
     public String getGenomicSuperDups() {
@@ -326,14 +246,6 @@ public class Annovar {
 
     public String getClinvar20150629() {
         return clinvar20150629;
-    }
-
-    public List<Gene> getGenes() {
-        return genes;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
     }
 
     @Override

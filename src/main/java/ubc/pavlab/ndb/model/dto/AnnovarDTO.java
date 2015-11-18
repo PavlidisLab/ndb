@@ -30,17 +30,6 @@ import ubc.pavlab.ndb.model.Gene;
 public final class AnnovarDTO {
     private final Integer id;
     private final Integer variantId;
-    private final String chr;
-    private final Integer start;
-    private final Integer end;
-    private final String ref;
-    private final String alt;
-    private final String funcRefGene;
-    private final String geneRefGene;
-    private final String geneDetailRefGene;
-    private final String exonicFuncRefGene;
-    private final String aaChangeRefGene;
-    private final String cytoBand;
     private final String genomicSuperDups;
     private final Double esp6500siv2All;
     private final Double octAll1000g2014;
@@ -76,9 +65,7 @@ public final class AnnovarDTO {
     private final Double exac03;
     private final String clinvar20150629;
 
-    public AnnovarDTO( Integer id, Integer variantId, String chr, Integer start, Integer end, String ref, String alt,
-            String funcRefGene, String geneRefGene, String geneDetailRefGene, String exonicFuncRefGene,
-            String aaChangeRefGene, String cytoBand, String genomicSuperDups, Double esp6500siv2All,
+    public AnnovarDTO( Integer id, Integer variantId, String genomicSuperDups, Double esp6500siv2All,
             Double octAll1000g2014, Double octAfr1000g2014, Double octEas1000g2014, Double octEur1000g2014,
             String snp138, Double siftScore, String siftPred, Double polyphen2hdivScore, String polyphen2hdivPred,
             Double polyphen2hvarScore, String polyphen2hvarPred, Double lrtScore, String lrtPred,
@@ -89,17 +76,6 @@ public final class AnnovarDTO {
             Double exac03, String clinvar20150629 ) {
         this.id = id;
         this.variantId = variantId;
-        this.chr = chr;
-        this.start = start;
-        this.end = end;
-        this.ref = ref;
-        this.alt = alt;
-        this.funcRefGene = funcRefGene;
-        this.geneRefGene = geneRefGene;
-        this.geneDetailRefGene = geneDetailRefGene;
-        this.exonicFuncRefGene = exonicFuncRefGene;
-        this.aaChangeRefGene = aaChangeRefGene;
-        this.cytoBand = cytoBand;
         this.genomicSuperDups = genomicSuperDups;
         this.esp6500siv2All = esp6500siv2All;
         this.octAll1000g2014 = octAll1000g2014;
@@ -142,50 +118,6 @@ public final class AnnovarDTO {
 
     public Integer getVariantId() {
         return variantId;
-    }
-
-    public String getChr() {
-        return chr;
-    }
-
-    public Integer getStart() {
-        return start;
-    }
-
-    public Integer getEnd() {
-        return end;
-    }
-
-    public String getRef() {
-        return ref;
-    }
-
-    public String getAlt() {
-        return alt;
-    }
-
-    public String getFuncRefGene() {
-        return funcRefGene;
-    }
-
-    public String getGeneRefGene() {
-        return geneRefGene;
-    }
-
-    public String getGeneDetailRefGene() {
-        return geneDetailRefGene;
-    }
-
-    public String getExonicFuncRefGene() {
-        return exonicFuncRefGene;
-    }
-
-    public String getAaChangeRefGene() {
-        return aaChangeRefGene;
-    }
-
-    public String getCytoBand() {
-        return cytoBand;
     }
 
     public String getGenomicSuperDups() {

@@ -83,6 +83,10 @@ public class IndexView implements Serializable {
         log.info( "Load Gene " + gene.getGeneId() );
         variants = variantService.fetchByGeneId( gene.getGeneId() );
         log.info( variants.size() );
+        if ( variants.size() > 0 ) {
+            log.info( "RawKV Size: " + variants.iterator().next().getRawKV().size() );
+        }
+
         //gene = cacheService.getGeneById( geneId );
     }
 

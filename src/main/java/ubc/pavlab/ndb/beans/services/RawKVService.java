@@ -20,6 +20,8 @@
 package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
@@ -28,10 +30,13 @@ import javax.faces.bean.ManagedProperty;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap.Builder;
+import com.google.common.collect.Maps;
+
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
-import ubc.pavlab.ndb.dao.AnnovarDAO;
-import ubc.pavlab.ndb.model.Annovar;
-import ubc.pavlab.ndb.model.dto.AnnovarDTO;
+import ubc.pavlab.ndb.dao.RawKVDAO;
+import ubc.pavlab.ndb.model.dto.RawKVDTO;
 
 /**
  * Service layer on top of AnnovarDAO. Contains methods for fetching information related to annovar from
@@ -42,56 +47,48 @@ import ubc.pavlab.ndb.model.dto.AnnovarDTO;
  */
 @ManagedBean
 @ApplicationScoped
-public class AnnovarService implements Serializable {
+public class RawKVService implements Serializable {
 
     private static final long serialVersionUID = 7725957614038591228L;
 
-    private static final Logger log = Logger.getLogger( AnnovarService.class );
+    private static final Logger log = Logger.getLogger( RawKVService.class );
 
     @ManagedProperty("#{daoFactoryBean}")
     private DAOFactoryBean daoFactoryBean;
 
-    private AnnovarDAO annovarDAO;
+    private RawKVDAO rawKVDAO;
 
     /**
      * 
      */
-    public AnnovarService() {
-        log.info( "AnnovarService created" );
+    public RawKVService() {
+        log.info( "RawKVService created" );
     }
 
     @PostConstruct
     public void init() {
-        log.info( "AnnovarService init" );
-        annovarDAO = daoFactoryBean.getDAOFactory().getAnnovarDAO();
+        log.info( "RawKVService init" );
+        rawKVDAO = daoFactoryBean.getDAOFactory().getRawKVDAO();
 
     }
 
-    protected Annovar fetchById( Integer id ) {
-        if ( id == null ) {
-            return null;
+    protected Map<String, String> fetchByPaperAndRaw( Integer paperId, Integer rawId ) {
+        if ( paperId == null || rawId == null ) {
+            return Maps.newHashMap();
         }
-
-        return map( annovarDAO.find( id ) );
-
+        return map( rawKVDAO.findByPaperAndRaw( paperId, rawId ) );
     }
 
-    protected Annovar fetchByVariantId( Integer vid ) {
-        if ( vid == null ) {
-            return null;
+    private Map<String, String> map( List<RawKVDTO> dtos ) {
+        if ( dtos == null || dtos.isEmpty() ) {
+            return Maps.newHashMap();
         }
+        Builder<String, String> kvBuilder = new ImmutableMap.Builder<String, String>();
+        for ( RawKVDTO dto : dtos ) {
 
-        return map( annovarDAO.findByVariantId( vid ) );
-
-    }
-
-    private Annovar map( AnnovarDTO dto ) {
-        if ( dto == null ) {
-            return null;
+            kvBuilder.put( dto.getKey(), dto.getValue() );
         }
-
-        return new Annovar( dto );
-
+        return kvBuilder.build();
     }
 
     public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {

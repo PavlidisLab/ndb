@@ -25,7 +25,7 @@ package ubc.pavlab.ndb.model.dto;
  * @author mjacobson
  * @version $Id$
  */
-public class VariantDTO {
+public final class VariantDTO {
     private final Integer id;
     private final Integer paperId;
     private final Integer rawVariantId;
@@ -38,9 +38,17 @@ public class VariantDTO {
     private final String ref;
     private final String alt;
 
+    private final String gene;
+    private final String category;
+    private final String geneDetail;
+    private final String func;
+    private final String aaChange;
+    private final String cytoband;
+
     public VariantDTO( Integer id, Integer paperId, Integer rawVariantId, Integer eventId, Integer subjectId,
-            String sampleId, String chromosome, Integer startHg19, Integer stopHg19, String ref, String alt ) {
-        super();
+            String sampleId, String chromosome, Integer startHg19, Integer stopHg19, String ref, String alt,
+            String gene, String category, String geneDetail,
+            String func, String aaChange, String cytoband ) {
         this.id = id;
         this.paperId = paperId;
         this.rawVariantId = rawVariantId;
@@ -52,6 +60,13 @@ public class VariantDTO {
         this.stopHg19 = stopHg19;
         this.ref = ref;
         this.alt = alt;
+        this.gene = gene;
+        this.category = category;
+        this.geneDetail = geneDetail;
+        this.func = func;
+        this.aaChange = aaChange;
+        this.cytoband = cytoband;
+
     }
 
     public Integer getId() {
@@ -96,6 +111,30 @@ public class VariantDTO {
 
     public String getAlt() {
         return alt;
+    }
+
+    public String getGene() {
+        return gene;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getGeneDetail() {
+        return geneDetail;
+    }
+
+    public String getFunc() {
+        return func;
+    }
+
+    public String getAaChange() {
+        return aaChange;
+    }
+
+    public String getCytoband() {
+        return cytoband;
     }
 
 }
