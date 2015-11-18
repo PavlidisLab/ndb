@@ -8,7 +8,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:define name="pageTitle">Welcome to NateDB</ui:define>
+	<ui:define name="pageTitle">Search database</ui:define>
 	
 	<ui:define name="css">
 		<h:outputStylesheet library="css" name="index.css" />
@@ -16,8 +16,8 @@
 	
 	<ui:define name="content">
 	<br/>
-    <h3 style="margin-top:0">Welcome to NateDB!</h3>
-    
+	<p:growl id="msgs" showDetail="true" />
+    <h3 style="margin-top:0">Search for variants</h3>
     <h:form>    
 	    <p:accordionPanel multiple="true">
 	        <p:tab title="Basic search">
@@ -29,7 +29,7 @@
 
 					<p:outputPanel id="genePanel" style="width:250px;padding-left:5px;margin-top:10px">					
 					<!-- SEARCH BY CHROMOSOME -->
-	
+				    	<h:outputLabel for="gene" value="e.g. SYNGAP1, ENSG000000042 " />	
 				    	<p:autoComplete id="gene" value="#{indexView.gene}" 
 				    					completeMethod="#{indexView.completeSymbol}" queryDelay="600" 
 				    					maxResults="20" minQueryLength="2" 
@@ -40,8 +40,7 @@
 				    					<p:column>
                  					 		<h:outputText value="#{g.label}" />
                							</p:column>				    	
-				    	</p:autoComplete> 
-				    		<h:outputLabel for="gene" value="e.g. SYNGAP1" /> 
+				    	</p:autoComplete>
 	                </p:outputPanel> 
 	                			                	                
 	                <span> &nbsp;&nbsp;&nbsp; or &nbsp;&nbsp;&nbsp; </span>		
@@ -106,66 +105,7 @@
 
     </h:form>
     
-    <br/><hr/>
-
-	<h3> More information: </h3>
-	<br/> 
-    
-	<p:layout style="min-width:400px;min-height:100px;">
-	    
-	    <p:layoutUnit position="west" resizable="true" size="150" minSize="40" maxSize="200">
-	        <strong>What is NateDB?</strong> 
-	    </p:layoutUnit>
-	 
-	    <p:layoutUnit position="center" maxSize="800">
-	        <p>
-	        NateDB is a repository for ASD related genetic variants.
-			</p>
-			<br/>
-	        <p>
-			Aliquam eget ullamcorper purus. Integer condimentum purus sed viverra pellentesque. Donec semper diam sodales purus finibus sagittis. Nulla facilisi. Donec eget interdum ex. Nam quis urna eu massa sodales venenatis id ac nisi. Pellentesque vehicula libero eu nibh lacinia, ut congue leo rutrum. Quisque cursus euismod nulla, convallis consequat tortor facilisis quis. Morbi elementum turpis sapien, at rhoncus quam pretium in. Etiam posuere ante eu scelerisque pulvinar. 			
- 			</p>
-	    </p:layoutUnit>
-	    
-	</p:layout>
-	<p:layout style="min-width:400px;min-height:200px;">
-	    
-	    <p:layoutUnit position="west" resizable="true" size="150" minSize="40" maxSize="200">
-	        <strong>About the data in NDB</strong> 
-	    </p:layoutUnit>
-	 
-	    <p:layoutUnit position="center" maxSize="800" >
-			<p>
-			Description of the data found in NDB.
-			</p>
-			<br/>
-			<p>
-			 Nulla porta nibh id accumsan semper. Praesent ut ante sit amet erat condimentum pulvinar sed sit amet risus. Proin sapien libero, tempor ac hendrerit sit amet, pulvinar et nulla. Aliquam libero nunc, pharetra ut euismod feugiat, pharetra non nisl. Nulla aliquam sapien at posuere mollis. Morbi at justo et eros viverra vestibulum. Donec auctor, nibh sit amet luctus hendrerit, tortor massa aliquam elit, et tempor neque augue at odio. Nam mattis libero quis arcu interdum bibendum. Aliquam erat volutpat. Donec maximus ante ac massa tempor accumsan. Etiam eros dolor, vehicula eget mi quis, ornare ornare nibh. Morbi vitae nisi at lorem ultricies congue nec ut nunc. Duis ultrices, dolor at semper egestas, libero ex fermentum tellus, eget scelerisque nunc massa nec orci. 
-			</p>
-	    </p:layoutUnit>
-	    
-	</p:layout>
-		<p:layout style="min-width:400px;min-height:140px;">
-	    
-	    <p:layoutUnit position="west" resizable="true" size="150" minSize="40" maxSize="200">
-	        <strong>How can I use the data in NDB?</strong> 
-	    </p:layoutUnit>
-	 
-	    <p:layoutUnit position="center" maxSize="800" >
-			<p>
-			NateDB offers a variety of information and many retreival mechanisms, for example:
-			</p>
-			<ul>
-				<li>A web interface enabling search for known genetic variants based on gene name or genomic coordinates.</li>
-				<li>Aliquam convallis tortor lacus, in blandit dolor hendrerit quis.</li>
-				<li>Mauris convallis leo cursus libero condimentum vestibulum.</li>
-				<li>Donec congue tincidunt pretium. </li>
-				<li>and many many more! See the <h:link value="FAQ" outcome="faq.xhtml" /> section.</li>
-			</ul>
-			
-	    </p:layoutUnit>
-	    
-	</p:layout>	
+ 
 	</ui:define>
 
 </ui:composition>

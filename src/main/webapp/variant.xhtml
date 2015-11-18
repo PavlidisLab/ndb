@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="pageTitle">Results</ui:define>
+	
+	<ui:define name="css">
+		<h:outputStylesheet library="css" name="index.css" />
+	</ui:define>
+	
+	<ui:define name="content">
+	<br/>
+	<p:growl id="msgs" showDetail="true" />
+    <h3 style="margin-top:0">Details for variant #<h:outputText value="#{param['id']}" /> </h3>
+    
+    <p:dataTable var="trunk" value="#{variantView.trunk}">
+	    <p:column headerText="Id">
+	    	<ui:remove>
+	    		<h:outputText value="#{trunk.id}" />
+	    	</ui:remove>	    	
+			<h:outputText value="#{trunk.eventId}" />
+	        
+	    </p:column>
+	 
+	    <p:column headerText="Sample">
+	        <h:outputText value="#{trunk.sampleId}" />
+	    </p:column>
+	 
+	    <p:column headerText="Gene">
+	    	<ui:repeat var="g" value="#{trunk.annovar.genes}">
+	    		<h:outputText value="#{g.symbol}" />
+	    	</ui:repeat>	        
+	    </p:column>	 
+	 
+		<p:column headerText="Chromosome">
+	        <h:outputText value="#{trunk.chromosome}" />
+	    </p:column>
+	     
+	    
+	</p:dataTable>
+    <br/>
+    <h3 style="margin-top:0"> Reported as:</h3>
+		<h:form>
+			<ui:insert name="modalSourceVariant">
+				<ui:include src="modal_source.xhtml" />
+			</ui:insert>
+			<p:dataTable id="tbl" var="mutation" value="#{variantView.mutations}"
+		                 paginatorTemplate="{Exporters}"
+		                 paginator="true" rows="25" style="margin-bottom:20px">
+		 
+		        <f:facet name="{Exporters}">
+		            <h:commandLink>
+		                <p:graphicImage library="img" name="excel.png" width="24"/>
+		                <p:dataExporter type="xls" target="tbl" fileName="mutations" />
+		            </h:commandLink>
+		 		
+		            <h:commandLink>
+		                <p:graphicImage library="img" name="pdf.png" width="24"/>
+		                <p:dataExporter type="pdf" target="tbl" fileName="mutations"/>
+		            </h:commandLink>
+		 
+		            <h:commandLink>
+		                <p:graphicImage library="img" name="csv.png" width="24"/>
+		                <p:dataExporter type="csv" target="tbl" fileName="mutations" />
+		            </h:commandLink>
+		 
+		            <h:commandLink>
+		                <p:graphicImage library="img" name="xml.png" width="24"/>
+		                <p:dataExporter type="xml" target="tbl" fileName="mutations" />
+		            </h:commandLink>
+		        </f:facet>
+		 
+		 		<p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Id" value="Id" />
+    					<p:tooltip id="toolTipId" for="Id" value="Database identifier for each unique variant." />		                
+		            </f:facet>
+					<h:outputText value="#{mutation.eventId}" />
+		        </p:column>
+
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="RawId" value="Raw Id" />
+    					<p:tooltip id="toolTipRawId" for="RawId" value="Identifier for each (non-unique) reported variants." />		                
+		            </f:facet>
+					<h:outputText value="#{mutation.id}" />
+		        </p:column>
+		      	        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="REF" value="REF"/>
+		                <p:tooltip id="toolTipREF" for="REF" value="Reference base(s) affected by the variant" />
+		            </f:facet>
+		            <h:outputText value="#{mutation.ref}" />
+		        </p:column>
+		        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="ALT" value="ALT"/>
+		                <p:tooltip id="toolTipALT" for="ALT" value="Modified base(s) caused by the variant" />
+		            </f:facet>
+		            <h:outputText value="#{mutation.alt}" />
+		        </p:column>
+		               
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Start" value="Start"/>
+		                <p:tooltip id="toolTipStart" for="Start" value="Start coordinate (inclusive) of the REF under Hg19" />
+		            </f:facet>
+		            <h:outputText value="#{mutation.startHg19}" />		            		            
+		        </p:column>
+		        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Stop" value="Stop"/>
+		            	<p:tooltip id="toolTipStop" for="Stop" value="Stop coordinate (inclusive) of the REF under Hg19" />	
+		            </f:facet>
+		            <h:outputText value="#{mutation.stopHg19}" />
+		        </p:column>
+		        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Effect" value="Effect"/>
+		                <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect" />	
+		           
+		            </f:facet>
+	            	
+	            	<ui:repeat var="c" value="#{mutation.annovar.categories.toArray()}" varStatus="status">   
+	            		<h:outputText value="#{c.label}" /> &nbsp;
+	            		<h:outputText value="" rendered="#{not status.last}" /> 	            		          			            			          
+	            	</ui:repeat>
+	            	
+		        </p:column>		
+		            
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Source" value="Source"/>
+		                <p:tooltip id="toolTipSource" for="Source" value="Source where the variant is reported from" />		           
+		            </f:facet>
+		             <h:outputLink value="#{mutation.paper.url}">			            
+		            	<h:outputText value="#{mutation.paper.author}" />
+		            </h:outputLink>
+		        </p:column>
+		            
+		        
+				<p:column>
+		            <f:facet name="header">
+		                <h:outputText id="More" value="More"/>
+		                <p:tooltip id="toolTipMore" for="More" value="Click this field for additional data about specific reported variants." />		           
+		            </f:facet>
+    				<p:commandButton value="Source" type="button" onclick="PF('dlg').show();" />
+		        </p:column>		    
+		 
+		    </p:dataTable>
+ 
+		</h:form>	
+	</ui:define>
+
+</ui:composition>
