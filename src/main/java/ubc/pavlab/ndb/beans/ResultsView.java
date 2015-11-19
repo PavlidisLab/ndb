@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import ubc.pavlab.ndb.beans.services.VariantService;
 import ubc.pavlab.ndb.model.Event;
 import ubc.pavlab.ndb.model.EventListFactory;
-import ubc.pavlab.ndb.model.RawKeyValue;
 import ubc.pavlab.ndb.model.Variant;
 
 @ManagedBean
@@ -38,23 +37,14 @@ public class ResultsView implements Serializable {
     List<Event> events;
 
     Variant selectedVariant;
-    RawKeyValue selectedRaw;
 
-    public RawKeyValue getSelectedRaw() {
-        log.info( "RAW GET" );
-        return selectedRaw;
+    public Variant getSelectedVariant() {
+        return selectedVariant;
     }
 
     public void setSelectedVariant( Variant trunk ) {
         this.selectedVariant = trunk;
-        this.selectedRaw = new RawKeyValue( trunk.getRawVariantId(), trunk.getPaper(), trunk.getRawKV() );
-        log.info( "RAW SET" );
-
     }
-
-    // public void setSelectedRaw( RawKeyValue rawKV ) {
-    // this.selectedRaw = rawKV;
-    // }
 
     public List<Event> getEvents() {
         return events;
