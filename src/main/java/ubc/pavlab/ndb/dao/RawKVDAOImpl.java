@@ -45,14 +45,14 @@ public class RawKVDAOImpl implements RawKVDAO {
 
     // SQL Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_STAR = "id, paper_id, raw_id, `key`, value";
+    private static final String SQL_STAR = "raw_key_value.id, raw_key_value.paper_id, raw_key_value.raw_id, `key`, value";
     private static final String SQL_TABLE = "raw_key_value";
 
     // SQL Statements
 
     private static final String SQL_FIND_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE id = ?";
     private static final String SQL_FIND_BY_PAPER_RAW = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
-            + " WHERE paper_id = ? and raw_id=?";
+            + " inner join raw_variant on raw_variant.raw_id = raw_key_value.raw_id and raw_variant.paper_id = raw_key_value.paper_id WHERE raw_variant.paper_id = ? and raw_variant.id=?";
     private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id";
 
     // Vars ---------------------------------------------------------------------------------------
@@ -97,8 +97,7 @@ public class RawKVDAOImpl implements RawKVDAO {
     private RawKVDTO find( String sql, Object... values ) throws DAOException {
         RawKVDTO dto = null;
 
-        try (
-                Connection connection = daoFactory.getConnection();
+        try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, sql, false, values );
                 ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
@@ -121,8 +120,7 @@ public class RawKVDAOImpl implements RawKVDAO {
      */
     private List<RawKVDTO> findAll( String sql, Object... values ) throws DAOException {
         List<RawKVDTO> l = new ArrayList<>();
-        try (
-                Connection connection = daoFactory.getConnection();
+        try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, sql, false, values );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
@@ -139,8 +137,7 @@ public class RawKVDAOImpl implements RawKVDAO {
     public List<RawKVDTO> list() throws DAOException {
         List<RawKVDTO> l = new ArrayList<>();
 
-        try (
-                Connection connection = daoFactory.getConnection();
+        try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement( SQL_LIST_ORDER_BY_ID );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
