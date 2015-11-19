@@ -97,8 +97,7 @@ public class RawKVDAOImpl implements RawKVDAO {
     private RawKVDTO find( String sql, Object... values ) throws DAOException {
         RawKVDTO dto = null;
 
-        try (
-                Connection connection = daoFactory.getConnection();
+        try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, sql, false, values );
                 ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
@@ -121,8 +120,7 @@ public class RawKVDAOImpl implements RawKVDAO {
      */
     private List<RawKVDTO> findAll( String sql, Object... values ) throws DAOException {
         List<RawKVDTO> l = new ArrayList<>();
-        try (
-                Connection connection = daoFactory.getConnection();
+        try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, sql, false, values );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
@@ -139,8 +137,7 @@ public class RawKVDAOImpl implements RawKVDAO {
     public List<RawKVDTO> list() throws DAOException {
         List<RawKVDTO> l = new ArrayList<>();
 
-        try (
-                Connection connection = daoFactory.getConnection();
+        try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement( SQL_LIST_ORDER_BY_ID );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {

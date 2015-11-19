@@ -19,6 +19,7 @@
 
 package ubc.pavlab.ndb.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,12 @@ import java.util.Map;
  * @author mbelmadani
  * @version $Id$
  */
-public class Event {
+public class Event implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -203767996041041525L;
+
     private Integer eventId;
     private String chromosome;
     private String ref;
