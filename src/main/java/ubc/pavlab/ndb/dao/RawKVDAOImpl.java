@@ -45,14 +45,14 @@ public class RawKVDAOImpl implements RawKVDAO {
 
     // SQL Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_STAR = "id, paper_id, raw_id, `key`, value";
-    private static final String SQL_TABLE = "raw_key_value";
+    private static final String SQL_STAR = "raw_key_value.id, paper_id, raw_id, `key`, value";
+    private static final String SQL_TABLE = "raw_key_value inner join raw_variant using(paper_id, raw_id)";
 
     // SQL Statements
 
     private static final String SQL_FIND_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE id = ?";
-    private static final String SQL_FIND_BY_PAPER_RAW = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
-            + " WHERE paper_id = ? and raw_id=?";
+    private static final String SQL_FIND_BY_PAPER_RAW_VARIANT_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
+            + " WHERE paper_id = ? and raw_variant.id=?";
     private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id";
 
     // Vars ---------------------------------------------------------------------------------------
@@ -79,11 +79,11 @@ public class RawKVDAOImpl implements RawKVDAO {
     }
 
     @Override
-    public List<RawKVDTO> findByPaperAndRaw( Integer paperId, Integer rawId ) throws DAOException {
-        if ( paperId == null || rawId == null ) {
+    public List<RawKVDTO> findByPaperAndRawVariantId( Integer paperId, Integer rawVariantId ) throws DAOException {
+        if ( paperId == null || rawVariantId == null ) {
             return new ArrayList<>();
         }
-        return findAll( SQL_FIND_BY_PAPER_RAW, paperId, rawId );
+        return findAll( SQL_FIND_BY_PAPER_RAW_VARIANT_ID, paperId, rawVariantId );
     }
 
     /**
