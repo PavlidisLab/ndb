@@ -285,7 +285,7 @@
 		    	   		<h:outputLink value="#{resultsView.selectedVariant.paper.url}">
 		    	   			<h:outputText value="#{resultsView.selectedVariant.paper.author}" />
 			       		</h:outputLink>								
-					<p:dataList value="#{resultsView.selectedVariant.rawKV.entrySet().toArray()}" var="raw" type="definition" >
+					<p:dataList value="#{resultsView.selectedVariant.rawKV}" var="raw" type="definition" >
 			    		<p:outputPanel>
 			                <h:panelGrid columns="3" cellpadding="15">
 			                	<h:outputText value="#{raw.key} :" style="font-weight: bold"/>
