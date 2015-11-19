@@ -19,7 +19,9 @@
 
 package ubc.pavlab.ndb.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 /**
@@ -29,14 +31,21 @@ import java.util.Map.Entry;
  * @version $Id$
  */
 public class RawKeyValue {
+    /**
+     * 
+     */
     private final Integer id;
     private final Paper paper;
-    private List<Entry<String, String>> entries;
+    private final Map<String, String> map;
 
-    public RawKeyValue( int id, Paper paper, List<Entry<String, String>> entries ) {
+    public Map<String, String> getMap() {
+        return map;
+    }
+
+    public RawKeyValue( int id, Paper paper, Map<String, String> map ) {
         this.id = id;
         this.paper = paper;
-        this.entries = entries;
+        this.map = map;
     }
 
     public Integer getId() {
@@ -49,7 +58,7 @@ public class RawKeyValue {
 
     @Override
     public String toString() {
-        return "Raw Mutation [id=" + id + ", paper=" + paper + ", raw=" + entries.toString() + "]";
+        return "Raw Mutation [id=" + id + ", paper=" + paper + ", raw=" + map.toString() + "]";
     }
 
     @Override
@@ -73,11 +82,6 @@ public class RawKeyValue {
     }
 
     public List<Entry<String, String>> getEntries() {
-        return entries;
+        return new ArrayList<>( map.entrySet() );
     }
-
-    public void setEntries( List<Entry<String, String>> entries ) {
-        this.entries = entries;
-    }
-
 }

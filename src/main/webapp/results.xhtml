@@ -20,7 +20,7 @@
 	<br/>
 	<p:growl id="msgs" showDetail="true" />
     <h3 style="margin-top:0">Results for  <h:outputText value="#{resultsView.query}" /> </h3>
-		<h:form>
+		<h:form id="formResults">
 		    <p:dataTable id="tbl" 
 		    			 var="events" value="#{resultsView.events}"
 		                 paginatorTemplate="{Exporters}"
@@ -252,19 +252,52 @@
 				            </h:outputLink>
 				        </p:column>
 				        <p:column>
-				            <f:facet name="header">
-				                <h:outputText id="More" value="More"/>
+							<f:facet name="header">
+					        	<h:outputText id="More" value="More"/>
 				                <p:tooltip id="toolTipMore" for="More" value="Click this field for additional data about specific reported variants." />		           
-				            </f:facet>
-		    				<p:commandButton value="Source" type="button" onclick="PF('dlg').show();" />
+					        </f:facet>
+					            
+				        	<p:commandLink update=":formResults:variantDetail" 
+				        					oncomplete="PF('dlg').show()" 
+				        					title="View Details" 
+				        					styleClass="ui-icon ui-icon-search" 
+				        					style="float:left;
+				        					margin-right:10px">
+					            <f:setPropertyActionListener value="#{variants}" target="#{resultsView.selectedVariant}" />
+					            <h:outputText value="#{variants.rawVariantId}" />
+					        </p:commandLink>
+					        
+					        <h:outputText value="#{variants.rawVariantId}" style="display:inline-block"/>
+
+					        <ui:remove>				            
+			    				<p:commandButton value="Source" type="button" onclick="PF('dlg').show();" />
+		    				</ui:remove>
+		    				
+		    				
 						</p:column>				
 					</p:dataTable>
 		        </p:rowExpansion>		 
 		    </p:dataTable>
 		    	
-						<ui:insert name="modalSourceVariant">
-							<ui:include src="modal_source.xhtml" />
-						</ui:insert>
+			<p:dialog header="Source Variant Information" widgetVar="dlg" modal="true" width="500px">
+				<p:outputPanel id="variantDetail" >
+		    	   		<h:outputText value="Variant reported in: " />
+		    	   		<h:outputLink value="#{resultsView.selectedVariant.paper.url}">
+		    	   			<h:outputText value="#{resultsView.selectedVariant.paper.author}" />
+			       		</h:outputLink>								
+					<p:dataList value="#{resultsView.selectedVariant.rawKV}" var="raw" type="definition" >
+			    		<p:outputPanel>
+			                <h:panelGrid columns="3" cellpadding="15">
+			                	<h:outputText value="#{raw.key} :" style="font-weight: bold"/>
+							    <!--  <span>&nbsp;&nbsp;&nbsp;</span> -->
+			                    <h:outputText value="#{raw.value}" />	                    
+			                </h:panelGrid>
+			           </p:outputPanel>	           
+			       	</p:dataList>
+					
+				</p:outputPanel>    
+				
+			</p:dialog>
 		</h:form>
 	</ui:define>
 

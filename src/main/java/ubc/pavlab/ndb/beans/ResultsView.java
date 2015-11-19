@@ -36,6 +36,16 @@ public class ResultsView implements Serializable {
     List<Variant> mutations;
     List<Event> events;
 
+    Variant selectedVariant;
+
+    public Variant getSelectedVariant() {
+        return selectedVariant;
+    }
+
+    public void setSelectedVariant( Variant trunk ) {
+        this.selectedVariant = trunk;
+    }
+
     public List<Event> getEvents() {
         return events;
     }
@@ -64,58 +74,16 @@ public class ResultsView implements Serializable {
         this.query = requestParams.get( "query" );
         if ( this.query == null ) {
             // TODO: This is here because otherwise the row expansion view crashes
-            this.query = "2084";
         }
         mutations = this.variantService.fetchByGeneId( Integer.parseInt( this.query ) );
-        // this.sortById();
 
         EventListFactory eventListFactory = new EventListFactory( mutations );
         events = eventListFactory.getEventList();
 
     }
 
-    // public String sortById() {
-    // /*
-    // * Sorting mutations according to eventId
-    // */
-    // boolean sortAscending = true;
-    // if ( sortAscending ) {
-    // // ascending order
-    // Collections.sort( this.mutations, new Comparator<Variant>() {
-    // @Override
-    // public int compare( Variant v1, Variant v2 ) {
-    // return v1.getEventId().compareTo( v2.getEventId() );
-    // }
-    // } );
-    // sortAscending = false;
-    // } else { // TODO: Implement sortAscending as a class variable to maintain toggling
-    // // descending order
-    // Collections.sort( this.mutations, new Comparator<Variant>() {
-    // @Override
-    // public int compare( Variant v1, Variant v2 ) {
-    // return v2.getEventId().compareTo( v1.getEventId() );
-    // }
-    // } );
-    // sortAscending = true;
-    // }
-    // return null;
-    // }
-
-    // public List<Variant> getMutations() {
-    // return mutations;
-    // }
-    //
-    // public List<Variant> getUniqueMutations() {
-    // return uniqueMutations;
-    // }
-
     public String getQuery() {
         return query;
-    }
-
-    public String printNumber( int i ) {
-        int ip1 = i + 1;
-        return Integer.toString( ip1 );
     }
 
     public void setQuery( String query ) {

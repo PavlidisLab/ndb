@@ -10,7 +10,7 @@
 	
 		<p:dialog header="Source Variant Information" widgetVar="dlg" modal="true" width="500px">
 		
-			<p:outputPanel >
+			<p:outputPanel id="variantDetail" >
     	   		<h:outputText value="Variant reported in: " />
     	   		<h:outputLink value="http://zombo.com">
     	   			Jiang YH et al. Am J Hum Genet. 2013
@@ -18,13 +18,13 @@
 			</p:outputPanel>    
 			
 			<ui:remove>
-			<p:dataList value="#{resultView.events}" var="variant" type="definition">
+			<p:dataList value="#{resultView.selectedRaw}" var="raw" type="definition">
 	
 	    		<p:outputPanel>
 	                <h:panelGrid columns="3" cellpadding="15">
-	                	<h:outputText value="#{variant.key} :" style="font-weight: bold"/>
+	                	<h:outputText value="#{raw.id} :" style="font-weight: bold"/>
 					    <!--  <span>&nbsp;&nbsp;&nbsp;</span> -->
-	                    <h:outputText value="#{variant.value}" />	                    
+	                    <h:outputText value="#{raw.paper}" />	                    
 	                </h:panelGrid>
 	           </p:outputPanel>	           
 	       	</p:dataList>
