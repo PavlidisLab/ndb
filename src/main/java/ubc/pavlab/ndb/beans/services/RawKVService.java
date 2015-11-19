@@ -21,7 +21,6 @@ package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
@@ -30,12 +29,11 @@ import javax.faces.bean.ManagedProperty;
 
 import org.apache.log4j.Logger;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
 import ubc.pavlab.ndb.dao.RawKVDAO;
+import ubc.pavlab.ndb.model.RawKV;
 import ubc.pavlab.ndb.model.dto.RawKVDTO;
 
 /**
@@ -72,23 +70,31 @@ public class RawKVService implements Serializable {
 
     }
 
-    protected Map<String, String> fetchByPaperAndRaw( Integer paperId, Integer rawId ) {
-        if ( paperId == null || rawId == null ) {
-            return Maps.newHashMap();
+    protected List<RawKV> fetchByPaperAndRawVariantId( Integer paperId, Integer rawVariantId ) {
+        if ( paperId == null || rawVariantId == null ) {
+            return Lists.newArrayList();
         }
-        return map( rawKVDAO.findByPaperAndRaw( paperId, rawId ) );
+        return map( rawKVDAO.findByPaperAndRawVariantId( paperId, rawVariantId ) );
     }
 
-    private Map<String, String> map( List<RawKVDTO> dtos ) {
-        if ( dtos == null || dtos.isEmpty() ) {
-            return Maps.newHashMap();
+    private RawKV map( RawKVDTO dto ) {
+        if ( dto == null ) {
+            return null;
         }
-        Builder<String, String> kvBuilder = new ImmutableMap.Builder<String, String>();
-        for ( RawKVDTO dto : dtos ) {
 
-            kvBuilder.put( dto.getKey(), dto.getValue() );
+        return new RawKV( dto );
+
+    }
+
+    private List<RawKV> map( List<RawKVDTO> dtos ) {
+        if ( dtos == null || dtos.isEmpty() ) {
+            return Lists.newArrayList();
         }
-        return kvBuilder.build();
+        List<RawKV> l = Lists.newArrayList();
+        for ( RawKVDTO dto : dtos ) {
+            l.add( map( dto ) );
+        }
+        return l;
     }
 
     public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {

@@ -23,7 +23,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
@@ -42,6 +41,7 @@ import ubc.pavlab.ndb.model.CglibProxyFactory;
 import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.LazilyLoadedObject;
 import ubc.pavlab.ndb.model.Paper;
+import ubc.pavlab.ndb.model.RawKV;
 import ubc.pavlab.ndb.model.Variant;
 import ubc.pavlab.ndb.model.dto.VariantDTO;
 import ubc.pavlab.ndb.model.enums.Category;
@@ -206,30 +206,20 @@ public class VariantService implements Serializable {
         }
 
         // Get RawKV Information
-        Map<String, String> rawKV = null;
+        List<RawKV> rawKV = null;
         if ( LAZY_LOAD_RAWKV ) {
 
-            // This version requires a no argument constructor for the proxied object
-            //            annovar = ( Annovar ) Enhancer.create(
-            //                    Annovar.class,
-            //                    new LazyLoader() {
-            //
-            //                        @Override
-            //                        public Object loadObject() throws Exception {
-            //                            return annovarService.fetchByVariantId( vid );
-            //                        }
-            //                    } );
-
-            rawKV = proxyFactory.createProxy( Map.class,
+            rawKV = proxyFactory.createProxy( List.class,
                     new LazilyLoadedObject( dto.getPaperId(), dto.getRawVariantId()) {
                         @Override
                         protected Object loadObject() {
-                            return rawKVService.fetchByPaperAndRaw( ( Integer ) this.ids[0], ( Integer ) this.ids[1] );
+                            return rawKVService.fetchByPaperAndRawVariantId( ( Integer ) this.ids[0],
+                                    ( Integer ) this.ids[1] );
                         }
                     } );
 
         } else {
-            rawKV = rawKVService.fetchByPaperAndRaw( dto.getPaperId(), dto.getRawVariantId() );
+            rawKV = rawKVService.fetchByPaperAndRawVariantId( dto.getPaperId(), dto.getRawVariantId() );
         }
 
         // Get paper Information from cache

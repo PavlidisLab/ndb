@@ -44,15 +44,15 @@ public interface RawKVDAO {
     public RawKVDTO find( Integer id ) throws DAOException;
 
     /**
-     * Returns a list of Key Value Pairs from the database matching the given paper Id and raw Id. The list is never
-     * null and is empty when the database does not contain any Key Value Pairs.
+     * Returns a list of Key Value Pairs from the database matching the given paper Id and Raw Variant Id. The list is
+     * never null and is empty when the database does not contain any Key Value Pairs.
      * 
      * @param paperId The paper Id of the Key Value Pair to be returned.
-     * @param rawId The raw Id of the Key Value Pair to be returned.
-     * @return The list of Key Value Pairs from the database matching the given paper Id and raw Id.
+     * @param rawVariantId The Raw Variant Id of the Key Value Pair to be returned.
+     * @return The list of Key Value Pairs from the database matching the given paper Id and Raw Variant Id.
      * @throws DAOException If something fails at database level.
      */
-    public List<RawKVDTO> findByPaperAndRaw( Integer paperId, Integer rawId ) throws DAOException;
+    public List<RawKVDTO> findByPaperAndRawVariantId( Integer paperId, Integer rawVariantId ) throws DAOException;
 
     /**
      * Returns a list of all Key Value Pairs from the database ordered by ID. The list is never null and is empty when
