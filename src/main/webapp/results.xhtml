@@ -282,10 +282,10 @@
 			<p:dialog header="Source Variant Information" widgetVar="dlg" modal="true" width="500px">
 				<p:outputPanel id="variantDetail" >
 		    	   		<h:outputText value="Variant reported in: " />
-		    	   		<h:outputLink value="#{resultsView.selectedRaw.paper.url}">
-		    	   			<h:outputText value="#{resultsView.selectedRaw.paper.author}" />
+		    	   		<h:outputLink value="#{resultsView.selectedVariant.paper.url}">
+		    	   			<h:outputText value="#{resultsView.selectedVariant.paper.author}" />
 			       		</h:outputLink>								
-					<p:dataList value="#{resultsView.selectedRaw.entries}" var="raw" type="definition">
+					<p:dataList value="#{resultsView.selectedVariant.rawKV.entrySet().toArray()}" var="raw" type="definition" >
 			    		<p:outputPanel>
 			                <h:panelGrid columns="3" cellpadding="15">
 			                	<h:outputText value="#{raw.key} :" style="font-weight: bold"/>
