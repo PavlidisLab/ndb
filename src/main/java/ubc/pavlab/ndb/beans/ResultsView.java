@@ -10,8 +10,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import ubc.pavlab.ndb.beans.services.CacheService;
 import ubc.pavlab.ndb.beans.services.VariantService;
 import ubc.pavlab.ndb.model.Event;
 import ubc.pavlab.ndb.model.EventListFactory;
@@ -32,6 +34,9 @@ public class ResultsView implements Serializable {
 
     @ManagedProperty("#{variantService}")
     private VariantService variantService;
+
+    @ManagedProperty("#{cacheService}")
+    private CacheService cacheService;
 
     List<Variant> mutations;
     List<Event> events;
@@ -71,11 +76,34 @@ public class ResultsView implements Serializable {
         Map<String, String> requestParams = FacesContext.getCurrentInstance().getExternalContext()
                 .getRequestParameterMap();
 
-        this.query = requestParams.get( "query" );
-        if ( this.query == null ) {
-            // TODO: This is here because otherwise the row expansion view crashes
+        String ncbiGeneId = requestParams.get( "NCBIGeneId" );
+        String chr = requestParams.get( "chr" );
+        String start = requestParams.get( "start" );
+        String stop = requestParams.get( "stop" );
+        if ( !StringUtils.isBlank( ncbiGeneId ) ) {
+            // Search by Genee2
+            try {
+                Integer geneId = Integer.parseInt( ncbiGeneId );
+                this.query = cacheService.getGeneById( geneId ).getSymbol();
+                this.mutations = this.variantService.fetchByGeneId( geneId );
+            } catch ( NumberFormatException | NullPointerException e ) {
+                throw new IllegalArgumentException( "Malformed Search Parameters" );
+            }
+
+        } else if ( !StringUtils.isBlank( chr ) && !StringUtils.isBlank( start ) && !StringUtils.isBlank( stop ) ) {
+            // Search by coordinates
+            try {
+                Integer startCoord = Integer.parseInt( start );
+                Integer stopCoord = Integer.parseInt( stop );
+                this.query = chr + ":" + start + "-" + stop;
+                this.mutations = this.variantService.fetchByPosition( chr, startCoord, stopCoord );
+            } catch ( NumberFormatException e ) {
+                throw new IllegalArgumentException( "Malformed Search Parameters" );
+            }
+        } else {
+            // Unknown Search
+            throw new IllegalArgumentException( "Unknown Search Parameters" );
         }
-        mutations = this.variantService.fetchByGeneId( Integer.parseInt( this.query ) );
 
         EventListFactory eventListFactory = new EventListFactory( mutations );
         events = eventListFactory.getEventList();
@@ -92,6 +120,10 @@ public class ResultsView implements Serializable {
 
     public void setVariantService( VariantService variantService ) {
         this.variantService = variantService;
+    }
+
+    public void setCacheService( CacheService cacheService ) {
+        this.cacheService = cacheService;
     }
 
 }
