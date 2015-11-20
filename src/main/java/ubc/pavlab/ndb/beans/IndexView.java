@@ -30,10 +30,8 @@ import javax.faces.bean.ViewScoped;
 import org.apache.log4j.Logger;
 
 import ubc.pavlab.ndb.beans.services.CacheService;
-import ubc.pavlab.ndb.beans.services.VariantService;
 import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.Paper;
-import ubc.pavlab.ndb.model.Variant;
 
 /**
  * TODO Document Me
@@ -51,16 +49,10 @@ public class IndexView implements Serializable {
     @ManagedProperty("#{cacheService}")
     private CacheService cacheService;
 
-    @ManagedProperty("#{variantService}")
-    private VariantService variantService;
-
-    private Gene gene;
+    private Integer geneId;
     private String chromosome;
     private Integer start;
     private Integer stop;
-    private Paper paper;
-
-    private List<Variant> variants;
 
     public IndexView() {
         log.info( "IndexView created" );
@@ -73,22 +65,12 @@ public class IndexView implements Serializable {
 
     }
 
-    public void submit() {
-        log.info( "Submit" );
-        variants = variantService.fetchByPosition( chromosome, start, stop );
-        log.info( variants.size() );
+    public String searchByGeneSymbol() {
+        return "results?faces-redirect=true&NCBIGeneId=" + geneId;
     }
 
-    public void loadGene() {
-        log.info( "Load Gene " + gene.getGeneId() );
-        variants = variantService.fetchByGeneId( gene.getGeneId() );
-        log.info( variants.size() );
-        // gene = cacheService.getGeneById( geneId );
-    }
-
-    public void loadPaper() {
-        log.info( "Load Paper" );
-        // paper = cacheService.getPaperById( paperId );
+    public String searchByCoordinates() {
+        return "results?faces-redirect=true&chr=" + chromosome + "&start=" + start + "&stop=" + stop;
     }
 
     public List<Gene> completeSymbol( String query ) {
@@ -101,20 +83,12 @@ public class IndexView implements Serializable {
         return cacheService.searchPaperByAuthor( query );
     }
 
-    public Gene getGene() {
-        return gene;
+    public Integer getGeneId() {
+        return geneId;
     }
 
-    public void setGene( Gene gene ) {
-        this.gene = gene;
-    }
-
-    public Paper getPaper() {
-        return paper;
-    }
-
-    public void setPaper( Paper paper ) {
-        this.paper = paper;
+    public void setGeneId( Integer geneId ) {
+        this.geneId = geneId;
     }
 
     public String getChromosome() {
@@ -141,23 +115,8 @@ public class IndexView implements Serializable {
         this.stop = stop;
     }
 
-    public List<Variant> getVariants() {
-        return variants;
-    }
-
-    public void setVariants( List<Variant> variants ) {
-        this.variants = variants;
-    }
-
     public void setCacheService( CacheService cacheService ) {
         this.cacheService = cacheService;
     }
 
-    public void setVariantService( VariantService variantService ) {
-        this.variantService = variantService;
-    }
-
-    public String go() {
-        return "results?faces-redirect=true&query=" + gene.getGeneId();
-    }
 }

@@ -1,7 +1,60 @@
+/* Results */
+
 .innerTblCls th {	
 	background-color: #73d216!important;
 }
 
 .innerTblCls tr {
 	background-color : #f3f3f3;
+}
+
+/* Index */
+
+td.gene-search-column, td.coordinate-search-column {
+	text-align:center;
+	width:45%
+}
+
+td.space-column {
+	text-align:center;
+	width: 10%;
+}
+
+/* General */
+
+table.panel-grid {
+	width:95%;
+}
+
+table.panel-grid td {
+	padding: 5px;
+}
+
+span.column-title {
+	font-weight:bold;
+	text-decoration:underline;
+	margin-bottom: 10px;
+}
+
+
+td.label-column {
+	text-align:center;
+	width: 40%;
+}
+
+td.input-column {
+	text-align:center;
+	width: 60%;
+}
+
+.center-x {
+	margin: 0 auto;
+}
+
+.no-border {
+	border: none;
+}
+
+div.ui-panel.blue-gradient-panel-header div.ui-panel-titlebar {
+	background:#85b2cb -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0)), to(rgba(255,255,255,0.4)));
 }
