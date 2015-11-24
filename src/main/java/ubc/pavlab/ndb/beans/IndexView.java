@@ -66,11 +66,11 @@ public class IndexView implements Serializable {
     }
 
     public String searchByGeneSymbol() {
-        return "results?faces-redirect=true&NCBIGeneId=" + geneId;
+        return "variant?faces-redirect=true&NCBIGeneId=" + geneId;
     }
 
     public String searchByCoordinates() {
-        return "results?faces-redirect=true&chr=" + chromosome + "&start=" + start + "&stop=" + stop;
+        return "variant?faces-redirect=true&chr=" + chromosome + "&start=" + start + "&stop=" + stop;
     }
 
     public List<Gene> completeSymbol( String query ) {
