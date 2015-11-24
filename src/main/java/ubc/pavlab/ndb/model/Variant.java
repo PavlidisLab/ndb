@@ -119,7 +119,15 @@ public class Variant {
         return startHg19;
     }
 
+    public Integer getStart() {
+        return startHg19;
+    }
+
     public Integer getStopHg19() {
+        return stopHg19;
+    }
+
+    public Integer getStop() {
         return stopHg19;
     }
 
