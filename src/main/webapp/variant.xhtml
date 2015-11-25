@@ -49,7 +49,7 @@
 		        </f:facet>
 
 		 
-		        <p:column>
+		        <p:column sortBy="#{event}" sortFunction="#{variantView.sortByGenes}">
 		            <f:facet name="header">
 		                <h:outputText id="Gene" value="Gene"/>
 		                <p:tooltip id="toolTipGene" for="Gene" value="Gene symbol on which the variant is located" />
@@ -76,7 +76,7 @@
 		            		 
 		        </p:column>
 		        		       
-		        <p:column>
+		        <p:column sortBy="#{event.subjectId}">
 		            <f:facet name="header">
 		                <h:outputText id="Subject" value="Subject"/>
 		                <p:tooltip id="toolTipSubject" for="Subject" value="NDB-specific identifier for the proband source of the variant." />
@@ -84,7 +84,7 @@
 		            <h:outputText value="#{event.subjectId}" />		            
 		        </p:column>
 		        
-				<p:column rendered="#{not event.complex}">
+				<p:column rendered="#{not event.complex}" sortBy="#{event.ref}">
 		            <f:facet name="header">
 		                <h:outputText id="REF" value="REF"/>
 		                <p:tooltip id="toolTipREF" for="REF" value="Reference base(s) affected by the variant" />
@@ -92,7 +92,7 @@
 		            <h:outputText value="#{event.ref}" />
 		        </p:column>
 		        
-		        <p:column rendered="#{not event.complex}">
+		        <p:column rendered="#{not event.complex}" sortBy="#{event.alt}">
 		            <f:facet name="header">
 		                <h:outputText id="ALT" value="ALT"/>
 		                <p:tooltip id="toolTipALT" for="ALT" value="Modified base(s) caused by the variant" />
@@ -100,7 +100,7 @@
 		            <h:outputText value="#{event.alt}" />
 		        </p:column>
 		        
-		         <p:column rendered="#{not event.complex}">
+		         <p:column rendered="#{not event.complex}" sortBy="#{event}" sortFunction="#{variantView.sortByLocation}">
 		            <f:facet name="header">
 		                <h:outputText id="Location" value="Location"/>
 		                <p:tooltip id="toolTipLocation" for="Location" value="Location of the variant" />
@@ -115,7 +115,7 @@
 					   <p:rowToggler/> 
 		        </p:column>	  
 		        
-		        <p:column>
+		        <p:column sortBy="#{event}" sortFunction="#{variantView.sortByEffects}">
 		            <f:facet name="header">
 		                <h:outputText id="Effect" value="Effects"/>
 		                <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect" />	
@@ -128,7 +128,7 @@
 	            	</ui:repeat>	            	
 		        </p:column>
 		        
-		        <p:column>
+		        <p:column sortBy="#{event}" sortFunction="#{variantView.sortByPapers}">
 		            <f:facet name="header">
 		                <h:outputText id="Sources" value="Sources"/>
 		                <p:tooltip id="toolTipSources" for="Sources" value="Source(s) where variants from this event are reported." />		           

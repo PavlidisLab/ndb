@@ -116,6 +116,22 @@ public class VariantView implements Serializable {
         return complexVariant;
     }
 
+    public int sortByGenes( Object e1, Object e2 ) {
+        return Event.COMPARE_GENES.compare( ( Event ) e1, ( Event ) e2 );
+    }
+
+    public int sortByEffects( Object e1, Object e2 ) {
+        return Event.COMPARE_EFFECTS.compare( ( Event ) e1, ( Event ) e2 );
+    }
+
+    public int sortByPapers( Object e1, Object e2 ) {
+        return Event.COMPARE_PAPERS.compare( ( Event ) e1, ( Event ) e2 );
+    }
+
+    public int sortByLocation( Object e1, Object e2 ) {
+        return Event.COMPARE_LOCATION.compare( ( Event ) e1, ( Event ) e2 );
+    }
+
     public void setVariantService( VariantService variantService ) {
         this.variantService = variantService;
     }

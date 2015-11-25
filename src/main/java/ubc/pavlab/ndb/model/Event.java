@@ -20,6 +20,8 @@
 package ubc.pavlab.ndb.model;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -149,6 +151,16 @@ public class Event {
         return genes;
     }
 
+    //    public String getGenesString() {
+    //        StringBuilder sb = new StringBuilder();
+    //        String delim = "";
+    //        for ( Gene gene : genes ) {
+    //            sb.append( delim ).append( gene.getSymbol() );
+    //            delim = ", ";
+    //        }
+    //        return sb.toString();
+    //    }
+
     public List<Paper> getPapers() {
         return papers;
     }
@@ -200,5 +212,80 @@ public class Event {
 
         return results;
     }
+
+    public static final Comparator<Event> COMPARE_GENES = new Comparator<Event>() {
+        @Override
+        public int compare( Event e1, Event e2 ) {
+
+            Iterator<Gene> it1 = e1.getGenes().iterator();
+            Iterator<Gene> it2 = e2.getGenes().iterator();
+
+            while ( it1.hasNext() && it2.hasNext() ) {
+                int res = it1.next().compareTo( it2.next() );
+                if ( res != 0 ) {
+                    return res;
+                }
+            }
+
+            return Integer.compare( e1.getGenes().size(), e2.getGenes().size() );
+
+        }
+    };
+
+    public static final Comparator<Event> COMPARE_PAPERS = new Comparator<Event>() {
+        @Override
+        public int compare( Event e1, Event e2 ) {
+            Iterator<Paper> it1 = e1.getPapers().iterator();
+            Iterator<Paper> it2 = e2.getPapers().iterator();
+
+            while ( it1.hasNext() && it2.hasNext() ) {
+                int res = it1.next().compareTo( it2.next() );
+                if ( res != 0 ) {
+                    return res;
+                }
+            }
+
+            return Integer.compare( e1.getPapers().size(), e2.getPapers().size() );
+        }
+    };
+
+    public static final Comparator<Event> COMPARE_EFFECTS = new Comparator<Event>() {
+        @Override
+        public int compare( Event e1, Event e2 ) {
+            Iterator<Category> it1 = e1.getCategories().iterator();
+            Iterator<Category> it2 = e2.getCategories().iterator();
+
+            while ( it1.hasNext() && it2.hasNext() ) {
+                int res = it1.next().compareTo( it2.next() );
+                if ( res != 0 ) {
+                    return res;
+                }
+            }
+
+            return Integer.compare( e1.getCategories().size(), e2.getCategories().size() );
+        }
+    };
+
+    public static final Comparator<Event> COMPARE_LOCATION = new Comparator<Event>() {
+        @Override
+        public int compare( Event e1, Event e2 ) {
+            int i = e1.getChromosome().compareTo( e2.getChromosome() );
+            if ( i != 0 ) return i;
+
+            if ( e1.getStart() == null ) {
+                if ( e2.getStart() == null ) {
+                    return 0; //equal
+                } else {
+                    return -1; // null is before others
+                }
+            } else {
+                if ( e2.getStart() == null ) {
+                    return 1; // all others are after null
+                } else {
+                    return e1.getStart().compareTo( e2.getStart() );
+                }
+            }
+        }
+    };
 
 }
