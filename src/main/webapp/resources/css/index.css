@@ -5,3 +5,7 @@
 .innerTblCls tr {
 	background-color : #f3f3f3;
 }
+
+hr.ui-separator {
+	margin: 25px 0 25px 0;
+}
