@@ -48,7 +48,7 @@ public class VariantDAOImpl implements VariantDAO {
     // SQL Constants ----------------------------------------------------------------------------------
 
     private static final String SQL_STAR = "id, paper_id, raw_variant_id, event_id, subject_id, sample_id, chromosome, start_hg19, stop_hg19, ref, alt, gene, category, gene_detail, func, aa_change, cytoband";
-    private static final String SQL_TABLE = "variant_new";
+    private static final String SQL_TABLE = "variant";
 
     private static final String SQL_GENE_MAP_TABLE = "variant_gene";
 
@@ -80,8 +80,8 @@ public class VariantDAOImpl implements VariantDAO {
     // Constructors -------------------------------------------------------------------------------
 
     /**
-     * Construct an Annovar DAO for the given DAOFactory. Package private so that it can be constructed
-     * inside the DAO package only.
+     * Construct an Annovar DAO for the given DAOFactory. Package private so that it can be constructed inside the DAO
+     * package only.
      * 
      * @param daoFactory The DAOFactory to construct this Annovar DAO for.
      */
@@ -148,8 +148,7 @@ public class VariantDAOImpl implements VariantDAO {
     private VariantDTO find( String sql, Object... values ) throws DAOException {
         VariantDTO annovar = null;
 
-        try (
-                Connection connection = daoFactory.getConnection();
+        try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, sql, false, values );
                 ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
@@ -172,8 +171,7 @@ public class VariantDAOImpl implements VariantDAO {
      */
     private List<VariantDTO> findAll( String sql, Object... values ) throws DAOException {
         List<VariantDTO> annovars = new ArrayList<>();
-        try (
-                Connection connection = daoFactory.getConnection();
+        try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, sql, false, values );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
@@ -190,8 +188,7 @@ public class VariantDAOImpl implements VariantDAO {
     public List<VariantDTO> list() throws DAOException {
         List<VariantDTO> annovars = new ArrayList<>();
 
-        try (
-                Connection connection = daoFactory.getConnection();
+        try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement( SQL_LIST_ORDER_BY_ID );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
@@ -212,8 +209,7 @@ public class VariantDAOImpl implements VariantDAO {
         }
 
         List<Integer> geneIds = new ArrayList<>();
-        try (
-                Connection connection = daoFactory.getConnection();
+        try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, SQL_MAP_GENE_IDS_BY_VARIANT_ID, false, id );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
@@ -232,8 +228,7 @@ public class VariantDAOImpl implements VariantDAO {
             return new ArrayList<>();
         }
         List<Integer> variantIds = new ArrayList<>();
-        try (
-                Connection connection = daoFactory.getConnection();
+        try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, SQL_MAP_VARIANT_IDS_BY_GENE_ID, false,
                         geneId );
                 ResultSet resultSet = statement.executeQuery();) {
@@ -262,8 +257,8 @@ public class VariantDAOImpl implements VariantDAO {
                 resultSet.getString( "sample_id" ), resultSet.getString( "chromosome" ),
                 resultSet.getInt( "start_hg19" ), resultSet.getInt( "stop_hg19" ), resultSet.getString( "ref" ),
                 resultSet.getString( "alt" ), resultSet.getString( "gene" ), resultSet.getString( "category" ),
-                resultSet.getString( "gene_detail" ),
-                resultSet.getString( "func" ), resultSet.getString( "aa_change" ), resultSet.getString( "cytoband" ) );
+                resultSet.getString( "gene_detail" ), resultSet.getString( "func" ), resultSet.getString( "aa_change" ),
+                resultSet.getString( "cytoband" ) );
     }
 
 }
