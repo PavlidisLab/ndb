@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="pageTitle">Documentation</ui:define>
+	
+	<ui:define name="css">
+		<h:outputStylesheet library="css" name="index.css" />
+	</ui:define>
+	
+	<ui:define name="content">
+	<br/>
+	<h3>Publication details</h3>
+	<h:form style="padding:50px">    	
+		<p:outputPanel id="paperSummary" style="text-align:center;">
+	            <p:panelGrid  columns="2"  columnClasses="label,value">
+	                <f:facet name="header">
+						<h:outputText value="Summary" />							
+	                </f:facet>
+	 
+	                <h:outputText value="Author" />
+	                <h:outputText value="#{paperView.selectedPaper.author}" />
+	 
+	                <h:outputText value="Reporting" />
+	                <h:outputText value="#{paperView.selectedPaper.mutReporting}" />
+	 
+	                <h:outputText value="Scope" />
+	                <h:outputText value="#{paperView.selectedPaper.scope}" />	                
+	 
+	                <h:outputText value="Cohort" />	                
+	            	<p:panelGrid  columns="2"  columnClasses="label,value">
+		                <h:outputText value="Description" style="font-weight:bold"/>
+		                <h:outputText value="#{paperView.selectedPaper.cohort}" />
+		                
+		                <h:outputText value="Source" style="font-weight:bold" />
+		                <h:outputText value="#{paperView.selectedPaper.cohortSource}" />     		            		            	
+		                
+		                <h:outputText value="Size" style="font-weight:bold" />
+		                <h:outputText value="#{paperView.selectedPaper.cohortSize}" />
+	            	</p:panelGrid>    
+	            	
+	            	<h:outputText value="Reported effects" />
+	                <h:outputText value="#{paperView.selectedPaper.reportedEffects}" />	                	            	
+	                	                
+	            	<h:outputText value="URL" />
+	            	<h:outputLink target="_blank" value="#{paperView.selectedPaper.url}"  >		            	
+	                	<h:outputText value="#{paperView.selectedPaper.url}" />
+	                </h:outputLink>
+	            </p:panelGrid>
+	            
+	            
+	    </p:outputPanel>				 	
+	    
+	    <p:separator/>
+	    
+	    <h4> Statistics </h4>
+	    <p:outputPanel id="paperStatistics" style="text-align:center;">
+	            <p:panelGrid  columns="2"  columnClasses="label,value">
+	                <f:facet name="header">
+						<h:outputText value="Variants reported in this paper" />							
+	                </f:facet>
+	 
+	                <h:outputText value="Number of variants referencing this paper:" />
+	                <h:outputText value="#{paperView.numVariants}" />
+	                
+	                 <h:outputText value="Number of events referencing this paper:" />
+	                <h:outputText value="#{paperView.numEvents}" />
+	 
+	             	<h:outputText value="Genes mentionned" />
+	             	<p:dataList value="#{paperView.genes}" var="gene" type="unordered"  paginator="true" rows="25" styleClass="paginated">		        
+		        		<h:outputLink value="results.xhtml?query=#{gene.geneId}">
+		        			#{gene.label}
+		        		</h:outputLink>		        		
+		    		</p:dataList>
+	 
+	            </p:panelGrid>
+	            
+	            
+	    </p:outputPanel>				 	
+		   
+	    <p:separator/>
+	    
+	    <h4> Data Harmonization </h4>
+	    <p:dataTable value="#{paperView.instructions}" var="step" type="ordered" tableStyle="width:auto" >
+	    	<p:column headerText="Step">
+        		<h:outputText value="#{step.key}" />
+    		</p:column>
+    		<p:column headerText="Instructions">
+        		<h:outputText value="#{step.value}" />
+    		</p:column>    		    	 
+		</p:dataTable> 
+		
+	    
+	    
+    </h:form>
+
+	</ui:define>
+
+</ui:composition>
