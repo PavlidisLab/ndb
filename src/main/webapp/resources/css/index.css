@@ -51,8 +51,8 @@ td.input-column {
 	margin: 0 auto;
 }
 
-.no-border {
-	border: none;
+table.no-border, table.no-border tr, table.no-border td {
+	border: none !important;
 }
 
 div.ui-panel.blue-gradient-panel-header div.ui-panel-titlebar {
@@ -71,4 +71,13 @@ td.inline-icon div.ui-row-toggler {
 a.inline-icon img {
 	position:relative;
 	top: 2px;
+}
+
+table.spaced-table td {
+	margin:10px;
+}
+
+div.ui-datatable.right-aligned-paginator div.ui-paginator {
+	text-align:right;
+	padding-right:20px;
 }
