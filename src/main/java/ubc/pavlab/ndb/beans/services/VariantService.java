@@ -21,7 +21,6 @@ package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -29,7 +28,6 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.google.common.collect.Lists;
@@ -157,20 +155,12 @@ public class VariantService implements Serializable {
             return null;
         }
 
-        // Populate Categories
-        List<String> exonicFuncRefGene = StringUtils.isBlank( dto.getCategory() ) ? new ArrayList<String>()
-                : Arrays.asList( dto.getCategory().split( ";" ) );
-
-        List<Category> categories = new ArrayList<>();
-
-        for ( String func : exonicFuncRefGene ) {
-            try {
-                categories.add( Category.getEnum( func ) );
-            } catch ( IllegalArgumentException e ) {
-                log.warn( "Unknown Category (" + func + " )" );
-            }
+        Category category = null;
+        try {
+            category = Category.getEnum( dto.getCategory() );
+        } catch ( IllegalArgumentException e ) {
+            log.warn( "Unknown Category (" + dto.getCategory() + " )" );
         }
-
         // Populate Genes
 
         List<Integer> geneIds = variantDAO.findGeneIdsForVariantId( dto.getId() );
@@ -225,7 +215,7 @@ public class VariantService implements Serializable {
         // Get paper Information from cache
         Paper paper = cacheService.getPaperById( dto.getPaperId() );
 
-        return new Variant( dto, annovar, rawKV, paper, genes, categories );
+        return new Variant( dto, annovar, rawKV, paper, genes, category );
     }
 
     private List<Variant> map( List<VariantDTO> dtos ) {

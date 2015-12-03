@@ -48,7 +48,7 @@ public class VariantDAOImpl implements VariantDAO {
     // SQL Constants ----------------------------------------------------------------------------------
 
     private static final String SQL_STAR = "id, paper_id, raw_variant_id, event_id, subject_id, sample_id, chromosome, start_hg19, stop_hg19, ref, alt, gene, category, gene_detail, func, aa_change, cytoband";
-    private static final String SQL_TABLE = "variant_new";
+    private static final String SQL_TABLE = "variant";
 
     private static final String SQL_GENE_MAP_TABLE = "variant_gene";
 

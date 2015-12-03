@@ -83,7 +83,7 @@
 		    	<h:form id="regionSearchForm" prependId="false">
 		    	<h:outputLabel for="regionInput" value="Region:" style="font-weight:bold;margin-right:15px;"/>
 		    	<p:inputText id="regionInput" value="#{searchView.region}" placeholder="chr22:46615715-46615880" style="margin-right:8px;width:150px;" >
-		    		<f:validateRegex pattern="^(CHR)?([0-9]{1,2}|X|Y):(\d+)-(\d+|)$"  />
+		    		<f:validateRegex pattern="^(CHR|chr)?([0-9]{1,2}|X|Y):(\d+)-(\d+|)$"  />
 		    	</p:inputText>
 			    <p:commandButton value="Submit" styleClass="ui-priority-primary"
 			    					action="#{searchView.searchByRegion}"

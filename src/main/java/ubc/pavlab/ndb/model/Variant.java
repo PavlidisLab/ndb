@@ -50,16 +50,16 @@ public class Variant {
     private final Paper paper;
 
     private final List<Gene> genes;
-    private final List<Category> categories;
+    private final Category category;
     private final String geneDetail;
-    private final List<String> funcs;
+    private final String func;
     private final List<String> aaChanges;
     private final String cytoband;
 
     private final List<RawKV> rawKV;
 
     public Variant( VariantDTO dto, Annovar annovar, List<RawKV> rawKV, Paper paper, List<Gene> genes,
-            List<Category> categories ) {
+            Category category ) {
         this.id = dto.getId();
         this.rawVariantId = dto.getRawVariantId();
         this.eventId = dto.getEventId();
@@ -74,13 +74,12 @@ public class Variant {
         this.paper = paper;
 
         this.genes = genes;
-        this.categories = categories;
+        this.category = category;
         this.geneDetail = dto.getGeneDetail();
-        this.funcs = StringUtils.isBlank( dto.getFunc() ) ? new ArrayList<String>()
-                : Arrays.asList( dto.getFunc().split( ";" ) );
+        this.func = dto.getFunc();
 
         this.aaChanges = StringUtils.isBlank( dto.getAaChange() ) ? new ArrayList<String>()
-                : Arrays.asList( dto.getAaChange().split( ";" ) );
+                : Arrays.asList( dto.getAaChange().split( "," ) );
 
         this.cytoband = dto.getCytoband();
 
@@ -147,16 +146,16 @@ public class Variant {
         return genes;
     }
 
-    public List<Category> getCategories() {
-        return categories;
+    public Category getCategory() {
+        return category;
     }
 
     public String getGeneDetail() {
         return geneDetail;
     }
 
-    public List<String> getFuncs() {
-        return funcs;
+    public String getFunc() {
+        return func;
     }
 
     public List<String> getAaChanges() {
