@@ -73,6 +73,12 @@ a.inline-icon img {
 	top: 2px;
 }
 
+a.inline-icon.ui-commandlink {
+	display:inline-block;
+	position:relative;
+	top: 2px;
+}
+
 table.spaced-table td {
 	margin:10px;
 }

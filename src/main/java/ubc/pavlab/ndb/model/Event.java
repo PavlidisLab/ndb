@@ -19,7 +19,9 @@
 
 package ubc.pavlab.ndb.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -48,7 +50,7 @@ public class Event {
     private final String ref;
     private final String alt;
     private final List<Gene> genes;
-    private final List<Paper> papers;
+    //private final List<Paper> papers;
     private final List<String> funcs;
     private final List<Category> categories;
     private final List<Variant> variants;
@@ -60,15 +62,24 @@ public class Event {
             throw new IllegalArgumentException( "Empty or Null Variants" );
         }
 
+        List<Variant> variantsCopy = new ArrayList<>( variants );
+        Collections.sort( variantsCopy, new Comparator<Variant>() {
+            @Override
+            public int compare( Variant v1, Variant v2 ) {
+                return v1.getPaper().compareTo( v2.getPaper() );
+
+            }
+        } );
+
         Set<Gene> genes = Sets.newHashSet();
         Set<Paper> papers = Sets.newHashSet();
         Set<String> funcs = Sets.newHashSet();
         Set<Category> categories = Sets.newHashSet();
 
         boolean complex = false;
-        Variant testVariant = variants.iterator().next();
+        Variant testVariant = variantsCopy.iterator().next();
 
-        for ( Variant variant : variants ) {
+        for ( Variant variant : variantsCopy ) {
 
             genes.addAll( variant.getGenes() );
             papers.add( variant.getPaper() );
@@ -121,10 +132,10 @@ public class Event {
         this.complex = complex;
 
         this.genes = ImmutableList.copyOf( genes );
-        this.papers = ImmutableList.copyOf( papers );
+        //this.papers = ImmutableList.copyOf( papers );
         this.funcs = ImmutableList.copyOf( funcs );
         this.categories = ImmutableList.copyOf( categories );
-        this.variants = ImmutableList.copyOf( variants );
+        this.variants = ImmutableList.copyOf( variantsCopy );
     }
 
     public Integer getId() {
@@ -169,9 +180,9 @@ public class Event {
     //        return sb.toString();
     //    }
 
-    public List<Paper> getPapers() {
-        return papers;
-    }
+    //    public List<Paper> getPapers() {
+    //        return papers;
+    //    }
 
     public List<String> getFuncs() {
         return funcs;
@@ -247,17 +258,17 @@ public class Event {
     public static final Comparator<Event> COMPARE_PAPERS = new Comparator<Event>() {
         @Override
         public int compare( Event e1, Event e2 ) {
-            Iterator<Paper> it1 = e1.getPapers().iterator();
-            Iterator<Paper> it2 = e2.getPapers().iterator();
+            Iterator<Variant> it1 = e1.getVariants().iterator();
+            Iterator<Variant> it2 = e2.getVariants().iterator();
 
             while ( it1.hasNext() && it2.hasNext() ) {
-                int res = it1.next().compareTo( it2.next() );
+                int res = it1.next().getPaper().compareTo( it2.next().getPaper() );
                 if ( res != 0 ) {
                     return res;
                 }
             }
 
-            return Integer.compare( e1.getPapers().size(), e2.getPapers().size() );
+            return Integer.compare( e1.getVariants().size(), e2.getVariants().size() );
         }
     };
 
