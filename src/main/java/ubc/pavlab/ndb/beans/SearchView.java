@@ -69,7 +69,7 @@ public class SearchView implements Serializable {
 
     public String searchByRegion() {
 
-        if ( region.matches( "^(CHR)?([0-9]{1,2}|X|Y):(\\d+)-(\\d+|)$" ) ) {
+        if ( region.matches( "^(CHR|chr)?([0-9]{1,2}|X|Y):(\\d+)-(\\d+|)$" ) ) {
             String chromosome;
             String start;
             String stop;

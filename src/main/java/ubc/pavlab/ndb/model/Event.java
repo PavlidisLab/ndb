@@ -49,6 +49,7 @@ public class Event {
     private final String alt;
     private final List<Gene> genes;
     private final List<Paper> papers;
+    private final List<String> funcs;
     private final List<Category> categories;
     private final List<Variant> variants;
 
@@ -61,6 +62,7 @@ public class Event {
 
         Set<Gene> genes = Sets.newHashSet();
         Set<Paper> papers = Sets.newHashSet();
+        Set<String> funcs = Sets.newHashSet();
         Set<Category> categories = Sets.newHashSet();
 
         boolean complex = false;
@@ -70,7 +72,12 @@ public class Event {
 
             genes.addAll( variant.getGenes() );
             papers.add( variant.getPaper() );
-            categories.addAll( variant.getCategories() );
+            if ( variant.getFunc() != null ) {
+                funcs.add( variant.getFunc() );
+            }
+            if ( variant.getCategory() != null ) {
+                categories.add( variant.getCategory() );
+            }
 
             if ( !variant.getEventId().equals( testVariant.getEventId() ) ) {
                 throw new IllegalArgumentException( "Variant list contains multiple event Ids" );
@@ -115,6 +122,7 @@ public class Event {
 
         this.genes = ImmutableList.copyOf( genes );
         this.papers = ImmutableList.copyOf( papers );
+        this.funcs = ImmutableList.copyOf( funcs );
         this.categories = ImmutableList.copyOf( categories );
         this.variants = ImmutableList.copyOf( variants );
     }
@@ -163,6 +171,10 @@ public class Event {
 
     public List<Paper> getPapers() {
         return papers;
+    }
+
+    public List<String> getFuncs() {
+        return funcs;
     }
 
     public List<Category> getCategories() {

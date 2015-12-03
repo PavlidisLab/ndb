@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -19,14 +19,15 @@
 	
 	<br/>
 	<p:growl id="msgs" showDetail="true" />
-    <h3 style="margin-top:0">Results for #{variantView.query}</h3>
-		<h:form id="formResults">
+    <h3 style="margin:0 auto">Results for "#{variantView.query}"</h3>
+		<h:form id="formResults" style="padding:30px;">
 				
-		    <p:dataTable id="variantTable" 
-		    			 var="event" value="#{variantView.events}"
+		    <p:dataTable id="variantTable" styleClass="right-aligned-paginator"
+		    			 var="event" value="#{variantView.events}" paginatorAlwaysVisible="true" paginator="true" paginatorPosition="top"
 		                 paginatorTemplate="{Exporters}" style="margin-bottom:20px">
 		 
 		        <f:facet name="{Exporters}">
+		        	<span style="text-align:right;">
 		            <h:commandLink>
 		                <p:graphicImage library="img" name="excel.png" width="24"/>
 		                <p:dataExporter type="xls" target="variantTable" fileName="variants" />
@@ -46,6 +47,7 @@
 		                <p:graphicImage library="img" name="xml.png" width="24"/>
 		                <p:dataExporter type="xml" target="variantTable" fileName="variants" />
 		            </h:commandLink>
+		            </span>
 		        </f:facet>
 
 		 
@@ -113,7 +115,21 @@
          		<p:column rendered="#{event.complex}" colspan="3" style="text-align:center;" styleClass="inline-row-toggle inline-icon">
 					<h:outputText value="Complex Event; expand row to view variants &nbps;" />
 					   <p:rowToggler/> 
-		        </p:column>	  
+		        </p:column>	
+		        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="Functions" value="Functions"/>
+		                <p:tooltip id="toolTipFunctions" for="Functions" value="Variant functional categories" />	
+		           
+		            </f:facet>
+		            
+	            	<ui:repeat var="f" value="#{event.funcs}" varStatus="status">   
+	            		<h:outputText value="#{f}" />
+	            		<h:outputText value=", " rendered="#{not status.last}" /> 	            		          			            			          
+	            	</ui:repeat>
+          	
+		        </p:column>
 		        
 		        <p:column sortBy="#{event}" sortFunction="#{variantView.sortByEffects}">
 		            <f:facet name="header">
@@ -123,7 +139,7 @@
 		            </f:facet>
 	            	
 	            	<ui:repeat var="c" value="#{event.categories}" varStatus="status">   
-	            		<h:outputText value="#{c.label}" />
+	            		<h:outputText value="#{c.label}" title="#{c.description}"/>
 	            		<h:outputText value=", " rendered="#{not status.last}" /> 	            		          			            			          
 	            	</ui:repeat>	            	
 		        </p:column>
@@ -196,15 +212,24 @@
 				        
 				        <p:column>
 				            <f:facet name="header">
+				                <h:outputText id="Function" value="Function"/>
+				                <p:tooltip id="toolTipFunction" for="Function" value="Variant functional category" />	
+				           
+				            </f:facet>
+				            
+				            <h:outputText value="#{variant.func}" />
+            	
+				        </p:column>
+				        
+				        <p:column>
+				            <f:facet name="header">
 				                <h:outputText id="Effect" value="Effect"/>
 				                <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect" />	
 				           
 				            </f:facet>
-			            	
-			            	<ui:repeat var="c" value="#{variant.categories}" varStatus="status">   
-			            		<h:outputText value="#{c.label}" />
-			            		<h:outputText value=", " rendered="#{not status.last}" /> 	            		          			            			          
-			            	</ui:repeat>	            	
+				            
+				            <h:outputText value="#{variant.category.label}" title="#{variant.category.description}"/>
+            	
 				        </p:column>
 				        
 				         <p:column>
@@ -235,7 +260,7 @@
 		 
 		    </p:dataTable>
 		    	
-			<p:dialog header="Source Variant Information" widgetVar="dlg" modal="true" width="500px">
+			<p:dialog header="Source Variant Information" widgetVar="dlg" modal="false" width="500px" closeOnEscape="true">
 				<p:outputPanel id="variantDetail" >
 		    	   		<h:outputText value="Variant reported in: " />
 		    	   		<h:outputLink value="#{variantView.selectedVariant.paper.url}">
@@ -243,7 +268,7 @@
 			       		</h:outputLink>								
 					<p:dataList value="#{variantView.selectedVariant.rawKV}" var="raw" type="definition" >
 			    		<p:outputPanel>
-			                <h:panelGrid columns="3" cellpadding="15">
+			                <h:panelGrid columns="3" cellpadding="2">
 			                	<h:outputText value="#{raw.key} :" style="font-weight: bold"/>
 							    <!--  <span>&nbsp;&nbsp;&nbsp;</span> -->
 			                    <h:outputText value="#{raw.value}" escape="true"/>	                    
