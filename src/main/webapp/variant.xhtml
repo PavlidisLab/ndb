@@ -24,7 +24,7 @@
 				
 		    <p:dataTable id="variantTable" styleClass="right-aligned-paginator"
 		    			 var="event" value="#{variantView.events}" paginatorAlwaysVisible="true" paginator="true" paginatorPosition="top"
-		                 paginatorTemplate="{Exporters}" style="margin-bottom:20px">
+		                 paginatorTemplate="{Exporters}" style="margin-bottom:20px" tableStyle="table-layout: auto;">
 		 
 		        <f:facet name="{Exporters}">
 		        	<span style="text-align:right;">
@@ -59,8 +59,10 @@
 					
 		            <center> 
 		            	
-		            	<ui:repeat var="gene" value="#{event.genes}" varStatus="statusRepeatGenes">		            		      
-		            		<h:outputText value="#{gene.symbol}" />		  
+		            	<ui:repeat var="gene" value="#{event.genes}" varStatus="statusRepeatGenes">	
+							<p:link outcome="variant" value="#{gene.symbol}" target="_blank">
+							    <f:param name="NCBIGeneId" value="#{gene.geneId}" />
+							</p:link>	  
 							<h:outputText value="&nbsp;"/>	          		
 		            		<ui:repeat var="x" value="#{gene.xrefs.toArray()}">		            				            			 
 		            			<h:outputLink styleClass="inline-icon" target="_blank" value="http://GRCH37.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=#{fn:substringAfter(x, 'Ensembl:') }">		                
@@ -150,10 +152,19 @@
 		                <p:tooltip id="toolTipSources" for="Sources" value="Source(s) where variants from this event are reported." />		           
 		            </f:facet>
 		           
-		            <ui:repeat var="paper" value="#{event.papers}" varStatus="status">   
-	            		 <h:outputLink value="#{paper.url}">			            
-		            		<h:outputText value="#{paper.author}" />
+		            <ui:repeat var="var" value="#{event.variants}" varStatus="status">   
+	            		 <h:outputLink value="#{var.paper.url}">			            
+		            		<h:outputText value="#{var.paper.author}" />
 		            	</h:outputLink>
+		            	
+				        	<p:commandLink update=":formResults:variantDetail" 
+				        					oncomplete="PF('dlg').show()" 
+				        					title="View Details" 
+				        					styleClass="ui-icon ui-icon-search inline-icon" 
+				        					style="margin-left:3px">
+					            <f:setPropertyActionListener value="#{var}" target="#{variantView.selectedVariant}" />
+					        </p:commandLink>
+		            	
 	            		<h:outputText value=", " rendered="#{not status.last}" /> 	            		          			            			          
 	            	</ui:repeat>	 
 	            	
