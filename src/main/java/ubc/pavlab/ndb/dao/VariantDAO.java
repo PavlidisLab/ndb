@@ -123,4 +123,54 @@ public interface VariantDAO {
      */
     public List<Integer> findVariantIdsForGeneId( Integer id ) throws DAOException;
 
+    /**
+     * Returns the total number of variants.
+     * 
+     * @return the total number of variants.
+     * @throws DAOException If something fails at database level.
+     */
+    public int findTotalVariants() throws DAOException;
+
+    /**
+     * Returns the total number of events.
+     * 
+     * @return the total number of events.
+     * @throws DAOException If something fails at database level.
+     */
+    public int findTotalEvents() throws DAOException;
+
+    /**
+     * Returns the total number of subjects.
+     * 
+     * @return the total number of subjects.
+     * @throws DAOException If something fails at database level.
+     */
+    public int findTotalSubjects() throws DAOException;
+
+    /**
+     * Returns the total number of papers that have variants.
+     * 
+     * @return the total number of papers that have variants.
+     * @throws DAOException If something fails at database level.
+     */
+    int findTotalPapersWithVariants() throws DAOException;
+
+    /**
+     * Returns the top n genes by variant cnt. The list is never null.
+     * 
+     * @param n number of top genes to return, default 5.
+     * @return the top n genes by variant cnt.
+     * @throws DAOException If something fails at database level.
+     */
+    public List<Integer> findTopGenesByVariantCnt( Integer n ) throws DAOException;
+
+    /**
+     * Returns the top n genes by event cnt. The list is never null.
+     * 
+     * @param n number of top genes to return, default 5.
+     * @return the top n genes by event cnt.
+     * @throws DAOException If something fails at database level.
+     */
+    public List<Integer> findTopGenesByEventCnt( Integer n ) throws DAOException;
+
 }

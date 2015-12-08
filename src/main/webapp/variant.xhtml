@@ -12,15 +12,17 @@
 	<ui:define name="pageTitle">Variant Results</ui:define>
 	
 	<ui:define name="css">
-		<h:outputStylesheet library="css" name="index.css" />
 	</ui:define>
 	
 	<ui:define name="content">
-	
+	<p:panel styleClass="no-border clearfix" style="float:right;">
+	<ui:include src="/searchBar.xhtml" />
+	</p:panel>
 	<br/>
 	<p:growl id="msgs" showDetail="true" />
-    <h3 style="margin:0 auto">Results for "#{variantView.query}"</h3>
+    
 		<h:form id="formResults" style="padding:30px;">
+		<h3 style="margin:0 auto 30px auto">Results for "#{variantView.query}"</h3>
 				
 		    <p:dataTable id="variantTable" styleClass="right-aligned-paginator"
 		    			 var="event" value="#{variantView.events}" paginatorAlwaysVisible="true" paginator="true" paginatorPosition="top"
