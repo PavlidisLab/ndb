@@ -27,7 +27,7 @@ import ubc.pavlab.ndb.model.dto.PaperDTO;
  * @author mbelmadani
  * @version $Id$
  */
-public final class Paper {
+public final class Paper implements Comparable<Paper> {
     private final Integer id;
     private final String url;
     private final String author;
@@ -122,6 +122,11 @@ public final class Paper {
             if ( other.id != null ) return false;
         } else if ( !id.equals( other.id ) ) return false;
         return true;
+    }
+
+    @Override
+    public int compareTo( Paper o ) {
+        return author.compareTo( o.getAuthor() );
     }
 
 }

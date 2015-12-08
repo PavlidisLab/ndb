@@ -21,7 +21,6 @@ package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -29,7 +28,6 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.google.common.collect.Lists;
@@ -157,20 +155,12 @@ public class VariantService implements Serializable {
             return null;
         }
 
-        // Populate Categories
-        List<String> exonicFuncRefGene = StringUtils.isBlank( dto.getCategory() ) ? new ArrayList<String>()
-                : Arrays.asList( dto.getCategory().split( ";" ) );
-
-        List<Category> categories = new ArrayList<>();
-
-        for ( String func : exonicFuncRefGene ) {
-            try {
-                categories.add( Category.getEnum( func ) );
-            } catch ( IllegalArgumentException e ) {
-                log.warn( "Unknown Category (" + func + " )" );
-            }
+        Category category = null;
+        try {
+            category = Category.getEnum( dto.getCategory() );
+        } catch ( IllegalArgumentException e ) {
+            log.warn( "Unknown Category (" + dto.getCategory() + " )" );
         }
-
         // Populate Genes
 
         List<Integer> geneIds = variantDAO.findGeneIdsForVariantId( dto.getId() );
@@ -225,7 +215,7 @@ public class VariantService implements Serializable {
         // Get paper Information from cache
         Paper paper = cacheService.getPaperById( dto.getPaperId() );
 
-        return new Variant( dto, annovar, rawKV, paper, genes, categories );
+        return new Variant( dto, annovar, rawKV, paper, genes, category );
     }
 
     private List<Variant> map( List<VariantDTO> dtos ) {
@@ -237,6 +227,47 @@ public class VariantService implements Serializable {
             variants.add( map( dto ) );
         }
         return variants;
+    }
+
+    protected int fetchVariantCnt() {
+        return variantDAO.findTotalVariants();
+    }
+
+    protected int fetchEventCnt() {
+        return variantDAO.findTotalEvents();
+    }
+
+    protected int fetchSubjectCnt() {
+        return variantDAO.findTotalSubjects();
+    }
+
+    protected int fetchPaperCntWithVariants() {
+        return variantDAO.findTotalPapersWithVariants();
+    }
+
+    protected List<Gene> fetchTopGenesByVariantCnt( Integer n ) {
+        List<Integer> geneIds = variantDAO.findTopGenesByVariantCnt( n );
+
+        List<Gene> genes = new ArrayList<>();
+
+        for ( Integer geneId : geneIds ) {
+            genes.add( cacheService.getGeneById( geneId ) );
+        }
+
+        return genes;
+
+    }
+
+    protected List<Gene> fetchTopGenesByEventCnt( Integer n ) {
+        List<Integer> geneIds = variantDAO.findTopGenesByEventCnt( n );
+
+        List<Gene> genes = new ArrayList<>();
+
+        for ( Integer geneId : geneIds ) {
+            genes.add( cacheService.getGeneById( geneId ) );
+        }
+
+        return genes;
     }
 
     public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {
