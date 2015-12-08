@@ -60,4 +60,12 @@ public interface PaperDAO {
      */
     public List<PaperDTO> list() throws DAOException;
 
+    /**
+     * Returns the total number of papers.
+     * 
+     * @return the total number of papers.
+     * @throws DAOException If something fails at database level.
+     */
+    public int findTotalPapers() throws DAOException;
+
 }

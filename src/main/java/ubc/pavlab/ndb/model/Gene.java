@@ -31,7 +31,7 @@ import ubc.pavlab.ndb.model.dto.GeneDTO;
  * @author mjacobson
  * @version $Id$
  */
-public final class Gene {
+public final class Gene implements Comparable<Gene> {
     private final Integer geneId;
     private final String symbol;
     private final Set<String> synonyms;
@@ -103,7 +103,7 @@ public final class Gene {
     }
 
     public String getLabel() {
-        return geneId + " : " + symbol + " - " + description;
+        return symbol + " - " + description;
     }
 
     @Override
@@ -129,6 +129,11 @@ public final class Gene {
             if ( other.geneId != null ) return false;
         } else if ( !geneId.equals( other.geneId ) ) return false;
         return true;
+    }
+
+    @Override
+    public int compareTo( Gene o ) {
+        return symbol.compareTo( o.getSymbol() );
     }
 
 }

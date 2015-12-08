@@ -19,188 +19,296 @@
 
 package ubc.pavlab.ndb.model;
 
-import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
+import ubc.pavlab.ndb.model.enums.Category;
 
 /**
- * Represents a Event variant grouping
+ * TODO Document Me
  * 
- * @author mbelmadani
+ * @author mjacobson
  * @version $Id$
  */
-public class Event implements Serializable {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -203767996041041525L;
+public class Event {
 
-    private Integer eventId;
-    private String chromosome;
-    private String ref;
-    private String alt;
-    private String location;
-    private String effects;
-    private Integer subjectId;
-    private int startHg19;
-    private int stopHg19;
+    private final Integer id;
+    private final Integer subjectId;
+    private final String chromosome;
+    private final Integer start;
+    private final Integer stop;
+    private final String ref;
+    private final String alt;
+    private final List<Gene> genes;
+    //private final List<Paper> papers;
+    private final List<String> funcs;
+    private final List<Category> categories;
+    private final List<Variant> variants;
 
-    private List<Variant> variants;
+    private final boolean complex;
 
-    private Map<String, Gene> symbols;
-
-    private Map<String, String> authors;
-
-    public Event( List<Variant> variants ) {
-        this.variants = variants;
-        this.assignKeyProperties();
-
-    }
-
-    private void getMinMaxLocations() {
-        int max = -1, min = -1;
-
-        for ( Variant v : this.variants ) {
-            if ( min == -1 || min > v.getStartHg19() ) {
-                min = v.getStartHg19();
-            }
-            if ( max < v.getStopHg19() ) {
-                max = v.getStopHg19();
-            }
+    public Event( Collection<Variant> variants ) throws IllegalArgumentException {
+        if ( variants == null || variants.isEmpty() ) {
+            throw new IllegalArgumentException( "Empty or Null Variants" );
         }
 
-        this.startHg19 = min;
-        this.stopHg19 = max;
+        List<Variant> variantsCopy = new ArrayList<>( variants );
+        Collections.sort( variantsCopy, new Comparator<Variant>() {
+            @Override
+            public int compare( Variant v1, Variant v2 ) {
+                return v1.getPaper().compareTo( v2.getPaper() );
 
-    }
-
-    private void assignKeyProperties() {
-        /*
-         * Get first element and assign properties to the individual properties TODO: Figure out the best properties to
-         * obtain here
-         */
-        Variant trunk = variants.get( 0 );
-        this.eventId = trunk.getEventId();
-        this.chromosome = trunk.getChromosome();
-        this.ref = trunk.getRef();
-        this.alt = trunk.getAlt();
-        this.location = "chr" + trunk.getChromosome() + ":" + trunk.getStartHg19() + "-" + trunk.getStopHg19();
-        this.effects = trunk.getGenes().get( 0 ).getXrefs().toString();
-        this.subjectId = trunk.getSubjectId();
-
-        this.getMinMaxLocations();
-
-        // this.symbol = trunk.getAnnovar().getGenes().get( 0 ).getSymbol();
-
-        this.symbols = new HashMap<>();
-        for ( Gene g : trunk.getGenes() ) {
-            if ( !this.symbols.containsKey( g.getSymbol() ) ) {
-                this.symbols.put( g.getSymbol(), g );
             }
+        } );
+
+        Set<Gene> genes = Sets.newHashSet();
+        Set<Paper> papers = Sets.newHashSet();
+        Set<String> funcs = Sets.newHashSet();
+        Set<Category> categories = Sets.newHashSet();
+
+        boolean complex = false;
+        Variant testVariant = variantsCopy.iterator().next();
+
+        for ( Variant variant : variantsCopy ) {
+
+            genes.addAll( variant.getGenes() );
+            papers.add( variant.getPaper() );
+            if ( variant.getFunc() != null ) {
+                funcs.add( variant.getFunc() );
+            }
+            if ( variant.getCategory() != null ) {
+                categories.add( variant.getCategory() );
+            }
+
+            if ( !variant.getEventId().equals( testVariant.getEventId() ) ) {
+                throw new IllegalArgumentException( "Variant list contains multiple event Ids" );
+            }
+
+            if ( !variant.getChromosome().equals( testVariant.getChromosome() ) ) {
+                throw new IllegalArgumentException( "Variant list contains multiple Chromosomes" );
+            }
+
+            if ( !variant.getSubjectId().equals( testVariant.getSubjectId() ) ) {
+                throw new IllegalArgumentException( "Variant list contains multiple Subjects" );
+            }
+
+            if ( !complex && !( variant.getStartHg19().equals( testVariant.getStartHg19() )
+                    && variant.getStopHg19().equals( testVariant.getStopHg19() )
+                    && variant.getRef().equals( testVariant.getRef() )
+                    && variant.getAlt().equals( testVariant.getAlt() ) ) ) {
+                complex = true;
+            }
+
         }
 
-        this.authors = new HashMap<>();
-        for ( Variant v : this.variants ) {
-            Paper p = v.getPaper();
-            this.authors.put( p.getAuthor(), p.getUrl() );
+        this.id = testVariant.getEventId();
+
+        this.chromosome = testVariant.getChromosome();
+
+        this.subjectId = testVariant.getSubjectId();
+
+        if ( complex ) {
+            this.start = null;
+            this.stop = null;
+            this.ref = null;
+            this.alt = null;
+        } else {
+            this.start = testVariant.getStartHg19();
+            this.stop = testVariant.getStopHg19();
+            this.ref = testVariant.getRef();
+            this.alt = testVariant.getAlt();
         }
+
+        this.complex = complex;
+
+        this.genes = ImmutableList.copyOf( genes );
+        //this.papers = ImmutableList.copyOf( papers );
+        this.funcs = ImmutableList.copyOf( funcs );
+        this.categories = ImmutableList.copyOf( categories );
+        this.variants = ImmutableList.copyOf( variantsCopy );
     }
 
-    public List<Variant> getVariants() {
-        return variants;
+    public Integer getId() {
+        return id;
     }
 
-    public void setVariants( List<Variant> variants ) {
-        this.variants = variants;
-    }
-
-    public String getRef() {
-        return ref;
-    }
-
-    public void setRef( String ref ) {
-        this.ref = ref;
-    }
-
-    public String getAlt() {
-        return alt;
-    }
-
-    public void setAlt( String alt ) {
-        this.alt = alt;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation( String location ) {
-        this.location = location;
-    }
-
-    public String getEffects() {
-        return effects;
-    }
-
-    public void setEffects( String effects ) {
-        this.effects = effects;
-    }
-
-    public Map<String, String> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors( Map<String, String> authors ) {
-        this.authors = authors;
-    }
-
-    public Integer getEventId() {
-        return eventId;
-    }
-
-    public void setEventId( Integer eventId ) {
-        this.eventId = eventId;
-    }
-
-    public int getSubjectId() {
+    public Integer getSubjectId() {
         return subjectId;
-    }
-
-    public void setSubjectId( int sampleId ) {
-        this.subjectId = sampleId;
     }
 
     public String getChromosome() {
         return chromosome;
     }
 
-    public void setChromosome( String chromosome ) {
-        this.chromosome = chromosome;
+    public Integer getStart() {
+        return start;
     }
 
-    public int getStartHg19() {
-        return startHg19;
+    public Integer getStop() {
+        return stop;
     }
 
-    public void setStartHg19( int startHg19 ) {
-        this.startHg19 = startHg19;
+    public String getRef() {
+        return ref;
     }
 
-    public int getStopHg19() {
-        return stopHg19;
+    public String getAlt() {
+        return alt;
     }
 
-    public void setStopHg19( int stopHg19 ) {
-        this.stopHg19 = stopHg19;
+    public List<Gene> getGenes() {
+        return genes;
     }
 
-    public Map<String, Gene> getSymbols() {
-        return symbols;
+    //    public String getGenesString() {
+    //        StringBuilder sb = new StringBuilder();
+    //        String delim = "";
+    //        for ( Gene gene : genes ) {
+    //            sb.append( delim ).append( gene.getSymbol() );
+    //            delim = ", ";
+    //        }
+    //        return sb.toString();
+    //    }
+
+    //    public List<Paper> getPapers() {
+    //        return papers;
+    //    }
+
+    public List<String> getFuncs() {
+        return funcs;
     }
 
-    public void setSymbols( Map<String, Gene> symbols ) {
-        this.symbols = symbols;
+    public List<Category> getCategories() {
+        return categories;
     }
+
+    public List<Variant> getVariants() {
+        return variants;
+    }
+
+    public boolean isComplex() {
+        return complex;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ( ( id == null ) ? 0 : id.hashCode() );
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if ( this == obj ) return true;
+        if ( obj == null ) return false;
+        if ( getClass() != obj.getClass() ) return false;
+        Event other = ( Event ) obj;
+        if ( id == null ) {
+            if ( other.id != null ) return false;
+        } else if ( !id.equals( other.id ) ) return false;
+        return true;
+    }
+
+    public static List<Event> groupVariants( Collection<Variant> variants ) {
+        HashMultimap<Integer, Variant> grouping = HashMultimap.create();
+
+        for ( Variant variant : variants ) {
+            grouping.put( variant.getEventId(), variant );
+        }
+
+        List<Event> results = Lists.newArrayList();
+
+        for ( Collection<Variant> vSet : grouping.asMap().values() ) {
+            results.add( new Event( vSet ) );
+        }
+
+        return results;
+    }
+
+    public static final Comparator<Event> COMPARE_GENES = new Comparator<Event>() {
+        @Override
+        public int compare( Event e1, Event e2 ) {
+
+            Iterator<Gene> it1 = e1.getGenes().iterator();
+            Iterator<Gene> it2 = e2.getGenes().iterator();
+
+            while ( it1.hasNext() && it2.hasNext() ) {
+                int res = it1.next().compareTo( it2.next() );
+                if ( res != 0 ) {
+                    return res;
+                }
+            }
+
+            return Integer.compare( e1.getGenes().size(), e2.getGenes().size() );
+
+        }
+    };
+
+    public static final Comparator<Event> COMPARE_PAPERS = new Comparator<Event>() {
+        @Override
+        public int compare( Event e1, Event e2 ) {
+            Iterator<Variant> it1 = e1.getVariants().iterator();
+            Iterator<Variant> it2 = e2.getVariants().iterator();
+
+            while ( it1.hasNext() && it2.hasNext() ) {
+                int res = it1.next().getPaper().compareTo( it2.next().getPaper() );
+                if ( res != 0 ) {
+                    return res;
+                }
+            }
+
+            return Integer.compare( e1.getVariants().size(), e2.getVariants().size() );
+        }
+    };
+
+    public static final Comparator<Event> COMPARE_EFFECTS = new Comparator<Event>() {
+        @Override
+        public int compare( Event e1, Event e2 ) {
+            Iterator<Category> it1 = e1.getCategories().iterator();
+            Iterator<Category> it2 = e2.getCategories().iterator();
+
+            while ( it1.hasNext() && it2.hasNext() ) {
+                int res = it1.next().compareTo( it2.next() );
+                if ( res != 0 ) {
+                    return res;
+                }
+            }
+
+            return Integer.compare( e1.getCategories().size(), e2.getCategories().size() );
+        }
+    };
+
+    public static final Comparator<Event> COMPARE_LOCATION = new Comparator<Event>() {
+        @Override
+        public int compare( Event e1, Event e2 ) {
+            int i = e1.getChromosome().compareTo( e2.getChromosome() );
+            if ( i != 0 ) return i;
+
+            if ( e1.getStart() == null ) {
+                if ( e2.getStart() == null ) {
+                    return 0; //equal
+                } else {
+                    return -1; // null is before others
+                }
+            } else {
+                if ( e2.getStart() == null ) {
+                    return 1; // all others are after null
+                } else {
+                    return e1.getStart().compareTo( e2.getStart() );
+                }
+            }
+        }
+    };
 
 }
