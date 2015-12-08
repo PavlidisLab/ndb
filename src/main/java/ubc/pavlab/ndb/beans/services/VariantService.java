@@ -229,6 +229,47 @@ public class VariantService implements Serializable {
         return variants;
     }
 
+    protected int fetchVariantCnt() {
+        return variantDAO.findTotalVariants();
+    }
+
+    protected int fetchEventCnt() {
+        return variantDAO.findTotalEvents();
+    }
+
+    protected int fetchSubjectCnt() {
+        return variantDAO.findTotalSubjects();
+    }
+
+    protected int fetchPaperCntWithVariants() {
+        return variantDAO.findTotalPapersWithVariants();
+    }
+
+    protected List<Gene> fetchTopGenesByVariantCnt( Integer n ) {
+        List<Integer> geneIds = variantDAO.findTopGenesByVariantCnt( n );
+
+        List<Gene> genes = new ArrayList<>();
+
+        for ( Integer geneId : geneIds ) {
+            genes.add( cacheService.getGeneById( geneId ) );
+        }
+
+        return genes;
+
+    }
+
+    protected List<Gene> fetchTopGenesByEventCnt( Integer n ) {
+        List<Integer> geneIds = variantDAO.findTopGenesByEventCnt( n );
+
+        List<Gene> genes = new ArrayList<>();
+
+        for ( Integer geneId : geneIds ) {
+            genes.add( cacheService.getGeneById( geneId ) );
+        }
+
+        return genes;
+    }
+
     public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {
         this.daoFactoryBean = daoFactoryBean;
     }

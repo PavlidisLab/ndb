@@ -103,7 +103,7 @@ public final class Gene implements Comparable<Gene> {
     }
 
     public String getLabel() {
-        return geneId + " : " + symbol + " - " + description;
+        return symbol + " - " + description;
     }
 
     @Override

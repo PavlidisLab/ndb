@@ -54,6 +54,10 @@ public class PaperDAOImpl implements PaperDAO {
     private static final String SQL_FIND_BY_AUTHOR = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE author = ?";
     private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id";
 
+    // Stats SQL
+
+    private static final String SQL_STATS_PAPER_CNT = "select COUNT(*) from " + SQL_TABLE;
+
     // Vars ---------------------------------------------------------------------------------------
 
     private DAOFactory daoFactory;
@@ -120,6 +124,24 @@ public class PaperDAOImpl implements PaperDAO {
             throw new DAOException( e );
         }
         return papers;
+    }
+
+    // Stats
+
+    @Override
+    public int findTotalPapers() throws DAOException {
+        int total = 0;
+        try (
+                Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement( SQL_STATS_PAPER_CNT );
+                ResultSet resultSet = statement.executeQuery();) {
+            if ( resultSet.next() ) {
+                total = resultSet.getInt( 1 );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+        return total;
     }
 
     // Helpers ------------------------------------------------------------------------------------
