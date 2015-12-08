@@ -52,52 +52,36 @@
 	            	<h:outputLink target="_blank" value="#{paperView.selectedPaper.url}"  >		            	
 	                	<h:outputText value="#{paperView.selectedPaper.url}" />
 	                </h:outputLink>
-	            </p:panelGrid>
-	            
-	            
-	    </p:outputPanel>				 	
-	    
-	    <p:separator/>
-	    
-	    <h4> Statistics </h4>
-	    <p:outputPanel id="paperStatistics" style="text-align:center;">
-	            <p:panelGrid  columns="2"  columnClasses="label,value">
-	                <f:facet name="header">
-						<h:outputText value="Variants reported in this paper" />							
-	                </f:facet>
 	 
 	                <h:outputText value="Number of variants referencing this paper:" />
 	                <h:outputText value="#{paperView.numVariants}" />
 	                
-	                 <h:outputText value="Number of events referencing this paper:" />
+	                <h:outputText value="Number of events referencing this paper:" />
 	                <h:outputText value="#{paperView.numEvents}" />
 	 
-	             	<h:outputText value="Genes mentionned" />
-	             	<p:dataList value="#{paperView.genes}" var="gene" type="unordered"  paginator="true" rows="25" styleClass="paginated">		        
-		        		<h:outputLink value="results.xhtml?query=#{gene.geneId}">
-		        			#{gene.label}
-		        		</h:outputLink>		        		
-		    		</p:dataList>
+	 				<h:outputText value="Data Harmonization" />	                
+	            	
+						<p:dataTable value="#{paperView.instructions}" var="step" type="ordered" tableStyle="width:auto" >
+					    	<p:column headerText="Step">
+				        		<h:outputText value="#{step.key}" />
+				    		</p:column>
+				    		<p:column headerText="Instructions">
+				        		<h:outputText value="#{step.value}" />
+				    		</p:column>
+				    	</p:dataTable>     
 	 
+	 				<ui:remove>
+		             	<h:outputText value="Genes mentionned" />
+		             	<p:dataList value="#{paperView.genes}" var="gene" type="unordered"  paginator="true" rows="25" styleClass="paginated">		        
+			        		<h:outputLink value="results.xhtml?query=#{gene.geneId}">
+			        			#{gene.label}
+			        		</h:outputLink>		        		
+			    		</p:dataList>
+			    	</ui:remove>	 
 	            </p:panelGrid>
-	            
-	            
 	    </p:outputPanel>				 	
 		   
 	    <p:separator/>
-	    
-	    <h4> Data Harmonization </h4>
-	    <p:dataTable value="#{paperView.instructions}" var="step" type="ordered" tableStyle="width:auto" >
-	    	<p:column headerText="Step">
-        		<h:outputText value="#{step.key}" />
-    		</p:column>
-    		<p:column headerText="Instructions">
-        		<h:outputText value="#{step.value}" />
-    		</p:column>    		    	 
-		</p:dataTable> 
-		
-	    
-	    
     </h:form>
 
 	</ui:define>
