@@ -73,6 +73,10 @@ public class VariantDAOImpl implements VariantDAO {
     private static final String SQL_MAP_VARIANT_IDS_BY_GENE_ID = "SELECT variant_id FROM " + SQL_GENE_MAP_TABLE
             + " WHERE gene_id = ?";
 
+    private static final String SQL_VARIANT_CNT_BY_PAPER_ID = "select COUNT(*) from " + SQL_TABLE + " where paper_id=?";
+    private static final String SQL_EVENT_CNT_BY_PAPER_ID = "select COUNT(distinct event_id) from " + SQL_TABLE
+            + " where paper_id=?";
+
     // Stats SQL
     private static final String SQL_STATS_VARIANT_CNT = "select COUNT(*) from " + SQL_TABLE;
     private static final String SQL_STATS_EVENT_CNT = "select COUNT(distinct event_id) from " + SQL_TABLE;
@@ -213,6 +217,40 @@ public class VariantDAOImpl implements VariantDAO {
             throw new DAOException( e );
         }
         return annovars;
+    }
+
+    @Override
+    public int findTotalVariantsByPaperId( Integer paperId ) throws DAOException {
+        int total = 0;
+        try (
+                Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_PAPER_ID, false,
+                        paperId );
+                ResultSet resultSet = statement.executeQuery();) {
+            if ( resultSet.next() ) {
+                total = resultSet.getInt( 1 );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+        return total;
+    }
+
+    @Override
+    public int findTotalEventsByPaperId( Integer paperId ) throws DAOException {
+        int total = 0;
+        try (
+                Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_PAPER_ID, false,
+                        paperId );
+                ResultSet resultSet = statement.executeQuery();) {
+            if ( resultSet.next() ) {
+                total = resultSet.getInt( 1 );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+        return total;
     }
 
     // GENE MAP TABLE METHODS ---------------------------------------------------------------------

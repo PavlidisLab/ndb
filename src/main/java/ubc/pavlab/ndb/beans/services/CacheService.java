@@ -37,6 +37,7 @@ import com.googlecode.concurrenttrees.radix.RadixTree;
 import com.googlecode.concurrenttrees.radix.node.concrete.DefaultCharArrayNodeFactory;
 
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
+import ubc.pavlab.ndb.dao.VariantDAO;
 import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.Paper;
 
@@ -71,6 +72,9 @@ public class CacheService implements Serializable {
             new DefaultCharArrayNodeFactory() );
     private Map<Integer, Paper> paperCache = new ConcurrentHashMap<>();
 
+    private Map<Integer, Integer> paperVariantCntCache = new ConcurrentHashMap<>();
+    private Map<Integer, Integer> paperEventCntCache = new ConcurrentHashMap<>();
+
     /**
      * 
      */
@@ -82,6 +86,8 @@ public class CacheService implements Serializable {
     public void init() {
         log.info( "CacheService init" );
 
+        VariantDAO variantDAO = daoFactoryBean.getDAOFactory().getVariantDAO();
+
         for ( Gene g : geneService.listGenes() ) {
             geneTreeBySymbol.put( g.getSymbol().toUpperCase(), g );
             geneCache.put( g.getGeneId(), g );
@@ -92,6 +98,8 @@ public class CacheService implements Serializable {
         for ( Paper p : paperService.listPapers() ) {
             paperTreeByAuthor.put( p.getAuthor(), p );
             paperCache.put( p.getId(), p );
+            paperVariantCntCache.put( p.getId(), variantDAO.findTotalVariantsByPaperId( p.getId() ) );
+            paperEventCntCache.put( p.getId(), variantDAO.findTotalEventsByPaperId( p.getId() ) );
         }
 
         log.info( "Paper Cache loaded with " + paperCache.size() + " papers." );
@@ -123,6 +131,20 @@ public class CacheService implements Serializable {
 
     public Paper getPaperById( Integer id ) {
         return paperCache.get( id );
+    }
+
+    public Integer getVariantCntByPaperId( Integer paperId ) {
+        if ( paperId == null ) {
+            return null;
+        }
+        return paperVariantCntCache.get( paperId );
+    }
+
+    public Integer getEventCntByPaperId( Integer paperId ) {
+        if ( paperId == null ) {
+            return null;
+        }
+        return paperEventCntCache.get( paperId );
     }
 
     public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {

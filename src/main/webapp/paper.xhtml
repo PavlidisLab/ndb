@@ -1,88 +1,33 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composites="http://java.sun.com/jsf/composite/composites">
 
 	<ui:define name="pageTitle">Documentation</ui:define>
 	
 	<ui:define name="css">
-		<h:outputStylesheet library="css" name="index.css" />
+		<h:outputStylesheet library="css" name="style.css" />
 	</ui:define>
 	
 	<ui:define name="content">
+	<p:panel styleClass="no-border clearfix" style="float:right;">
+	<ui:include src="/searchBar.xhtml" />
+	</p:panel>
 	<br/>
-	<h3>Publication details</h3>
-	<h:form style="margin-bottom:50px">    	
+	<h:form style="padding:30px;">
+		<h3 style="margin:0 auto 30px auto">Publication Details</h3>    	
 		<p:outputPanel id="paperSummary" style="text-align:center;">
-	            <p:panelGrid  columns="2"  columnClasses="label,value">
-	                <f:facet name="header">
-						<h:outputText value="Summary" />							
-	                </f:facet>
-	 
-	                <h:outputText value="Author" />
-	                <h:outputText value="#{paperView.selectedPaper.author}" />
-	 
-	                <h:outputText value="Reporting" />
-	                <h:outputText value="#{paperView.selectedPaper.mutReporting}" />
-	 
-	                <h:outputText value="Scope" />
-	                <h:outputText value="#{paperView.selectedPaper.scope}" />	                
-	 
-	                <h:outputText value="Cohort" />	                
-	            	<p:panelGrid  columns="2"  columnClasses="label,value">
-		                <h:outputText value="Description" style="font-weight:bold"/>
-		                <h:outputText value="#{paperView.selectedPaper.cohort}" />
-		                
-		                <h:outputText value="Source" style="font-weight:bold" />
-		                <h:outputText value="#{paperView.selectedPaper.cohortSource}" />     		            		            	
-		                
-		                <h:outputText value="Size" style="font-weight:bold" />
-		                <h:outputText value="#{paperView.selectedPaper.cohortSize}" />
-	            	</p:panelGrid>    
-	            	
-	            	<h:outputText value="Reported effects" />
-	                <h:outputText value="#{paperView.selectedPaper.reportedEffects}" />	                	            	
-	                	                
-	            	<h:outputText value="URL" />
-	            	<h:outputLink target="_blank" value="#{paperView.selectedPaper.url}"  >		            	
-	                	<h:outputText value="#{paperView.selectedPaper.url}" />
-	                </h:outputLink>
-	 
-	                <h:outputText value="Number of variants referencing this paper:" />
-	                <h:outputText value="#{paperView.numVariants}" />
-	                
-	                <h:outputText value="Number of events referencing this paper:" />
-	                <h:outputText value="#{paperView.numEvents}" />
-	 
-	 				<h:outputText value="Data Harmonization" />	                
-	            	
-						<p:dataTable value="#{paperView.instructions}" var="step" type="ordered" tableStyle="width:auto" >
-					    	<p:column headerText="Step">
-				        		<h:outputText value="#{step.key}" />
-				    		</p:column>
-				    		<p:column headerText="Instructions">
-				        		<h:outputText value="#{step.value}" />
-				    		</p:column>
-				    	</p:dataTable>     
-	 
-	 				<ui:remove>
-		             	<h:outputText value="Genes mentionned" />
-		             	<p:dataList value="#{paperView.genes}" var="gene" type="unordered"  paginator="true" rows="25" styleClass="paginated">		        
-			        		<h:outputLink value="results.xhtml?query=#{gene.geneId}">
-			        			#{gene.label}
-			        		</h:outputLink>		        		
-			    		</p:dataList>
-			    	</ui:remove>	 
-	            </p:panelGrid>
+			<p:panel header="Summary" style="width:600px;padding:0;" styleClass="no-border no-padding">
+				<composites:paperPanel paper="#{paperView.paper}" variantCnt="#{paperView.variantCnt}" eventCnt="#{paperView.eventCnt}"/>
+	    	</p:panel>
 	    </p:outputPanel>				 	
-		   
-	    <p:separator/>
-    </h:form>
+		       </h:form>
 
 	</ui:define>
 
