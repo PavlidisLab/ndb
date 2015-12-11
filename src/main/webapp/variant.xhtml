@@ -26,8 +26,9 @@
 		<h3 style="margin:0 auto 30px auto">Results for "#{variantView.query}"</h3>
 				
 		    <p:dataTable id="variantTable" styleClass="right-aligned-paginator"
-		    			 var="event" value="#{variantView.events}" paginatorAlwaysVisible="true" paginator="true" paginatorPosition="top"
-		                 paginatorTemplate="{Exporters}" style="margin-bottom:20px" tableStyle="table-layout: auto;">
+		    			 var="event" value="#{variantView.events}" paginatorAlwaysVisible="true" paginator="true" paginatorPosition="top bottom"
+		                 paginatorTemplate="{Exporters}" style="margin-bottom:20px" tableStyle="table-layout: auto;"
+		                 scrollRows="#{variantView.liveScroll ? 20 : 0}" scrollable="#{variantView.liveScroll}" liveScroll="#{variantView.liveScroll}" scrollHeight="#{variantView.liveScroll ? 400 : null}">
 		 
 		        <f:facet name="{Exporters}">
 		        	<span style="text-align:right;">
@@ -173,7 +174,9 @@
 	            		<h:outputText value=", " rendered="#{not status.last}" /> 	            		          			            			          
 	            	</ui:repeat>	 
 	            	
-		            <br/>
+		        </p:column>
+		        <!-- Hack to fix a bug where the last column is not loaded using liveScroll and some rendered=false columns -->
+		        <p:column style="width:0px;padding:0;visibility:hidden">
 		        </p:column>
 		        
 <!-- 				<p:column style="width:32px;">
@@ -299,7 +302,7 @@
 			</p:dialog>
 			
 			<p:dialog header="Paper Information" widgetVar="paperdlg" modal="false" closeOnEscape="true" resizable="false">
-			<p:outputPanel id="paperDetail" >
+			<p:outputPanel id="paperDetail" style="text-align:center;">
 				<composites:paperPanel paper="#{variantView.selectedPaper}" variantCnt="#{variantView.selectedPaperVariantCnt}" eventCnt="#{variantView.selectedPaperEventCnt}"/>
 			</p:outputPanel>
 			</p:dialog>
