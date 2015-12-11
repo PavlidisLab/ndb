@@ -124,6 +124,24 @@ public interface VariantDAO {
     public List<Integer> findVariantIdsForGeneId( Integer id ) throws DAOException;
 
     /**
+     * Returns the total number of variants for a given paper Id.
+     * 
+     * @param paperId paper Id to find the total number of variants for.
+     * @return the total number of variants for the given paper Id.
+     * @throws DAOException If something fails at database level.
+     */
+    public int findTotalVariantsByPaperId( Integer paperId ) throws DAOException;
+
+    /**
+     * Returns the total number of events for a given paper Id.
+     * 
+     * @param paperId paper Id to find the total number of events for.
+     * @return the total number of events for the given paper Id.
+     * @throws DAOException If something fails at database level.
+     */
+    public int findTotalEventsByPaperId( Integer paperId ) throws DAOException;
+
+    /**
      * Returns the total number of variants.
      * 
      * @return the total number of variants.
@@ -153,7 +171,7 @@ public interface VariantDAO {
      * @return the total number of papers that have variants.
      * @throws DAOException If something fails at database level.
      */
-    int findTotalPapersWithVariants() throws DAOException;
+    public int findTotalPapersWithVariants() throws DAOException;
 
     /**
      * Returns the top n genes by variant cnt. The list is never null.

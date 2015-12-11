@@ -109,3 +109,7 @@ div.ui-datalist.datalist-right {
 	clear:both;
 	margin-bottom:20px;
 }
+
+div.ui-panel.no-padding > div.ui-panel-content {
+	padding:0;
+}

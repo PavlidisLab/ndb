@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="paper" />
+        <composite:attribute name="variantCnt" />
+        <composite:attribute name="eventCnt" />
+    </composite:interface>
+    <composite:implementation>
+    
+	            <p:panelGrid styleClass="label-value-panel" style="width:100%;">
+<!-- 	                <f:facet name="header">
+				        <p:row>
+				            <p:column colspan="3">Summary</p:column>
+				        </p:row>						
+	                </f:facet> -->
+	 				<p:row>
+	                <p:column><h:outputText value="Author" /></p:column>
+	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.author}" /></p:column>
+	 				</p:row>
+	 				<p:row>
+	                <p:column><h:outputText value="Reporting" /></p:column>
+	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.mutReporting}" /></p:column>
+	                </p:row>
+	 				<p:row>
+	                <p:column><h:outputText value="Scope" /></p:column>
+	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.scope}" />	</p:column>
+	                </p:row>                
+	 
+	 				<p:row>
+	                	<p:column rowspan="3"><h:outputText value="Cohort" />	</p:column>       
+		                <p:column><h:outputText value="Description" style="font-weight:bold" /></p:column>
+		                <p:column><h:outputText value="#{cc.attrs.paper.cohort}" /></p:column>
+	            	</p:row>
+	            	
+	            	<p:row>
+	            	<p:column><h:outputText value="Source" style="font-weight:bold" /></p:column>
+	            	<p:column><h:outputText value="#{cc.attrs.paper.cohortSource}" />   </p:column> 
+	            	</p:row>
+	            	
+	            	<p:row>
+	            	<p:column><h:outputText value="Size" style="font-weight:bold" /></p:column>
+	            	<p:column><h:outputText value="#{cc.attrs.paper.cohortSize}" /></p:column>
+	            	</p:row>
+	            	
+	            	<p:row>
+	            	<p:column><h:outputText value="Reported effects" /></p:column>
+	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.reportedEffects}" />	</p:column>  
+	                </p:row>              	            	
+	                <p:row>	                
+	            	<p:column><h:outputText value="URL" /></p:column>
+	            	<p:column colspan="2"><h:outputLink target="_blank" value="#{cc.attrs.paper.url}"  >		            	
+	                	<h:outputText value="#{cc.attrs.paper.url}" />
+	                </h:outputLink></p:column>
+	                </p:row>
+	 				<p:row>
+	                <p:column><h:outputText value="Variant Count" /></p:column>
+	                <p:column colspan="2"><h:outputText value="#{cc.attrs.variantCnt}" /></p:column>
+	                </p:row>
+	                <p:row>
+	                <p:column><h:outputText value="Event Count" /></p:column>
+	                <p:column colspan="2"><h:outputText value="#{cc.attrs.eventCnt}" /></p:column>
+	                </p:row>
+	 
+  
+	 
+	 				<ui:remove>
+	 				<h:outputText value="Data Harmonization"/>	                
+	            	
+						<p:dataTable value="#{paperView.instructions}" var="step" type="ordered" tableStyle="width:auto" >
+					    	<p:column headerText="Step">
+				        		<h:outputText value="#{step.key}" />
+				    		</p:column>
+				    		<p:column headerText="Instructions">
+				        		<h:outputText value="#{step.value}" />
+				    		</p:column>
+				    	</p:dataTable>   
+			    	</ui:remove>	 
+	            </p:panelGrid>
+</composite:implementation>
+
+
+</html>

@@ -7,7 +7,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composites="http://java.sun.com/jsf/composite/composites">
 
 	<ui:define name="pageTitle">Variant Results</ui:define>
 	
@@ -155,9 +156,11 @@
 		            </f:facet>
 		           
 		            <ui:repeat var="var" value="#{event.variants}" varStatus="status">   
-	            		 <h:outputLink value="#{var.paper.url}">			            
-		            		<h:outputText value="#{var.paper.author}" />
-		            	</h:outputLink>
+				        	<p:commandLink update=":formResults:paperDetail" 
+				        					oncomplete="PF('paperdlg').show()" 
+				        					title="View Details"  value="#{var.paper.author}">
+					            <f:setPropertyActionListener value="#{var.paper}" target="#{variantView.selectedPaper}" />
+					        </p:commandLink>
 		            	
 				        	<p:commandLink update=":formResults:variantDetail" 
 				        					oncomplete="PF('dlg').show()" 
@@ -250,9 +253,11 @@
 				                <h:outputText id="Source" value="Source"/>
 				            	<p:tooltip id="toolTipSource" for="Source" value="Source of the reported variant" />	
 				            </f:facet>
-				            <h:outputLink value="#{variant.paper.url}">			            
-				            	<h:outputText value="#{variant.paper.author}" />
-				            </h:outputLink>
+				        	<p:commandLink update=":formResults:paperDetail" 
+				        					oncomplete="PF('paperdlg').show()" 
+				        					title="View Details"  value="#{variant.paper.author}">
+					            <f:setPropertyActionListener value="#{variant.paper}" target="#{variantView.selectedPaper}" />
+					        </p:commandLink>
 				        </p:column>
 				        <p:column style="width:16px;">
 					            
@@ -292,6 +297,13 @@
 				</p:outputPanel>    
 				
 			</p:dialog>
+			
+			<p:dialog header="Paper Information" widgetVar="paperdlg" modal="false" closeOnEscape="true" resizable="false">
+			<p:outputPanel id="paperDetail" >
+				<composites:paperPanel paper="#{variantView.selectedPaper}" variantCnt="#{variantView.selectedPaperVariantCnt}" eventCnt="#{variantView.selectedPaperEventCnt}"/>
+			</p:outputPanel>
+			</p:dialog>
+			
 		</h:form>
 	</ui:define>
 
