@@ -69,6 +69,14 @@
 	                <p:column><h:outputText value="Event Count" /></p:column>
 	                <p:column colspan="2"><h:outputText value="#{cc.attrs.eventCnt}" /></p:column>
 	                </p:row>
+	                
+	                <p:row>
+	                <p:column colspan="3">
+						<p:link outcome="variant" value="View Variants" target="_blank">
+						    <f:param name="paperId" value="#{cc.attrs.paper.id}" />
+						</p:link>
+	                </p:column>
+	                </p:row>
 	 
   
 	 

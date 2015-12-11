@@ -30,6 +30,8 @@ public class VariantView implements Serializable {
 
     private static final Logger log = Logger.getLogger( VariantView.class );
 
+    private static final int LAZY_LOAD_MAX_SIZE = 50;
+
     private String query;
 
     @ManagedProperty("#{variantService}")
@@ -39,6 +41,10 @@ public class VariantView implements Serializable {
     private CacheService cacheService;
 
     private List<Variant> variants;
+
+    // If variant size > LAZY_LOAD_MAX_SIZE
+    private boolean liveScroll;
+
     private List<Event> events;
     private boolean complexVariant = false;
 
@@ -61,12 +67,23 @@ public class VariantView implements Serializable {
         String chr = requestParams.get( "chr" );
         String start = requestParams.get( "start" );
         String stop = requestParams.get( "stop" );
+        String paperIdParam = requestParams.get( "paperId" );
         if ( !StringUtils.isBlank( ncbiGeneId ) ) {
             // Search by Gene
             try {
                 Integer geneId = Integer.parseInt( ncbiGeneId );
                 this.query = cacheService.getGeneById( geneId ).getSymbol();
                 this.variants = this.variantService.fetchByGeneId( geneId );
+            } catch ( NumberFormatException | NullPointerException e ) {
+                throw new IllegalArgumentException( "Malformed Search Parameters" );
+            }
+
+        } else if ( !StringUtils.isBlank( paperIdParam ) ) {
+            // Search by Paper
+            try {
+                Integer paperId = Integer.parseInt( paperIdParam );
+                this.query = cacheService.getPaperById( paperId ).getAuthor();
+                this.variants = this.variantService.fetchByPaperId( paperId );
             } catch ( NumberFormatException | NullPointerException e ) {
                 throw new IllegalArgumentException( "Malformed Search Parameters" );
             }
@@ -87,6 +104,8 @@ public class VariantView implements Serializable {
         }
 
         this.events = Event.groupVariants( this.variants );
+
+        this.liveScroll = ( this.events.size() > LAZY_LOAD_MAX_SIZE );
 
         for ( Event event : events ) {
             complexVariant |= event.isComplex();
@@ -123,6 +142,10 @@ public class VariantView implements Serializable {
 
     public Paper getSelectedPaper() {
         return selectedPaper;
+    }
+
+    public boolean isLiveScroll() {
+        return liveScroll;
     }
 
     public void setSelectedPaper( Paper selectedPaper ) {
