@@ -61,7 +61,10 @@
 	        <f:facet name="header">
 	            Top Genes by Variant Count
 	        </f:facet>
-	        #{g.label}
+			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
+			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
+			</p:link>
+	        - #{g.description}
     	</p:dataList>
     	
     	
@@ -69,7 +72,10 @@
 	        <f:facet name="header">
 	            Top Genes by Event Count
 	        </f:facet>
-	        #{g.label}
+			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
+			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
+			</p:link>
+	        - #{g.description}
     	</p:dataList>
     	
     	</p:panel>
