@@ -13,6 +13,7 @@
 	<ui:define name="pageTitle">Variant Results</ui:define>
 	
 	<ui:define name="css">
+		<h:outputStylesheet library="css" name="variant.css" />
 	</ui:define>
 	
 	<ui:define name="content">
@@ -125,7 +126,7 @@
 		        
 		        <p:column>
 		            <f:facet name="header">
-		                <h:outputText id="Functions" value="Functions"/>
+		                <h:outputText id="Functions" value="Context"/>
 		                <p:tooltip id="toolTipFunctions" for="Functions" value="Variant functional categories" />	
 		           
 		            </f:facet>
@@ -148,6 +149,16 @@
 	            		<h:outputText value="#{c.label}" title="#{c.description}"/>
 	            		<h:outputText value=", " rendered="#{not status.last}" /> 	            		          			            			          
 	            	</ui:repeat>	            	
+		        </p:column>
+		        
+		        <p:column sortBy="#{event.caddPhred}" styleClass="row-gradient #{(event.caddPhred > 50 ? 'ct6' : (event.caddPhred > 40 ? 'ct5' : (event.caddPhred > 30 ? 'ct4' : (event.caddPhred > 20 ? 'ct3' : (event.caddPhred > 10 ? 'ct2' : (event.caddPhred > 0 ? 'ct1' : ''))))))}">
+		            <f:facet name="header">
+		                <h:outputText id="Cadd" value="CADD Phred"/>
+		                <p:tooltip id="toolTipCadd" for="Cadd" value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores." />	
+		           
+		            </f:facet>
+	            	
+	            	<h:outputText value="#{event.caddPhred == 0 ? '-' : event.caddPhred}" />	            	
 		        </p:column>
 		        
 		        <p:column sortBy="#{event}" sortFunction="#{variantView.sortByPapers}">
@@ -231,7 +242,7 @@
 				        
 				        <p:column>
 				            <f:facet name="header">
-				                <h:outputText id="Function" value="Function"/>
+				                <h:outputText id="Function" value="Context"/>
 				                <p:tooltip id="toolTipFunction" for="Function" value="Variant functional category" />	
 				           
 				            </f:facet>
@@ -249,6 +260,16 @@
 				            
 				            <h:outputText value="#{variant.category.label}" title="#{variant.category.description}"/>
             	
+				        </p:column>
+				        
+				        <p:column styleClass="row-gradient #{(variant.annovar.caddPhred > 50 ? 'ct6' : (variant.annovar.caddPhred > 40 ? 'ct5' : (variant.annovar.caddPhred > 30 ? 'ct4' : (variant.annovar.caddPhred > 20 ? 'ct3' : (variant.annovar.caddPhred > 10 ? 'ct2' : (variant.annovar.caddPhred > 0 ? 'ct1' : ''))))))}">
+				            <f:facet name="header">
+				                <h:outputText id="Cadd" value="CADD Phred"/>
+				                <p:tooltip id="toolTipCadd" for="Cadd" value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores." />	
+				           
+				            </f:facet>
+			            	
+			            	<h:outputText value="#{variant.annovar.caddPhred == 0 ? '-' : variant.annovar.caddPhred}" />	            	
 				        </p:column>
 				        
 				         <p:column>
