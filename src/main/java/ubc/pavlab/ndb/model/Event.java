@@ -55,6 +55,8 @@ public class Event {
     private final List<Category> categories;
     private final List<Variant> variants;
 
+    private final Double caddPhred;
+
     private final boolean complex;
 
     public Event( Collection<Variant> variants ) throws IllegalArgumentException {
@@ -79,10 +81,17 @@ public class Event {
         boolean complex = false;
         Variant testVariant = variantsCopy.iterator().next();
 
+        Double caddMax = 0.0;
+
         for ( Variant variant : variantsCopy ) {
 
             genes.addAll( variant.getGenes() );
             papers.add( variant.getPaper() );
+            Double cadd = variant.getAnnovar().getCaddPhred();
+            if ( cadd != null ) {
+                caddMax = Math.max( cadd, caddMax );
+            }
+
             if ( variant.getFunc() != null ) {
                 funcs.add( variant.getFunc() );
             }
@@ -122,12 +131,15 @@ public class Event {
             this.stop = null;
             this.ref = null;
             this.alt = null;
+
         } else {
             this.start = testVariant.getStartHg19();
             this.stop = testVariant.getStopHg19();
             this.ref = testVariant.getRef();
             this.alt = testVariant.getAlt();
         }
+
+        this.caddPhred = caddMax;
 
         this.complex = complex;
 
@@ -164,6 +176,10 @@ public class Event {
 
     public String getAlt() {
         return alt;
+    }
+
+    public Double getCaddPhred() {
+        return caddPhred;
     }
 
     public List<Gene> getGenes() {
