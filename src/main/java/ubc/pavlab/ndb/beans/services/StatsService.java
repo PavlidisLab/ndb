@@ -21,6 +21,8 @@ package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -116,13 +118,26 @@ public class StatsService implements Serializable {
             paperEventCntCache.put( p.getId(), statsDAO.findTotalEventsByPaperId( p.getId() ) );
 
             List<Tuple2<String, Integer>> l = statsDAO.findTotalVariantsByContextForPaperId( ( p.getId() ) );
+            Collections.sort( l, TUPLE_COMPARE_T1 );
             paperVariantCntByContext.put( p.getId(), ImmutableList.copyOf( l ) );
 
             l = statsDAO.findTotalVariantsByCategoryForPaperId( ( p.getId() ) );
+            Collections.sort( l, TUPLE_COMPARE_T1 );
             paperVariantCntByFunction.put( p.getId(), ImmutableList.copyOf( l ) );
         }
 
     }
+
+    private static final Comparator<Tuple2<String, Integer>> TUPLE_COMPARE_T1 = new Comparator<Tuple2<String, Integer>>() {
+
+        @Override
+        public int compare( Tuple2<String, Integer> e1, Tuple2<String, Integer> e2 ) {
+
+            return e1.getT1().compareTo( e2.getT1() );
+
+        }
+
+    };
 
     public List<Tuple2<String, Integer>> getVariantCntByCategory( Integer paperId ) {
         return paperVariantCntByFunction.get( paperId );
