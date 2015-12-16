@@ -38,6 +38,7 @@ public class PaperView implements Serializable {
     private int variantCnt;
     private int eventCnt;
     private List<Tuple2<String, Integer>> variantCntByContext;
+    private List<Tuple2<String, Integer>> variantCntByCategory;
 
     public PaperView() {
         log.info( "create PaperView" );
@@ -65,6 +66,7 @@ public class PaperView implements Serializable {
         variantCnt = statsService.getVariantCntByPaperId( paperId );
         eventCnt = statsService.getEventCntByPaperId( paperId );
         variantCntByContext = statsService.getVariantCntByContext( paperId );
+        variantCntByCategory = statsService.getVariantCntByCategory( paperId );
 
     }
 
@@ -82,6 +84,10 @@ public class PaperView implements Serializable {
 
     public List<Tuple2<String, Integer>> getVariantCntByContext() {
         return variantCntByContext;
+    }
+
+    public List<Tuple2<String, Integer>> getVariantCntByCategory() {
+        return variantCntByCategory;
     }
 
     public void setCacheService( CacheService cacheService ) {
