@@ -172,6 +172,10 @@ public abstract class DAOFactory {
         return new RawKVDAOImpl( this );
     }
 
+    public StatsDAO getStatsDAO() {
+        return new StatsDAOImpl( this );
+    }
+
     // You can add more DAO implementation getters here.
 
 }

@@ -107,10 +107,6 @@ public class PaperService implements Serializable {
         return paperList;
     }
 
-    protected int fetchPaperCnt() {
-        return paperDAO.findTotalPapers();
-    }
-
     private static Paper map( PaperDTO dto ) {
         return new Paper( dto );
     }

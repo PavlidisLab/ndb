@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import ubc.pavlab.ndb.beans.services.CacheService;
+import ubc.pavlab.ndb.beans.services.StatsService;
 import ubc.pavlab.ndb.beans.services.VariantService;
 import ubc.pavlab.ndb.model.Event;
 import ubc.pavlab.ndb.model.Paper;
@@ -39,6 +40,9 @@ public class VariantView implements Serializable {
 
     @ManagedProperty("#{cacheService}")
     private CacheService cacheService;
+
+    @ManagedProperty("#{statsService}")
+    private StatsService statsService;
 
     private List<Variant> variants;
 
@@ -149,8 +153,8 @@ public class VariantView implements Serializable {
     }
 
     public void setSelectedPaper( Paper selectedPaper ) {
-        selectedPaperVariantCnt = cacheService.getVariantCntByPaperId( selectedPaper.getId() );
-        selectedPaperEventCnt = cacheService.getEventCntByPaperId( selectedPaper.getId() );
+        selectedPaperVariantCnt = statsService.getVariantCntByPaperId( selectedPaper.getId() );
+        selectedPaperEventCnt = statsService.getEventCntByPaperId( selectedPaper.getId() );
         this.selectedPaper = selectedPaper;
     }
 
@@ -184,6 +188,10 @@ public class VariantView implements Serializable {
 
     public void setCacheService( CacheService cacheService ) {
         this.cacheService = cacheService;
+    }
+
+    public void setStatsService( StatsService statsService ) {
+        this.statsService = statsService;
     }
 
 }

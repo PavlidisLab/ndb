@@ -1,6 +1,7 @@
 package ubc.pavlab.ndb.beans;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -12,8 +13,9 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 
 import ubc.pavlab.ndb.beans.services.CacheService;
-import ubc.pavlab.ndb.beans.services.VariantService;
+import ubc.pavlab.ndb.beans.services.StatsService;
 import ubc.pavlab.ndb.model.Paper;
+import ubc.pavlab.ndb.utility.Tuples.Tuple2;
 
 @ManagedBean
 @ViewScoped
@@ -26,15 +28,16 @@ public class PaperView implements Serializable {
 
     private static final Logger log = Logger.getLogger( PaperView.class );
 
-    @ManagedProperty("#{variantService}")
-    private VariantService variantService;
-
     @ManagedProperty("#{cacheService}")
     private CacheService cacheService;
+
+    @ManagedProperty("#{statsService}")
+    private StatsService statsService;
 
     private Paper paper;
     private int variantCnt;
     private int eventCnt;
+    private List<Tuple2<String, Integer>> variantCntByContext;
 
     public PaperView() {
         log.info( "create PaperView" );
@@ -59,8 +62,9 @@ public class PaperView implements Serializable {
 
         paper = cacheService.getPaperById( paperId );
 
-        variantCnt = cacheService.getVariantCntByPaperId( paperId );
-        eventCnt = cacheService.getEventCntByPaperId( paperId );
+        variantCnt = statsService.getVariantCntByPaperId( paperId );
+        eventCnt = statsService.getEventCntByPaperId( paperId );
+        variantCntByContext = statsService.getVariantCntByContext( paperId );
 
     }
 
@@ -76,12 +80,16 @@ public class PaperView implements Serializable {
         return eventCnt;
     }
 
+    public List<Tuple2<String, Integer>> getVariantCntByContext() {
+        return variantCntByContext;
+    }
+
     public void setCacheService( CacheService cacheService ) {
         this.cacheService = cacheService;
     }
 
-    public void setVariantService( VariantService variantService ) {
-        this.variantService = variantService;
+    public void setStatsService( StatsService statsService ) {
+        this.statsService = statsService;
     }
 
 }

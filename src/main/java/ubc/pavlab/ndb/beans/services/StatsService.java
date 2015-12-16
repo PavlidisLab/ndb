@@ -20,7 +20,10 @@
 package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -32,8 +35,13 @@ import org.apache.log4j.Logger;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import com.google.common.collect.ImmutableList;
 
+import ubc.pavlab.ndb.beans.DAOFactoryBean;
+import ubc.pavlab.ndb.dao.StatsDAO;
 import ubc.pavlab.ndb.model.Gene;
+import ubc.pavlab.ndb.model.Paper;
+import ubc.pavlab.ndb.utility.Tuples.Tuple2;
 
 /**
  * Service layer meant to be an entry point to retrieve all aggregate database statistics. Will implement caches.
@@ -55,8 +63,13 @@ public class StatsService implements Serializable {
 
     private static final Integer TOP_N = 5;
 
-    @ManagedProperty("#{variantService}")
-    private VariantService variantService;
+    @ManagedProperty("#{daoFactoryBean}")
+    private DAOFactoryBean daoFactoryBean;
+
+    @ManagedProperty("#{cacheService}")
+    private CacheService cacheService;
+
+    private StatsDAO statsDAO;
 
     private final Supplier<Integer> latestPaperCnt = Suppliers.memoizeWithExpiration( paperCntSupplier(),
             EXPIRATION_TIME,
@@ -81,6 +94,14 @@ public class StatsService implements Serializable {
             EXPIRATION_TIME,
             EXPIRATION_TIME_UNIT );
 
+    // Specific Paper statistics
+
+    private final Map<Integer, Integer> paperVariantCntCache = new ConcurrentHashMap<>();
+    private final Map<Integer, Integer> paperEventCntCache = new ConcurrentHashMap<>();
+
+    private final Map<Integer, List<Tuple2<String, Integer>>> paperVariantCntByContext = new ConcurrentHashMap<>();
+    private final Map<Integer, List<Tuple2<String, Integer>>> paperVariantCntByFunction = new ConcurrentHashMap<>();
+
     public StatsService() {
         log.info( "StatsService created" );
     }
@@ -88,7 +109,41 @@ public class StatsService implements Serializable {
     @PostConstruct
     public void init() {
         log.info( "StatsService init" );
+        statsDAO = daoFactoryBean.getDAOFactory().getStatsDAO();
 
+        for ( Paper p : cacheService.listPapers() ) {
+            paperVariantCntCache.put( p.getId(), statsDAO.findTotalVariantsByPaperId( p.getId() ) );
+            paperEventCntCache.put( p.getId(), statsDAO.findTotalEventsByPaperId( p.getId() ) );
+
+            List<Tuple2<String, Integer>> l = statsDAO.findTotalVariantsByContextForPaperId( ( p.getId() ) );
+            paperVariantCntByContext.put( p.getId(), ImmutableList.copyOf( l ) );
+
+            statsDAO.findTotalVariantsByCategoryForPaperId( ( p.getId() ) );
+            paperVariantCntByFunction.put( p.getId(), ImmutableList.copyOf( l ) );
+        }
+
+    }
+
+    public List<Tuple2<String, Integer>> getVariantCntByCategory( Integer paperId ) {
+        return paperVariantCntByFunction.get( paperId );
+    }
+
+    public List<Tuple2<String, Integer>> getVariantCntByContext( Integer paperId ) {
+        return paperVariantCntByContext.get( paperId );
+    }
+
+    public Integer getVariantCntByPaperId( Integer paperId ) {
+        if ( paperId == null ) {
+            return null;
+        }
+        return paperVariantCntCache.get( paperId );
+    }
+
+    public Integer getEventCntByPaperId( Integer paperId ) {
+        if ( paperId == null ) {
+            return null;
+        }
+        return paperEventCntCache.get( paperId );
     }
 
     public int getPaperCnt() {
@@ -120,7 +175,16 @@ public class StatsService implements Serializable {
             @Override
             public List<Gene> get() {
                 log.info( "topGenesByVariantCntSupplier" );
-                return variantService.fetchTopGenesByVariantCnt( TOP_N );
+                List<Integer> geneIds = statsDAO.findTopGenesByVariantCnt( TOP_N );
+
+                List<Gene> genes = new ArrayList<>();
+
+                for ( Integer geneId : geneIds ) {
+                    genes.add( cacheService.getGeneById( geneId ) );
+                }
+
+                return genes;
+
             }
         };
     }
@@ -130,7 +194,16 @@ public class StatsService implements Serializable {
             @Override
             public List<Gene> get() {
                 log.info( "topGenesByEventCntSupplier" );
-                return variantService.fetchTopGenesByEventCnt( TOP_N );
+                List<Integer> geneIds = statsDAO.findTopGenesByEventCnt( TOP_N );
+
+                List<Gene> genes = new ArrayList<>();
+
+                for ( Integer geneId : geneIds ) {
+                    genes.add( cacheService.getGeneById( geneId ) );
+                }
+
+                return genes;
+
             }
         };
     }
@@ -140,7 +213,7 @@ public class StatsService implements Serializable {
             @Override
             public Integer get() {
                 log.info( "paperCntSupplier" );
-                return variantService.fetchPaperCntWithVariants();
+                return statsDAO.findTotalPapersWithVariants();
             }
         };
     }
@@ -150,7 +223,7 @@ public class StatsService implements Serializable {
             @Override
             public Integer get() {
                 log.info( "variantCntSupplier" );
-                return variantService.fetchVariantCnt();
+                return statsDAO.findTotalVariants();
             }
         };
     }
@@ -160,7 +233,7 @@ public class StatsService implements Serializable {
             @Override
             public Integer get() {
                 log.info( "eventCntSupplier" );
-                return variantService.fetchEventCnt();
+                return statsDAO.findTotalEvents();
             }
         };
     }
@@ -170,13 +243,17 @@ public class StatsService implements Serializable {
             @Override
             public Integer get() {
                 log.info( "subjectCntSupplier" );
-                return variantService.fetchSubjectCnt();
+                return statsDAO.findTotalSubjects();
             }
         };
     }
 
-    public void setVariantService( VariantService variantService ) {
-        this.variantService = variantService;
+    public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {
+        this.daoFactoryBean = daoFactoryBean;
+    }
+
+    public void setCacheService( CacheService cacheService ) {
+        this.cacheService = cacheService;
     }
 
 }
