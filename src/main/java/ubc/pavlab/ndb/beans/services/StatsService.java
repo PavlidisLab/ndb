@@ -118,7 +118,7 @@ public class StatsService implements Serializable {
             List<Tuple2<String, Integer>> l = statsDAO.findTotalVariantsByContextForPaperId( ( p.getId() ) );
             paperVariantCntByContext.put( p.getId(), ImmutableList.copyOf( l ) );
 
-            statsDAO.findTotalVariantsByCategoryForPaperId( ( p.getId() ) );
+            l = statsDAO.findTotalVariantsByCategoryForPaperId( ( p.getId() ) );
             paperVariantCntByFunction.put( p.getId(), ImmutableList.copyOf( l ) );
         }
 

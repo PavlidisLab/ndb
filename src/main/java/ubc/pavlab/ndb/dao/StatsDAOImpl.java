@@ -67,7 +67,8 @@ public class StatsDAOImpl implements StatsDAO {
     private static final String SQL_EVENT_CNT = "select COUNT(distinct event_id) from " + SQL_VARIANT_TABLE;
 
     private static final String SQL_SUBJECT_CNT = "select COUNT(distinct subject_id) from " + SQL_VARIANT_TABLE;
-    private static final String SQL_PAPER_CNT_WITH_VARIANTS = "select COUNT(distinct paper_id) from " + SQL_VARIANT_TABLE;
+    private static final String SQL_PAPER_CNT_WITH_VARIANTS = "select COUNT(distinct paper_id) from "
+            + SQL_VARIANT_TABLE;
 
     private static final String SQL_TOP_GENES_BY_VARIANT = "select gene_id, COUNT(*) cnt from " + SQL_VARIANT_TABLE
             + " var inner join " + SQL_GENE_MAP_TABLE
@@ -273,7 +274,7 @@ public class StatsDAOImpl implements StatsDAO {
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
                 String category = resultSet.getString( 1 );
-                category = StringUtils.isBlank( category ) ? "Unknown" : category;
+                category = StringUtils.isBlank( category ) ? "other" : category;
                 results.add( new Tuple2<>( category, resultSet.getInt( 2 ) ) );
             }
         } catch ( SQLException e ) {
