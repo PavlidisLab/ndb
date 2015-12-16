@@ -73,25 +73,6 @@ public class VariantDAOImpl implements VariantDAO {
     private static final String SQL_MAP_VARIANT_IDS_BY_GENE_ID = "SELECT variant_id FROM " + SQL_GENE_MAP_TABLE
             + " WHERE gene_id = ?";
 
-    private static final String SQL_VARIANT_CNT_BY_PAPER_ID = "select COUNT(*) from " + SQL_TABLE + " where paper_id=?";
-    private static final String SQL_EVENT_CNT_BY_PAPER_ID = "select COUNT(distinct event_id) from " + SQL_TABLE
-            + " where paper_id=?";
-
-    // Stats SQL
-    private static final String SQL_STATS_VARIANT_CNT = "select COUNT(*) from " + SQL_TABLE;
-    private static final String SQL_STATS_EVENT_CNT = "select COUNT(distinct event_id) from " + SQL_TABLE;
-    private static final String SQL_STATS_SUBJECT_CNT = "select COUNT(distinct subject_id) from " + SQL_TABLE;
-    private static final String SQL_STATS_PAPER_CNT = "select COUNT(distinct paper_id) from " + SQL_TABLE;
-
-    private static final String SQL_STATS_TOP_BY_VARIANT = "select gene_id, COUNT(*) cnt from " + SQL_TABLE
-            + " var inner join " + SQL_GENE_MAP_TABLE
-            + " vmap on var.id=vmap.variant_id group by gene_id order by cnt DESC limit ?";
-
-    private static final String SQL_STATS_TOP_BY_EVENT = "select gene_id, COUNT(distinct event_id) cnt from "
-            + SQL_TABLE
-            + " var inner join " + SQL_GENE_MAP_TABLE
-            + " vmap on var.id=vmap.variant_id group by gene_id order by cnt DESC limit ?";
-
     // Vars ---------------------------------------------------------------------------------------
 
     private DAOFactory daoFactory;
@@ -219,40 +200,6 @@ public class VariantDAOImpl implements VariantDAO {
         return annovars;
     }
 
-    @Override
-    public int findTotalVariantsByPaperId( Integer paperId ) throws DAOException {
-        int total = 0;
-        try (
-                Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_PAPER_ID, false,
-                        paperId );
-                ResultSet resultSet = statement.executeQuery();) {
-            if ( resultSet.next() ) {
-                total = resultSet.getInt( 1 );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-        return total;
-    }
-
-    @Override
-    public int findTotalEventsByPaperId( Integer paperId ) throws DAOException {
-        int total = 0;
-        try (
-                Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_PAPER_ID, false,
-                        paperId );
-                ResultSet resultSet = statement.executeQuery();) {
-            if ( resultSet.next() ) {
-                total = resultSet.getInt( 1 );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-        return total;
-    }
-
     // GENE MAP TABLE METHODS ---------------------------------------------------------------------
 
     @Override
@@ -293,114 +240,6 @@ public class VariantDAOImpl implements VariantDAO {
         }
 
         return variantIds;
-    }
-
-    // Stats
-
-    @Override
-    public int findTotalVariants() throws DAOException {
-        int total = 0;
-        try (
-                Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_STATS_VARIANT_CNT );
-                ResultSet resultSet = statement.executeQuery();) {
-            if ( resultSet.next() ) {
-                total = resultSet.getInt( 1 );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-        return total;
-    }
-
-    @Override
-    public int findTotalEvents() throws DAOException {
-        int total = 0;
-        try (
-                Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_STATS_EVENT_CNT );
-                ResultSet resultSet = statement.executeQuery();) {
-            if ( resultSet.next() ) {
-                total = resultSet.getInt( 1 );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-        return total;
-    }
-
-    @Override
-    public int findTotalSubjects() throws DAOException {
-        int total = 0;
-        try (
-                Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_STATS_SUBJECT_CNT );
-                ResultSet resultSet = statement.executeQuery();) {
-            if ( resultSet.next() ) {
-                total = resultSet.getInt( 1 );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-        return total;
-    }
-
-    @Override
-    public int findTotalPapersWithVariants() throws DAOException {
-        int total = 0;
-        try (
-                Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_STATS_PAPER_CNT );
-                ResultSet resultSet = statement.executeQuery();) {
-            if ( resultSet.next() ) {
-                total = resultSet.getInt( 1 );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-        return total;
-    }
-
-    @Override
-    public List<Integer> findTopGenesByVariantCnt( Integer n ) throws DAOException {
-        if ( n == null || n <= 0 ) {
-            n = 5;
-        }
-
-        List<Integer> top = Lists.newArrayList();
-        try (
-                Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_STATS_TOP_BY_VARIANT, false, n );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
-                top.add( resultSet.getInt( "gene_id" ) );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-
-        return top;
-    }
-
-    @Override
-    public List<Integer> findTopGenesByEventCnt( Integer n ) throws DAOException {
-        if ( n == null || n <= 0 ) {
-            n = 5;
-        }
-        List<Integer> top = Lists.newArrayList();
-        try (
-                Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_STATS_TOP_BY_EVENT, false, n );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
-                top.add( resultSet.getInt( "gene_id" ) );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-
-        return top;
-
     }
 
     // Helpers ------------------------------------------------------------------------------------
