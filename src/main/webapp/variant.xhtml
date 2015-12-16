@@ -204,15 +204,15 @@
 
    			    <p:rowExpansion rendered="#{variantView.complexVariant}">   
 			    <!-- Show 'also reported as' -->		   
-					<p:dataTable styleClass="innerTblCls" var="variant" value="#{event.variants}" style="margin-bottom:20px" >		       
+					<p:dataTable styleClass="innerTblCls" var="variant" value="#{event.variants}" style="margin-bottom:20px" tableStyle="table-layout: auto;">		       
 				 
-						 <p:column>
+<!-- 						 <p:column>
 				            <f:facet name="header">
 				                <h:outputText id="SampleId" value="SampleId" />
 		    					<p:tooltip id="toolTipSampleId" for="SampleId" value="Reported proband identifier." />		                
 				            </f:facet>
 							<h:outputText value="#{variant.sampleId}" />
-						</p:column>
+						</p:column> -->
 						
 						<p:column style="min-width:8px;">
 				            <f:facet name="header">
