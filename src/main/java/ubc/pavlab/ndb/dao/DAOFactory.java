@@ -168,7 +168,7 @@ public abstract class DAOFactory {
         return new VariantDAOImpl( this );
     }
 
-    public RawKVDAOImpl getRawKVDAO() {
+    public RawKVDAO getRawKVDAO() {
         return new RawKVDAOImpl( this );
     }
 
