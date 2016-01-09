@@ -45,8 +45,8 @@ import ubc.pavlab.ndb.model.dto.VariantDTO;
 import ubc.pavlab.ndb.model.enums.Category;
 
 /**
- * Service layer on top of VariantDAO. Contains methods for fetching information related to variants from
- * the database and creating Variant objects.
+ * Service layer on top of VariantDAO. Contains methods for fetching information related to variants from the database
+ * and creating Variant objects.
  * 
  * @author mjacobson
  * @version $Id$
@@ -112,6 +112,8 @@ public class VariantService implements Serializable {
         if ( id == null ) {
             return Lists.newArrayList();
         }
+        // FIXME: variantDAO is null, causes null pointer exception
+
         return map( variantDAO.findByPaperId( id ) );
 
     }
@@ -143,7 +145,8 @@ public class VariantService implements Serializable {
         if ( geneId == null ) {
             return Lists.newArrayList();
         }
-        //TODO Inefficient; too many lookups... find a clean way of implementing normalized lookups for this kind of use case
+        // TODO Inefficient; too many lookups... find a clean way of implementing normalized lookups for this kind of
+        // use case
         List<Integer> variantIds = variantDAO.findVariantIdsForGeneId( geneId );
         return fetchById( variantIds );
 
@@ -174,15 +177,15 @@ public class VariantService implements Serializable {
         Annovar annovar = null;
         if ( LAZY_LOAD_ANNOVAR ) {
             // This version requires a no argument constructor for the proxied object
-            //            annovar = ( Annovar ) Enhancer.create(
-            //                    Annovar.class,
-            //                    new LazyLoader() {
+            // annovar = ( Annovar ) Enhancer.create(
+            // Annovar.class,
+            // new LazyLoader() {
             //
-            //                        @Override
-            //                        public Object loadObject() throws Exception {
-            //                            return annovarService.fetchByVariantId( vid );
-            //                        }
-            //                    } );
+            // @Override
+            // public Object loadObject() throws Exception {
+            // return annovarService.fetchByVariantId( vid );
+            // }
+            // } );
 
             annovar = proxyFactory.createProxy( Annovar.class, new LazilyLoadedObject( dto.getId()) {
                 @Override

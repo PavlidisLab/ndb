@@ -74,27 +74,19 @@ public class StatsService implements Serializable {
     private StatsDAO statsDAO;
 
     private final Supplier<Integer> latestPaperCnt = Suppliers.memoizeWithExpiration( paperCntSupplier(),
-            EXPIRATION_TIME,
-            EXPIRATION_TIME_UNIT );
+            EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
     private final Supplier<Integer> latestVariantCnt = Suppliers.memoizeWithExpiration( variantCntSupplier(),
-            EXPIRATION_TIME,
-            EXPIRATION_TIME_UNIT );
+            EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
     private final Supplier<Integer> latestEventCnt = Suppliers.memoizeWithExpiration( eventCntSupplier(),
-            EXPIRATION_TIME,
-            EXPIRATION_TIME_UNIT );
+            EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
     private final Supplier<Integer> latestSubjectCnt = Suppliers.memoizeWithExpiration( subjectCntSupplier(),
-            EXPIRATION_TIME,
-            EXPIRATION_TIME_UNIT );
+            EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
 
-    private final Supplier<List<Gene>> latestTopGenesByVariantCnt = Suppliers.memoizeWithExpiration(
-            topGenesByVariantCntSupplier(),
-            EXPIRATION_TIME,
-            EXPIRATION_TIME_UNIT );
+    private final Supplier<List<Gene>> latestTopGenesByVariantCnt = Suppliers
+            .memoizeWithExpiration( topGenesByVariantCntSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
 
-    private final Supplier<List<Gene>> latestTopGenesByEventCnt = Suppliers.memoizeWithExpiration(
-            topGenesByEventCntSupplier(),
-            EXPIRATION_TIME,
-            EXPIRATION_TIME_UNIT );
+    private final Supplier<List<Gene>> latestTopGenesByEventCnt = Suppliers
+            .memoizeWithExpiration( topGenesByEventCntSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
 
     // Specific Paper statistics
 
@@ -145,6 +137,14 @@ public class StatsService implements Serializable {
 
     public List<Tuple2<String, Integer>> getVariantCntByContext( Integer paperId ) {
         return paperVariantCntByContext.get( paperId );
+    }
+
+    public List<Tuple2<String, Integer>> getVariantCategoryOccurences() {
+        return statsDAO.countTopCategoryOccurences();
+    }
+
+    public List<Tuple2<String, Integer>> getVariantFuncOccurences() {
+        return statsDAO.countTopFuncOccurences();
     }
 
     public Integer getVariantCntByPaperId( Integer paperId ) {
@@ -261,6 +261,14 @@ public class StatsService implements Serializable {
                 return statsDAO.findTotalSubjects();
             }
         };
+    }
+
+    public Integer eventOverlapByPapers( final Integer p1, final Integer p2 ) {
+        return statsDAO.countOverlapBetweenPapers( p1, p2 );
+    }
+
+    public List<Integer> eventOverlapByPaper( final Integer p1 ) {
+        return statsDAO.countOverlapBetweenPapers( p1 );
     }
 
     public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {
