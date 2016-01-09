@@ -113,4 +113,12 @@ public interface StatsDAO {
 
     public List<Tuple2<String, Integer>> findTotalVariantsByCategoryForPaperId( Integer paperId ) throws DAOException;
 
+    int countOverlapBetweenPapers( Integer p1, Integer p2 ) throws DAOException;
+
+    public List<Integer> countOverlapBetweenPapers( Integer p1 ) throws DAOException;
+
+    public List<Tuple2<String, Integer>> countTopCategoryOccurences() throws DAOException;
+
+    public List<Tuple2<String, Integer>> countTopFuncOccurences() throws DAOException;
+
 }
