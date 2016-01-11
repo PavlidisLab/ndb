@@ -7,9 +7,9 @@ $(function () {
             marginTop: 40,
             marginBottom: 80,
             plotBorderWidth: 1
+            
         },
-
-
+        
         title: {
             text: $('#container').attr('title')
         },
@@ -46,8 +46,12 @@ $(function () {
             symbolHeight: 280
         },
 
-        tooltip: {
+        tooltip: {           
             formatter: function () {
+               if ( this.point.value  == 0){ 
+                  return false; // Don't show tooltip 
+               }
+               
                 return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> reports <br><b>' +
                     this.point.value + '</b> variant events also reported in <br><b>' + this.series.yAxis.categories[this.point.y] + '</b>';
             }
@@ -77,11 +81,13 @@ $(function () {
        
        var zeros = [];
        var diagonals = [];
+       var others = [];
+
        function make_zero_color_object(x, y, val){
           var zero = { 'x' : x, 
                        'y' : y,
-                       'value' : val,
-                       'color' : '#dddddd',
+                       'value' : "",
+                       //'color' : '#dddddd',
                        style: {
                           'font-weight': 'lighter'
                        }          
@@ -102,14 +108,19 @@ $(function () {
                        
                      }
           return diag;
+       } 
+       function make_unchanged_object(x, y, val){
+          var o = { 'x' : x, 
+                       'y' : y,
+                       'value' : val 
+                     }
+          return o;
        }     
        
        for (var i = 0 ; i < arr.length; i++){
           current = arr[i];
-//
-//          console.log(arr[i][2]);
-//          arr[i][2] = 999;
-//          console.log(arr[i][2]);
+          
+          
           if (current[0] == current[1]){
              // Mark diagonals
              diagonals.push(make_diag_color_object(current[0], current[1], current[2] ));
@@ -117,10 +128,13 @@ $(function () {
           else if ( current[2] == 0 ) {
              // If not a diagonal, check if == 0 and mark.
              zeros.push( make_zero_color_object(current[0], current[1], current[2] ) );
-          }          
+          }         
+          else {
+             others.push( current )
+          }
        }
               
-       return arr.concat(zeros).concat(diagonals);
+       return others.concat(zeros).concat(diagonals);
     }
     
     //console.log( JSON.parse($('#container').attr('data') ) );
