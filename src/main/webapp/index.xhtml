@@ -39,10 +39,8 @@
  	  	<f:facet name="header">
         	Database Statistics
     	</f:facet>
- 	  	<h:outputText value="Total Variants:" />
- 	  	<h:outputText value="#{statsService.variantCnt}" />
- 	  	
- 	  	<h:outputText value="Total Events:" />
+
+ 	  	<h:outputText value="Total Variant Events:" />
  	  	<h:outputText value="#{statsService.eventCnt}" />
  	  	
  	  	<h:outputText value="Total Subjects:" />
@@ -57,7 +55,7 @@
  	  	
  	  	<p:panel styleClass="no-border">
  	  	
-  	    <p:dataList value="#{statsService.topGenesByVariantCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
+<!--   	    <p:dataList value="#{statsService.topGenesByVariantCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
 	        <f:facet name="header">
 	            Top Genes by Variant Count
 	        </f:facet>
@@ -65,12 +63,12 @@
 			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
 			</p:link>
 	        - #{g.description}
-    	</p:dataList>
+    	</p:dataList> -->
     	
     	
 	  	<p:dataList value="#{statsService.topGenesByEventCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
 	        <f:facet name="header">
-	            Top Genes by Event Count
+	            Top Genes by Variant Event Count
 	        </f:facet>
 			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
 			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
