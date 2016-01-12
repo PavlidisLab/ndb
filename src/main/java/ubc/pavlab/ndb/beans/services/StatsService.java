@@ -93,8 +93,8 @@ public class StatsService implements Serializable {
     private final Map<Integer, Integer> paperVariantCntCache = new ConcurrentHashMap<>();
     private final Map<Integer, Integer> paperEventCntCache = new ConcurrentHashMap<>();
 
-    private final Map<Integer, List<Tuple2<String, Integer>>> paperVariantCntByContext = new ConcurrentHashMap<>();
-    private final Map<Integer, List<Tuple2<String, Integer>>> paperVariantCntByFunction = new ConcurrentHashMap<>();
+    private final Map<Integer, List<Tuple2<String, Integer>>> paperEventCntByContext = new ConcurrentHashMap<>();
+    private final Map<Integer, List<Tuple2<String, Integer>>> paperEventCntByFunction = new ConcurrentHashMap<>();
 
     public StatsService() {
         log.info( "StatsService created" );
@@ -109,13 +109,13 @@ public class StatsService implements Serializable {
             paperVariantCntCache.put( p.getId(), statsDAO.findTotalVariantsByPaperId( p.getId() ) );
             paperEventCntCache.put( p.getId(), statsDAO.findTotalEventsByPaperId( p.getId() ) );
 
-            List<Tuple2<String, Integer>> l = statsDAO.findTotalVariantsByContextForPaperId( ( p.getId() ) );
+            List<Tuple2<String, Integer>> l = statsDAO.findTotalEventsByContextForPaperId( ( p.getId() ) );
             Collections.sort( l, TUPLE_COMPARE_T1 );
-            paperVariantCntByContext.put( p.getId(), ImmutableList.copyOf( l ) );
+            paperEventCntByContext.put( p.getId(), ImmutableList.copyOf( l ) );
 
-            l = statsDAO.findTotalVariantsByCategoryForPaperId( ( p.getId() ) );
+            l = statsDAO.findTotalEventsByCategoryForPaperId( ( p.getId() ) );
             Collections.sort( l, TUPLE_COMPARE_T1 );
-            paperVariantCntByFunction.put( p.getId(), ImmutableList.copyOf( l ) );
+            paperEventCntByFunction.put( p.getId(), ImmutableList.copyOf( l ) );
         }
 
     }
@@ -131,12 +131,12 @@ public class StatsService implements Serializable {
 
     };
 
-    public List<Tuple2<String, Integer>> getVariantCntByCategory( Integer paperId ) {
-        return paperVariantCntByFunction.get( paperId );
+    public List<Tuple2<String, Integer>> getEventCntByCategory( Integer paperId ) {
+        return paperEventCntByFunction.get( paperId );
     }
 
-    public List<Tuple2<String, Integer>> getVariantCntByContext( Integer paperId ) {
-        return paperVariantCntByContext.get( paperId );
+    public List<Tuple2<String, Integer>> getEventCntByContext( Integer paperId ) {
+        return paperEventCntByContext.get( paperId );
     }
 
     public List<Tuple2<String, Integer>> getVariantCategoryOccurences() {
