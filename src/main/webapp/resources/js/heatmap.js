@@ -48,13 +48,23 @@ $(function () {
 
         tooltip: {           
             formatter: function () {
-               if ( this.point.value  == 0){ 
+               if ( this.point.value  == 0 && 
+                    !(this.series.xAxis.categories[this.point.x] == this.series.xAxis.categories[this.point.y]) 
+                    ){
+                  // No overlap // TODO: Do we even want to show papers with 0 reports?
                   return false; // Don't show tooltip 
                }
-               
-                return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> reports <br><b>' +
-                    this.point.value + '</b> variant events also reported in <br><b>' + this.series.yAxis.categories[this.point.y] + '</b>';
-            }
+               else if ( this.series.xAxis.categories[this.point.x] == this.series.xAxis.categories[this.point.y] ){
+                  // Diagonal
+                  return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> reports <br><b>' +
+                  this.point.value + '</b> variant events.';                  
+               }
+               else{
+                  // Any non-zero, non-diagonal cell.
+                  return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> reports <br><b>' +
+                  this.point.value + '</b> variant events also reported in <br><b>' + this.series.yAxis.categories[this.point.y] + '</b>';
+                  }                  
+               }                               
         },
 
         series: [{
@@ -75,7 +85,7 @@ $(function () {
        /*
         *  RULES:
         *   1) If x == y (the diagonal), then color the cell ____
-        *   2) If z == 0, then color light grey
+        *   2) If z == 0, then change the value to ""
         *   3) 
         */
        

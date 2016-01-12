@@ -33,10 +33,9 @@
     }
     
     function barExtender() {
-
+       
        function tooltipContentEditor(str, seriesIndex, pointIndex, plot) {
            // display series_label, x-axis_tick, y-axis value
-           console.log(plot);
            return plot.options.axes.xaxis.ticks[pointIndex] + ": " + plot.data[seriesIndex][pointIndex];
        }
 
@@ -49,12 +48,42 @@
           tooltipLocation: 'e',
           tooltipContentEditor:tooltipContentEditor
       };                    
-       
-       this.cfg.seriesDefaults.rendererOptions.varyBarColor = true;
+      
+      this.cfg.seriesDefaults = {
+			renderer: $.jqplot.BarRenderer,
+			pointLabels: {
+				show: true,
+				location: 'n',
+				hideZeros: true
+			}
+      };	
+      
+	 this.cfg.seriesDefaults.rendererOptions = { varyBarColor : true };
 
-       this.minorTicks = 'auto';
-   }
-	</script>
+      this.cfg.tickDefaults = {
+         syncTicks:       true,
+         useSeriesColor:  true, 
+         autoscale:       true,
+         alignTicks: true,
+         forceTickAt0: true
+     };
+     
+     console.log(this.cfg.axes.yaxis);
+     
+      this.cfg.axes.yaxis = {
+            label : 'Counts',
+            tickOptions : {
+               tickDistribution : "power",
+               formatString : "%'i"
+            },             
+            renderer: $.jqplot.LogAxisRenderer,
+            
+         };      
+      
+      //this.cfg.PointLabels = {show : false};
+      
+      }
+   </script>
 
 
 	<h3>Stats</h3>
@@ -78,22 +107,13 @@
 		</p:panelGrid>		
 	
 	<h4>Variant categories</h4>
-		<ui:remove>	
-			<ui:repeat var="o" value="#{statsView.variantCategories}" varStatus="status">
-				
-				#{o.t1} : #{o.t2}  <br/>
-				
-			</ui:repeat>
-		</ui:remove>
+
+	<p:panelGrid columns="2" style="margin: 0 auto;">
+		<p:chart type="bar" model="#{statsView.variantCategoriesBarModel}" style="width:800px;height:500px;"/>		
+		<p:chart type="bar" model="#{statsView.variantFuncBarModel}" style="width:800px;height:500px;" logYAxis="true" />		
+	</p:panelGrid>
 		
-		<p:panelGrid columns="2" style="margin: 0 auto;">
-			<p:chart type="bar" model="#{statsView.variantCategoriesBarModel}" style="width:800px;height:500px;"/>		
-			<p:chart type="bar" model="#{statsView.variantFuncBarModel}" style="width:800px;height:500px;" logYAxis="true" />		
-		</p:panelGrid>
-		
-	<h4>Report overlap</h4><ui:remove><ui:repeat var="c" value="#{statsView.correlations}" >#{c.x} , #{c.y}, #{c.value} <br/></ui:repeat></ui:remove>
-		
-		
+	<h4>Report overlap</h4>
 		
 	<div id="container" style="height: 1000px; min-width: 310px; max-width: 80%; margin: 0 auto;"
 		title="Event report overlap between papers"

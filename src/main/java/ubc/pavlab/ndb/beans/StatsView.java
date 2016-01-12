@@ -290,7 +290,7 @@ public class StatsView implements Serializable {
 
         int diff = ( end - start ) / step;
         for ( int i = 0; i < step - 1; i++ ) {
-            scale += Integer.toHexString( start + 0x001111 * i ) + ",";
+            scale += Integer.toHexString( start + 0x01000 * i ) + ",";
         }
         scale += Integer.toHexString( end );
 
