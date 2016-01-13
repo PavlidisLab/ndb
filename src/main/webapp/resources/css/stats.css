@@ -18,3 +18,18 @@ div.jqplot-title{
 	fill:#333333;
 	width:936px;"
 }
+
+.ui-panelgrid-cell {
+    vertical-align: top !important;
+}
+
+
+#summaryStats tbody>tr,
+#summaryStats tbody>tr>td {
+	border : none ;
+}
+
+#statsSummaryTbl tr,
+#statsSummaryTbl tr>td {
+	border : 1px !important; /* FIXME: Doesn't override summaryStats */
+}
