@@ -24,7 +24,11 @@
 	                </f:facet> -->
 	 				<p:row>
 	                <p:column><h:outputText value="Author" /></p:column>
-	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.author}" /></p:column>
+	                <p:column colspan="2">
+	                	<p:link outcome="paper" value="#{cc.attrs.paper.author}" target="_blank">
+						    <f:param name="paperId" value="#{cc.attrs.paper.id}" />
+						</p:link>
+	                </p:column>
 	 				</p:row>
 	 				<p:row>
 	                <p:column><h:outputText value="Reporting" /></p:column>
@@ -61,23 +65,22 @@
 	                	<h:outputText value="#{cc.attrs.paper.url}" />
 	                </h:outputLink></p:column>
 	                </p:row>
-	 				<p:row>
+	 				<!-- <p:row>
 	                <p:column><h:outputText value="Variant Count" /></p:column>
-	                <p:column colspan="2"><h:outputText value="#{cc.attrs.variantCnt}" /></p:column>
-	                </p:row>
-	                <p:row>
-	                <p:column><h:outputText value="Event Count" /></p:column>
-	                <p:column colspan="2"><h:outputText value="#{cc.attrs.eventCnt}" /></p:column>
-	                </p:row>
-	                
-	                <p:row>
-	                <p:column colspan="3">
-						<p:link outcome="variant" value="View Variants" target="_blank">
+	                <p:column colspan="2">
+   						<p:link outcome="variant" value="#{cc.attrs.variantCnt}" target="_blank">
 						    <f:param name="paperId" value="#{cc.attrs.paper.id}" />
 						</p:link>
 	                </p:column>
-	                </p:row>
-	 
+	                </p:row> -->
+	                <p:row>
+	                <p:column><h:outputText value="Variant Event Count" /></p:column>
+	                <p:column colspan="2">
+   						<p:link outcome="variant" value="#{cc.attrs.eventCnt}" target="_blank">
+						    <f:param name="paperId" value="#{cc.attrs.paper.id}" />
+						</p:link>
+						</p:column>
+	                </p:row> 
   
 	 
 	 				<ui:remove>

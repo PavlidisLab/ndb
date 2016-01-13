@@ -63,7 +63,7 @@ public class StatsService implements Serializable {
 
     private static final TimeUnit EXPIRATION_TIME_UNIT = TimeUnit.HOURS;
 
-    private static final Integer TOP_N = 5;
+    private static final Integer TOP_N = 10;
 
     @ManagedProperty("#{daoFactoryBean}")
     private DAOFactoryBean daoFactoryBean;
@@ -88,13 +88,16 @@ public class StatsService implements Serializable {
     private final Supplier<List<Gene>> latestTopGenesByEventCnt = Suppliers
             .memoizeWithExpiration( topGenesByEventCntSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
 
+    private final Supplier<List<Gene>> latestTopGenesByPaperCnt = Suppliers
+            .memoizeWithExpiration( topGenesByPaperCntSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
+
     // Specific Paper statistics
 
     private final Map<Integer, Integer> paperVariantCntCache = new ConcurrentHashMap<>();
     private final Map<Integer, Integer> paperEventCntCache = new ConcurrentHashMap<>();
 
-    private final Map<Integer, List<Tuple2<String, Integer>>> paperVariantCntByContext = new ConcurrentHashMap<>();
-    private final Map<Integer, List<Tuple2<String, Integer>>> paperVariantCntByFunction = new ConcurrentHashMap<>();
+    private final Map<Integer, List<Tuple2<String, Integer>>> paperEventCntByContext = new ConcurrentHashMap<>();
+    private final Map<Integer, List<Tuple2<String, Integer>>> paperEventCntByFunction = new ConcurrentHashMap<>();
 
     public StatsService() {
         log.info( "StatsService created" );
@@ -109,13 +112,13 @@ public class StatsService implements Serializable {
             paperVariantCntCache.put( p.getId(), statsDAO.findTotalVariantsByPaperId( p.getId() ) );
             paperEventCntCache.put( p.getId(), statsDAO.findTotalEventsByPaperId( p.getId() ) );
 
-            List<Tuple2<String, Integer>> l = statsDAO.findTotalVariantsByContextForPaperId( ( p.getId() ) );
+            List<Tuple2<String, Integer>> l = statsDAO.findTotalEventsByContextForPaperId( ( p.getId() ) );
             Collections.sort( l, TUPLE_COMPARE_T1 );
-            paperVariantCntByContext.put( p.getId(), ImmutableList.copyOf( l ) );
+            paperEventCntByContext.put( p.getId(), ImmutableList.copyOf( l ) );
 
-            l = statsDAO.findTotalVariantsByCategoryForPaperId( ( p.getId() ) );
+            l = statsDAO.findTotalEventsByCategoryForPaperId( ( p.getId() ) );
             Collections.sort( l, TUPLE_COMPARE_T1 );
-            paperVariantCntByFunction.put( p.getId(), ImmutableList.copyOf( l ) );
+            paperEventCntByFunction.put( p.getId(), ImmutableList.copyOf( l ) );
         }
 
     }
@@ -131,12 +134,12 @@ public class StatsService implements Serializable {
 
     };
 
-    public List<Tuple2<String, Integer>> getVariantCntByCategory( Integer paperId ) {
-        return paperVariantCntByFunction.get( paperId );
+    public List<Tuple2<String, Integer>> getEventCntByCategory( Integer paperId ) {
+        return paperEventCntByFunction.get( paperId );
     }
 
-    public List<Tuple2<String, Integer>> getVariantCntByContext( Integer paperId ) {
-        return paperVariantCntByContext.get( paperId );
+    public List<Tuple2<String, Integer>> getEventCntByContext( Integer paperId ) {
+        return paperEventCntByContext.get( paperId );
     }
 
     public List<Tuple2<String, Integer>> getVariantCategoryOccurences() {
@@ -185,6 +188,10 @@ public class StatsService implements Serializable {
         return latestTopGenesByEventCnt.get();
     }
 
+    public List<Gene> getTopGenesByPaperCnt() {
+        return latestTopGenesByPaperCnt.get();
+    }
+
     private Supplier<List<Gene>> topGenesByVariantCntSupplier() {
         return new Supplier<List<Gene>>() {
             @Override
@@ -210,6 +217,25 @@ public class StatsService implements Serializable {
             public List<Gene> get() {
                 log.info( "topGenesByEventCntSupplier" );
                 List<Integer> geneIds = statsDAO.findTopGenesByEventCnt( TOP_N );
+
+                List<Gene> genes = new ArrayList<>();
+
+                for ( Integer geneId : geneIds ) {
+                    genes.add( cacheService.getGeneById( geneId ) );
+                }
+
+                return genes;
+
+            }
+        };
+    }
+
+    private Supplier<List<Gene>> topGenesByPaperCntSupplier() {
+        return new Supplier<List<Gene>>() {
+            @Override
+            public List<Gene> get() {
+                log.info( "topGenesByPaperCntSupplier" );
+                List<Integer> geneIds = statsDAO.findTopGenesByPaperCnt( TOP_N );
 
                 List<Gene> genes = new ArrayList<>();
 
