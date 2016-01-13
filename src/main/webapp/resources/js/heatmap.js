@@ -66,7 +66,13 @@ $(function () {
                   }                  
                }                               
         },
-
+        
+        exporting : {
+           // enabled: false,
+           sourceWidth: 1400,
+           sourceHeight: 1000
+        }, 
+        
         series: [{
             name: 'Variants per paper',
             borderWidth: 1,            
