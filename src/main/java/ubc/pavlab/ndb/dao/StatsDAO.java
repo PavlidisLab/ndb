@@ -109,6 +109,15 @@ public interface StatsDAO {
      */
     public List<Integer> findTopGenesByEventCnt( Integer n ) throws DAOException;
 
+    /**
+     * Returns the top n genes by paper cnt. The list is never null.
+     * 
+     * @param n number of top genes to return, default 5.
+     * @return the top n genes by paper cnt.
+     * @throws DAOException If something fails at database level.
+     */
+    public List<Integer> findTopGenesByPaperCnt( Integer n ) throws DAOException;
+
     public List<Tuple2<String, Integer>> findTotalVariantsByContextForPaperId( Integer paperId ) throws DAOException;
 
     public List<Tuple2<String, Integer>> findTotalEventsByContextForPaperId( Integer paperId ) throws DAOException;

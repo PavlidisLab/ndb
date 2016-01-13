@@ -102,6 +102,10 @@ public class StatsDAOImpl implements StatsDAO {
             + SQL_VARIANT_TABLE + " var inner join " + SQL_GENE_MAP_TABLE
             + " vmap on var.id=vmap.variant_id group by gene_id order by cnt DESC limit ?";
 
+    private static final String SQL_TOP_GENES_BY_PAPER = "select gene_id, COUNT(distinct paper_id) cnt from "
+            + SQL_VARIANT_TABLE + " var inner join " + SQL_GENE_MAP_TABLE
+            + " vmap on var.id=vmap.variant_id group by gene_id order by cnt DESC limit ?";
+
     private static final String SQL_VARIANT_CNT_BY_CONTEXT = "SELECT func, COUNT(*) FROM " + SQL_VARIANT_TABLE
             + " where paper_id=? group by func";
 
@@ -321,6 +325,26 @@ public class StatsDAOImpl implements StatsDAO {
         List<Integer> top = Lists.newArrayList();
         try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, SQL_TOP_GENES_BY_EVENT, false, n );
+                ResultSet resultSet = statement.executeQuery();) {
+            while ( resultSet.next() ) {
+                top.add( resultSet.getInt( "gene_id" ) );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+
+        return top;
+
+    }
+
+    @Override
+    public List<Integer> findTopGenesByPaperCnt( Integer n ) throws DAOException {
+        if ( n == null || n <= 0 ) {
+            n = 5;
+        }
+        List<Integer> top = Lists.newArrayList();
+        try (Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = prepareStatement( connection, SQL_TOP_GENES_BY_PAPER, false, n );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
                 top.add( resultSet.getInt( "gene_id" ) );
