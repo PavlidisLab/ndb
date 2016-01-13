@@ -63,7 +63,7 @@ public class StatsService implements Serializable {
 
     private static final TimeUnit EXPIRATION_TIME_UNIT = TimeUnit.HOURS;
 
-    private static final Integer TOP_N = 5;
+    private static final Integer TOP_N = 10;
 
     @ManagedProperty("#{daoFactoryBean}")
     private DAOFactoryBean daoFactoryBean;
@@ -87,6 +87,9 @@ public class StatsService implements Serializable {
 
     private final Supplier<List<Gene>> latestTopGenesByEventCnt = Suppliers
             .memoizeWithExpiration( topGenesByEventCntSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
+
+    private final Supplier<List<Gene>> latestTopGenesByPaperCnt = Suppliers
+            .memoizeWithExpiration( topGenesByPaperCntSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
 
     // Specific Paper statistics
 
@@ -185,6 +188,10 @@ public class StatsService implements Serializable {
         return latestTopGenesByEventCnt.get();
     }
 
+    public List<Gene> getTopGenesByPaperCnt() {
+        return latestTopGenesByPaperCnt.get();
+    }
+
     private Supplier<List<Gene>> topGenesByVariantCntSupplier() {
         return new Supplier<List<Gene>>() {
             @Override
@@ -210,6 +217,25 @@ public class StatsService implements Serializable {
             public List<Gene> get() {
                 log.info( "topGenesByEventCntSupplier" );
                 List<Integer> geneIds = statsDAO.findTopGenesByEventCnt( TOP_N );
+
+                List<Gene> genes = new ArrayList<>();
+
+                for ( Integer geneId : geneIds ) {
+                    genes.add( cacheService.getGeneById( geneId ) );
+                }
+
+                return genes;
+
+            }
+        };
+    }
+
+    private Supplier<List<Gene>> topGenesByPaperCntSupplier() {
+        return new Supplier<List<Gene>>() {
+            @Override
+            public List<Gene> get() {
+                log.info( "topGenesByPaperCntSupplier" );
+                List<Integer> geneIds = statsDAO.findTopGenesByPaperCnt( TOP_N );
 
                 List<Gene> genes = new ArrayList<>();
 
