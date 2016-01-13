@@ -210,6 +210,7 @@ public class StatsView implements Serializable {
             String citation = p.getAuthor(); // TODO: Use getCitation instead of getAuthor once it has been added to the
                                              // database model
 
+            // pieModel.set( "<a href='google.com'>" + citation + "</a>", count );
             pieModel.set( citation, count );
             // if ( pieModel.getData().size() > 4 ) break;
 

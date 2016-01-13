@@ -149,3 +149,9 @@ $(function () {
     
     //console.log( JSON.parse($('#container').attr('data') ) );
 });
+
+$(Highcharts.charts).each(function(i,chart){
+   var height = chart.renderTo.clientHeight; 
+   var width = chart.renderTo.clientWidth; 
+   chart.setSize(width, height); 
+ });

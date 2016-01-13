@@ -88,39 +88,129 @@
 
 	<h3>Stats</h3>
 	
-	<h4>Variant report breakdown per paper</h4>
-		<p:panelGrid columns="2" style="margin: 0 auto;">
-		
+	<p:panelGrid id="summaryStats" columns="3" style="margin:0 auto; margin-left: 50px; width: 60%; margin-left: 50px;" >
 	
-		<p:chart type="pie" 
-					model="#{statsView.pieModel}" 
-					dataFormat="value"  
-			 		showDataLabels="true" 
-				 	style="width:800px;height:400px; " />
-
-		<p:chart type="pie" 
-					model="#{statsView.compactPieModel}" 
-					dataFormat="value"  
-			 		showDataLabels="true" 
-				 	style="width:800px;height:400px; " />
+		
+ 	  		    	
+	  	<p:dataList value="#{statsService.topGenesByEventCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right" >
+	        <f:facet name="header">
+	            Top Genes by Event Count
+	        </f:facet>
+			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
+			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
+			</p:link>
+	        - #{g.description}
+    	</p:dataList>
+    	
+ 	  	<div id="summaryText">
+		 	  	
+		 	  	<p>
+		 	  		Text to describe the statistics page. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nibh id massa consectetur mattis. Donec condimentum tempus nunc sit amet fermentum. Quisque id quam dui. Nam iaculis arcu eu fermentum tristique. Ut efficitur lectus sit amet arcu tristique, ut ornare nibh congue. Pellentesque porta risus id mollis scelerisque. Pellentesque vel dapibus orci, sit amet vehicula eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In hac habitasse platea dictumst. Nullam sed tristique quam. Fusce molestie lorem ut eleifend tincidunt. Nunc nibh ante, porta eu mattis quis, luctus at velit. Fusce in purus elementum, ullamcorper dui a, tincidunt orci. Duis vel felis vehicula, blandit risus eget, placerat nunc. Nulla et tincidunt velit. Aliquam iaculis nisi libero, euismod malesuada quam commodo id.
+		 	  	</p>
+		 	  	<p>
+		 	  		Sed sagittis lobortis quam, eget tincidunt sem semper sit amet. Sed dignissim neque in aliquam dapibus. Nam eget imperdiet quam. Mauris eget eleifend sem. Aenean pellentesque velit eget lectus molestie, vel ornare leo posuere. Cras facilisis maximus nibh, eu consequat mi commodo eget. Maecenas vehicula, sapien varius aliquam luctus, turpis metus convallis leo, nec porttitor tellus mi tincidunt est. Morbi id aliquet risus, in malesuada felis. Vivamus eu orci id risus fermentum bibendum lacinia ut felis.
+				</p>
+				<p>
+					Nulla et congue nisi, sit amet gravida nunc. Phasellus fermentum justo non mi sagittis, quis aliquam mi consequat. Sed sem elit, sollicitudin nec posuere eget, varius eget ligula. In hac habitasse platea dictumst. Duis vitae dolor dui. Phasellus felis metus, finibus in arcu porta, malesuada aliquet sapien. Integer nibh arcu, consectetur iaculis facilisis vitae, interdum vitae purus. Etiam sollicitudin arcu a arcu tempor imperdiet. Sed lectus eros, mattis vitae ultrices in, congue et tellus. Donec quis mi eros.
+				</p>
+		 	  	
+ 	  	</div>
+ 	  	
+ 	  	<p:panelGrid id="statsSummaryTbl" columns="2" style="padding-top:0px; display:block; vertical-align: top;" >
+	 	  	<f:facet name="header">
+	        	Database Statistics
+	    	</f:facet>
+	 	  	<h:outputText style="font-weight:bold" value="Total Variants:" />
+	 	  	<h:outputText value="#{statsService.variantCnt}" />
+	 	  	
+	 	  	<h:outputText style="font-weight:bold" value="Total Events:" />
+	 	  	<h:outputText value="#{statsService.eventCnt}" />
+	 	  	
+	 	  	<h:outputText style="font-weight:bold" value="Total Subjects:" />
+	 	  	<h:outputText value="#{statsService.subjectCnt}" />
+	 	  	
+	 	  	<h:outputText style="font-weight:bold" value="Total Papers:" />
+	 	  	<h:outputText value="#{statsService.paperCnt}" />
+ 	  	
+ 	  	</p:panelGrid>
+ 	  	
+ 	  
+    	
+	</p:panelGrid>
+	
+	<h4>Variant report breakdown per paper</h4>
+	
+	<div id="containerPieCharts" style="width: 80%; margin-left: 50px; ">
+		<p>
+			The charts in this section describe the breakdown by origin for variants included in this database. 
+			The first chart shows the papers including the highest counts of variants, while the second chart is complete breakdown of all papers. 
+		</p>
+		<p:panelGrid columns="2" >				
+		
+			<p:chart type="pie" 
+						model="#{statsView.compactPieModel}" 
+						dataFormat="value"  
+				 		showDataLabels="true" 
+					 	style="width:800px;height:400px; " />
+		
+			<p:chart type="pie" 
+						model="#{statsView.pieModel}" 
+						dataFormat="value"  
+				 		showDataLabels="true" 
+					 	style="width:800px;height:400px; " />
 				 	
 		</p:panelGrid>		
+	</div>
 	
 	<h4>Variant categories</h4>
 
-	<p:panelGrid columns="2" style="margin: 0 auto;">
-		<p:chart type="bar" model="#{statsView.variantCategoriesBarModel}" style="width:800px;height:500px;"/>		
-		<p:chart type="bar" model="#{statsView.variantFuncBarModel}" style="width:800px;height:500px;" logYAxis="true" />		
-	</p:panelGrid>
+
+	<div id="containerBarCharts" style="width: 80%; margin-left: 50px; ">
+		<p>
+			Variants are reported with a <em>category</em> and a <em>function</em>. 
+		</p>
+			 
+		<p>
+			 The <em>category</em> describes the potential effect of this variant, such as synonymous and nonsynonymous single nucleotide variant (SNV), or changes in the reading frame (e.g. frameshift insertions, deletions, substitutions).  			 
+  			 The <em>function</em> represents the functional role of the area where the variant originated from (e.g. A variant from non-coding DNA would be labeled as <em>intronic.</em> ) The y-axis is log-scaled to facilitate readability. 
+		</p>
+
+		<p:panelGrid columns="2" >
+			<p:chart type="bar" model="#{statsView.variantCategoriesBarModel}" style="width:800px;height:500px;"/>		
+			<p:chart type="bar" model="#{statsView.variantFuncBarModel}" style="width:800px;height:500px;" logYAxis="true" />		
+		</p:panelGrid>
+		
+				
+	</div>
 		
 	<h4>Report overlap</h4>
+	
+	<div id="heatmapText" style="width: 80%; margin: 0 auto; margin-left: 50px; ">
+		<p>
+			The map below represents the overlap between variants reported by different papers. The diagonal represents the total number of reported variant included in this database originating from a given paper.
+		</p>
 		
-	<div id="container" style="height: 1000px; min-width: 310px; max-width: 80%; margin: 0 auto;"
+		<p>
+			The overlap relation between two papers is not bijective, meaning that the number of reported variants from <em>Paper A</em> included in <em>Paper B</em> may differ from the number of reported variants from <em>Paper B</em> included in <em>Paper A</em>. 
+			This occurs because some papers may report multiple adjacent variants (for example, two SNVs from the same sample located one after the other) while other papers will refer to these variants as one single variant event. 
+			In these cases, two papers may not have have the same number of overlapping variants depending on the order of the relation.
+		</p>
+		
+	</div>
+	<div id="container" style="height: 1000px; width: 80%; margin: 0 auto; margin-left: 50px; "
 		title="Event report overlap between papers"
 		categories='#{statsView.heatmapModel.textCategories}'
 		data='#{statsView.heatmapModel.data}'
 	></div>
 	<script src="resources/js/heatmap.js"> </script>
+
+	<h4> More information / Contact us</h4>	
+	<div id="concludingText" style="width: 80%; margin: 0 auto; margin-left: 50px; ">
+		<p>
+			For more information about our data curation and harmonization, visit the <a href="instructions.xhtml">Instructions</a> section. For any questions or comments, feel free to contact <a href="mailto:support@ndb.com">support[at]ndb.com</a>.  			
+		</p>		
+		
+	</div>
 	
 	</ui:define>
 
