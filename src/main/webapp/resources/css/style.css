@@ -113,3 +113,18 @@ div.ui-datalist.datalist-right {
 div.ui-panel.no-padding > div.ui-panel-content {
 	padding:0;
 }
+
+div.title-headers {
+	margin:0 auto 25px auto;
+	text-align:center;
+}
+
+div.title-headers h1,
+div.title-headers h2,
+div.title-headers h3,
+div.title-headers h4,
+div.title-headers h5,
+div.title-headers h6,
+{
+	margin-bottom:5px;
+}

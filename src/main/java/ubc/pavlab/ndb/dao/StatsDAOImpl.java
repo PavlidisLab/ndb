@@ -102,10 +102,21 @@ public class StatsDAOImpl implements StatsDAO {
             + SQL_VARIANT_TABLE + " var inner join " + SQL_GENE_MAP_TABLE
             + " vmap on var.id=vmap.variant_id group by gene_id order by cnt DESC limit ?";
 
+    private static final String SQL_TOP_GENES_BY_PAPER = "select gene_id, COUNT(distinct paper_id) cnt from "
+            + SQL_VARIANT_TABLE + " var inner join " + SQL_GENE_MAP_TABLE
+            + " vmap on var.id=vmap.variant_id group by gene_id order by cnt DESC limit ?";
+
     private static final String SQL_VARIANT_CNT_BY_CONTEXT = "SELECT func, COUNT(*) FROM " + SQL_VARIANT_TABLE
             + " where paper_id=? group by func";
+
+    private static final String SQL_EVENT_CNT_BY_CONTEXT = "SELECT func, COUNT(DISTINCT event_id) FROM "
+            + SQL_VARIANT_TABLE + " where paper_id=? group by func";
+
     private static final String SQL_VARIANT_CNT_BY_CATEGORY = "SELECT category, COUNT(*) FROM " + SQL_VARIANT_TABLE
             + " where paper_id=? group by category";
+
+    private static final String SQL_EVENT_CNT_BY_CATEGORY = "SELECT category, COUNT(DISTINCT event_id) FROM "
+            + SQL_VARIANT_TABLE + " where paper_id=? group by category";
 
     // Vars ---------------------------------------------------------------------------------------
 
@@ -327,6 +338,26 @@ public class StatsDAOImpl implements StatsDAO {
     }
 
     @Override
+    public List<Integer> findTopGenesByPaperCnt( Integer n ) throws DAOException {
+        if ( n == null || n <= 0 ) {
+            n = 5;
+        }
+        List<Integer> top = Lists.newArrayList();
+        try (Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = prepareStatement( connection, SQL_TOP_GENES_BY_PAPER, false, n );
+                ResultSet resultSet = statement.executeQuery();) {
+            while ( resultSet.next() ) {
+                top.add( resultSet.getInt( "gene_id" ) );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+
+        return top;
+
+    }
+
+    @Override
     public List<Tuple2<String, Integer>> findTotalVariantsByContextForPaperId( Integer paperId ) throws DAOException {
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
@@ -343,10 +374,44 @@ public class StatsDAOImpl implements StatsDAO {
     }
 
     @Override
+    public List<Tuple2<String, Integer>> findTotalEventsByContextForPaperId( Integer paperId ) throws DAOException {
+        List<Tuple2<String, Integer>> results = new ArrayList<>();
+        try (Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CONTEXT, false,
+                        paperId );
+                ResultSet resultSet = statement.executeQuery();) {
+            while ( resultSet.next() ) {
+                results.add( new Tuple2<>( resultSet.getString( 1 ), resultSet.getInt( 2 ) ) );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+        return results;
+    }
+
+    @Override
     public List<Tuple2<String, Integer>> findTotalVariantsByCategoryForPaperId( Integer paperId ) throws DAOException {
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_CATEGORY, false,
+                        paperId );
+                ResultSet resultSet = statement.executeQuery();) {
+            while ( resultSet.next() ) {
+                String category = resultSet.getString( 1 );
+                category = StringUtils.isBlank( category ) ? "other" : category;
+                results.add( new Tuple2<>( category, resultSet.getInt( 2 ) ) );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+        return results;
+    }
+
+    @Override
+    public List<Tuple2<String, Integer>> findTotalEventsByCategoryForPaperId( Integer paperId ) throws DAOException {
+        List<Tuple2<String, Integer>> results = new ArrayList<>();
+        try (Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CATEGORY, false,
                         paperId );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {

@@ -26,7 +26,7 @@
  		<ui:include src="/searchBar.xhtml" />
  		</p:panel>
  		<p:separator style="width:75%;"/>
-      <p:panel styleClass="no-border" style="padding:50px;">
+      <p:panel styleClass="no-border" style="padding-top:50px;">
  	  <p:panelGrid styleClass="no-border" columns="2" style="width:100%;text-align:left;">
  	  
  	  	<p:panel styleClass="no-border">
@@ -35,14 +35,12 @@
  	  	
  	  	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 		</div>
- 	  	<p:panelGrid columns="2" style="margin:0 auto;">
+ 	  	<p:panelGrid columns="2" style="margin:0 auto 40px auto;">
  	  	<f:facet name="header">
         	Database Statistics
     	</f:facet>
- 	  	<h:outputText value="Total Variants:" />
- 	  	<h:outputText value="#{statsService.variantCnt}" />
- 	  	
- 	  	<h:outputText value="Total Events:" />
+
+ 	  	<h:outputText value="Total Variant Events:" />
  	  	<h:outputText value="#{statsService.eventCnt}" />
  	  	
  	  	<h:outputText value="Total Subjects:" />
@@ -53,11 +51,17 @@
  	  	
  	  	</p:panelGrid>
  	  	
+ 	  	<div class="title">
+ 	  	<h3>Recent News</h3>
+ 	  	
+ 	  	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+ 	  	
  	  	</p:panel>
  	  	
  	  	<p:panel styleClass="no-border">
  	  	
-  	    <p:dataList value="#{statsService.topGenesByVariantCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
+<!--   	    <p:dataList value="#{statsService.topGenesByVariantCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
 	        <f:facet name="header">
 	            Top Genes by Variant Count
 	        </f:facet>
@@ -65,12 +69,22 @@
 			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
 			</p:link>
 	        - #{g.description}
-    	</p:dataList>
+    	</p:dataList> -->
     	
     	
 	  	<p:dataList value="#{statsService.topGenesByEventCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
 	        <f:facet name="header">
-	            Top Genes by Event Count
+	            Top Genes by Variant Event Count
+	        </f:facet>
+			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
+			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
+			</p:link>
+	        - #{g.description}
+    	</p:dataList>
+    	
+	  	<p:dataList value="#{statsService.topGenesByPaperCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
+	        <f:facet name="header">
+	            Top Genes by Frequency in Papers
 	        </f:facet>
 			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
 			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
@@ -81,11 +95,7 @@
     	</p:panel>
     	
     	<p:panel styleClass="no-border">
- 	  	<div class="title">
- 	  	<h3>Recent News</h3>
- 	  	
- 	  	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		</div>
+
 		</p:panel>
     	
  	  

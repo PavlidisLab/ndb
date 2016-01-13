@@ -24,7 +24,10 @@
 	<p:growl id="msgs" showDetail="true" />
     
 		<h:form id="formResults" style="padding:30px;">
-		<h3 style="margin:0 auto 30px auto">Results for "#{variantView.query}"</h3>
+			<div class="title-headers">
+				<h2>Results for "#{variantView.query}"</h2>
+				<h4>Variant Events: #{fn:length(variantView.events)}</h4>
+			</div>
 				
 		    <p:dataTable id="variantTable" styleClass="right-aligned-paginator"
 		    			 var="event" value="#{variantView.events}" paginatorAlwaysVisible="true" paginator="true" paginatorPosition="top bottom"

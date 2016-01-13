@@ -26,7 +26,7 @@
 			<p:panel header="Summary" style="width:600px;padding:0;" styleClass="no-border no-padding">
 				<composites:paperPanel paper="#{paperView.paper}" variantCnt="#{paperView.variantCnt}" eventCnt="#{paperView.eventCnt}"/>
 	    	<p:panel header="Breakdowns" style="width:600px;padding:0;margin-top:25px;" styleClass="no-border no-padding">
-	    	<p:dataTable var="tuple" value="#{paperView.variantCntByCategory}" style="margin-bottom:20px" >	
+	    	<p:dataTable var="tuple" value="#{paperView.eventCntByCategory}" style="margin-bottom:20px" >	
 						 <p:column headerText="Function">
 							<h:outputText value="#{tuple.t1}" />
 						</p:column>
