@@ -142,15 +142,15 @@
           	
 		        </p:column>
 		        
-		        <p:column sortBy="#{event}" sortFunction="#{variantView.sortByEffects}">
+		        <p:column sortBy="#{event}"  styleClass="row-gradient" sortFunction="#{variantView.sortByEffects}">
 		            <f:facet name="header">
 		                <h:outputText id="Effect" value="Effects"/>
 		                <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect" />	
 		           
 		            </f:facet>
 	            	
-	            	<ui:repeat var="c" value="#{event.categories}" varStatus="status">   
-	            		<h:outputText value="#{c.label}" title="#{c.description}"/>
+	            	<ui:repeat var="c" value="#{event.categories}"  varStatus="status">   
+	            		<h:outputText value="#{c.label}" styleClass="ct#{c.impact}" title="#{c.description}"/>
 	            		<h:outputText value=", " rendered="#{not status.last}" /> 	            		          			            			          
 	            	</ui:repeat>	            	
 		        </p:column>

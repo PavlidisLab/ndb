@@ -27,30 +27,32 @@ package ubc.pavlab.ndb.model.enums;
  */
 public enum Category {
     
-    frameshiftInsertion("frameshift insertion", 1, "an insertion of one or more nucleotides that cause frameshift changes in protein coding sequence", "frameshift_elongation (SO:0001909)"),
-    frameshiftDeletion("frameshift deletion", 2, "a deletion of one or more nucleotides that cause frameshift changes in protein coding sequence", "frameshift_truncation (SO:0001910)"),
-    frameshiftBlockSubstitution("frameshift block substitution", 3, "a block substitution of one or more nucleotides that cause frameshift changes in protein coding sequence", "frameshift_variant (SO:0001589)"),
-    frameshiftSubstitution("frameshift substitution", 3, "a substitution of one or more nucleotides that cause frameshift changes in protein coding sequence", "frameshift_variant (SO:0001589)"),
-    nonframeshiftInsertion("nonframeshift insertion", 6, "an insertion of 3 or multiples of 3 nucleotides that do not cause frameshift changes in protein coding sequence", "inframe_insertion (SO:0001821)"),
-    nonframeshiftDeletion("nonframeshift deletion", 7, "a deletion of 3 or mutliples of 3 nucleotides that do not cause frameshift changes in protein coding sequence", "inframe_deletion (SO:0001822)"),
-    nonframeshiftBlockSubstitution("nonframeshift block substitution", 8, "a block substitution of one or more nucleotides that do not cause frameshift changes in protein coding sequence", "inframe_variant (SO:0001650)"),
-    nonframeshiftSubstitution("nonframeshift substitution", 8, "a substitution of one or more nucleotides that do not cause frameshift changes in protein coding sequence", "inframe_variant (SO:0001650)"),
-    nonsynonymousSNV("nonsynonymous SNV", 9, "a single nucleotide change that cause an amino acid change", "missense_variant (SO:0001583)"),
-    stopgain("stopgain", 4, "a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate creation of stop codon at the variant site. For frameshift mutations, the creation of stop codon downstream of the variant will not be counted as 'stopgain'!", "stop_gained (SO:0001587)"),
-    stoploss("stoploss", 5, "a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate elimination of stop codon at the variant site", "stop_lost (SO:0001578)"),
-    synonymousSNV("synonymous SNV", 10, "a single nucleotide change that does not cause an amino acid change", "synonymous_variant (SO:0001819)"),
-    unknown("unknown", 11, "unknown function (due to various errors in the gene structure definition in the database file)", "sequence_variant (SO:0001060)");
+    frameshiftInsertion("frameshift insertion", 1, "an insertion of one or more nucleotides that cause frameshift changes in protein coding sequence", "frameshift_elongation (SO:0001909)",5  ),
+    frameshiftDeletion("frameshift deletion", 2, "a deletion of one or more nucleotides that cause frameshift changes in protein coding sequence", "frameshift_truncation (SO:0001910)",5 ),
+    frameshiftBlockSubstitution("frameshift block substitution", 3, "a block substitution of one or more nucleotides that cause frameshift changes in protein coding sequence", "frameshift_variant (SO:0001589)",5 ),
+    frameshiftSubstitution("frameshift substitution", 3, "a substitution of one or more nucleotides that cause frameshift changes in protein coding sequence", "frameshift_variant (SO:0001589)",5 ),
+    nonframeshiftInsertion("nonframeshift insertion", 6, "an insertion of 3 or multiples of 3 nucleotides that do not cause frameshift changes in protein coding sequence", "inframe_insertion (SO:0001821)", 3 ),
+    nonframeshiftDeletion("nonframeshift deletion", 7, "a deletion of 3 or mutliples of 3 nucleotides that do not cause frameshift changes in protein coding sequence", "inframe_deletion (SO:0001822)", 3),
+    nonframeshiftBlockSubstitution("nonframeshift block substitution", 8, "a block substitution of one or more nucleotides that do not cause frameshift changes in protein coding sequence", "inframe_variant (SO:0001650)", 3),
+    nonframeshiftSubstitution("nonframeshift substitution", 8, "a substitution of one or more nucleotides that do not cause frameshift changes in protein coding sequence", "inframe_variant (SO:0001650)", 3),
+    nonsynonymousSNV("nonsynonymous SNV", 9, "a single nucleotide change that cause an amino acid change", "missense_variant (SO:0001583)",2 ),
+    stopgain("stopgain", 4, "a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate creation of stop codon at the variant site. For frameshift mutations, the creation of stop codon downstream of the variant will not be counted as 'stopgain'!", "stop_gained (SO:0001587)",6 ),
+    stoploss("stoploss", 5, "a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate elimination of stop codon at the variant site", "stop_lost (SO:0001578)", 4),
+    synonymousSNV("synonymous SNV", 10, "a single nucleotide change that does not cause an amino acid change", "synonymous_variant (SO:0001819)", 1),
+    unknown("unknown", 11, "unknown function (due to various errors in the gene structure definition in the database file)", "sequence_variant (SO:0001060)", 0);
 
     private String label;
     private Integer precedence;
     private String description;
     private String sequenceOntology;
+    private int impact;
 
-    private Category( String label, Integer precedence, String description, String sequenceOntology ) {
+    private Category( String label, Integer precedence, String description, String sequenceOntology, int impact ) {
         this.label = label;
         this.precedence = precedence;
         this.description = description;
         this.sequenceOntology = sequenceOntology;
+        this.impact = impact;
         
     }
 
@@ -68,6 +70,10 @@ public enum Category {
 
     public String getSequenceOntology() {
         return sequenceOntology;
+    }
+    
+    public int getImpact(){
+        return impact;
     }
     
     @Override
