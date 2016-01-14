@@ -1,3 +1,5 @@
+/* Color background cells
+
 td.row-gradient {
 	background-image:none;
 }
@@ -25,8 +27,12 @@ td.row-gradient.c5 {
 td.row-gradient.c6 {
 	background-color:#F1827E;
 }
+*/
 
-td.row-gradient.ct1 {
+
+/* Color text shadow */
+td.row-gradient.ct1, 
+td.row-gradient span.ct1  {
 text-shadow: 1px 1px 0 #CBF0A3,
     -1px 1px 0 #CBF0A3,
     1px -1px 0 #CBF0A3,
@@ -53,7 +59,9 @@ text-shadow: 1px 1px 0 #CBF0A3,
     -2px -1px 0 #CBF0A3;
 }
 
-td.row-gradient.ct2 {
+
+td.row-gradient.ct2, 
+td.row-gradient span.ct2 {
 text-shadow: 1px 1px 0 #D2DA9B,
     -1px 1px 0 #D2DA9B,
     1px -1px 0 #D2DA9B,
@@ -80,7 +88,9 @@ text-shadow: 1px 1px 0 #D2DA9B,
     -2px -1px 0 #D2DA9B;
 }
 
-td.row-gradient.ct3 {
+
+td.row-gradient.ct3, 
+td.row-gradient span.ct3 {
 text-shadow: 1px 1px 0 #DAC494,
     -1px 1px 0 #DAC494,
     1px -1px 0 #DAC494,
@@ -107,7 +117,9 @@ text-shadow: 1px 1px 0 #DAC494,
     -2px -1px 0 #DAC494;
 }
 
-td.row-gradient.ct4 {
+
+td.row-gradient.ct4, 
+td.row-gradient span.ct4 {
 text-shadow: 1px 1px 0 #E1AE8C,
     -1px 1px 0 #E1AE8C,
     1px -1px 0 #E1AE8C,
@@ -133,7 +145,9 @@ text-shadow: 1px 1px 0 #E1AE8C,
     2px -1px 0 #E1AE8C,
     -2px -1px 0 #E1AE8C;}
 
-td.row-gradient.ct5 {
+
+td.row-gradient.ct5, 
+td.row-gradient span.ct5 {
 text-shadow: 1px 1px 0 #E99885,
     -1px 1px 0 #E99885,
     1px -1px 0 #E99885,
@@ -159,7 +173,8 @@ text-shadow: 1px 1px 0 #E99885,
     2px -1px 0 #E99885,
     -2px -1px 0 #E99885;}
 
-td.row-gradient.ct6 {
+td.row-gradient.ct6, 
+td.row-gradient span.ct6  {
 text-shadow: 1px 1px 0 #F1827E,
     -1px 1px 0 #F1827E,
     1px -1px 0 #F1827E,
@@ -184,4 +199,9 @@ text-shadow: 1px 1px 0 #F1827E,
     -2px 1px 0 #F1827E,
     2px -1px 0 #F1827E,
     -2px -1px 0 #F1827E;}
+    
+    td.row-gradient.ct0, 
+td.row-gradient span.ct0  {
+	/* No style */
+}
 
