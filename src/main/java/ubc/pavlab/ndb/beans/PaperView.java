@@ -35,7 +35,7 @@ public class PaperView implements Serializable {
     private StatsService statsService;
 
     private Paper paper;
-    private int variantCnt;
+    //    private int variantCnt;
     private int eventCnt;
     private List<Tuple2<String, Integer>> eventCntByContext;
     private List<Tuple2<String, Integer>> eventCntByCategory;
@@ -74,9 +74,9 @@ public class PaperView implements Serializable {
         return paper;
     }
 
-    public int getVariantCnt() {
-        return variantCnt;
-    }
+    //    public int getVariantCnt() {
+    //        return variantCnt;
+    //    }
 
     public int getEventCnt() {
         return eventCnt;
