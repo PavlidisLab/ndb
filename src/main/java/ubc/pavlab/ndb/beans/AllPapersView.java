@@ -1,6 +1,8 @@
 package ubc.pavlab.ndb.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -19,14 +21,17 @@ import ubc.pavlab.ndb.utility.Tuples.Tuple2;
 
 @ManagedBean
 @ViewScoped
-public class PaperView implements Serializable {
+public class AllPapersView implements Serializable {
 
     /**
+     * View to display all the papers.
      * 
+     * @author mbelmadani
+     * @version $Id$
      */
-    private static final long serialVersionUID = -401169062920170155L;
+    private static final long serialVersionUID = 5738460619335677599L;
 
-    private static final Logger log = Logger.getLogger( PaperView.class );
+    private static final Logger log = Logger.getLogger( AllPapersView.class );
 
     @ManagedProperty("#{cacheService}")
     private CacheService cacheService;
@@ -35,13 +40,15 @@ public class PaperView implements Serializable {
     private StatsService statsService;
 
     private Paper paper;
+    private List<Paper> papers;
+
     private int variantCnt;
     private int eventCnt;
     private List<Tuple2<String, Integer>> eventCntByContext;
     private List<Tuple2<String, Integer>> eventCntByCategory;
 
-    public PaperView() {
-        log.info( "create PaperView" );
+    public AllPapersView() {
+        log.info( "create AllPapersView" );
     }
 
     @PostConstruct
@@ -50,18 +57,14 @@ public class PaperView implements Serializable {
             return; // Skip ajax requests.
         }
 
-        log.info( "init PaperView" );
+        log.info( "init AllPapersView" );
         Map<String, String> requestParams = FacesContext.getCurrentInstance().getExternalContext()
                 .getRequestParameterMap();
 
-        int paperId;
-        try {
-            paperId = Integer.valueOf( requestParams.get( "paperId" ) );
-        } catch ( NumberFormatException | NullPointerException e ) {
-            throw new IllegalArgumentException( "Malformed Search Parameters" );
-        }
-
+        int paperId = 1;
         paper = cacheService.getPaperById( paperId );
+
+        papers = new ArrayList<Paper>( cacheService.listPapers() );
 
         // variantCnt = statsService.getVariantCntByPaperId( paperId );
         eventCnt = statsService.getEventCntByPaperId( paperId );
@@ -70,8 +73,12 @@ public class PaperView implements Serializable {
 
     }
 
-    public Paper getPaper() {
-        return paper;
+    public void setCacheService( CacheService cacheService ) {
+        this.cacheService = cacheService;
+    }
+
+    public void setStatsService( StatsService statsService ) {
+        this.statsService = statsService;
     }
 
     public int getVariantCnt() {
@@ -90,12 +97,20 @@ public class PaperView implements Serializable {
         return eventCntByCategory;
     }
 
-    public void setCacheService( CacheService cacheService ) {
-        this.cacheService = cacheService;
+    public Paper getPaper() {
+        return paper;
     }
 
-    public void setStatsService( StatsService statsService ) {
-        this.statsService = statsService;
+    public void setPaper( Paper paper ) {
+        this.paper = paper;
+    }
+
+    public List<Paper> getPapers() {
+        return this.papers;
+    }
+
+    public void setPapers( Collection<Paper> papers ) {
+        this.papers = new ArrayList<Paper>( papers );
     }
 
 }

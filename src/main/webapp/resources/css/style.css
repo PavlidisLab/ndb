@@ -128,3 +128,21 @@ div.title-headers h6,
 {
 	margin-bottom:5px;
 }
+
+.compactTable td {
+	/* padding:0 0 0 0 !important;*/
+	padding-bottom: 0 !important;	
+	padding-top: 0 !important; 
+}
+
+.hiddenTable,
+.hiddenTable td,
+.hiddenTable tr,
+.hiddenTable table {
+	border-style: none !important;
+}
+
+
+.hiddenTable table {
+	weigth: 10px; 	
+}
