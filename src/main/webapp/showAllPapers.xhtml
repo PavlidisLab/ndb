@@ -34,8 +34,8 @@
 					value="#{allPapersView.papers}"
 					tableStyle="width:auto; "
 					tableStyleClass="compactTable"
-					>		    		    		 
-    		<f:facet name="" />
+					>
+
 		    <p:column headerText="">
 		        <h:outputLink value="paper.xhtml?paperId=#{paper.id}">
     				<h:panelGrid class="hiddenTable" columns="2" style="width:auto;">
@@ -49,9 +49,9 @@
 		     			<h:outputText value="Author"/>		                
 		                <p:tooltip trackMouse="true" id="toolTipAuthor" for="headAuthor" value="Author of the publication." atPosition="right center"/>
 		            </f:facet>
-		    	&nbsp;<h:outputLink value="paper.xhtml?paperId=#{paper.id}">		    
+		    			    
 		    		<h:outputText style="font-weight:bold; text-align:center;" value="#{paper.author}" /> 
-		    	</h:outputLink>&nbsp;
+		    	
 		    </p:column>
 		    
 		    <p:column id="headScope" headerText="Scope" sortBy="#{paper.scope}" >
@@ -83,7 +83,7 @@
 		     		<h:outputText value="Source"/>		                
 		            <p:tooltip trackMouse="true" id="toolTipSource" for="headSource" value="Link to access the original source publication." myPosition="left center"/>
 		        </f:facet>
-		    	<h:outputLink value="#{paper.url}">
+		    	<h:outputLink target="_blank" value="#{paper.url}">
 		    		<h:outputText styleClass="ui-icon ui-icon-extlink" style="margin:0 auto;" />
 		    	</h:outputLink>  	
 		    </p:column>			    		    
