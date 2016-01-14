@@ -55,7 +55,7 @@ public class VariantView implements Serializable {
     private Variant selectedVariant;
 
     private Paper selectedPaper;
-    private Integer selectedPaperVariantCnt;
+    //    private Integer selectedPaperVariantCnt;
     private Integer selectedPaperEventCnt;
 
     @PostConstruct
@@ -153,14 +153,14 @@ public class VariantView implements Serializable {
     }
 
     public void setSelectedPaper( Paper selectedPaper ) {
-        selectedPaperVariantCnt = statsService.getVariantCntByPaperId( selectedPaper.getId() );
+        //        selectedPaperVariantCnt = statsService.getVariantCntByPaperId( selectedPaper.getId() );
         selectedPaperEventCnt = statsService.getEventCntByPaperId( selectedPaper.getId() );
         this.selectedPaper = selectedPaper;
     }
 
-    public Integer getSelectedPaperVariantCnt() {
-        return selectedPaperVariantCnt;
-    }
+    //    public Integer getSelectedPaperVariantCnt() {
+    //        return selectedPaperVariantCnt;
+    //    }
 
     public Integer getSelectedPaperEventCnt() {
         return selectedPaperEventCnt;
