@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.primefaces.model.StreamedContent;
 
 import ubc.pavlab.ndb.beans.services.CacheService;
 import ubc.pavlab.ndb.beans.services.StatsService;
@@ -19,6 +20,7 @@ import ubc.pavlab.ndb.beans.services.VariantService;
 import ubc.pavlab.ndb.model.Event;
 import ubc.pavlab.ndb.model.Paper;
 import ubc.pavlab.ndb.model.Variant;
+import ubc.pavlab.ndb.utility.CSVExporter;
 
 @ManagedBean
 @ViewScoped
@@ -57,6 +59,8 @@ public class VariantView implements Serializable {
     private Paper selectedPaper;
     //    private Integer selectedPaperVariantCnt;
     private Integer selectedPaperEventCnt;
+
+    private CSVExporter csvExporter;
 
     @PostConstruct
     public void init() {
@@ -115,9 +119,18 @@ public class VariantView implements Serializable {
             complexVariant |= event.isComplex();
         }
 
+        csvExporter = new CSVExporter( "variants.csv" );
+
         log.info( "Variants: " + this.variants.size() );
         log.info( "Events: " + this.events.size() );
 
+    }
+
+    public StreamedContent getCsv() {
+        if ( !csvExporter.hasData() ) {
+            csvExporter.loadData( events );
+        }
+        return csvExporter.getStreamedContent();
     }
 
     public String getQuery() {

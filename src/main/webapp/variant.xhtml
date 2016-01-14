@@ -36,7 +36,7 @@
 		 
 		        <f:facet name="{Exporters}">
 		        	<span style="text-align:right;">
-		            <h:commandLink>
+<!-- 		            <h:commandLink>
 		                <p:graphicImage library="img" name="excel.png" width="24"/>
 		                <p:dataExporter type="xls" target="variantTable" fileName="variants" />
 		            </h:commandLink>
@@ -44,17 +44,18 @@
 		            <h:commandLink>
 		                <p:graphicImage library="img" name="pdf.png" width="24"/>
 		                <p:dataExporter type="pdf" target="variantTable" fileName="variants"/>
-		            </h:commandLink>
+		            </h:commandLink> -->
 		 
 		            <h:commandLink>
 		                <p:graphicImage library="img" name="csv.png" width="24"/>
-		                <p:dataExporter type="csv" target="variantTable" fileName="variants" />
+<!-- 		                <p:dataExporter type="csv" target="variantTable" fileName="variants" />
+ -->		                <p:fileDownload value="#{variantView.csv}" />
 		            </h:commandLink>
 		 
-		            <h:commandLink>
+<!-- 		            <h:commandLink>
 		                <p:graphicImage library="img" name="xml.png" width="24"/>
 		                <p:dataExporter type="xml" target="variantTable" fileName="variants" />
-		            </h:commandLink>
+		            </h:commandLink> -->
 		            </span>
 		        </f:facet>
 
