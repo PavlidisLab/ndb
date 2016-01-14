@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composites="http://java.sun.com/jsf/composite/composites" >
+
+	<ui:define name="pageTitle">All papers</ui:define>
+	
+	<ui:define name="css">
+		<h:outputStylesheet library="css" name="style.css" />
+	</ui:define>
+	
+	<ui:define name="content">
+	<p:panel styleClass="no-border clearfix" style="float:right;">
+	<ui:include src="/searchBar.xhtml" />
+	</p:panel>
+	<br/>
+	<h:form style="padding:30px;">
+		<h3 style="margin:0 auto 30px auto">Publication Collection</h3>    	
+	    
+	    <p>
+	    	Below is the complete list of publications included in our database. For more information about a specific publications or its metadata, click 
+	    	the <span class="ui-icon ui-icon-circlesmall-plus" style="display: inline-block"/> icon. 	    	 
+	    </p>
+	    <p>To access the original publication, click on the <span class="ui-icon ui-icon-extlink" style="display: inline-block"/> icon under the <em>Source</em> column.</p>
+	    
+		<p:dataTable var="paper" 
+					value="#{allPapersView.papers}"
+					tableStyle="width:auto; "
+					tableStyleClass="compactTable"
+					>		    		    		 
+    		<f:facet name="" />
+		    <p:column headerText="">
+		        <h:outputLink value="paper.xhtml?paperId=#{paper.id}">
+    				<h:panelGrid class="hiddenTable" columns="2" style="width:auto;">
+    					<h:outputText styleClass="ui-icon ui-icon-circlesmall-plus" style="margin:0 auto;" />
+    				</h:panelGrid>
+		        </h:outputLink>
+		    </p:column>
+		    
+		    <p:column id="headAuthor" sortBy="#{paper.author}">
+		    		<f:facet name="header">
+		     			<h:outputText value="Author"/>		                
+		                <p:tooltip trackMouse="true" id="toolTipAuthor" for="headAuthor" value="Author of the publication." atPosition="right center"/>
+		            </f:facet>
+		    	&nbsp;<h:outputLink value="paper.xhtml?paperId=#{paper.id}">		    
+		    		<h:outputText style="font-weight:bold; text-align:center;" value="#{paper.author}" /> 
+		    	</h:outputLink>&nbsp;
+		    </p:column>
+		    
+		    <p:column id="headScope" headerText="Scope" sortBy="#{paper.scope}" >
+		    	<f:facet name="header">
+		     		<h:outputText value="Scope"/>		                
+		            <p:tooltip trackMouse="true" id="toolTipScope" for="headScope" value="Experimental details from sequencing (e.g. Whole-Genome Sequencing, Whole-Exome sequencing, gene specific.)" atPosition="right center"/>
+		        </f:facet>
+		        <h:outputText value="#{paper.scope}" />
+		    </p:column>
+		    
+		    <p:column id="headReporting" headerText="Reporting" sortBy="#{paper.mutReporting}">
+		    	<f:facet name="header">
+		     			<h:outputText value="Reporting"/>		                
+		                <p:tooltip trackMouse="true" id="toolTipReporting" for="headReporting" value="Specific aim behind reported variants." />
+		        </f:facet>
+		        <h:outputText value="#{paper.mutReporting}" />
+		    </p:column>
+		    
+		    <p:column id="headEffects" sortBy="#{paper.reportedEffects}">
+		     		<f:facet name="header">
+		     			<h:outputText value="Effects"/>		                
+		                <p:tooltip trackMouse="true" id="toolTipEffects" for="headEffects" value="Overview of variant effect categories covered by reported variants." atPosition="right center"/>
+		            </f:facet>
+		            <h:outputText value="#{paper.reportedEffects}" />
+		    </p:column>
+		   
+		    <p:column id="headSource" headerText="Source"  >
+		    	<f:facet name="header">
+		     		<h:outputText value="Source"/>		                
+		            <p:tooltip trackMouse="true" id="toolTipSource" for="headSource" value="Link to access the original source publication." myPosition="left center"/>
+		        </f:facet>
+		    	<h:outputLink value="#{paper.url}">
+		    		<h:outputText styleClass="ui-icon ui-icon-extlink" style="margin:0 auto;" />
+		    	</h:outputLink>  	
+		    </p:column>			    		    
+		    
+		</p:dataTable>	        
+	    		 	
+	</h:form>
+		<div id="concludingText" style="width: 80%; margin: 0 auto; margin-left: 50px; ">
+			<p>
+				For more information about our data curation and harmonization, visit the <a href="documentation.xhtml">documentation</a> section. For any questions or comments, feel free to contact <a href="mailto:support@ndb.com">support[at]ndb.com</a>.  			
+			</p>				
+		</div>
+	</ui:define>
+
+</ui:composition>
