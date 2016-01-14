@@ -50,7 +50,7 @@ public class Event {
     private final String ref;
     private final String alt;
     private final List<Gene> genes;
-    //private final List<Paper> papers;
+    // private final List<Paper> papers;
     private final List<String> funcs;
     private final List<Category> categories;
     private final List<Variant> variants;
@@ -144,7 +144,7 @@ public class Event {
         this.complex = complex;
 
         this.genes = ImmutableList.copyOf( genes );
-        //this.papers = ImmutableList.copyOf( papers );
+        // this.papers = ImmutableList.copyOf( papers );
         this.funcs = ImmutableList.copyOf( funcs );
         this.categories = ImmutableList.copyOf( categories );
         this.variants = ImmutableList.copyOf( variantsCopy );
@@ -186,19 +186,19 @@ public class Event {
         return genes;
     }
 
-    //    public String getGenesString() {
-    //        StringBuilder sb = new StringBuilder();
-    //        String delim = "";
-    //        for ( Gene gene : genes ) {
-    //            sb.append( delim ).append( gene.getSymbol() );
-    //            delim = ", ";
-    //        }
-    //        return sb.toString();
-    //    }
+    // public String getGenesString() {
+    // StringBuilder sb = new StringBuilder();
+    // String delim = "";
+    // for ( Gene gene : genes ) {
+    // sb.append( delim ).append( gene.getSymbol() );
+    // delim = ", ";
+    // }
+    // return sb.toString();
+    // }
 
-    //    public List<Paper> getPapers() {
-    //        return papers;
-    //    }
+    // public List<Paper> getPapers() {
+    // return papers;
+    // }
 
     public List<String> getFuncs() {
         return funcs;
@@ -295,7 +295,9 @@ public class Event {
             Iterator<Category> it2 = e2.getCategories().iterator();
 
             while ( it1.hasNext() && it2.hasNext() ) {
-                int res = it1.next().compareTo( it2.next() );
+                int a = it1.next().getImpact();
+                int b = it2.next().getImpact();
+                int res = ( a < b ) ? 1 : ( ( a > b ) ? -1 : 0 );
                 if ( res != 0 ) {
                     return res;
                 }
@@ -313,7 +315,7 @@ public class Event {
 
             if ( e1.getStart() == null ) {
                 if ( e2.getStart() == null ) {
-                    return 0; //equal
+                    return 0; // equal
                 } else {
                     return -1; // null is before others
                 }

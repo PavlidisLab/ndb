@@ -21,12 +21,13 @@ package ubc.pavlab.ndb.model.enums;
 
 /**
  * TODO Document Me
- * 
+ *      The impact for the variant effect is colored by tiers 
+ *      inspired by http://uswest.ensembl.org/info/genome/variation/predicted_data.html#consequences 
  * @author mjacobson
  * @version $Id$
  */
 public enum Category {
-    
+       
     frameshiftInsertion("frameshift insertion", 1, "an insertion of one or more nucleotides that cause frameshift changes in protein coding sequence", "frameshift_elongation (SO:0001909)",5  ),
     frameshiftDeletion("frameshift deletion", 2, "a deletion of one or more nucleotides that cause frameshift changes in protein coding sequence", "frameshift_truncation (SO:0001910)",5 ),
     frameshiftBlockSubstitution("frameshift block substitution", 3, "a block substitution of one or more nucleotides that cause frameshift changes in protein coding sequence", "frameshift_variant (SO:0001589)",5 ),
@@ -81,8 +82,7 @@ public enum Category {
         return this.getLabel();
     }
     
-    public static Category getEnum(String value) {
-        
+    public static Category getEnum(String value) {   
         if ( value == null || value.trim().equals( "" )) {
             return null;
         }
