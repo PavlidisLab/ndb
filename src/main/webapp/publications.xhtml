@@ -31,17 +31,15 @@
 	    <p>To access the original publication, click on the <span class="ui-icon ui-icon-extlink" style="display: inline-block"/> icon under the <em>Source</em> column.</p>
 	    
 		<p:dataTable var="paper" 
-					value="#{allPapersView.papers}"
+					value="#{cacheService.listPapers()}"
 					tableStyle="width:auto; "
 					tableStyleClass="compactTable"
 					>
 
-		    <p:column headerText="">
-		        <h:outputLink value="paper.xhtml?paperId=#{paper.id}">
-    				<h:panelGrid class="hiddenTable" columns="2" style="width:auto;">
-    					<h:outputText styleClass="ui-icon ui-icon-circlesmall-plus" style="margin:0 auto;" />
-    				</h:panelGrid>
-		        </h:outputLink>
+		    <p:column headerText="" style="width:32px;text-align: center">
+               	<p:link outcome="paper" value="" target="_blank" styleClass="ui-icon ui-icon-circlesmall-plus" style="margin:0 auto;">
+				    <f:param name="paperId" value="#{paper.id}" />
+				</p:link>
 		    </p:column>
 		    
 		    <p:column id="headAuthor" sortBy="#{paper.author}">
@@ -93,7 +91,7 @@
 	</h:form>
 		<div id="concludingText" style="width: 80%; margin: 0 auto; margin-left: 50px; ">
 			<p>
-				For more information about our data curation and harmonization, visit the <a href="documentation.xhtml">documentation</a> section. For any questions or comments, feel free to contact <a href="mailto:support@ndb.com">support[at]ndb.com</a>.  			
+				For more information about our data curation and harmonization, visit the <a href="documentation.xhtml">documentation</a> section. For any questions or comments, feel free to contact <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.  			
 			</p>				
 		</div>
 	</ui:define>
