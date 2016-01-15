@@ -76,6 +76,7 @@ public class VariantView implements Serializable {
         String start = requestParams.get( "start" );
         String stop = requestParams.get( "stop" );
         String paperIdParam = requestParams.get( "paperId" );
+        String overlapPaperIdParam = requestParams.get( "overlapPaperId" );
         if ( !StringUtils.isBlank( ncbiGeneId ) ) {
             // Search by Gene
             try {
@@ -90,8 +91,22 @@ public class VariantView implements Serializable {
             // Search by Paper
             try {
                 Integer paperId = Integer.parseInt( paperIdParam );
-                this.query = cacheService.getPaperById( paperId ).getAuthor();
-                this.variants = this.variantService.fetchByPaperId( paperId );
+
+                if ( StringUtils.isBlank( overlapPaperIdParam ) ) {
+                    this.query = cacheService.getPaperById( paperId ).getAuthor();
+                    this.variants = this.variantService.fetchByPaperId( paperId );
+                } else {
+                    Integer overlapPaperId = Integer.parseInt( overlapPaperIdParam );
+                    if ( overlapPaperId == paperId ) {
+                        this.query = cacheService.getPaperById( paperId ).getAuthor();
+                        this.variants = this.variantService.fetchByPaperId( paperId );
+                    } else {
+                        this.query = cacheService.getPaperById( paperId ).getAuthor() + " Overlap With "
+                                + cacheService.getPaperById( overlapPaperId ).getAuthor();
+                        this.variants = this.variantService.fetchByPaperOverlap( paperId, overlapPaperId );
+                    }
+                }
+
             } catch ( NumberFormatException | NullPointerException e ) {
                 throw new IllegalArgumentException( "Malformed Search Parameters" );
             }

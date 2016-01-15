@@ -73,6 +73,9 @@ public class VariantDAOImpl implements VariantDAO {
     private static final String SQL_MAP_VARIANT_IDS_BY_GENE_ID = "SELECT variant_id FROM " + SQL_GENE_MAP_TABLE
             + " WHERE gene_id = ?";
 
+    private static final String SQL_FIND_BY_PAPER_OVERLAP = "select " + SQL_STAR + " from " + SQL_TABLE
+            + " where paper_id = ? and event_id in (select event_id from " + SQL_TABLE + " where paper_id = ?)";
+
     // Vars ---------------------------------------------------------------------------------------
 
     private DAOFactory daoFactory;
@@ -135,6 +138,14 @@ public class VariantDAOImpl implements VariantDAO {
             return Lists.newArrayList();
         }
         return findAll( SQL_FIND_BY_POSITION, chr, start, stop );
+    }
+
+    @Override
+    public List<VariantDTO> findByPaperOverlap( Integer paperId, Integer overlapPaperId ) throws DAOException {
+        if ( paperId == null || overlapPaperId == null ) {
+            return Lists.newArrayList();
+        }
+        return findAll( SQL_FIND_BY_PAPER_OVERLAP, paperId, overlapPaperId );
     }
 
     /**

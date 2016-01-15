@@ -47,6 +47,20 @@ $(function () {
             y: 25,
             symbolHeight: 280
         },
+        
+        plotOptions: {
+           series: {
+               events: {
+                   click: function (event) {
+                      console.log(event.point);
+                      goToPaperOverlap(heatmap_paper_ids[event.point.x], heatmap_paper_ids[event.point.y]);/*
+                      console.log(event);
+                      console.log(heatmap_categories[event.point.x], heatmap_paper_ids[event.point.x]);
+                      console.log(heatmap_categories[event.point.y], heatmap_paper_ids[event.point.y]);*/
+                   }
+               }
+           }
+       },
 
         tooltip: {           
             formatter: function () {
@@ -77,6 +91,7 @@ $(function () {
         
         series: [{
             name: 'Variants per paper',
+            cursor: 'pointer', 
             borderWidth: 1,            
             turboThreshold: 0, // Important, or else the chart will not render > 1000 elements.
             data: color_me_fancy(heatmap_data),

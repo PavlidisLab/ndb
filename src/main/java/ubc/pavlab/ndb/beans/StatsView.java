@@ -41,7 +41,6 @@ import org.primefaces.model.chart.PieChartModel;
 import ubc.pavlab.ndb.beans.services.CacheService;
 import ubc.pavlab.ndb.beans.services.StatsService;
 import ubc.pavlab.ndb.model.Paper;
-import ubc.pavlab.ndb.utility.Correlation;
 import ubc.pavlab.ndb.utility.HeatmapModel;
 import ubc.pavlab.ndb.utility.Tuples.Tuple2;
 
@@ -65,7 +64,7 @@ public class StatsView implements Serializable {
     private BarChartModel variantCategoriesBarModel;
     private BarChartModel variantFuncBarModel;
 
-    private HeatmapModel heatmapModel;
+    private HeatmapModel<Paper> heatmapModel;
 
     @ManagedProperty("#{cacheService}")
     private CacheService cacheService;
@@ -105,22 +104,23 @@ public class StatsView implements Serializable {
 
     }
 
-    private HeatmapModel makeHeatmap() {
-        HeatmapModel heatmapModel = new HeatmapModel();
-        List<Correlation> correlations = new ArrayList<>();
+    private HeatmapModel<Paper> makeHeatmap() {
+        List<Paper> paperWithVariants = statsService.getPapersWithVariants();
+        HeatmapModel<Paper> heatmapModel = new HeatmapModel<>( paperWithVariants );
 
-        for ( Paper paper : statsService.getPapersWithVariants() ) {
+        int x = 0;
+        for ( Paper paper : paperWithVariants ) {
+            int y = 0;
             Map<Integer, Integer> counts = statsService.overlappingEventsBetweenPapers( paper.getId() );
-            for ( Paper p2 : statsService.getPapersWithVariants() ) {
+            for ( Paper p2 : paperWithVariants ) {
                 Integer cnt = counts.get( p2.getId() );
                 cnt = cnt == null ? 0 : cnt;
-                Correlation corr = new Correlation( paper.getAuthor(), p2.getAuthor(), cnt );
-                correlations.add( corr );
+                heatmapModel.add( x, y, cnt );
+                y++;
             }
+            x++;
 
         }
-
-        heatmapModel.insertPoints( correlations );
 
         return heatmapModel;
     }
