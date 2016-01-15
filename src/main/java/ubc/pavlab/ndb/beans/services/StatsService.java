@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
 import ubc.pavlab.ndb.dao.StatsDAO;
@@ -99,6 +100,8 @@ public class StatsService implements Serializable {
     private final Map<Integer, List<Tuple2<String, Integer>>> paperEventCntByContext = new ConcurrentHashMap<>();
     private final Map<Integer, List<Tuple2<String, Integer>>> paperEventCntByFunction = new ConcurrentHashMap<>();
 
+    private List<Paper> papersWithVariants;
+
     public StatsService() {
         log.info( "StatsService created" );
     }
@@ -108,8 +111,18 @@ public class StatsService implements Serializable {
         log.info( "StatsService init" );
         statsDAO = daoFactoryBean.getDAOFactory().getStatsDAO();
 
+        Builder<Paper> papersWithVariantsBuilder = new ImmutableList.Builder<>();
+
         for ( Paper p : cacheService.listPapers() ) {
-            paperVariantCntCache.put( p.getId(), statsDAO.findTotalVariantsByPaperId( p.getId() ) );
+
+            int cnt = statsDAO.findTotalVariantsByPaperId( p.getId() );
+
+            paperVariantCntCache.put( p.getId(), cnt );
+
+            if ( cnt > 0 ) {
+                papersWithVariantsBuilder.add( p );
+            }
+
             paperEventCntCache.put( p.getId(), statsDAO.findTotalEventsByPaperId( p.getId() ) );
 
             List<Tuple2<String, Integer>> l = statsDAO.findTotalEventsByContextForPaperId( ( p.getId() ) );
@@ -120,6 +133,8 @@ public class StatsService implements Serializable {
             Collections.sort( l, TUPLE_COMPARE_T1 );
             paperEventCntByFunction.put( p.getId(), ImmutableList.copyOf( l ) );
         }
+
+        papersWithVariants = papersWithVariantsBuilder.build();
 
     }
 
@@ -142,12 +157,18 @@ public class StatsService implements Serializable {
         return paperEventCntByContext.get( paperId );
     }
 
-    public List<Tuple2<String, Integer>> getVariantCategoryOccurences() {
-        return statsDAO.countTopCategoryOccurences();
+    /**
+     * Not Cached
+     */
+    public List<Tuple2<String, Integer>> getEventCntByCategory() {
+        return statsDAO.findTotalEventsByCategory();
     }
 
-    public List<Tuple2<String, Integer>> getVariantFuncOccurences() {
-        return statsDAO.countTopFuncOccurences();
+    /**
+     * Not Cached
+     */
+    public List<Tuple2<String, Integer>> getEventCntByContext() {
+        return statsDAO.findTotalEventsByContext();
     }
 
     public Integer getVariantCntByPaperId( Integer paperId ) {
@@ -190,6 +211,10 @@ public class StatsService implements Serializable {
 
     public List<Gene> getTopGenesByPaperCnt() {
         return latestTopGenesByPaperCnt.get();
+    }
+
+    public List<Paper> getPapersWithVariants() {
+        return papersWithVariants;
     }
 
     private Supplier<List<Gene>> topGenesByVariantCntSupplier() {
@@ -289,12 +314,8 @@ public class StatsService implements Serializable {
         };
     }
 
-    public Integer eventOverlapByPapers( final Integer p1, final Integer p2 ) {
-        return statsDAO.countOverlapBetweenPapers( p1, p2 );
-    }
-
-    public List<Integer> eventOverlapByPaper( final Integer p1 ) {
-        return statsDAO.countOverlapBetweenPapers( p1 );
+    public Map<Integer, Integer> overlappingEventsBetweenPapers( Integer paper_id ) {
+        return statsDAO.overlappingEventsBetweenPapers( paper_id );
     }
 
     public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {

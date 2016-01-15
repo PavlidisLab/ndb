@@ -9,92 +9,113 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:hf="http://highfaces.org/ui"> 
 	
-	<ui:define name="pageTitle">Stats About NateDB</ui:define>
+	<ui:define name="pageTitle">Statistics</ui:define>
 	
 	<ui:define name="css">
 		<h:outputStylesheet library="css" name="stats.css" />
-	</ui:define>	
-	
+	</ui:define>
+
+	<ui:define name="js">
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/heatmap.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script type="text/javascript" language="javascript"
+			src="resources/js/plugins/jqplot.logAxisRenderer.js"></script>
+		<script src="resources/js/heatmap.js">
+         
+      </script>
+      
+      <script type="text/javascript">
+		heatmap_data = #{statsView.heatmapModel.data};
+		heatmap_categories = #{statsView.heatmapModel.textCategories};
+      </script>
+
+
+		<script type="text/javascript">
+		
+         function pieExtender() {
+            this.cfg.highlighter = {
+               show : true,
+               tooltipLocation : 'n',
+               useAxesFormatters : false,
+               formatString : '%s: %d variants'
+            };
+         }
+
+         function barExtender() {
+
+            function tooltipContentEditor(str, seriesIndex, pointIndex, plot) {
+               // display series_label, x-axis_tick, y-axis value
+               return plot.options.axes.xaxis.ticks[pointIndex] + ": " + plot.data[seriesIndex][pointIndex];
+            }
+
+            this.cfg.legend = {
+               show : false
+            };
+
+            this.cfg.highlighter = {
+               show : true,
+               tooltipLocation : 'e',
+               tooltipContentEditor : tooltipContentEditor
+            };
+
+            this.cfg.seriesDefaults = {
+               renderer : $.jqplot.BarRenderer,
+               pointLabels : {
+                  show : true,
+                  location : 'n',
+                  hideZeros : true
+               }
+            };
+
+            this.cfg.seriesDefaults.rendererOptions = {
+               varyBarColor : true
+            };
+
+            this.cfg.tickDefaults = {
+               syncTicks : true,
+               useSeriesColor : true,
+               autoscale : true,
+               alignTicks : true,
+               forceTickAt0 : true
+            };
+
+            console.log( this.cfg.axes.yaxis );
+
+            this.cfg.axes.yaxis = {
+               label : 'Counts',
+               tickOptions : {
+                  tickDistribution : "power",
+                  formatString : "%'i"
+               },
+               renderer : $.jqplot.LogAxisRenderer,
+
+            };
+
+            //this.cfg.PointLabels = {show : false};
+
+         }
+      </script>
+	</ui:define>
+
 	<ui:define name="content">
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<script src="https://code.highcharts.com/modules/heatmap.js"></script>
-	<script src="https://code.highcharts.com/modules/exporting.js"></script>     
-	<script type="text/javascript" language="javascript" src="resources/js/plugins/jqplot.logAxisRenderer.js"></script>
+
+   
+   <div class="content-area">
 	
-	
-	<script type="text/javascript">
-    function pieExtender() {
-        this.cfg.highlighter = {
-            show: true,
-            tooltipLocation: 'n',
-            useAxesFormatters: false,
-            formatString: '%s: %d variants'            
-        };
-    }
-    
-    function barExtender() {
-       
-       function tooltipContentEditor(str, seriesIndex, pointIndex, plot) {
-           // display series_label, x-axis_tick, y-axis value
-           return plot.options.axes.xaxis.ticks[pointIndex] + ": " + plot.data[seriesIndex][pointIndex];
-       }
-
-       this.cfg.legend = {
-       		show:false                      
-       };
-       
-       this.cfg.highlighter = {
-          show:true,
-          tooltipLocation: 'e',
-          tooltipContentEditor:tooltipContentEditor
-      };                    
-      
-      this.cfg.seriesDefaults = {
-			renderer: $.jqplot.BarRenderer,
-			pointLabels: {
-				show: true,
-				location: 'n',
-				hideZeros: true
-			}
-      };	
-      
-	 this.cfg.seriesDefaults.rendererOptions = { varyBarColor : true };
-
-      this.cfg.tickDefaults = {
-         syncTicks:       true,
-         useSeriesColor:  true, 
-         autoscale:       true,
-         alignTicks: true,
-         forceTickAt0: true
-     };
-     
-     console.log(this.cfg.axes.yaxis);
-     
-      this.cfg.axes.yaxis = {
-            label : 'Counts',
-            tickOptions : {
-               tickDistribution : "power",
-               formatString : "%'i"
-            },             
-            renderer: $.jqplot.LogAxisRenderer,
-            
-         };      
-      
-      //this.cfg.PointLabels = {show : false};
-      
-      }
-   </script>
-
+	<div class="section">
 
 	<h3>Stats</h3>
 	
-	<p:panelGrid id="summaryStats" columns="3" style="margin:0 auto; margin-left: 50px; width: 60%; margin-left: 50px;" >
+	<p:separator/>
 	
-		
+	<p:panelGrid styleClass="no-border" columns="3" >
+	
+		<p:panel styleClass="no-border">
  	  		    	
-	  	<p:dataList value="#{statsService.topGenesByEventCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right" >
+	  	<p:dataList value="#{statsService.topGenesByEventCnt}" var="g" type="ordered" styleClass="datalist-small" >
 	        <f:facet name="header">
-	            Top Genes by Event Count
+	            Top Genes by Variant Event Count
 	        </f:facet>
 			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
 			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
@@ -102,50 +123,58 @@
 	        - #{g.description}
     	</p:dataList>
     	
- 	  	<div id="summaryText">
-		 	  	
-		 	  	<p>
-		 	  		Text to describe the statistics page. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nibh id massa consectetur mattis. Donec condimentum tempus nunc sit amet fermentum. Quisque id quam dui. Nam iaculis arcu eu fermentum tristique. Ut efficitur lectus sit amet arcu tristique, ut ornare nibh congue. Pellentesque porta risus id mollis scelerisque. Pellentesque vel dapibus orci, sit amet vehicula eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In hac habitasse platea dictumst. Nullam sed tristique quam. Fusce molestie lorem ut eleifend tincidunt. Nunc nibh ante, porta eu mattis quis, luctus at velit. Fusce in purus elementum, ullamcorper dui a, tincidunt orci. Duis vel felis vehicula, blandit risus eget, placerat nunc. Nulla et tincidunt velit. Aliquam iaculis nisi libero, euismod malesuada quam commodo id.
-		 	  	</p>
-		 	  	<p>
-		 	  		Sed sagittis lobortis quam, eget tincidunt sem semper sit amet. Sed dignissim neque in aliquam dapibus. Nam eget imperdiet quam. Mauris eget eleifend sem. Aenean pellentesque velit eget lectus molestie, vel ornare leo posuere. Cras facilisis maximus nibh, eu consequat mi commodo eget. Maecenas vehicula, sapien varius aliquam luctus, turpis metus convallis leo, nec porttitor tellus mi tincidunt est. Morbi id aliquet risus, in malesuada felis. Vivamus eu orci id risus fermentum bibendum lacinia ut felis.
-				</p>
-				<p>
-					Nulla et congue nisi, sit amet gravida nunc. Phasellus fermentum justo non mi sagittis, quis aliquam mi consequat. Sed sem elit, sollicitudin nec posuere eget, varius eget ligula. In hac habitasse platea dictumst. Duis vitae dolor dui. Phasellus felis metus, finibus in arcu porta, malesuada aliquet sapien. Integer nibh arcu, consectetur iaculis facilisis vitae, interdum vitae purus. Etiam sollicitudin arcu a arcu tempor imperdiet. Sed lectus eros, mattis vitae ultrices in, congue et tellus. Donec quis mi eros.
-				</p>
-		 	  	
- 	  	</div>
+    	</p:panel>
+    	
+ 	  	<p:panel styleClass="no-border">
+ 	  	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+ 	  	<p:panelGrid columns="2" style="margin:20px auto 20px auto;">
+ 	  	<f:facet name="header">
+        	Database Statistics
+    	</f:facet>
+
+ 	  	<h:outputText value="Total Variant Events:" />
+ 	  	<h:outputText value="#{statsService.eventCnt}" />
  	  	
- 	  	<p:panelGrid id="statsSummaryTbl" columns="2" style="padding-top:0px; display:block; vertical-align: top;" >
-	 	  	<f:facet name="header">
-	        	Database Statistics
-	    	</f:facet>
-	 	  	<h:outputText style="font-weight:bold" value="Total Variants:" />
-	 	  	<h:outputText value="#{statsService.variantCnt}" />
-	 	  	
-	 	  	<h:outputText style="font-weight:bold" value="Total Events:" />
-	 	  	<h:outputText value="#{statsService.eventCnt}" />
-	 	  	
-	 	  	<h:outputText style="font-weight:bold" value="Total Subjects:" />
-	 	  	<h:outputText value="#{statsService.subjectCnt}" />
-	 	  	
-	 	  	<h:outputText style="font-weight:bold" value="Total Papers:" />
-	 	  	<h:outputText value="#{statsService.paperCnt}" />
+ 	  	<h:outputText value="Total Subjects:" />
+ 	  	<h:outputText value="#{statsService.subjectCnt}" />
+ 	  	
+ 	  	<h:outputText value="Total Papers:" />
+ 	  	<h:outputText value="#{statsService.paperCnt}" />
  	  	
  	  	</p:panelGrid>
  	  	
+ 	  	<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+ 	  	
+ 	  	</p:panel>
+ 	  	
+ 	  	<p:panel styleClass="no-border">
+ 	  	
+	  	<p:dataList value="#{statsService.topGenesByPaperCnt}" var="g" type="ordered" styleClass="datalist-small">
+	        <f:facet name="header">
+	            Top Genes by Frequency in Papers
+	        </f:facet>
+			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
+			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
+			</p:link>
+	        - #{g.description}
+    	</p:dataList>
+
+		</p:panel>
  	  
     	
 	</p:panelGrid>
+	</div>
 	
-	<h4>Variant report breakdown per paper</h4>
+
 	
-	<div id="containerPieCharts" style="width: 80%; margin-left: 50px; ">
+	<div class="section">
+		<h3>Variants Events Per Paper</h3>
+		<p:separator/>
 		<p>
-			The charts in this section describe the breakdown by origin for variants included in this database. 
-			The first chart shows the papers including the highest counts of variants, while the second chart is complete breakdown of all papers. 
+			The charts in this section describe the breakdown by origin for variants events included in this database. 
+			The first chart shows the papers including the highest counts of variant events, while the second chart is a complete breakdown of all papers. 
 		</p>
-		<p:panelGrid columns="2" >				
+		<p:panelGrid columns="2" styleClass="no-border" style="margin: 0 auto;">				
 		
 			<p:chart type="pie" 
 						model="#{statsView.compactPieModel}" 
@@ -162,10 +191,11 @@
 		</p:panelGrid>		
 	</div>
 	
-	<h4>Variant categories</h4>
 
 
-	<div id="containerBarCharts" style="width: 80%; margin-left: 50px; ">
+		<div class="section">
+	<h3>Variant Categories</h3>
+	<p:separator/>
 		<p>
 			Variants are reported with a <em>category</em> and a <em>function</em>. 
 		</p>
@@ -175,41 +205,44 @@
   			 The <em>function</em> represents the functional role of the area where the variant originated from (e.g. A variant from non-coding DNA would be labeled as <em>intronic.</em> ) The y-axis is log-scaled to facilitate readability. 
 		</p>
 
-		<p:panelGrid columns="2" >
+		<p:panelGrid columns="2" styleClass="no-border" style="margin: 0 auto;">
 			<p:chart type="bar" model="#{statsView.variantCategoriesBarModel}" style="width:800px;height:500px;"/>		
 			<p:chart type="bar" model="#{statsView.variantFuncBarModel}" style="width:800px;height:500px;" logYAxis="true" />		
 		</p:panelGrid>
 		
 				
 	</div>
-		
-	<h4>Report overlap</h4>
 	
-	<div id="heatmapText" style="width: 80%; margin: 0 auto; margin-left: 50px; ">
+	<div class="section">
+		
+	<h3>Variant Event Overlap</h3>
+	<p:separator/>
+	
+	<div id="heatmapText">
 		<p>
-			The map below represents the overlap between variants reported by different papers. The diagonal represents the total number of reported variant included in this database originating from a given paper.
+			The map below represents the overlap between variant events reported by different papers. The diagonal represents the total number of reported variant events included in this database originating from a given paper.
 		</p>
 		
 		<p>
-			The overlap relation between two papers is not bijective, meaning that the number of reported variants from <em>Paper A</em> included in <em>Paper B</em> may differ from the number of reported variants from <em>Paper B</em> included in <em>Paper A</em>. 
+			The overlap relation between two papers is not bijective, meaning that the number of reported variant events from <em>Paper A</em> included in <em>Paper B</em> may differ from that of <em>Paper B</em> included in <em>Paper A</em>. 
 			This occurs because some papers may report multiple adjacent variants (for example, two SNVs from the same sample located one after the other) while other papers will refer to these variants as one single variant event. 
-			In these cases, two papers may not have have the same number of overlapping variants depending on the order of the relation.
+			In these cases, two papers may not have have the same number of overlapping variant events depending on the order of the relation.
 		</p>
 		
 	</div>
-	<div id="container" style="height: 1000px; width: 80%; margin: 0 auto; margin-left: 50px; "
-		title="Event report overlap between papers"
-		categories='#{statsView.heatmapModel.textCategories}'
-		data='#{statsView.heatmapModel.data}'
+	<div id="heatmap-container" style="height: 1000px; width: 80%; margin: 0 auto;"
 	></div>
-	<script src="resources/js/heatmap.js"> </script>
+	</div>
+	
 
 	<h4> More information / Contact us</h4>	
 	<div id="concludingText" style="width: 80%; margin: 0 auto; margin-left: 50px; ">
 		<p>
-			For more information about our data curation and harmonization, visit the <a href="documentation.xhtml">documentation</a> section. For any questions or comments, feel free to contact <a href="mailto:support@ndb.com">support[at]ndb.com</a>.  			
+				For more information about our data curation and harmonization, visit the <a href="documentation.xhtml">documentation</a> section. For any questions or comments, feel free to contact <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.  			
 		</p>		
 		
+	</div>
+	
 	</div>
 	
 	</ui:define>

@@ -1,6 +1,6 @@
 $(function () {
 
-    $('#container').highcharts({
+    $('#heatmap-container').highcharts({
 
         chart: {
             type: 'heatmap',
@@ -11,15 +11,15 @@ $(function () {
         },
         
         title: {
-            text: $('#container').attr('title')
+            text: "Variant Event Overlap Between Papers"
         },
 
         xAxis: {
-            categories: JSON.parse( $('#container').attr('categories') )
+            categories: heatmap_categories
         },
 
         yAxis: {
-            categories: JSON.parse($('#container').attr('categories') ),
+            categories: heatmap_categories,
             title: null
         },
 
@@ -32,7 +32,7 @@ $(function () {
 //       },
        colorAxis: {
             min: 0,
-            max: 100, // Update this value if we ever get another major paper with > 2500 variants.
+            max: 100, // TODO Update this value if we ever get another major paper with > 2500 variants.
             minColor: '#FFFFFF',
             maxColor: Highcharts.getOptions().colors[0]
         },
@@ -77,8 +77,8 @@ $(function () {
             name: 'Variants per paper',
             borderWidth: 1,            
             turboThreshold: 0, // Important, or else the chart will not render > 1000 elements.
-            data: color_me_fancy(JSON.parse($('#container').attr('data'))),
-            //data: JSON.parse($('#container').attr('data')), 
+            data: color_me_fancy(heatmap_data),
+            //data: JSON.parse($('#heatmap-container').attr('data')), 
             dataLabels: {
                 enabled: true,
                 color: '#000000'
@@ -153,7 +153,7 @@ $(function () {
        return others.concat(zeros).concat(diagonals);
     }
     
-    //console.log( JSON.parse($('#container').attr('data') ) );
+    //console.log( JSON.parse($('#heatmap-container').attr('data') ) );
 });
 
 $(Highcharts.charts).each(function(i,chart){

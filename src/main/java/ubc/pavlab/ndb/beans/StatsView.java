@@ -1,3 +1,21 @@
+/*
+ * The ndb project
+ * 
+ * Copyright (c) 2015 University of British Columbia
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 package ubc.pavlab.ndb.beans;
 
 import java.io.Serializable;
@@ -8,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
@@ -22,20 +40,21 @@ import org.primefaces.model.chart.PieChartModel;
 
 import ubc.pavlab.ndb.beans.services.CacheService;
 import ubc.pavlab.ndb.beans.services.StatsService;
-import ubc.pavlab.ndb.beans.services.VariantService;
 import ubc.pavlab.ndb.model.Paper;
 import ubc.pavlab.ndb.utility.Correlation;
 import ubc.pavlab.ndb.utility.HeatmapModel;
 import ubc.pavlab.ndb.utility.Tuples.Tuple2;
 
+/**
+ * @author mbelmadani
+ * @author mjacobson
+ * @version $Id$
+ */
+
 @ManagedBean
-@ViewScoped
+@ApplicationScoped
 public class StatsView implements Serializable {
 
-    /**
-     * @author mbelmadani
-     * @version $Id$
-     */
     private static final long serialVersionUID = 7322631871107434336L;
 
     private static final Logger log = Logger.getLogger( StatsView.class );
@@ -43,24 +62,16 @@ public class StatsView implements Serializable {
     private PieChartModel pieModel;
     private PieChartModel compactPie;
 
-    private List<Tuple2<String, Integer>> variantCategories;
-    private List<Tuple2<String, Integer>> variantFunc;
-
     private BarChartModel variantCategoriesBarModel;
     private BarChartModel variantFuncBarModel;
 
     private HeatmapModel heatmapModel;
-
-    private List<Correlation> correlations;
 
     @ManagedProperty("#{cacheService}")
     private CacheService cacheService;
 
     @ManagedProperty("#{statsService}")
     private StatsService statsService;
-
-    @ManagedProperty("#{variantService}")
-    private VariantService variantService;
 
     // private List<Tuple2<String, Integer>> variantCntByCategory;
 
@@ -75,115 +86,77 @@ public class StatsView implements Serializable {
         }
 
         log.info( "init StatsView" );
-        Map<String, String> requestParams = FacesContext.getCurrentInstance().getExternalContext()
-                .getRequestParameterMap();
 
-        bakePie();
-        makeCategoryCharts();
-        makeHeatmap();
+        pieModel = bakePie();
+
+        // Create small pie
+        compactPie = makeCompactPie( pieModel );
+
+        // Make bar charts
+
+        variantCategoriesBarModel = makeBarChart( statsService.getEventCntByCategory(),
+                "Total Variant Events by Category", "Category", "Variants" );
+
+        variantFuncBarModel = makeBarChart( statsService.getEventCntByContext(),
+                "Total Variant Events by Function", "Function", "Variants" );
+
+        //        makeCategoryCharts();
+        heatmapModel = makeHeatmap();
 
     }
 
-    private void makeHeatmap() {
-        this.heatmapModel = new HeatmapModel();
-        this.correlations = new ArrayList<Correlation>();
+    private HeatmapModel makeHeatmap() {
+        HeatmapModel heatmapModel = new HeatmapModel();
+        List<Correlation> correlations = new ArrayList<>();
 
-        List<Integer> paper_ids = new ArrayList<Integer>();
-        List<String> paper_authors = new ArrayList<String>();
-
-        // List all paper ids
-        for ( Paper p : cacheService.listPapers() ) {
-            paper_ids.add( p.getId() );
-            paper_authors.add( p.getAuthor() );
-        }
-
-        // For each paper, compute event overlap with other papers
-        boolean classic = false;
-        if ( classic ) {
-            // This method is too slow and should only be used in development to compare with faster methods.
-            for ( int i = 0; i < paper_ids.size() - 1; i++ ) {
-                for ( int j = i; j < paper_ids.size(); j++ ) {
-                    int p1 = paper_ids.get( i );
-                    int p2 = paper_ids.get( j );
-                    int count = statsService.eventOverlapByPapers( p1, p2 );
-
-                    this.correlations.add( new Correlation( paper_authors.get( i ), paper_authors.get( j ), count ) );
-                    // System.out.printf( "COUNTS: %d x %d %d \n", p1, p2, count );
-                }
+        for ( Paper paper : statsService.getPapersWithVariants() ) {
+            Map<Integer, Integer> counts = statsService.overlappingEventsBetweenPapers( paper.getId() );
+            for ( Paper p2 : statsService.getPapersWithVariants() ) {
+                Integer cnt = counts.get( p2.getId() );
+                cnt = cnt == null ? 0 : cnt;
+                Correlation corr = new Correlation( paper.getAuthor(), p2.getAuthor(), cnt );
+                correlations.add( corr );
             }
+
         }
 
-        // Compute overlaps for all papers (much faster than "classic")
-        boolean fancy = true;
-        if ( fancy ) {
-            for ( int i = 0; i < paper_ids.size(); i++ ) {
-                int p1 = paper_ids.get( i );
-                List<Integer> counts = statsService.eventOverlapByPaper( p1 );
+        heatmapModel.insertPoints( correlations );
 
-                for ( int j = 0; j < paper_ids.size(); j++ ) {
-                    int p2 = paper_ids.get( j );
-                    int p_count = Collections.frequency( counts, p2 );
-
-                    Correlation corr = new Correlation( paper_authors.get( i ), paper_authors.get( j ), p_count );
-                    this.correlations.add( corr );
-                }
-            }
-        }
-
-        this.heatmapModel.insertPoints( this.correlations );
+        return heatmapModel;
     }
 
-    private void makeCategoryCharts() {
-        this.variantCategories = statsService.getVariantCategoryOccurences();
-        this.variantFunc = statsService.getVariantFuncOccurences();
-
-        variantCategoriesBarModel = initBarModel( this.variantCategories );
-        variantFuncBarModel = initBarModel( this.variantFunc );
+    private <T extends Number> BarChartModel makeBarChart( List<Tuple2<String, T>> data, String title, String xLabel,
+            String yLabel ) {
+        BarChartModel barModel = initBarModel( data );
 
         // Stylize categories
-        variantCategoriesBarModel.setAnimate( true );
+        barModel.setAnimate( true );
 
-        variantCategoriesBarModel.setTitle( "Total variants by categories" );
-        variantCategoriesBarModel.setExtender( "barExtender" );
+        barModel.setTitle( title );
+        barModel.setExtender( "barExtender" );
 
-        Axis xAxis = variantCategoriesBarModel.getAxis( AxisType.X );
-        xAxis.setLabel( "Category" );
+        Axis xAxis = barModel.getAxis( AxisType.X );
+        xAxis.setLabel( xLabel );
         xAxis.setTickAngle( -45 );
-        xAxis.setTickFormat( "%s" );
+        /* xAxis.setTickFormat( "%s" ); */
 
-        Axis yAxis = variantCategoriesBarModel.getAxis( AxisType.Y );
-        yAxis.setLabel( "Variants" );
-        yAxis.setTickFormat( "%d" );
-        yAxis.setTickCount( 11 );
-        yAxis.setMin( 0 );
-        yAxis.setMax( 4500 ); // TODO: Do this programmatically
-
-        // Stylize func
-        variantFuncBarModel.setAnimate( true );
-
-        variantFuncBarModel.setTitle( "Total variants by function" );
-        variantFuncBarModel.setExtender( "barExtender" );
-
-        xAxis = variantFuncBarModel.getAxis( AxisType.X );
-        xAxis.setLabel( "Function" );
-        xAxis.setTickAngle( -45 );
-        xAxis.setTickFormat( "%s" );
-
-        yAxis = variantFuncBarModel.getAxis( AxisType.Y );
-        yAxis.setLabel( "Variants" );
-        yAxis.setTickFormat( "%d" );
-        yAxis.setTickCount( 11 );
-        yAxis.setMin( 0 );
-        yAxis.setMax( 5500 ); // TODO: Do this programmatically
-
+        Axis yAxis = barModel.getAxis( AxisType.Y );
+        yAxis.setLabel( yLabel );
+        /*
+         * yAxis.setTickFormat( "%d" );
+         * yAxis.setTickCount( 11 );
+         * yAxis.setMin( 0 );
+         * yAxis.setMax( 4500 ); // TODO: Do this programmatically
+         */
+        return barModel;
     }
 
-    private BarChartModel initBarModel( List<Tuple2<String, Integer>> lst ) {
+    private <T extends Number> BarChartModel initBarModel( List<Tuple2<String, T>> lst ) {
         BarChartModel model = new BarChartModel();
 
         ChartSeries counts = new ChartSeries();
         // counts.setLabel( "counts" );
-        for ( Tuple2<String, Integer> t : lst ) {
+        for ( Tuple2<String, T> t : lst ) {
             if ( t.getT1() != null ) {
                 counts.set( t.getT1(), t.getT2() );
                 log.info( t.getT1() );
@@ -195,7 +168,7 @@ public class StatsView implements Serializable {
         return model;
     }
 
-    private void bakePie() {
+    private PieChartModel bakePie() {
         /*
          * Create model for pie chart
          */
@@ -203,10 +176,10 @@ public class StatsView implements Serializable {
         // TODO: Highlight segment should show author
         // TODO: Make colors somewhat unique, or more unique.
 
-        pieModel = new PieChartModel();
+        PieChartModel pieModel = new PieChartModel();
 
         for ( Paper p : cacheService.listPapers() ) {
-            int count = statsService.getVariantCntByPaperId( p.getId() );
+            int count = statsService.getEventCntByPaperId( p.getId() );
             String citation = p.getAuthor(); // TODO: Use getCitation instead of getAuthor once it has been added to the
                                              // database model
 
@@ -216,7 +189,7 @@ public class StatsView implements Serializable {
 
         }
 
-        pieModel.setTitle( "Variant counts per paper" );
+        pieModel.setTitle( "Variant Events Counts by Paper" );
         pieModel.setShowDataLabels( true );
         pieModel.setMouseoverHighlight( true );
         pieModel.setLegendPosition( "e" );
@@ -228,18 +201,17 @@ public class StatsView implements Serializable {
 
         // pieModel.setDiameter( 150 );
 
-        // Create small pie
-        makeCompactPie();
+        return pieModel;
 
     }
 
-    public void makeCompactPie() {
+    public PieChartModel makeCompactPie( PieChartModel pieModel ) {
 
         final int TOP = 5; // For the top 10 items
-        final int topColor = 0x3399ff;
-        final int bottomColor = 0xe5f2ff;
+        //        final int topColor = 0x3399ff;
+        //        final int bottomColor = 0xe5f2ff;
 
-        Map<String, Number> data = this.pieModel.getData();
+        Map<String, Number> data = pieModel.getData();
         Map<String, Number> compact = new HashMap<String, Number>();
 
         List<Integer> ints = new ArrayList<Integer>();
@@ -263,18 +235,20 @@ public class StatsView implements Serializable {
         }
         compact.put( "Others", bottom );
 
-        compactPie = new PieChartModel( compact );
-        compactPie.setTitle( "Variant counts for top " + TOP + " papers in variant event count" );
+        PieChartModel compactPie = new PieChartModel( compact );
+        compactPie.setTitle( "Top " + TOP + " Variant Event Counts by Paper" );
         compactPie.setShowDataLabels( true );
         compactPie.setMouseoverHighlight( true );
         compactPie.setLegendPosition( "e" );
 
-        compactPie.setSeriesColors( colorScale( topColor, bottomColor, TOP ) );
+        //compactPie.setSeriesColors( colorScale( topColor, bottomColor, TOP ) );
 
         double MAX_PAPER_PER_COLUMN = 10.0;
         int nCols = ( int ) Math.ceil( compactPie.getData().size() / MAX_PAPER_PER_COLUMN );
         compactPie.setLegendCols( nCols );
         compactPie.setExtender( "pieExtender" );
+
+        return compactPie;
 
     }
 
@@ -282,21 +256,23 @@ public class StatsView implements Serializable {
         return pieModel;
     }
 
-    public String colorScale( int start, int end, int step ) {
-        /*
-         * TODO: Implement a pretty scaling function for colors. How do we graduate and RGB hexadecimal value
-         * programmatically?
-         */
-        String scale = "";
-
-        int diff = ( end - start ) / step;
-        for ( int i = 0; i < step - 1; i++ ) {
-            scale += Integer.toHexString( start + 0x01000 * i ) + ",";
-        }
-        scale += Integer.toHexString( end );
-
-        return scale;
-    }
+    /*
+     * private String colorScale( int start, int end, int step ) {
+     * 
+     * TODO: Implement a pretty scaling function for colors. How do we graduate and RGB hexadecimal value
+     * programmatically?
+     * 
+     * String scale = "";
+     * 
+     * int diff = ( end - start ) / step;
+     * for ( int i = 0; i < step - 1; i++ ) {
+     * scale += Integer.toHexString( start + 0x01000 * i ) + ",";
+     * }
+     * scale += Integer.toHexString( end );
+     * 
+     * return scale;
+     * }
+     */
 
     public PieChartModel getCompactPieModel() {
         return compactPie;
@@ -304,10 +280,6 @@ public class StatsView implements Serializable {
 
     public HeatmapModel getHeatmapModel() {
         return heatmapModel;
-    }
-
-    public List<Correlation> getCorrelations() {
-        return correlations;
     }
 
     public void setCacheService( CacheService cacheService ) {
@@ -318,32 +290,12 @@ public class StatsView implements Serializable {
         this.statsService = statsService;
     }
 
-    public void setVariantService( VariantService variantService ) {
-        this.variantService = variantService;
-    }
-
-    public List<Tuple2<String, Integer>> getVariantCategories() {
-        return variantCategories;
-    }
-
-    public void setVariantCategories( List<Tuple2<String, Integer>> variantCategories ) {
-        this.variantCategories = variantCategories;
-    }
-
     public BarChartModel getVariantCategoriesBarModel() {
         return variantCategoriesBarModel;
     }
 
-    public void setVariantCategoriesBarModel( BarChartModel variantCategoriesBarModel ) {
-        this.variantCategoriesBarModel = variantCategoriesBarModel;
-    }
-
     public BarChartModel getVariantFuncBarModel() {
         return variantFuncBarModel;
-    }
-
-    public void setVariantFuncBarModel( BarChartModel variantFuncBarModel ) {
-        this.variantFuncBarModel = variantFuncBarModel;
     }
 
 }
