@@ -1,3 +1,5 @@
+$( document ).ready(function() {
+
 $(function () {
 
     $('#heatmap-container').highcharts({
@@ -161,3 +163,4 @@ $(Highcharts.charts).each(function(i,chart){
    var width = chart.renderTo.clientWidth; 
    chart.setSize(width, height); 
  });
+});
