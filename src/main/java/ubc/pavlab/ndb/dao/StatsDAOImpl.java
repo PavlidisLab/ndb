@@ -69,8 +69,9 @@ public class StatsDAOImpl implements StatsDAO {
     // + " v WHERE EXISTS (SELECT null "
     // + "FROM variant v1 where v.event_id = v1.event_id AND v.id <> v1.id AND v.paper_id=?)";
 
-    private static final String SQL_EVENT_OVERLAPS_BY_PAPER = "select paper_id, COUNT(*) cnt from " + SQL_VARIANT_TABLE
-            + " where event_id in (select event_id from " + SQL_VARIANT_TABLE
+    private static final String SQL_EVENT_OVERLAPS_BY_PAPER = "select paper_id, COUNT(distinct event_id) cnt from "
+            + SQL_VARIANT_TABLE
+            + " where event_id in (select distinct event_id from " + SQL_VARIANT_TABLE
             + " where paper_id = ?) group by paper_id";
 
     private static final String SQL_EVENT_CNT_BY_CATEGORY = "select category , COUNT(distinct event_id ) cnt from "
