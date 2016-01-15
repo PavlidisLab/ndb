@@ -27,11 +27,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import ubc.pavlab.ndb.exceptions.DAOException;
 import ubc.pavlab.ndb.utility.Tuples.Tuple2;
@@ -67,25 +69,15 @@ public class StatsDAOImpl implements StatsDAO {
     // + " v WHERE EXISTS (SELECT null "
     // + "FROM variant v1 where v.event_id = v1.event_id AND v.id <> v1.id AND v.paper_id=?)";
 
-    private static final String SQL_OVERLAPPING_EVENTS_BY_PAPER_IDS = "SELECT COUNT(id) FROM " + SQL_VARIANT_TABLE
-            + " v WHERE EXISTS (SELECT null FROM " + SQL_VARIANT_TABLE
-            + " v1 where v.event_id = v1.event_id  AND v.paper_id=? AND v1.paper_id=?)";
+    private static final String SQL_EVENT_OVERLAPS_BY_PAPER = "select paper_id, COUNT(*) cnt from " + SQL_VARIANT_TABLE
+            + " where event_id in (select event_id from " + SQL_VARIANT_TABLE
+            + " where paper_id = ?) group by paper_id";
 
-    // private static final String SQL_ALL_OVERLAPPING_EVENTS_BY_PAPER_ID = "SELECT paper_id FROM " + SQL_VARIANT_TABLE
-    // + " v WHERE EXISTS " + "(SELECT null FROM " + SQL_VARIANT_TABLE + " v1 WHERE v.event_id = v1.event_id "
-    // + " AND v1.paper_id = ?) ;";
+    private static final String SQL_EVENT_CNT_BY_CATEGORY = "select category , COUNT(distinct event_id ) cnt from "
+            + SQL_VARIANT_TABLE + " group by category ORDER BY cnt DESC";
 
-    private static final String SQL_ALL_OVERLAPPING_EVENTS_BY_PAPER_ID = "SELECT paper_id FROM " + SQL_VARIANT_TABLE
-            + " v WHERE EXISTS " + "(SELECT null FROM " + SQL_VARIANT_TABLE + " v1 WHERE v.event_id = v1.event_id  "
-            + " AND v1.paper_id = ?) ;";
-
-    private static final String SQL_TOP_CATEGORY_OCCURENCES = "SELECT `category`,`occ` AS `occurrences` "
-            + "FROM (  SELECT `category`,  COUNT(`category`) AS `occ`" + "        FROM `variant` GROUP BY `category`"
-            + "     ) as Q ORDER BY occurrences DESC;";
-
-    private static final String SQL_TOP_FUNC_OCCURENCES = "SELECT `func`,`occ` AS `occurrences` "
-            + "FROM (  SELECT `func`,  COUNT(`func`) AS `occ`" + "        FROM `variant` GROUP BY `func`"
-            + "     ) as Q ORDER BY occurrences DESC;";
+    private static final String SQL_EVENT_CNT_BY_CONTEXT = "select func , COUNT(distinct event_id ) cnt from "
+            + SQL_VARIANT_TABLE + " group by func ORDER BY cnt DESC";
 
     private static final String SQL_VARIANT_CNT = "select COUNT(*) from " + SQL_VARIANT_TABLE;
     private static final String SQL_EVENT_CNT = "select COUNT(distinct event_id) from " + SQL_VARIANT_TABLE;
@@ -106,16 +98,17 @@ public class StatsDAOImpl implements StatsDAO {
             + SQL_VARIANT_TABLE + " var inner join " + SQL_GENE_MAP_TABLE
             + " vmap on var.id=vmap.variant_id group by gene_id order by cnt DESC limit ?";
 
-    private static final String SQL_VARIANT_CNT_BY_CONTEXT = "SELECT func, COUNT(*) FROM " + SQL_VARIANT_TABLE
+    private static final String SQL_VARIANT_CNT_BY_CONTEXT_FOR_PAPER = "SELECT func, COUNT(*) FROM " + SQL_VARIANT_TABLE
             + " where paper_id=? group by func";
 
-    private static final String SQL_EVENT_CNT_BY_CONTEXT = "SELECT func, COUNT(DISTINCT event_id) FROM "
+    private static final String SQL_EVENT_CNT_BY_CONTEXT_FOR_PAPER = "SELECT func, COUNT(DISTINCT event_id) FROM "
             + SQL_VARIANT_TABLE + " where paper_id=? group by func";
 
-    private static final String SQL_VARIANT_CNT_BY_CATEGORY = "SELECT category, COUNT(*) FROM " + SQL_VARIANT_TABLE
+    private static final String SQL_VARIANT_CNT_BY_CATEGORY_FOR_PAPER = "SELECT category, COUNT(*) FROM "
+            + SQL_VARIANT_TABLE
             + " where paper_id=? group by category";
 
-    private static final String SQL_EVENT_CNT_BY_CATEGORY = "SELECT category, COUNT(DISTINCT event_id) FROM "
+    private static final String SQL_EVENT_CNT_BY_CATEGORY_FOR_PAPER = "SELECT category, COUNT(DISTINCT event_id) FROM "
             + SQL_VARIANT_TABLE + " where paper_id=? group by category";
 
     // Vars ---------------------------------------------------------------------------------------
@@ -232,32 +225,14 @@ public class StatsDAOImpl implements StatsDAO {
     }
 
     @Override
-    public int countOverlapBetweenPapers( Integer p1, Integer p2 ) throws DAOException {
-        int total = 0;
+    public Map<Integer, Integer> overlappingEventsBetweenPapers( Integer paper_id ) throws DAOException {
+        Map<Integer, Integer> counts = Maps.newHashMap();
         try (Connection connection = daoFactory.getConnection();
-                // PreparedStatement statement = connection.prepareStatement( SQL_OVERLAPPING_EVENTS_BY_PAPER_IDS, p1,
-                // p2 );
-                PreparedStatement statement = prepareStatement( connection, SQL_OVERLAPPING_EVENTS_BY_PAPER_IDS, false,
-                        p1, p2 );
-                ResultSet resultSet = statement.executeQuery();) {
-            if ( resultSet.next() ) {
-                total = resultSet.getInt( 1 );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        }
-        return total;
-    }
-
-    @Override
-    public List<Integer> countOverlapBetweenPapers( Integer p1 ) throws DAOException {
-        List<Integer> counts = Lists.newArrayList();
-        try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_ALL_OVERLAPPING_EVENTS_BY_PAPER_ID,
-                        false, p1 );
+                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_OVERLAPS_BY_PAPER,
+                        false, paper_id );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
-                counts.add( resultSet.getInt( "paper_id" ) );
+                counts.put( resultSet.getInt( "paper_id" ), resultSet.getInt( "cnt" ) );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
@@ -266,14 +241,14 @@ public class StatsDAOImpl implements StatsDAO {
     }
 
     @Override
-    public List<Tuple2<String, Integer>> countTopCategoryOccurences() throws DAOException {
+    public List<Tuple2<String, Integer>> findTotalEventsByCategory() throws DAOException {
 
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_TOP_CATEGORY_OCCURENCES, false );
+                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CATEGORY, false );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
-                results.add( new Tuple2<>( resultSet.getString( 1 ), resultSet.getInt( 2 ) ) );
+                results.add( new Tuple2<>( resultSet.getString( "category" ), resultSet.getInt( "cnt" ) ) );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
@@ -282,14 +257,14 @@ public class StatsDAOImpl implements StatsDAO {
     }
 
     @Override
-    public List<Tuple2<String, Integer>> countTopFuncOccurences() throws DAOException {
+    public List<Tuple2<String, Integer>> findTotalEventsByContext() throws DAOException {
 
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_TOP_FUNC_OCCURENCES, false );
+                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CONTEXT, false );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
-                results.add( new Tuple2<>( resultSet.getString( 1 ), resultSet.getInt( 2 ) ) );
+                results.add( new Tuple2<>( resultSet.getString( "func" ), resultSet.getInt( "cnt" ) ) );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
@@ -361,7 +336,7 @@ public class StatsDAOImpl implements StatsDAO {
     public List<Tuple2<String, Integer>> findTotalVariantsByContextForPaperId( Integer paperId ) throws DAOException {
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_CONTEXT, false,
+                PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_CONTEXT_FOR_PAPER, false,
                         paperId );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
@@ -377,7 +352,7 @@ public class StatsDAOImpl implements StatsDAO {
     public List<Tuple2<String, Integer>> findTotalEventsByContextForPaperId( Integer paperId ) throws DAOException {
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CONTEXT, false,
+                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CONTEXT_FOR_PAPER, false,
                         paperId );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
@@ -393,7 +368,8 @@ public class StatsDAOImpl implements StatsDAO {
     public List<Tuple2<String, Integer>> findTotalVariantsByCategoryForPaperId( Integer paperId ) throws DAOException {
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_CATEGORY, false,
+                PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_CATEGORY_FOR_PAPER,
+                        false,
                         paperId );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
@@ -411,7 +387,7 @@ public class StatsDAOImpl implements StatsDAO {
     public List<Tuple2<String, Integer>> findTotalEventsByCategoryForPaperId( Integer paperId ) throws DAOException {
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CATEGORY, false,
+                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CATEGORY_FOR_PAPER, false,
                         paperId );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {

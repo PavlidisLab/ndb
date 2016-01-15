@@ -20,6 +20,7 @@
 package ubc.pavlab.ndb.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import ubc.pavlab.ndb.exceptions.DAOException;
 import ubc.pavlab.ndb.utility.Tuples.Tuple2;
@@ -126,12 +127,10 @@ public interface StatsDAO {
 
     public List<Tuple2<String, Integer>> findTotalEventsByCategoryForPaperId( Integer paperId ) throws DAOException;
 
-    int countOverlapBetweenPapers( Integer p1, Integer p2 ) throws DAOException;
+    public List<Tuple2<String, Integer>> findTotalEventsByCategory() throws DAOException;
 
-    public List<Integer> countOverlapBetweenPapers( Integer p1 ) throws DAOException;
+    public List<Tuple2<String, Integer>> findTotalEventsByContext() throws DAOException;
 
-    public List<Tuple2<String, Integer>> countTopCategoryOccurences() throws DAOException;
-
-    public List<Tuple2<String, Integer>> countTopFuncOccurences() throws DAOException;
+    public Map<Integer, Integer> overlappingEventsBetweenPapers( Integer paper_id ) throws DAOException;
 
 }
