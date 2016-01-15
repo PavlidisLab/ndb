@@ -123,4 +123,15 @@ public interface VariantDAO {
      */
     public List<Integer> findVariantIdsForGeneId( Integer id ) throws DAOException;
 
+    /**
+     * Returns a list of VariantDTO from the database matching the given Paper ID whose event is also present in
+     * the Overlap Paper. The list is never null.
+     * 
+     * @param paperId The Paper ID of the variants to be returned.
+     * @param overlapPaperId The Paper ID of the paper where the variant event must ALSO be present.
+     * @return The list of VariantDTO from the database.
+     * @throws DAOException If something fails at database level.
+     */
+    public List<VariantDTO> findByPaperOverlap( Integer paperId, Integer overlapPaperId );
+
 }

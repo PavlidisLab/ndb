@@ -112,9 +112,17 @@ public class VariantService implements Serializable {
         if ( id == null ) {
             return Lists.newArrayList();
         }
-        // FIXME: variantDAO is null, causes null pointer exception
 
         return map( variantDAO.findByPaperId( id ) );
+
+    }
+
+    public List<Variant> fetchByPaperOverlap( Integer paperId, Integer overlapPaperId ) {
+        if ( paperId == null || overlapPaperId == null ) {
+            return Lists.newArrayList();
+        }
+
+        return map( variantDAO.findByPaperOverlap( paperId, overlapPaperId ) );
 
     }
 

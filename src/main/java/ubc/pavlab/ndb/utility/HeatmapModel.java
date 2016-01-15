@@ -19,67 +19,56 @@
 
 package ubc.pavlab.ndb.utility;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 
 /**
  * TODO Document Me
  * 
  * @author mbelmadani
+ * @author mjacobson
  * @version $Id$
  */
 
-public class HeatmapModel {
+public class HeatmapModel<M> {
 
-    private List<String> categories;
-    private List<List<Integer>> data;
+    private final List<M> categories;
+    private final List<Number[]> data;
 
-    public HeatmapModel() {
-        categories = new ArrayList<String>();
-        data = new ArrayList<>();
+    public HeatmapModel( List<M> categories ) {
+        this.categories = categories;
+        this.data = Lists.newArrayList();
     }
 
-    public void insertPoints( List<Correlation> corrs ) {
-        for ( Correlation c : corrs ) {
-            this.insertPoint( c );
+    public <T extends Number> boolean add( int x, int y, T value ) {
+        if ( x >= categories.size() ) {
+            throw new IndexOutOfBoundsException( "x: " + String.valueOf( x ) + " >= total number of categories" );
         }
+
+        if ( y >= categories.size() ) {
+            throw new IndexOutOfBoundsException( "y: " + String.valueOf( y ) + " >= total number of categories" );
+        }
+
+        return data.add( new Number[] { x, y, value } );
     }
 
-    public void insertPoint( Correlation c ) {
-        if ( !categories.contains( c.x ) ) {
-            categories.add( c.x );
-        }
-        if ( !categories.contains( c.y ) ) {
-            categories.add( c.y );
-        }
-
-        ArrayList<Integer> datum = new ArrayList<Integer>( 3 );
-
-        datum.add( categories.indexOf( c.x ) );
-        datum.add( categories.indexOf( c.y ) );
-        datum.add( c.getValue() );
-
-        data.add( datum );
+    public String getCategoriesJSON() {
+        Gson gson = new Gson();
+        return gson.toJson( categories );
     }
 
-    public List<String> getTextCategories() {
-        /*
-         * Special getter to get the string enclosed names
-         */
-
-        List<String> textCategories = new ArrayList<String>();
-        for ( String s : this.categories ) {
-            textCategories.add( '"' + s + '"' );
-        }
-
-        return textCategories;
-    }
-
-    public List<String> getCategories() {
+    public List<M> getCategories() {
         return this.categories;
     }
 
-    public List<List<Integer>> getData() {
+    public String getDataJSON() {
+        Gson gson = new Gson();
+        return gson.toJson( data );
+    }
+
+    public List<Number[]> getData() {
         return data;
     }
 }

@@ -26,8 +26,19 @@
       </script>
       
       <script type="text/javascript">
-		heatmap_data = #{statsView.heatmapModel.data};
-		heatmap_categories = #{statsView.heatmapModel.textCategories};
+		heatmap_data = #{statsView.heatmapModel.dataJSON};
+		heatmap_papers = #{statsView.heatmapModel.categoriesJSON};
+		heatmap_categories = heatmap_papers.map(function(paper) {
+		   return paper.author;
+		});
+		heatmap_paper_ids = heatmap_papers.map(function(paper) {
+		   return paper.id;
+		});
+		
+		goToPaperOverlap = function(paperId, overlapPaperId) {
+		   var url = '#{request.contextPath}/variant.xhtml?paperId='+ paperId + '&amp;overlapPaperId=' + overlapPaperId;
+		   window.open(url, '_blank');
+		}
       </script>
 
 
