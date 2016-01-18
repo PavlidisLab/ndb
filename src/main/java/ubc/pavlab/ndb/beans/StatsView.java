@@ -96,6 +96,9 @@ public class StatsView implements Serializable {
         variantCategoriesBarModel = makeBarChart( statsService.getEventCntByCategory(),
                 "Total Variant Events by Category", "Category", "Variants" );
 
+        Axis xAxis = variantCategoriesBarModel.getAxis( AxisType.X );
+        xAxis.setTickAngle( -25 );
+
         variantFuncBarModel = makeBarChart( statsService.getEventCntByContext(),
                 "Total Variant Events by Function", "Function", "Variants" );
 
@@ -142,6 +145,7 @@ public class StatsView implements Serializable {
 
         Axis yAxis = barModel.getAxis( AxisType.Y );
         yAxis.setLabel( yLabel );
+        yAxis.setMin( 1 );
         /*
          * yAxis.setTickFormat( "%d" );
          * yAxis.setTickCount( 11 );
@@ -278,7 +282,7 @@ public class StatsView implements Serializable {
         return compactPie;
     }
 
-    public HeatmapModel getHeatmapModel() {
+    public HeatmapModel<Paper> getHeatmapModel() {
         return heatmapModel;
     }
 
