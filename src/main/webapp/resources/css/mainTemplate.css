@@ -32,6 +32,10 @@ body {
     background: inherit !important;
 }
 
+div.menubar span.fa {
+	margin-right: 3px;
+}
+
 div.footer {
 	text-align:center;
 	margin: 10px 0 10px 0;
