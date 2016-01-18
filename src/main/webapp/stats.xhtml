@@ -21,7 +21,7 @@
 		<script src="https://code.highcharts.com/modules/exporting.js"></script>
 		<script type="text/javascript" language="javascript"
 			src="resources/js/plugins/jqplot.logAxisRenderer.js"></script>
-		<script src="resources/js/heatmap.js">
+		<script src="resources/js/stats.js">
          
       </script>
       
@@ -41,72 +41,6 @@
 		}
       </script>
 
-
-		<script type="text/javascript">
-		
-         function pieExtender() {
-            this.cfg.highlighter = {
-               show : true,
-               tooltipLocation : 'n',
-               useAxesFormatters : false,
-               formatString : '%s: %d variants'
-            };
-         }
-
-         function barExtender() {
-
-            function tooltipContentEditor(str, seriesIndex, pointIndex, plot) {
-               // display series_label, x-axis_tick, y-axis value
-               return plot.options.axes.xaxis.ticks[pointIndex] + ": " + plot.data[seriesIndex][pointIndex];
-            }
-
-            this.cfg.legend = {
-               show : false
-            };
-
-            this.cfg.highlighter = {
-               show : true,
-               tooltipLocation : 'e',
-               tooltipContentEditor : tooltipContentEditor
-            };
-
-            this.cfg.seriesDefaults = {
-               renderer : $.jqplot.BarRenderer,
-               pointLabels : {
-                  show : true,
-                  location : 'n',
-                  hideZeros : true
-               }
-            };
-
-            this.cfg.seriesDefaults.rendererOptions = {
-               varyBarColor : true
-            };
-
-            this.cfg.tickDefaults = {
-               syncTicks : true,
-               useSeriesColor : true,
-               autoscale : true,
-               alignTicks : true,
-               forceTickAt0 : true
-            };
-
-            console.log( this.cfg.axes.yaxis );
-
-            this.cfg.axes.yaxis = {
-               label : 'Counts',
-               tickOptions : {
-                  tickDistribution : "power",
-                  formatString : "%'i"
-               },
-               renderer : $.jqplot.LogAxisRenderer,
-
-            };
-
-            //this.cfg.PointLabels = {show : false};
-
-         }
-      </script>
 	</ui:define>
 
 	<ui:define name="content">

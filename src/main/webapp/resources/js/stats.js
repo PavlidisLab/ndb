@@ -1,4 +1,72 @@
+   
+   function pieExtender() {
+      this.cfg.highlighter = {
+         show : true,
+         tooltipLocation : 'n',
+         useAxesFormatters : false,
+         formatString : '%s: %d variants'
+      };
+   }
+
+   function barExtender() {
+
+      function tooltipContentEditor(str, seriesIndex, pointIndex, plot) {
+         // display series_label, x-axis_tick, y-axis value
+         return plot.options.axes.xaxis.ticks[pointIndex] + ": " + plot.data[seriesIndex][pointIndex];
+      }
+
+      this.cfg.legend = {
+         show : false
+      };
+
+      this.cfg.highlighter = {
+         show : true,
+         tooltipLocation : 'e',
+         tooltipContentEditor : tooltipContentEditor
+      };
+
+      this.cfg.seriesDefaults = {
+         renderer : $.jqplot.BarRenderer,
+         pointLabels : {
+            show : true,
+            location : 'n',
+            hideZeros : true
+         }
+      };
+
+      this.cfg.seriesDefaults.rendererOptions = {
+         varyBarColor : true
+      };
+      
+
+      this.cfg.tickDefaults = {
+         syncTicks : true,
+         useSeriesColor : true,
+         autoscale : true,
+         alignTicks : true,
+         forceTickAt0 : true
+      };
+
+      //console.log( this.cfg.axes.yaxis );
+
+      this.cfg.axes.yaxis = {
+         label : 'Counts',
+         //ticks: [0.1, 1, 10, 100, 1000, 10000],
+         ticks: [0.1, 1, 5,10,50,100,500,1000,5000,10000], // TODO: Make general
+         tickOptions : {
+            tickDistribution : "power",
+            formatString : "%'i"
+         },
+         renderer : $.jqplot.LogAxisRenderer,
+
+      };
+
+      //this.cfg.PointLabels = {show : false};
+
+   }
+
 $( document ).ready(function() {
+   
 
 $(function () {
 
