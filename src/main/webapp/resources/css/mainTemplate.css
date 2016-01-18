@@ -15,6 +15,23 @@ body {
 	/* line-height: 1.5; */
 }
 
+
+/* Background pattern from subtlepatterns.com */
+#center, #bottom, #top {
+    background-image: url(#{resource['img/fabric_of_squares_gray.png']}) !important;
+    background-repeat: repeat !important;	
+}
+
+/* #top, #bottom {
+	background: #FFF !important;
+    background-repeat: repeat !important;	
+} */
+
+.ui-widget-content {
+    background-image: inherit !important;
+    background: inherit !important;
+}
+
 div.footer {
 	text-align:center;
 	margin: 10px 0 10px 0;
@@ -37,6 +54,12 @@ a:hover {text-decoration: underline;}
 
 .no-border {
 	border-style: none;
+}
+
+.no-border.ui-corner-all {
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius:0px;
 }
 
 a {
