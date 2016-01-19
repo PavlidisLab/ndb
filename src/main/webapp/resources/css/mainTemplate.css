@@ -17,20 +17,20 @@ body {
 
 
 /* Background pattern from subtlepatterns.com */
-#center, #bottom, #top {
+/* #center, #bottom, #top {
     background-image: url(#{resource['img/fabric_of_squares_gray.png']}) !important;
     background-repeat: repeat !important;	
 }
 
-/* #top, #bottom {
+#top, #bottom {
 	background: #FFF !important;
     background-repeat: repeat !important;	
-} */
+}
 
 .ui-widget-content {
     background-image: inherit !important;
     background: inherit !important;
-}
+} */
 
 div.menubar span.fa {
 	margin-right: 3px;
