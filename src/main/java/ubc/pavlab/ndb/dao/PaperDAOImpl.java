@@ -45,7 +45,7 @@ public class PaperDAOImpl implements PaperDAO {
 
     // SQL Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_STAR = "id, url, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, reported_effects";
+    private static final String SQL_STAR = "id, url, paper_key, title, year, doi, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, count, reported_effects, cases, design, publisher";
     private static final String SQL_TABLE = "papers_staging";
 
     // SQL Statements
@@ -132,11 +132,14 @@ public class PaperDAOImpl implements PaperDAO {
      * @throws SQLException If something fails at database level.
      */
     private static PaperDTO map( ResultSet resultSet ) throws SQLException {
-        return new PaperDTO( resultSet.getInt( "id" ), resultSet.getString( "url" ), resultSet.getString( "author" ),
-                resultSet.getString( "paper_table" ), resultSet.getString( "mut_reporting" ),
-                resultSet.getString( "scope" ), resultSet.getBoolean( "parents" ), resultSet.getString( "cohort" ),
+        return new PaperDTO( resultSet.getInt( "id" ), resultSet.getString( "url" ), resultSet.getString( "title" ),
+                resultSet.getString( "paper_key" ), resultSet.getString( "year" ), resultSet.getString( "doi" ),
+                resultSet.getString( "author" ), resultSet.getString( "paper_table" ),
+                resultSet.getString( "mut_reporting" ), resultSet.getString( "scope" ),
+                resultSet.getBoolean( "parents" ), resultSet.getString( "cohort" ),
                 resultSet.getString( "cohort_source" ), resultSet.getInt( "cohort_size" ),
-                resultSet.getString( "reported_effects" ) );
+                resultSet.getString( "count" ), resultSet.getString( "reported_effects" ),
+                resultSet.getString( "cases" ), resultSet.getString( "design" ), resultSet.getString( "publisher" ) );
     }
 
 }

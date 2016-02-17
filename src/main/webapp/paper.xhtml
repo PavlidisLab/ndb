@@ -23,9 +23,14 @@
 	<h:form style="padding:30px;">
 		<h3 style="margin:0 auto 30px auto">Publication Details</h3>    	
 		<p:outputPanel id="paperSummary" style="text-align:center;">
-			<p:panel header="Summary" style="width:600px;padding:0;" styleClass="no-border no-padding">
+			<!-- Paper information -->
+			<p:panel header="Summary - #{paperView.paper.paperKey}" style="width:600px;padding:0;" styleClass="no-border no-padding">
+			
 				<composites:paperPanel paper="#{paperView.paper}" variantCnt="#{paperView.variantCnt}" eventCnt="#{paperView.eventCnt}"/>
+	    	
 	    	<p:panel header="Breakdowns" style="width:600px;padding:0;margin-top:25px;" styleClass="no-border no-padding">
+	    	
+	    	<!-- Stats about paper on variant level -->
 	    	<p:dataTable var="tuple" value="#{paperView.eventCntByCategory}" style="margin-bottom:20px" >	
 						 <p:column headerText="Function">
 							<h:outputText value="#{tuple.t1}" />

@@ -21,6 +21,16 @@
 				            <p:column colspan="3">Summary</p:column>
 				        </p:row>						
 	                </f:facet> -->
+	            	
+	            	<p:row>
+	            		<p:column><h:outputText value="Title" /></p:column>
+	                	<p:column colspan="2">
+	                		<em>
+	                			<h:outputText value="#{cc.attrs.paper.title}" />
+	                		</em>
+						</p:column>  
+	                </p:row>
+	                
 	 				<p:row>
 	                <p:column><h:outputText value="Author" /></p:column>
 	                <p:column colspan="2">
@@ -29,6 +39,12 @@
 						</p:link>
 	                </p:column>
 	 				</p:row>
+	 				        
+	            	<p:row>
+	            	<p:column><h:outputText value="Publisher" /></p:column>
+	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.publisher}  (#{cc.attrs.paper.year})" />	</p:column>  
+	                </p:row>
+	                
 	 				<p:row>
 	                <p:column><h:outputText value="Reporting" /></p:column>
 	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.mutReporting}" /></p:column>
@@ -38,31 +54,38 @@
 	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.scope}" />	</p:column>
 	                </p:row>                
 	 
+	            	
+	 
 	 				<p:row>
-	                	<p:column rowspan="3"><h:outputText value="Cohort" />	</p:column>       
-		                <p:column><h:outputText value="Description" style="font-weight:bold" /></p:column>
-		                <p:column><h:outputText value="#{cc.attrs.paper.cohort}" /></p:column>
+	                	<p:column rowspan="4"><h:outputText value="Cohort" />	</p:column>	
+		            	<p:column><h:outputText value="Cases" style="font-weight:bold" /></p:column>
+		            	<p:column><h:outputText value="#{cc.attrs.paper.cases}" /></p:column>
 	            	</p:row>
-	            	
-	            	<p:row>
-	            	<p:column><h:outputText value="Source" style="font-weight:bold" /></p:column>
-	            	<p:column><h:outputText value="#{cc.attrs.paper.cohortSource}" />   </p:column> 
+	            	<p:row>            		
+	            		<p:column><h:outputText value="Count" style="font-weight:bold" /></p:column>
+	            		<p:column><h:outputText value="#{cc.attrs.paper.count}" /></p:column>	            	
 	            	</p:row>
-	            	
 	            	<p:row>
-	            	<p:column><h:outputText value="Size" style="font-weight:bold" /></p:column>
-	            	<p:column><h:outputText value="#{cc.attrs.paper.cohortSize}" /></p:column>
+	            		<p:column><h:outputText value="Source" style="font-weight:bold" /></p:column>
+	            		<p:column><h:outputText value="#{cc.attrs.paper.cohortSource}" /></p:column>
 	            	</p:row>
-	            	
 	            	<p:row>
-	            	<p:column><h:outputText value="Reported effects" /></p:column>
-	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.reportedEffects}" />	</p:column>  
-	                </p:row>              	            	
+	    	        	<p:column><h:outputText value="Pedigree" style="font-weight:bold" /></p:column>
+	        	    	<p:column><h:outputText value="#{cc.attrs.paper.design}" /></p:column>
+	            	</p:row>
+	            		            	
+	            	<p:row>
+	            		<p:column><h:outputText value="Reported effects" /></p:column>
+	                	<p:column colspan="2"><h:outputText value="#{cc.attrs.paper.reportedEffects}" />	</p:column>  
+	                </p:row>                
+	                              	            	
 	                <p:row>	                
-	            	<p:column><h:outputText value="URL" /></p:column>
-	            	<p:column colspan="2"><h:outputLink target="_blank" value="#{cc.attrs.paper.url}"  >		            	
-	                	<h:outputText value="#{cc.attrs.paper.url}" />
-	                </h:outputLink></p:column>
+	            		<p:column><h:outputText value="URL" /></p:column>
+	            		<p:column colspan="2">
+	            			<h:outputLink target="_blank" value="#{cc.attrs.paper.url}"  >		            	
+	                			<h:outputText value="#{cc.attrs.paper.url}" />
+	                		</h:outputLink>
+	                	</p:column>
 	                </p:row>
 	                <p:row>
 	                <p:column><h:outputText value="Variant Event Count" /></p:column>
