@@ -20,6 +20,7 @@
 package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -65,11 +66,9 @@ public class CacheService implements Serializable {
     private PaperService paperService;
 
     //
-    private RadixTree<Gene> geneTreeBySymbol = new ConcurrentRadixTree<Gene>(
-            new DefaultCharArrayNodeFactory() );
+    private RadixTree<Gene> geneTreeBySymbol = new ConcurrentRadixTree<Gene>( new DefaultCharArrayNodeFactory() );
     private Map<Integer, Gene> geneCache = new ConcurrentHashMap<>();
-    private RadixTree<Paper> paperTreeByAuthor = new ConcurrentRadixTree<Paper>(
-            new DefaultCharArrayNodeFactory() );
+    private RadixTree<Paper> paperTreeByAuthor = new ConcurrentRadixTree<Paper>( new DefaultCharArrayNodeFactory() );
     private Map<Integer, Paper> paperCache = new ConcurrentHashMap<>();
 
     /**
@@ -114,8 +113,7 @@ public class CacheService implements Serializable {
     }
 
     public List<Paper> searchPaperByAuthor( String query ) {
-        Iterable<Paper> iter = paperTreeByAuthor
-                .getValuesForClosestKeys( query.toUpperCase() );
+        Iterable<Paper> iter = paperTreeByAuthor.getValuesForClosestKeys( query.toUpperCase() );
         return Lists.newArrayList( iter );
     }
 
@@ -128,7 +126,7 @@ public class CacheService implements Serializable {
     }
 
     public Collection<Paper> listPapers() {
-        return paperCache.values();
+        return new ArrayList<>( paperCache.values() );
     }
 
     public void setDaoFactoryBean( DAOFactoryBean daoFactoryBean ) {

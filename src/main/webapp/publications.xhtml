@@ -8,6 +8,8 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:composites="http://java.sun.com/jsf/composite/composites" >
 
 	<ui:define name="pageTitle">All papers</ui:define>
@@ -41,17 +43,57 @@
 				    <f:param name="paperId" value="#{paper.id}" />
 				</p:link>
 		    </p:column>
+			<ui:remove>
+			    <p:column id="headAuthor" sortBy="#{paper.author}">
+			    		<f:facet name="header">
+			     			<h:outputText value="Author"/>		                
+			                <p:tooltip trackMouse="true" id="toolTipAuthor" for="headAuthor" value="Author of the publication." atPosition="right center"/>
+			            </f:facet>
+			    			    
+			    		<h:outputText style="font-weight:bold; text-align:center;" value="#{paper.author}" /> 
+			    	
+			    </p:column>
+		    </ui:remove>
 		    
-		    <p:column id="headAuthor" sortBy="#{paper.author}">
+		    <p:column id="headKey" sortBy="#{paper.key}">
 		    		<f:facet name="header">
-		     			<h:outputText value="Author"/>		                
-		                <p:tooltip trackMouse="true" id="toolTipAuthor" for="headAuthor" value="Author of the publication." atPosition="right center"/>
+		     			<h:outputText value="Key"/>		                
+		                <p:tooltip trackMouse="true" id="toolTipKey" for="headKey" value="Database key for publication." atPosition="right center"/>
 		            </f:facet>
 		    			    
-		    		<h:outputText style="font-weight:bold; text-align:center;" value="#{paper.author}" /> 
+		    		<h:outputText style="font-weight:bold; text-align:center;" value="#{paper.paperKey}" /> 
 		    	
 		    </p:column>
 		    
+		    <p:column id="headTitle" headerText="Title" sortBy="#{paper.title}" >
+		    	<f:facet name="header">
+		     		<h:outputText value="Title"/>		                
+		            <p:tooltip trackMouse="true" id="toolTipTitle" for="headTitle" value="Publication title." atPosition="right center"/>
+		        </f:facet>		
+		        <c:set var="string1" value='#{paper.title}' />
+		        <c:set var="MAXLENGTH" value="100" />
+		        
+		        <ui:fragment rendered="#{fn:length(string1) gt MAXLENGTH}">		      
+		        	<c:set var="trimmedTitle" value="${fn:substring(string1,0,MAXLENGTH)}" />  
+		        	<h:outputText value="${trimmedTitle}" title="#{paper.title}"/>&nbsp;<h:outputText value="[...]"/>		        	
+		        </ui:fragment>		        
+		        
+		        
+		        <ui:fragment rendered="#{fn:length(paper.title) lt MAXLENGTH}">		        
+		        	<h:outputText value="${paper.title}" title="#{paper.title}"/>
+		        </ui:fragment>
+		        
+		    </p:column>
+		    
+		    <p:column id="headYear" sortBy="#{paper.year}">
+		    		<f:facet name="header">
+		     			<h:outputText value="Year"/>		                
+		                <p:tooltip trackMouse="true" id="toolTipYear" for="headYear" value="Year published." atPosition="right center"/>
+		            </f:facet>
+		    			    
+		    		<h:outputText style="font-weight:bold; text-align:center;" value="#{paper.year}" /> 
+		    	
+		    </p:column>
 		    <p:column id="headScope" headerText="Scope" sortBy="#{paper.scope}" >
 		    	<f:facet name="header">
 		     		<h:outputText value="Scope"/>		                
@@ -76,6 +118,16 @@
 		            <h:outputText value="#{paper.reportedEffects}" />
 		    </p:column>
 		   
+		    <p:column id="headDoi" headerText="doi" sortBy="#{paper.doi}" >
+		    	<f:facet name="header">
+		     		<h:outputText value="DOI"/>		                
+		            <p:tooltip trackMouse="true" id="toolTipDoi" for="headDoi" value="Digital object identifier." atPosition="right center"/>
+		        </f:facet>
+		        <p:link target="_blank" href="#{paper.url}">
+		        	<h:outputText value="#{paper.doi}" />
+		        </p:link>
+		    </p:column>
+		    
 		    <p:column id="headSource" headerText="Source"  >
 		    	<f:facet name="header">
 		     		<h:outputText value="Source"/>		                

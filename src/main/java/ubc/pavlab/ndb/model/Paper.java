@@ -30,6 +30,10 @@ import ubc.pavlab.ndb.model.dto.PaperDTO;
 public final class Paper implements Comparable<Paper> {
     private final Integer id;
     private final String url;
+    private final String title;
+    private final String paper_key;
+    private final String doi;
+    private final String year;
     private final String author;
     private final String paperTable;
     private final String mutReporting;
@@ -38,11 +42,21 @@ public final class Paper implements Comparable<Paper> {
     private final String cohort;
     private final String cohortSource;
     private final Integer cohortSize;
+    private final String count;
     private final String reportedEffects;
+    private final String cases;
+    private final String design;
+    private final String publisher;
 
     public Paper( PaperDTO dto ) {
         this.id = dto.getId();
         this.url = dto.getUrl();
+
+        this.title = dto.getTitle();
+        this.doi = dto.getDOI();
+        this.year = dto.getYear();
+        this.paper_key = dto.getKey();
+
         this.author = dto.getAuthor();
         this.paperTable = dto.getPaper_table();
         this.mutReporting = dto.getMut_reporting();
@@ -51,7 +65,11 @@ public final class Paper implements Comparable<Paper> {
         this.cohort = dto.getCohort();
         this.cohortSource = dto.getCohort_source();
         this.cohortSize = dto.getCohort_size();
+        this.count = dto.getCount();
         this.reportedEffects = dto.getReported_effects();
+        this.cases = dto.getCases();
+        this.design = dto.getDesign();
+        this.publisher = dto.getPublisher();
 
     }
 
@@ -60,7 +78,8 @@ public final class Paper implements Comparable<Paper> {
     }
 
     public String getUrl() {
-        return url;
+        // return url;
+        return "https://dx.doi.org/" + this.doi;
     }
 
     public String getAuthor() {
@@ -127,6 +146,38 @@ public final class Paper implements Comparable<Paper> {
     @Override
     public int compareTo( Paper o ) {
         return author.compareTo( o.getAuthor() );
+    }
+
+    public String getPaperKey() {
+        return paper_key;
+    }
+
+    public String getDoi() {
+        return doi;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public String getCases() {
+        return cases;
+    }
+
+    public String getDesign() {
+        return design;
+    }
+
+    public String getPublisher() {
+        return publisher;
     }
 
 }
