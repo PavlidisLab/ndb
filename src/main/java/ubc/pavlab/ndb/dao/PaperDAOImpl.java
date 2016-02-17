@@ -46,7 +46,7 @@ public class PaperDAOImpl implements PaperDAO {
     // SQL Constants ----------------------------------------------------------------------------------
 
     private static final String SQL_STAR = "id, url, paper_key, title, year, doi, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, count, reported_effects, cases, design, publisher";
-    private static final String SQL_TABLE = "papers_staging";
+    private static final String SQL_TABLE = "papers";
 
     // SQL Statements
 
