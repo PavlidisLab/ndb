@@ -33,7 +33,7 @@
 	    <p>To access the original publication, click on the <span class="ui-icon ui-icon-extlink" style="display: inline-block"/> icon under the <em>Source</em> column.</p>
 	    
 		<p:dataTable var="paper" 
-					value="#{cacheService.listPapers()}"
+					value="#{publicationsView.papers}"
 					tableStyle="width:auto; "
 					tableStyleClass="compactTable"
 					>
@@ -55,7 +55,7 @@
 			    </p:column>
 		    </ui:remove>
 		    
-		    <p:column id="headKey" sortBy="#{paper.key}">
+		    <p:column id="headKey" sortBy="#{paper.paperKey}">
 		    		<f:facet name="header">
 		     			<h:outputText value="Key"/>		                
 		                <p:tooltip trackMouse="true" id="toolTipKey" for="headKey" value="Database key for publication." atPosition="right center"/>
