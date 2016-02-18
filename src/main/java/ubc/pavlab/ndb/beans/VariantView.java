@@ -93,16 +93,16 @@ public class VariantView implements Serializable {
                 Integer paperId = Integer.parseInt( paperIdParam );
 
                 if ( StringUtils.isBlank( overlapPaperIdParam ) ) {
-                    this.query = cacheService.getPaperById( paperId ).getAuthor();
+                    this.query = cacheService.getPaperById( paperId ).getPaperKey();
                     this.variants = this.variantService.fetchByPaperId( paperId );
                 } else {
                     Integer overlapPaperId = Integer.parseInt( overlapPaperIdParam );
                     if ( overlapPaperId == paperId ) {
-                        this.query = cacheService.getPaperById( paperId ).getAuthor();
+                        this.query = cacheService.getPaperById( paperId ).getPaperKey();
                         this.variants = this.variantService.fetchByPaperId( paperId );
                     } else {
-                        this.query = cacheService.getPaperById( paperId ).getAuthor() + " Overlap With "
-                                + cacheService.getPaperById( overlapPaperId ).getAuthor();
+                        this.query = cacheService.getPaperById( paperId ).getPaperKey() + " Overlap With "
+                                + cacheService.getPaperById( overlapPaperId ).getPaperKey();
                         this.variants = this.variantService.fetchByPaperOverlap( paperId, overlapPaperId );
                     }
                 }

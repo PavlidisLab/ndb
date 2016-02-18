@@ -172,10 +172,9 @@ public class Variant {
 
     @Override
     public String toString() {
-        return "Variant [id=" + id + ", paper=" + paper.getAuthor() + ", eventId=" + eventId + ", subjectId="
-                + subjectId
-                + ", sampleId=" + sampleId + ", chromosome=" + chromosome + ", startHg19=" + startHg19 + ", stopHg19="
-                + stopHg19 + ", ref=" + ref + ", alt=" + alt + "]";
+        return "Variant [id=" + id + ", paper=" + paper.getPaperKey() + ", eventId=" + eventId + ", subjectId="
+                + subjectId + ", sampleId=" + sampleId + ", chromosome=" + chromosome + ", startHg19=" + startHg19
+                + ", stopHg19=" + stopHg19 + ", ref=" + ref + ", alt=" + alt + "]";
     }
 
     @Override

@@ -82,14 +82,14 @@ public class PaperService implements Serializable {
     }
 
     /**
-     * Returns the paper from the database matching the given author, otherwise null.
+     * Returns the paper from the database matching the given paper key, otherwise null.
      * 
-     * @param The author of the paper to be returned.
+     * @param The key (the author name and possibly a number) of the paper to be returned.
      * @return The paper from the database matching the given author, otherwise null.
      * @throws DAOException If something fails at database level.
      */
-    protected Paper fetchPaper( String author ) {
-        return map( paperDAO.find( author ) );
+    protected Paper fetchPaper( String key ) {
+        return map( paperDAO.find( key ) );
     }
 
     /**

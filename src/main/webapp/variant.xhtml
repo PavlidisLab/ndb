@@ -174,7 +174,7 @@
 		            <ui:repeat var="var" value="#{event.variants}" varStatus="status">   
 				        	<p:commandLink update=":formResults:paperDetail" 
 				        					oncomplete="PF('paperdlg').show()" 
-				        					title="View Details"  value="#{var.paper.author}">
+				        					title="View Details"  value="#{var.paper.paperKey}">
 					            <f:setPropertyActionListener value="#{var.paper}" target="#{variantView.selectedPaper}" />
 					        </p:commandLink>
 		            	
@@ -283,7 +283,7 @@
 				            </f:facet>
 				        	<p:commandLink update=":formResults:paperDetail" 
 				        					oncomplete="PF('paperdlg').show()" 
-				        					title="View Details"  value="#{variant.paper.author}">
+				        					title="View Details"  value="#{variant.paper.paperKey}">
 					            <f:setPropertyActionListener value="#{variant.paper}" target="#{variantView.selectedPaper}" />
 					        </p:commandLink>
 				        </p:column>
@@ -310,7 +310,7 @@
 				<p:outputPanel id="variantDetail" >
 		    	   		<h:outputText value="Variant reported in: " />
 		    	   		<h:outputLink value="#{variantView.selectedVariant.paper.url}">
-		    	   			<h:outputText value="#{variantView.selectedVariant.paper.author}" />
+		    	   			<h:outputText value="#{variantView.selectedVariant.paper.paperKey}" />
 			       		</h:outputLink>								
 					<p:dataList value="#{variantView.selectedVariant.rawKV}" var="raw" type="definition" >
 			    		<p:outputPanel>

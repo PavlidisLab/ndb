@@ -51,7 +51,7 @@ public class PaperDAOImpl implements PaperDAO {
     // SQL Statements
 
     private static final String SQL_FIND_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE id = ?";
-    private static final String SQL_FIND_BY_AUTHOR = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE author = ?";
+    private static final String SQL_FIND_BY_PAPER_KEY = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE paper_key = ?";
     private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id";
 
     // Vars ---------------------------------------------------------------------------------------
@@ -78,8 +78,8 @@ public class PaperDAOImpl implements PaperDAO {
     }
 
     @Override
-    public PaperDTO find( String author ) throws DAOException {
-        return find( SQL_FIND_BY_AUTHOR, author );
+    public PaperDTO find( String paperKey ) throws DAOException {
+        return find( SQL_FIND_BY_PAPER_KEY, paperKey );
     }
 
     /**
