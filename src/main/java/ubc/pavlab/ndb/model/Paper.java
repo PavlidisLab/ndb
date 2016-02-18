@@ -145,7 +145,7 @@ public final class Paper implements Comparable<Paper> {
 
     @Override
     public int compareTo( Paper o ) {
-        return author.compareTo( o.getAuthor() );
+        return paper_key.compareTo( o.getPaperKey() );
     }
 
     public String getPaperKey() {

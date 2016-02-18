@@ -29,7 +29,7 @@
 		heatmap_data = #{statsView.heatmapModel.dataJSON};
 		heatmap_papers = #{statsView.heatmapModel.categoriesJSON};
 		heatmap_categories = heatmap_papers.map(function(paper) {
-		   return paper.author;
+		   return paper.paper_key;
 		});
 		heatmap_paper_ids = heatmap_papers.map(function(paper) {
 		   return paper.id;

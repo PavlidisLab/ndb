@@ -99,10 +99,10 @@ public class StatsView implements Serializable {
         Axis xAxis = variantCategoriesBarModel.getAxis( AxisType.X );
         xAxis.setTickAngle( -25 );
 
-        variantFuncBarModel = makeBarChart( statsService.getEventCntByContext(),
-                "Total Variant Events by Function", "Function", "Variants" );
+        variantFuncBarModel = makeBarChart( statsService.getEventCntByContext(), "Total Variant Events by Function",
+                "Function", "Variants" );
 
-        //        makeCategoryCharts();
+        // makeCategoryCharts();
         heatmapModel = makeHeatmap();
 
     }
@@ -147,10 +147,8 @@ public class StatsView implements Serializable {
         yAxis.setLabel( yLabel );
         yAxis.setMin( 1 );
         /*
-         * yAxis.setTickFormat( "%d" );
-         * yAxis.setTickCount( 11 );
-         * yAxis.setMin( 0 );
-         * yAxis.setMax( 4500 ); // TODO: Do this programmatically
+         * yAxis.setTickFormat( "%d" ); yAxis.setTickCount( 11 ); yAxis.setMin( 0 ); yAxis.setMax( 4500 ); // TODO: Do
+         * this programmatically
          */
         return barModel;
     }
@@ -184,9 +182,7 @@ public class StatsView implements Serializable {
 
         for ( Paper p : cacheService.listPapers() ) {
             int count = statsService.getEventCntByPaperId( p.getId() );
-            String citation = p.getAuthor(); // TODO: Use getCitation instead of getAuthor once it has been added to the
-                                             // database model
-
+            String citation = p.getPaperKey();
             // pieModel.set( "<a href='google.com'>" + citation + "</a>", count );
             pieModel.set( citation, count );
             // if ( pieModel.getData().size() > 4 ) break;
@@ -212,8 +208,8 @@ public class StatsView implements Serializable {
     public PieChartModel makeCompactPie( PieChartModel pieModel ) {
 
         final int TOP = 5; // For the top 10 items
-        //        final int topColor = 0x3399ff;
-        //        final int bottomColor = 0xe5f2ff;
+        // final int topColor = 0x3399ff;
+        // final int bottomColor = 0xe5f2ff;
 
         Map<String, Number> data = pieModel.getData();
         Map<String, Number> compact = new HashMap<String, Number>();
@@ -245,7 +241,7 @@ public class StatsView implements Serializable {
         compactPie.setMouseoverHighlight( true );
         compactPie.setLegendPosition( "e" );
 
-        //compactPie.setSeriesColors( colorScale( topColor, bottomColor, TOP ) );
+        // compactPie.setSeriesColors( colorScale( topColor, bottomColor, TOP ) );
 
         double MAX_PAPER_PER_COLUMN = 10.0;
         int nCols = ( int ) Math.ceil( compactPie.getData().size() / MAX_PAPER_PER_COLUMN );
@@ -268,14 +264,10 @@ public class StatsView implements Serializable {
      * 
      * String scale = "";
      * 
-     * int diff = ( end - start ) / step;
-     * for ( int i = 0; i < step - 1; i++ ) {
-     * scale += Integer.toHexString( start + 0x01000 * i ) + ",";
-     * }
-     * scale += Integer.toHexString( end );
+     * int diff = ( end - start ) / step; for ( int i = 0; i < step - 1; i++ ) { scale += Integer.toHexString( start +
+     * 0x01000 * i ) + ","; } scale += Integer.toHexString( end );
      * 
-     * return scale;
-     * }
+     * return scale; }
      */
 
     public PieChartModel getCompactPieModel() {
