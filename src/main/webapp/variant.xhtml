@@ -142,6 +142,16 @@
           	
 		        </p:column>
 		        
+		        
+		        <p:column>
+		            <f:facet name="header">
+		                <h:outputText id="denovo" value="De novo"/>
+		                <p:tooltip id="toolTipDeNovo" for="denovo" value="De novo variant (i.e. Not inherited from parents.)" />	
+		           
+		            </f:facet>		            	            	
+		            <h:outputText value="#{event.denovo}" />          	
+		        </p:column>		     
+		        
 		        <p:column sortBy="#{event}"  styleClass="row-gradient" sortFunction="#{variantView.sortByEffects}">
 		            <f:facet name="header">
 		                <h:outputText id="Effect" value="Effects"/>
