@@ -55,6 +55,7 @@ public class Variant {
     private final String func;
     private final List<String> aaChanges;
     private final String cytoband;
+    private final String denovo;
 
     private final List<RawKV> rawKV;
 
@@ -70,6 +71,8 @@ public class Variant {
         this.stopHg19 = dto.getStopHg19();
         this.ref = dto.getRef();
         this.alt = dto.getAlt();
+        this.denovo = dto.getDenovo();
+
         this.annovar = annovar;
         this.paper = paper;
 
@@ -164,6 +167,10 @@ public class Variant {
 
     public String getCytoband() {
         return cytoband;
+    }
+
+    public String getDenovo() {
+        return denovo;
     }
 
     public List<RawKV> getRawKV() {
