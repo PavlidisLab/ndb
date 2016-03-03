@@ -143,13 +143,22 @@
 		        </p:column>
 		        
 		        
-		        <p:column>
+		        <p:column sortBy="#{event.denovo}" styleClass="row-gradient" >
 		            <f:facet name="header">
-		                <h:outputText id="denovo" value="De novo"/>
+		                <h:outputText id="denovo" value="De novo"  />
 		                <p:tooltip id="toolTipDeNovo" for="denovo" value="De novo variant (i.e. Not inherited from parents.)" />	
 		           
 		            </f:facet>		            	            	
 		            <h:outputText value="#{event.denovo}" />          	
+		        </p:column>	
+		        
+		        <p:column sortBy="#{event.lof}" styleClass="row-gradient" >
+		            <f:facet name="header">
+		                <h:outputText id="lof" value="LoF"  />
+		                <p:tooltip id="toolTipLoF" for="lof" value="Loss of function caused by this variant." />	
+		           
+		            </f:facet>		            	            	
+		            <h:outputText value="#{event.lof}" />          	
 		        </p:column>		     
 		        
 		        <p:column sortBy="#{event}"  styleClass="row-gradient" sortFunction="#{variantView.sortByEffects}">
