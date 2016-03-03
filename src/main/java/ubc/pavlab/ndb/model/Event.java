@@ -50,6 +50,7 @@ public class Event {
     private final String ref;
     private final String alt;
     private final String denovo;
+    private final String lof;
     private final List<Gene> genes;
     // private final List<Paper> papers;
     private final List<String> funcs;
@@ -133,6 +134,7 @@ public class Event {
             this.ref = null;
             this.alt = null;
             this.denovo = null;
+            this.lof = null;
 
         } else {
             this.start = testVariant.getStartHg19();
@@ -140,6 +142,7 @@ public class Event {
             this.ref = testVariant.getRef();
             this.alt = testVariant.getAlt();
             this.denovo = testVariant.getDenovo();
+            this.lof = testVariant.getLoF();
         }
 
         this.caddPhred = caddMax;
@@ -183,6 +186,10 @@ public class Event {
 
     public String getDenovo() {
         return denovo;
+    }
+
+    public String getLof() {
+        return lof;
     }
 
     public Double getCaddPhred() {
