@@ -205,3 +205,11 @@ td.row-gradient span.ct0  {
 	/* No style */
 }
 
+
+td.panelGridKey {
+	width: 200px;	
+}
+
+.panelGridValue {
+    word-wrap: break-word;
+}

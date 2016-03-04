@@ -325,22 +325,35 @@
 		 
 		    </p:dataTable>
 		    	
-			<p:dialog header="Source Variant Information" widgetVar="dlg" modal="false" width="500px" closeOnEscape="true">
+			<p:dialog header="Source Variant Information" widgetVar="dlg" modal="false" width="700px" height="500px" closeOnEscape="true" maximizable="true" >
+				
 				<p:outputPanel id="variantDetail" >
-		    	   		<h:outputText value="Variant reported in: " />
-		    	   		<h:outputLink value="#{variantView.selectedVariant.paper.url}">
-		    	   			<h:outputText value="#{variantView.selectedVariant.paper.paperKey}" />
-			       		</h:outputLink>								
-					<p:dataList value="#{variantView.selectedVariant.rawKV}" var="raw" type="definition" >
-			    		<p:outputPanel>
-			                <h:panelGrid columns="3" cellpadding="2">
-			                	<h:outputText value="#{raw.key} :" style="font-weight: bold"/>
-							    <!--  <span>&nbsp;&nbsp;&nbsp;</span> -->
-			                    <h:outputText value="#{raw.value}" escape="true"/>	                    
-			                </h:panelGrid>
-			           </p:outputPanel>	           
-			       	</p:dataList>
-					
+							    	   		
+						<h1>
+			    	   		<h:outputLink value="#{variantView.selectedVariant.paper.url}">
+			    	   			<h:outputText value="#{variantView.selectedVariant.paper.title}" />			    	   			
+				       		</h:outputLink>		
+				       	</h1>				       	
+				       	<h3>
+				       		<h:outputText value="#{variantView.selectedVariant.paper.author}"  />,				       		
+				       		<h:outputText value="#{variantView.selectedVariant.paper.publisher}"  /> -
+				       		<h:outputText value="#{variantView.selectedVariant.paper.year}"  />
+				       	</h3>
+				       	<h2>						       		
+			       			<h:outputText value="Table: "  style="font-weight:bold"/>
+			       			<h:outputText value="#{variantView.selectedVariant.paper.paperTable}"  />
+			       		</h2>
+			            <h4>
+							<h:outputText value="Paper alias: "  />		
+							<h:outputText value="#{variantView.selectedVariant.paper.paperKey}" />
+						</h4>						       			
+						<p:dataList id="myDataList" value="#{variantView.selectedVariant.rawKV}" var="raw" type="definition" >				                
+			    			<p:panelGrid columns="2" cellpadding="2" styleClass="no-border" columnClasses="panelGridKey, panelGridValue " style="vertical-align: top; border:0 !important;" >
+			    				<h:outputText value="#{raw.key}:" style="font-weight: bold; "  />			    						
+			    				<h:outputText value="#{raw.value}" escape="true" style="width:350px; word-wrap:break-word; display:inline-block;" />			                    	     
+			                </p:panelGrid>
+			                <hr/>
+			            </p:dataList>	           	          			       	
 				</p:outputPanel>    
 				
 			</p:dialog>
@@ -352,6 +365,7 @@
 			</p:dialog>
 			
 		</h:form>
+		
 	</ui:define>
 
 </ui:composition>
