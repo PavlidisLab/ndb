@@ -47,11 +47,16 @@ public class PaperDAOImpl implements PaperDAO {
 
     private static final String SQL_STAR = "id, url, paper_key, title, year, doi, author, paper_table, mut_reporting, scope,parents, cohort, cohort_source, cohort_size, count, reported_effects, cases, design, publisher";
     private static final String SQL_TABLE = "papers";
-
+    
     // SQL Statements
 
     private static final String SQL_FIND_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE id = ?";
-    private static final String SQL_FIND_BY_PAPER_KEY = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE paper_key = ?";
+    //private static final String SQL_FIND_BY_PAPER_KEY = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE paper_key = ?";
+    private static final String SQL_FIND_BY_PAPER_KEY = "SELECT " + SQL_STAR + 
+                                                        " FROM " + SQL_TABLE + 
+                                                        " WHERE event_id IN  "
+                                                        + "(SELECT DISTINCT event_id FROM variant WHERE paper_id = ? and event_id in "
+                                                        + " (SELECT DISTINCT event_id FROM variant WHERE paper_id=? ))";
     private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id";
 
     // Vars ---------------------------------------------------------------------------------------

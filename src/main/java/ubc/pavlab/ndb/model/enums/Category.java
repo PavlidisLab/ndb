@@ -40,7 +40,8 @@ public enum Category {
     stopgain("stopgain", 4, "a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate creation of stop codon at the variant site. For frameshift mutations, the creation of stop codon downstream of the variant will not be counted as 'stopgain'!", "stop_gained (SO:0001587)",6 ),
     stoploss("stoploss", 5, "a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate elimination of stop codon at the variant site", "stop_lost (SO:0001578)", 4),
     synonymousSNV("synonymous SNV", 10, "a single nucleotide change that does not cause an amino acid change", "synonymous_variant (SO:0001819)", 1),
-    unknown("unknown", 11, "unknown function (due to various errors in the gene structure definition in the database file)", "sequence_variant (SO:0001060)", 0);
+    unknown("unknown", 11, "unknown function (due to various errors in the gene structure definition in the database file)", "sequence_variant (SO:0001060)", 0),
+    splicing("splicing", 12, "variant is within 2-bp of a splicing junction.", "splicing_variant (SO:0001568)", 5);
 
     private String label;
     private Integer precedence;
