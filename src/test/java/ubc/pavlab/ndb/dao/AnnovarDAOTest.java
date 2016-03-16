@@ -62,19 +62,19 @@ public class AnnovarDAOTest extends BaseTest {
     }
 
     @Test
-    public void find() {
+    public void testFind() {
         AnnovarDTO dto = annovarDAO.find( 120 );
         assertIsAnnovar1( dto );
     }
 
     @Test
-    public void findByVariantId1() {
+    public void testFindByVariantId1() {
         AnnovarDTO dto = annovarDAO.findByVariantId( 120 );
         assertIsAnnovar1( dto );
     }
 
     @Test
-    public void findByVariantId2() {
+    public void testFindByVariantId2() {
         List<Integer> ids = Lists.newArrayList( 174, 226, 273, 275, 401, 409, 605, 832, 1666 );
         List<AnnovarDTO> dtos = annovarDAO.findByVariantId( ids );
 
@@ -88,7 +88,7 @@ public class AnnovarDAOTest extends BaseTest {
     }
 
     @Test
-    public void list() {
+    public void testList() {
         List<AnnovarDTO> dtos = annovarDAO.list();
         Assert.assertThat( dtos.size(), is( 22 ) );
     }
