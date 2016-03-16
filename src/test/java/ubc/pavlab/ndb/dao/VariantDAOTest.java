@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -206,6 +207,7 @@ public class VariantDAOTest extends BaseTest {
     }
 
     private void assertIsVariant1( VariantDTO dto ) {
+        Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getId(), is( 120 ) );
         Assert.assertThat( dto.getPaperId(), is( 18 ) );
         Assert.assertThat( dto.getRawVariantId(), is( 736 ) );
@@ -228,6 +230,7 @@ public class VariantDAOTest extends BaseTest {
     }
 
     private void assertIsVariant2( VariantDTO dto ) {
+        Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getId(), is( 129 ) );
         Assert.assertThat( dto.getPaperId(), is( 18 ) );
         Assert.assertThat( dto.getRawVariantId(), is( 2051 ) );
@@ -250,6 +253,7 @@ public class VariantDAOTest extends BaseTest {
     }
 
     private void assertIsVariant3( VariantDTO dto ) {
+        Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getId(), is( 273 ) );
         Assert.assertThat( dto.getPaperId(), is( 18 ) );
         Assert.assertThat( dto.getRawVariantId(), is( 668 ) );
