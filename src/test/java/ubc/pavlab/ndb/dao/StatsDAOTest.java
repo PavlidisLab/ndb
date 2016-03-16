@@ -63,13 +63,13 @@ public class StatsDAOTest extends BaseTest {
     }
 
     @Test
-    public void findTotalPapers() {
+    public void testFindTotalPapers() {
         int res = statsDAO.findTotalPapers();
         Assert.assertThat( res, Matchers.is( 4 ) );
     }
 
     @Test
-    public void findTotalVariantsByPaperId() {
+    public void testFindTotalVariantsByPaperId() {
         int res = statsDAO.findTotalVariantsByPaperId( 7 );
         Assert.assertThat( res, Matchers.is( 8 ) );
         res = statsDAO.findTotalVariantsByPaperId( 16 );
@@ -79,7 +79,7 @@ public class StatsDAOTest extends BaseTest {
     }
 
     @Test
-    public void findTotalEventsByPaperId() {
+    public void testFindTotalEventsByPaperId() {
         int res = statsDAO.findTotalEventsByPaperId( 7 );
         Assert.assertThat( res, Matchers.is( 8 ) );
         res = statsDAO.findTotalEventsByPaperId( 16 );
@@ -89,31 +89,31 @@ public class StatsDAOTest extends BaseTest {
     }
 
     @Test
-    public void findTotalVariants() {
+    public void testFindTotalVariants() {
         int res = statsDAO.findTotalVariants();
         Assert.assertThat( res, Matchers.is( 22 ) );
     }
 
     @Test
-    public void findTotalEvents() {
+    public void testFindTotalEvents() {
         int res = statsDAO.findTotalEvents();
         Assert.assertThat( res, Matchers.is( 19 ) );
     }
 
     @Test
-    public void findTotalSubjects() {
+    public void testFindTotalSubjects() {
         int res = statsDAO.findTotalSubjects();
         Assert.assertThat( res, Matchers.is( 19 ) );
     }
 
     @Test
-    public void findTotalPapersWithVariants() {
+    public void testFindTotalPapersWithVariants() {
         int res = statsDAO.findTotalPapersWithVariants();
         Assert.assertThat( res, Matchers.is( 3 ) );
     }
 
     @Test
-    public void findTopGenesByVariantCnt() {
+    public void testFindTopGenesByVariantCnt() {
         List<Integer> res = statsDAO.findTopGenesByVariantCnt( 5 );
         Assert.assertThat( res.size(), is( 5 ) );
         Assert.assertThat( res, Matchers.containsInAnyOrder( 10588, 23258, 26040, 80332, 100528021 ) );
@@ -121,7 +121,7 @@ public class StatsDAOTest extends BaseTest {
 
     @Test
     @Ignore
-    public void findTopGenesByEventCnt() {
+    public void testFindTopGenesByEventCnt() {
         //TODO needs better data all have 1
         List<Integer> res = statsDAO.findTopGenesByEventCnt( 5 );
         //        Assert.assertThat( res.size(), is( 5 ) );
@@ -129,7 +129,7 @@ public class StatsDAOTest extends BaseTest {
     }
 
     @Test
-    public void findTopGenesByPaperCnt() {
+    public void testFindTopGenesByPaperCnt() {
         List<Integer> res = statsDAO.findTopGenesByPaperCnt( 4 );
         Assert.assertThat( res.size(), is( 4 ) );
         Assert.assertThat( res, Matchers.containsInAnyOrder( 10588, 26040, 80332, 100528021 ) ); // and one more
@@ -137,7 +137,7 @@ public class StatsDAOTest extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void findTotalVariantsByContextForPaperId() {
+    public void testFindTotalVariantsByContextForPaperId() {
         List<Tuple2<String, Integer>> res = statsDAO.findTotalVariantsByContextForPaperId( 7 );
         Assert.assertThat( res.size(), is( 4 ) );
         Assert.assertThat( res, Matchers.containsInAnyOrder( Tuples.tuple2( "exonic", 5 ),
@@ -148,7 +148,7 @@ public class StatsDAOTest extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void findTotalEventsByContextForPaperId() {
+    public void testFindTotalEventsByContextForPaperId() {
         List<Tuple2<String, Integer>> res = statsDAO.findTotalVariantsByContextForPaperId( 18 );
         Assert.assertThat( res.size(), is( 7 ) );
         Assert.assertThat( res, Matchers.containsInAnyOrder( Tuples.tuple2( "exonic", 7 ),
@@ -162,7 +162,7 @@ public class StatsDAOTest extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void findTotalVariantsByCategoryForPaperId() {
+    public void testFindTotalVariantsByCategoryForPaperId() {
         List<Tuple2<String, Integer>> res = statsDAO.findTotalVariantsByCategoryForPaperId( 7 );
         Assert.assertThat( res.size(), is( 7 ) );
         Assert.assertThat( res, Matchers.containsInAnyOrder( Tuples.tuple2( "other", 2 ),
@@ -176,7 +176,7 @@ public class StatsDAOTest extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void findTotalEventsByCategoryForPaperId() {
+    public void testFindTotalEventsByCategoryForPaperId() {
         List<Tuple2<String, Integer>> res = statsDAO.findTotalEventsByCategoryForPaperId( 18 );
         Assert.assertThat( res.size(), is( 9 ) );
         Assert.assertThat( res, Matchers.containsInAnyOrder( Tuples.tuple2( "other", 4 ),
@@ -192,7 +192,7 @@ public class StatsDAOTest extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void findTotalEventsByCategory() {
+    public void testFindTotalEventsByCategory() {
         List<Tuple2<String, Integer>> res = statsDAO.findTotalEventsByCategory();
         Assert.assertThat( res.size(), is( 13 ) );
         Assert.assertThat( res, Matchers.containsInAnyOrder( Tuples.tuple2( "other", 6 ),
@@ -212,7 +212,7 @@ public class StatsDAOTest extends BaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void findTotalEventsByContext() {
+    public void testFindTotalEventsByContext() {
         List<Tuple2<String, Integer>> res = statsDAO.findTotalEventsByContext();
         Assert.assertThat( res.size(), is( 9 ) );
         Assert.assertThat( res, Matchers.containsInAnyOrder( Tuples.tuple2( "exonic", 10 ),
@@ -227,7 +227,7 @@ public class StatsDAOTest extends BaseTest {
     }
 
     @Test
-    public void overlappingEventsBetweenPapers() {
+    public void testOverlappingEventsBetweenPapers() {
         Map<Integer, Integer> res = statsDAO.overlappingEventsBetweenPapers( 7 );
         Assert.assertThat( res.size(), is( 3 ) );
         Assert.assertThat( res.get( 16 ), is( 1 ) );

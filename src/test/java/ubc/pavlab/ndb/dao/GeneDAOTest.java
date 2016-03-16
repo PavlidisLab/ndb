@@ -61,19 +61,19 @@ public class GeneDAOTest extends BaseTest {
     }
 
     @Test
-    public void find1() {
+    public void testFind1() {
         GeneDTO dto = geneDAO.find( 32 );
         assertIsGene1( dto );
     }
 
     @Test
-    public void find2() {
+    public void testFind2() {
         GeneDTO dto = geneDAO.find( "ADSS" );
         assertIsGene2( dto );
     }
 
     @Test
-    public void list() {
+    public void testList() {
 
         List<GeneDTO> dtos = geneDAO.list();
         Assert.assertThat( dtos.size(), is( 19 ) );

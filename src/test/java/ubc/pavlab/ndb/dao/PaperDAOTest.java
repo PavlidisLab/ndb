@@ -61,7 +61,7 @@ public class PaperDAOTest extends BaseTest {
     }
 
     @Test
-    public void find1() {
+    public void testFind1() {
         PaperDTO dto = paperDAO.find( 18 );
         Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getId(), Matchers.is( 18 ) );
@@ -90,7 +90,7 @@ public class PaperDAOTest extends BaseTest {
     }
 
     @Test
-    public void find2() {
+    public void testFind2() {
         PaperDTO dto = paperDAO.find( "Iossifov2" );
         Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getId(), Matchers.is( 7 ) );
@@ -117,7 +117,7 @@ public class PaperDAOTest extends BaseTest {
     }
 
     @Test
-    public void list() {
+    public void testList() {
         List<PaperDTO> dtos = paperDAO.list();
         Assert.assertThat( dtos.size(), is( 4 ) );
     }

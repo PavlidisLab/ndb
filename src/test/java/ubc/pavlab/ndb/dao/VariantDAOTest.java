@@ -10,7 +10,7 @@
  *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License Matchers.is distributed on an "AS Matchers.is" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -18,8 +18,6 @@
  */
 
 package ubc.pavlab.ndb.dao;
-
-import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 import java.util.Set;
@@ -83,7 +81,7 @@ public class VariantDAOTest extends BaseTest {
     @Test
     public void testfind2() {
         List<VariantDTO> dtos = variantDAO.find( Lists.newArrayList( 120, 129 ) );
-        Assert.assertThat( dtos.size(), is( 2 ) );
+        Assert.assertThat( dtos.size(), Matchers.is( 2 ) );
         VariantDTO dto = dtos.get( 0 );
 
         assertIsVariant1( dto );
@@ -94,10 +92,10 @@ public class VariantDAOTest extends BaseTest {
     }
 
     @Test
-    public void findByPaperId() {
+    public void testFindByPaperId() {
         List<VariantDTO> dtos = variantDAO.findByPaperId( 7 );
 
-        Assert.assertThat( dtos.size(), is( 8 ) );
+        Assert.assertThat( dtos.size(), Matchers.is( 8 ) );
 
         Set<Integer> ids = Sets.newHashSet( 1748, 3444, 1688, 1666, 1846, 3481, 3536, 2798 );
 
@@ -109,27 +107,27 @@ public class VariantDAOTest extends BaseTest {
     }
 
     @Test
-    public void findByEventId() {
+    public void testFindByEventId() {
         List<VariantDTO> dtos = variantDAO.findByEventId( 3558 );
-        Assert.assertThat( dtos.size(), is( 1 ) );
+        Assert.assertThat( dtos.size(), Matchers.is( 1 ) );
         VariantDTO dto = dtos.get( 0 );
 
         assertIsVariant2( dto );
     }
 
     @Test
-    public void findBySubjectId() {
+    public void testFindBySubjectId() {
         List<VariantDTO> dtos = variantDAO.findBySubjectId( 1607 );
-        Assert.assertThat( dtos.size(), is( 1 ) );
+        Assert.assertThat( dtos.size(), Matchers.is( 1 ) );
         VariantDTO dto = dtos.get( 0 );
 
         assertIsVariant1( dto );
     }
 
     @Test
-    public void findByPosition() {
+    public void testFindByPosition() {
         List<VariantDTO> dtos = variantDAO.findByPosition( "3", 14703152, 151538186 );
-        Assert.assertThat( dtos.size(), is( 2 ) );
+        Assert.assertThat( dtos.size(), Matchers.is( 2 ) );
 
         for ( VariantDTO dto : dtos ) {
             if ( dto.getId() == 120 ) {
@@ -142,10 +140,10 @@ public class VariantDAOTest extends BaseTest {
         }
 
         dtos = variantDAO.findByPosition( "2", 14703152, 151538186 );
-        Assert.assertThat( dtos.size(), is( 0 ) );
+        Assert.assertThat( dtos.size(), Matchers.is( 0 ) );
 
         dtos = variantDAO.findByPosition( "12", 109577549, 109577549 );
-        Assert.assertThat( dtos.size(), is( 1 ) );
+        Assert.assertThat( dtos.size(), Matchers.is( 1 ) );
 
         VariantDTO dto = dtos.get( 0 );
 
@@ -153,11 +151,11 @@ public class VariantDAOTest extends BaseTest {
     }
 
     @Test
-    public void findByPaperOverlap() {
+    public void testFindByPaperOverlap() {
         // overlap 7, 18 gives 832, 3481, 3536, 141
         List<VariantDTO> dtos = variantDAO.findByPaperOverlap( 7, 18 );
 
-        Assert.assertThat( dtos.size(), is( 4 ) );
+        Assert.assertThat( dtos.size(), Matchers.is( 4 ) );
 
         Set<Integer> ids = Sets.newHashSet( 832, 3481, 3536, 141 );
 
@@ -168,7 +166,7 @@ public class VariantDAOTest extends BaseTest {
 
         dtos = variantDAO.findByPaperOverlap( 7, 16 );
 
-        Assert.assertThat( dtos.size(), is( 2 ) );
+        Assert.assertThat( dtos.size(), Matchers.is( 2 ) );
 
         ids = Sets.newHashSet( 2798, 3722 );
 
@@ -179,100 +177,100 @@ public class VariantDAOTest extends BaseTest {
     }
 
     @Test
-    public void list() {
+    public void testList() {
         List<VariantDTO> dtos = variantDAO.list();
-        Assert.assertThat( dtos.size(), is( 22 ) );
+        Assert.assertThat( dtos.size(), Matchers.is( 22 ) );
     }
 
     @Test
-    public void findGeneIdsForVariantId() {
+    public void testFindGeneIdsForVariantId() {
         List<Integer> res = variantDAO.findGeneIdsForVariantId( 120 );
-        Assert.assertThat( res.size(), is( 1 ) );
-        Assert.assertThat( res.get( 0 ), is( 13 ) );
+        Assert.assertThat( res.size(), Matchers.is( 1 ) );
+        Assert.assertThat( res.get( 0 ), Matchers.is( 13 ) );
 
         res = variantDAO.findGeneIdsForVariantId( 605 );
-        Assert.assertThat( res.size(), is( 1 ) );
-        Assert.assertThat( res.get( 0 ), is( 65983 ) );
+        Assert.assertThat( res.size(), Matchers.is( 1 ) );
+        Assert.assertThat( res.get( 0 ), Matchers.is( 65983 ) );
     }
 
     @Test
-    public void findVariantIdsForGeneId() {
+    public void testFindVariantIdsForGeneId() {
         List<Integer> res = variantDAO.findVariantIdsForGeneId( 13 );
-        Assert.assertThat( res.size(), is( 1 ) );
-        Assert.assertThat( res.get( 0 ), is( 120 ) );
+        Assert.assertThat( res.size(), Matchers.is( 1 ) );
+        Assert.assertThat( res.get( 0 ), Matchers.is( 120 ) );
 
         res = variantDAO.findVariantIdsForGeneId( 65983 );
-        Assert.assertThat( res.size(), is( 1 ) );
-        Assert.assertThat( res.get( 0 ), is( 605 ) );
+        Assert.assertThat( res.size(), Matchers.is( 1 ) );
+        Assert.assertThat( res.get( 0 ), Matchers.is( 605 ) );
     }
 
     private void assertIsVariant1( VariantDTO dto ) {
         Assert.assertThat( dto, Matchers.notNullValue() );
-        Assert.assertThat( dto.getId(), is( 120 ) );
-        Assert.assertThat( dto.getPaperId(), is( 18 ) );
-        Assert.assertThat( dto.getRawVariantId(), is( 736 ) );
-        Assert.assertThat( dto.getEventId(), is( 741 ) );
-        Assert.assertThat( dto.getSubjectId(), is( 1607 ) );
-        Assert.assertThat( dto.getSampleId(), is( "09C84345" ) );
-        Assert.assertThat( dto.getChromosome(), is( "3" ) );
-        Assert.assertThat( dto.getStartHg19(), is( 151538186 ) );
-        Assert.assertThat( dto.getStopHg19(), is( 151538186 ) );
-        Assert.assertThat( dto.getRef(), is( "A" ) );
-        Assert.assertThat( dto.getAlt(), is( "C" ) );
-        Assert.assertThat( dto.getGene(), is( "AADAC" ) );
-        Assert.assertThat( dto.getCategory(), is( "nonsynonymous SNV" ) );
+        Assert.assertThat( dto.getId(), Matchers.is( 120 ) );
+        Assert.assertThat( dto.getPaperId(), Matchers.is( 18 ) );
+        Assert.assertThat( dto.getRawVariantId(), Matchers.is( 736 ) );
+        Assert.assertThat( dto.getEventId(), Matchers.is( 741 ) );
+        Assert.assertThat( dto.getSubjectId(), Matchers.is( 1607 ) );
+        Assert.assertThat( dto.getSampleId(), Matchers.is( "09C84345" ) );
+        Assert.assertThat( dto.getChromosome(), Matchers.is( "3" ) );
+        Assert.assertThat( dto.getStartHg19(), Matchers.is( 151538186 ) );
+        Assert.assertThat( dto.getStopHg19(), Matchers.is( 151538186 ) );
+        Assert.assertThat( dto.getRef(), Matchers.is( "A" ) );
+        Assert.assertThat( dto.getAlt(), Matchers.is( "C" ) );
+        Assert.assertThat( dto.getGene(), Matchers.is( "AADAC" ) );
+        Assert.assertThat( dto.getCategory(), Matchers.is( "nonsynonymous SNV" ) );
         Assert.assertNull( dto.getGeneDetail() );
-        Assert.assertThat( dto.getFunc(), is( "exonic" ) );
-        Assert.assertThat( dto.getAaChange(), is( "AADAC:NM_001086:exon3:c.A377C:p.D126A," ) );
-        Assert.assertThat( dto.getCytoband(), is( "3q25.1" ) );
-        Assert.assertThat( dto.getDenovo(), is( "yes" ) );
-        Assert.assertThat( dto.getLoF(), is( "unknown" ) );
+        Assert.assertThat( dto.getFunc(), Matchers.is( "exonic" ) );
+        Assert.assertThat( dto.getAaChange(), Matchers.is( "AADAC:NM_001086:exon3:c.A377C:p.D126A," ) );
+        Assert.assertThat( dto.getCytoband(), Matchers.is( "3q25.1" ) );
+        Assert.assertThat( dto.getDenovo(), Matchers.is( "yes" ) );
+        Assert.assertThat( dto.getLoF(), Matchers.is( "unknown" ) );
     }
 
     private void assertIsVariant2( VariantDTO dto ) {
         Assert.assertThat( dto, Matchers.notNullValue() );
-        Assert.assertThat( dto.getId(), is( 129 ) );
-        Assert.assertThat( dto.getPaperId(), is( 18 ) );
-        Assert.assertThat( dto.getRawVariantId(), is( 2051 ) );
-        Assert.assertThat( dto.getEventId(), is( 3558 ) );
-        Assert.assertThat( dto.getSubjectId(), is( 122 ) );
-        Assert.assertThat( dto.getSampleId(), is( "13585" ) );
-        Assert.assertThat( dto.getChromosome(), is( "12" ) );
-        Assert.assertThat( dto.getStartHg19(), is( 109577549 ) );
-        Assert.assertThat( dto.getStopHg19(), is( 109577549 ) );
-        Assert.assertThat( dto.getRef(), is( "A" ) );
-        Assert.assertThat( dto.getAlt(), is( "AG" ) );
-        Assert.assertThat( dto.getGene(), is( "ACACB" ) );
-        Assert.assertThat( dto.getCategory(), is( "frameshift insertion" ) );
+        Assert.assertThat( dto.getId(), Matchers.is( 129 ) );
+        Assert.assertThat( dto.getPaperId(), Matchers.is( 18 ) );
+        Assert.assertThat( dto.getRawVariantId(), Matchers.is( 2051 ) );
+        Assert.assertThat( dto.getEventId(), Matchers.is( 3558 ) );
+        Assert.assertThat( dto.getSubjectId(), Matchers.is( 122 ) );
+        Assert.assertThat( dto.getSampleId(), Matchers.is( "13585" ) );
+        Assert.assertThat( dto.getChromosome(), Matchers.is( "12" ) );
+        Assert.assertThat( dto.getStartHg19(), Matchers.is( 109577549 ) );
+        Assert.assertThat( dto.getStopHg19(), Matchers.is( 109577549 ) );
+        Assert.assertThat( dto.getRef(), Matchers.is( "A" ) );
+        Assert.assertThat( dto.getAlt(), Matchers.is( "AG" ) );
+        Assert.assertThat( dto.getGene(), Matchers.is( "ACACB" ) );
+        Assert.assertThat( dto.getCategory(), Matchers.is( "frameshift insertion" ) );
         Assert.assertNull( dto.getGeneDetail() );
-        Assert.assertThat( dto.getFunc(), is( "exonic" ) );
-        Assert.assertThat( dto.getAaChange(), is( "ACACB:NM_001093:exon1:c.340dupG:p.P113fs," ) );
-        Assert.assertThat( dto.getCytoband(), is( "12q24.11" ) );
-        Assert.assertThat( dto.getDenovo(), is( "yes" ) );
+        Assert.assertThat( dto.getFunc(), Matchers.is( "exonic" ) );
+        Assert.assertThat( dto.getAaChange(), Matchers.is( "ACACB:NM_001093:exon1:c.340dupG:p.P113fs," ) );
+        Assert.assertThat( dto.getCytoband(), Matchers.is( "12q24.11" ) );
+        Assert.assertThat( dto.getDenovo(), Matchers.is( "yes" ) );
         Assert.assertNull( dto.getLoF() );
     }
 
     private void assertIsVariant3( VariantDTO dto ) {
         Assert.assertThat( dto, Matchers.notNullValue() );
-        Assert.assertThat( dto.getId(), is( 273 ) );
-        Assert.assertThat( dto.getPaperId(), is( 18 ) );
-        Assert.assertThat( dto.getRawVariantId(), is( 668 ) );
-        Assert.assertThat( dto.getEventId(), is( 862 ) );
-        Assert.assertThat( dto.getSubjectId(), is( 2174 ) );
-        Assert.assertThat( dto.getSampleId(), is( "NDAR_INVFM678KRA_wes1" ) );
-        Assert.assertThat( dto.getChromosome(), is( "3" ) );
-        Assert.assertThat( dto.getStartHg19(), is( 14703152 ) );
-        Assert.assertThat( dto.getStopHg19(), is( 14703152 ) );
-        Assert.assertThat( dto.getRef(), is( "C" ) );
-        Assert.assertThat( dto.getAlt(), is( "T" ) );
-        Assert.assertThat( dto.getGene(), is( "CCDC174" ) );
-        Assert.assertThat( dto.getCategory(), is( "synonymous SNV" ) );
+        Assert.assertThat( dto.getId(), Matchers.is( 273 ) );
+        Assert.assertThat( dto.getPaperId(), Matchers.is( 18 ) );
+        Assert.assertThat( dto.getRawVariantId(), Matchers.is( 668 ) );
+        Assert.assertThat( dto.getEventId(), Matchers.is( 862 ) );
+        Assert.assertThat( dto.getSubjectId(), Matchers.is( 2174 ) );
+        Assert.assertThat( dto.getSampleId(), Matchers.is( "NDAR_INVFM678KRA_wes1" ) );
+        Assert.assertThat( dto.getChromosome(), Matchers.is( "3" ) );
+        Assert.assertThat( dto.getStartHg19(), Matchers.is( 14703152 ) );
+        Assert.assertThat( dto.getStopHg19(), Matchers.is( 14703152 ) );
+        Assert.assertThat( dto.getRef(), Matchers.is( "C" ) );
+        Assert.assertThat( dto.getAlt(), Matchers.is( "T" ) );
+        Assert.assertThat( dto.getGene(), Matchers.is( "CCDC174" ) );
+        Assert.assertThat( dto.getCategory(), Matchers.is( "synonymous SNV" ) );
         Assert.assertNull( dto.getGeneDetail() );
-        Assert.assertThat( dto.getFunc(), is( "exonic" ) );
-        Assert.assertThat( dto.getAaChange(), is( "CCDC174:NM_016474:exon5:c.C423T:p.D141D," ) );
-        Assert.assertThat( dto.getCytoband(), is( "3p25.1" ) );
-        Assert.assertThat( dto.getDenovo(), is( "yes" ) );
-        Assert.assertThat( dto.getLoF(), is( "unknown" ) );
+        Assert.assertThat( dto.getFunc(), Matchers.is( "exonic" ) );
+        Assert.assertThat( dto.getAaChange(), Matchers.is( "CCDC174:NM_016474:exon5:c.C423T:p.D141D," ) );
+        Assert.assertThat( dto.getCytoband(), Matchers.is( "3p25.1" ) );
+        Assert.assertThat( dto.getDenovo(), Matchers.is( "yes" ) );
+        Assert.assertThat( dto.getLoF(), Matchers.is( "unknown" ) );
     }
 
 }

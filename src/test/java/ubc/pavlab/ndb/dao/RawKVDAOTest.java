@@ -60,7 +60,7 @@ public class RawKVDAOTest extends BaseTest {
     }
 
     @Test
-    public void find() {
+    public void testFind() {
         RawKVDTO dto = rawKVDAO.find( 14852 );
         assertIsRawKV1( dto );
 
@@ -69,7 +69,7 @@ public class RawKVDAOTest extends BaseTest {
     }
 
     @Test
-    public void findByPaperAndRawVariantId() {
+    public void testFindByPaperAndRawVariantId() {
         List<RawKVDTO> dtos = rawKVDAO.findByPaperAndRawVariantId( 7, 2836 );
         Assert.assertThat( dtos.size(), is( 16 ) );
 
@@ -81,7 +81,7 @@ public class RawKVDAOTest extends BaseTest {
     }
 
     @Test
-    public void list() {
+    public void testList() {
 
         List<RawKVDTO> dtos = rawKVDAO.list();
         Assert.assertThat( dtos.size(), is( 483 ) );
