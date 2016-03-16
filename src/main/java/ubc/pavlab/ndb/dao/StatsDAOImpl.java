@@ -249,7 +249,9 @@ public class StatsDAOImpl implements StatsDAO {
                 PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CATEGORY, false );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
-                results.add( new Tuple2<>( resultSet.getString( "category" ), resultSet.getInt( "cnt" ) ) );
+                String category = resultSet.getString( "category" );
+                category = StringUtils.isBlank( category ) ? "other" : category;
+                results.add( new Tuple2<>( category, resultSet.getInt( "cnt" ) ) );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
