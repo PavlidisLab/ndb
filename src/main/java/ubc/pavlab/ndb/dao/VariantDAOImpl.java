@@ -74,7 +74,8 @@ public class VariantDAOImpl implements VariantDAO {
             + " WHERE gene_id = ?";
 
     private static final String SQL_FIND_BY_PAPER_OVERLAP = "select " + SQL_STAR + " from " + SQL_TABLE
-            + " where paper_id = ? and event_id in (select event_id from " + SQL_TABLE + " where paper_id = ?)";
+            + " where event_id in (select distinct event_id from " + SQL_TABLE
+            + " where paper_id = ? and event_id in (select distinct event_id from " + SQL_TABLE + " where paper_id=?))";
 
     // Vars ---------------------------------------------------------------------------------------
 
