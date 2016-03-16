@@ -119,7 +119,7 @@ public class PaperDAOTest extends BaseTest {
     @Test
     public void list() {
         List<PaperDTO> dtos = paperDAO.list();
-        Assert.assertThat( dtos.size(), is( 3 ) );
+        Assert.assertThat( dtos.size(), is( 4 ) );
     }
 
 }
