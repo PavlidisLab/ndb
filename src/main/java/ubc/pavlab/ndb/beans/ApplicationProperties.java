@@ -74,4 +74,8 @@ public class ApplicationProperties implements Serializable {
     public String getPropertiesFile() {
         return PROPERTIES_FILE;
     }
+
+    public PropertiesFile getBasePropertiesFile() {
+        return prop;
+    }
 }

@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import ubc.pavlab.ndb.exceptions.ConfigurationException;
@@ -79,6 +80,10 @@ public class PropertiesFile extends Properties {
         } catch ( IOException e ) {
             e.printStackTrace();
         }
+    }
+
+    public void mute() {
+        log.setLevel( Level.OFF );
     }
 
 }
