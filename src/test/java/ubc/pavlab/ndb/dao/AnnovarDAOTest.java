@@ -64,13 +64,13 @@ public class AnnovarDAOTest extends BaseTest {
     @Test
     public void testFind() {
         AnnovarDTO dto = annovarDAO.find( 120 );
-        assertIsAnnovar1( dto );
+        assertIsAnnovarDTO1( dto );
     }
 
     @Test
     public void testFindByVariantId1() {
         AnnovarDTO dto = annovarDAO.findByVariantId( 120 );
-        assertIsAnnovar1( dto );
+        assertIsAnnovarDTO1( dto );
     }
 
     @Test
@@ -93,7 +93,7 @@ public class AnnovarDAOTest extends BaseTest {
         Assert.assertThat( dtos.size(), is( 22 ) );
     }
 
-    private void assertIsAnnovar1( AnnovarDTO dto ) {
+    private void assertIsAnnovarDTO1( AnnovarDTO dto ) {
         Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getId(), Matchers.is( 120 ) );
         Assert.assertThat( dto.getVariantId(), Matchers.is( 120 ) );

@@ -63,13 +63,13 @@ public class GeneDAOTest extends BaseTest {
     @Test
     public void testFind1() {
         GeneDTO dto = geneDAO.find( 32 );
-        assertIsGene1( dto );
+        assertIsGeneDTO1( dto );
     }
 
     @Test
     public void testFind2() {
         GeneDTO dto = geneDAO.find( "ADSS" );
-        assertIsGene2( dto );
+        assertIsGeneDTO2( dto );
     }
 
     @Test
@@ -79,7 +79,7 @@ public class GeneDAOTest extends BaseTest {
         Assert.assertThat( dtos.size(), is( 19 ) );
     }
 
-    private void assertIsGene1( GeneDTO dto ) {
+    private void assertIsGeneDTO1( GeneDTO dto ) {
         Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getGeneId(), Matchers.is( 32 ) );
         Assert.assertThat( dto.getSymbol(), Matchers.is( "ACACB" ) );
@@ -95,7 +95,7 @@ public class GeneDAOTest extends BaseTest {
         Assert.assertThat( dto.getModificationDate(), Matchers.is( "20151004" ) );
     }
 
-    private void assertIsGene2( GeneDTO dto ) {
+    private void assertIsGeneDTO2( GeneDTO dto ) {
         Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getGeneId(), Matchers.is( 159 ) );
         Assert.assertThat( dto.getSymbol(), Matchers.is( "ADSS" ) );
