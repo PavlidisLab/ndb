@@ -10,6 +10,7 @@ import com.google.common.collect.Sets;
 import ubc.pavlab.ndb.beans.ApplicationProperties;
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
 import ubc.pavlab.ndb.beans.services.AnnovarService;
+import ubc.pavlab.ndb.beans.services.CacheService;
 import ubc.pavlab.ndb.beans.services.GeneService;
 import ubc.pavlab.ndb.beans.services.PaperService;
 import ubc.pavlab.ndb.beans.services.RawKVService;
@@ -58,6 +59,8 @@ public class BaseTest {
     private static GeneService geneService = null;
     private static PaperService paperService = null;
     private static RawKVService rawKVService = null;
+
+    private static CacheService cacheService = null;
 
     static {
 
@@ -123,6 +126,21 @@ public class BaseTest {
         }
 
         return rawKVService;
+    }
+
+    protected static CacheService getMockCacheService() {
+        if ( cacheService == null ) {
+            cacheService = new CacheService();
+            cacheService.setDaoFactoryBean( daoFactoryBean );
+
+            // Inject services
+            cacheService.setGeneService( getMockGeneService() );
+            cacheService.setPaperService( getMockPaperService() );
+
+            cacheService.init();
+        }
+
+        return cacheService;
     }
 
     // Utility functions
@@ -210,6 +228,7 @@ public class BaseTest {
 
     protected static final int PAPER1_ID = 7;
     protected static final String PAPER1_KEY = "Iossifov2";
+    protected static final String PAPER1_AUTHOR = "Iossifov";
 
     protected void assertIsPaper1( Paper e ) {
         Assert.assertThat( e, Matchers.notNullValue() );
@@ -238,6 +257,7 @@ public class BaseTest {
 
     protected static final int PAPER2_ID = 16;
     protected static final String PAPER2_KEY = "O'Roak";
+    protected static final String PAPER2_AUTHOR = "O'Roak";
 
     protected void assertIsPaper2( Paper e ) {
         Assert.assertThat( e, Matchers.notNullValue() );
