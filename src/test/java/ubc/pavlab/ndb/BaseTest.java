@@ -1,8 +1,11 @@
 package ubc.pavlab.ndb;
 
 import org.apache.log4j.Logger;
+import org.mockito.Mockito;
 
 import ubc.pavlab.ndb.beans.ApplicationProperties;
+import ubc.pavlab.ndb.beans.DAOFactoryBean;
+import ubc.pavlab.ndb.beans.services.AnnovarService;
 import ubc.pavlab.ndb.dao.DAOFactory;
 import ubc.pavlab.ndb.exceptions.ConfigurationException;
 
@@ -39,6 +42,9 @@ public class BaseTest {
 
     protected static final ApplicationProperties applicationProperties;
     protected static final DAOFactory daoFactory;
+    protected static final DAOFactoryBean daoFactoryBean;
+
+    private static AnnovarService annovarService = null;
 
     static {
 
@@ -54,10 +60,26 @@ public class BaseTest {
 
         daoFactory = DAOFactory.getInstance( testdbKey );
         log.info( "TestDAOFactory successfully obtained: " + daoFactory );
+
+        daoFactoryBean = Mockito.mock( DAOFactoryBean.class );
+        Mockito.when( daoFactoryBean.getDAOFactory() ).thenReturn( daoFactory );
+
+        // Application Scoped Services
+
     }
 
     public BaseTest() {
 
+    }
+
+    protected static AnnovarService getMockAnnovarService() {
+        if ( annovarService == null ) {
+            annovarService = new AnnovarService();
+            annovarService.setDaoFactoryBean( daoFactoryBean );
+            annovarService.init();
+        }
+
+        return annovarService;
     }
 
 }
