@@ -62,10 +62,10 @@ public class RawKVDAOTest extends BaseTest {
     @Test
     public void testFind() {
         RawKVDTO dto = rawKVDAO.find( 14852 );
-        assertIsRawKV1( dto );
+        assertIsRawKVDTO1( dto );
 
         dto = rawKVDAO.find( 14853 );
-        assertIsRawKV2( dto );
+        assertIsRawKVDTO2( dto );
     }
 
     @Test
@@ -87,7 +87,7 @@ public class RawKVDAOTest extends BaseTest {
         Assert.assertThat( dtos.size(), is( 483 ) );
     }
 
-    private void assertIsRawKV1( RawKVDTO dto ) {
+    private void assertIsRawKVDTO1( RawKVDTO dto ) {
         Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getId(), Matchers.is( 14852 ) );
         Assert.assertThat( dto.getPaperId(), Matchers.is( 7 ) );
@@ -96,7 +96,7 @@ public class RawKVDAOTest extends BaseTest {
         Assert.assertThat( dto.getValue(), Matchers.is( "11074" ) );
     }
 
-    private void assertIsRawKV2( RawKVDTO dto ) {
+    private void assertIsRawKVDTO2( RawKVDTO dto ) {
         Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getId(), Matchers.is( 14853 ) );
         Assert.assertThat( dto.getPaperId(), Matchers.is( 7 ) );

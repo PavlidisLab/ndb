@@ -75,7 +75,7 @@ public class VariantDAOTest extends BaseTest {
     @Test
     public void testfind() {
         VariantDTO dto = variantDAO.find( 120 );
-        assertIsVariant1( dto );
+        assertIsVariantDTO1( dto );
     }
 
     @Test
@@ -84,11 +84,11 @@ public class VariantDAOTest extends BaseTest {
         Assert.assertThat( dtos.size(), Matchers.is( 2 ) );
         VariantDTO dto = dtos.get( 0 );
 
-        assertIsVariant1( dto );
+        assertIsVariantDTO1( dto );
 
         dto = dtos.get( 1 );
 
-        assertIsVariant2( dto );
+        assertIsVariantDTO2( dto );
     }
 
     @Test
@@ -112,7 +112,7 @@ public class VariantDAOTest extends BaseTest {
         Assert.assertThat( dtos.size(), Matchers.is( 1 ) );
         VariantDTO dto = dtos.get( 0 );
 
-        assertIsVariant2( dto );
+        assertIsVariantDTO2( dto );
     }
 
     @Test
@@ -121,7 +121,7 @@ public class VariantDAOTest extends BaseTest {
         Assert.assertThat( dtos.size(), Matchers.is( 1 ) );
         VariantDTO dto = dtos.get( 0 );
 
-        assertIsVariant1( dto );
+        assertIsVariantDTO1( dto );
     }
 
     @Test
@@ -131,9 +131,9 @@ public class VariantDAOTest extends BaseTest {
 
         for ( VariantDTO dto : dtos ) {
             if ( dto.getId() == 120 ) {
-                assertIsVariant1( dto );
+                assertIsVariantDTO1( dto );
             } else if ( dto.getId() == 273 ) {
-                assertIsVariant3( dto );
+                assertIsVariantDTO3( dto );
             } else {
                 Assert.fail( "Incorrect Variant" );
             }
@@ -147,7 +147,7 @@ public class VariantDAOTest extends BaseTest {
 
         VariantDTO dto = dtos.get( 0 );
 
-        assertIsVariant2( dto );
+        assertIsVariantDTO2( dto );
     }
 
     @Test
@@ -204,7 +204,7 @@ public class VariantDAOTest extends BaseTest {
         Assert.assertThat( res.get( 0 ), Matchers.is( 605 ) );
     }
 
-    private void assertIsVariant1( VariantDTO dto ) {
+    private void assertIsVariantDTO1( VariantDTO dto ) {
         Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getId(), Matchers.is( 120 ) );
         Assert.assertThat( dto.getPaperId(), Matchers.is( 18 ) );
@@ -227,7 +227,7 @@ public class VariantDAOTest extends BaseTest {
         Assert.assertThat( dto.getLoF(), Matchers.is( "unknown" ) );
     }
 
-    private void assertIsVariant2( VariantDTO dto ) {
+    private void assertIsVariantDTO2( VariantDTO dto ) {
         Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getId(), Matchers.is( 129 ) );
         Assert.assertThat( dto.getPaperId(), Matchers.is( 18 ) );
@@ -250,7 +250,7 @@ public class VariantDAOTest extends BaseTest {
         Assert.assertNull( dto.getLoF() );
     }
 
-    private void assertIsVariant3( VariantDTO dto ) {
+    private void assertIsVariantDTO3( VariantDTO dto ) {
         Assert.assertThat( dto, Matchers.notNullValue() );
         Assert.assertThat( dto.getId(), Matchers.is( 273 ) );
         Assert.assertThat( dto.getPaperId(), Matchers.is( 18 ) );
