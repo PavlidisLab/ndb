@@ -8,6 +8,7 @@ import ubc.pavlab.ndb.beans.DAOFactoryBean;
 import ubc.pavlab.ndb.beans.services.AnnovarService;
 import ubc.pavlab.ndb.beans.services.GeneService;
 import ubc.pavlab.ndb.beans.services.PaperService;
+import ubc.pavlab.ndb.beans.services.RawKVService;
 import ubc.pavlab.ndb.dao.DAOFactory;
 import ubc.pavlab.ndb.exceptions.ConfigurationException;
 
@@ -49,6 +50,7 @@ public class BaseTest {
     private static AnnovarService annovarService = null;
     private static GeneService geneService = null;
     private static PaperService paperService = null;
+    private static RawKVService rawKVService = null;
 
     static {
 
@@ -104,6 +106,16 @@ public class BaseTest {
         }
 
         return paperService;
+    }
+
+    protected static RawKVService getMockRawKVService() {
+        if ( rawKVService == null ) {
+            rawKVService = new RawKVService();
+            rawKVService.setDaoFactoryBean( daoFactoryBean );
+            rawKVService.init();
+        }
+
+        return rawKVService;
     }
 
 }
