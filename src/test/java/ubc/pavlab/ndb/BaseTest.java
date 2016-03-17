@@ -6,6 +6,8 @@ import org.mockito.Mockito;
 import ubc.pavlab.ndb.beans.ApplicationProperties;
 import ubc.pavlab.ndb.beans.DAOFactoryBean;
 import ubc.pavlab.ndb.beans.services.AnnovarService;
+import ubc.pavlab.ndb.beans.services.GeneService;
+import ubc.pavlab.ndb.beans.services.PaperService;
 import ubc.pavlab.ndb.dao.DAOFactory;
 import ubc.pavlab.ndb.exceptions.ConfigurationException;
 
@@ -45,6 +47,8 @@ public class BaseTest {
     protected static final DAOFactoryBean daoFactoryBean;
 
     private static AnnovarService annovarService = null;
+    private static GeneService geneService = null;
+    private static PaperService paperService = null;
 
     static {
 
@@ -80,6 +84,26 @@ public class BaseTest {
         }
 
         return annovarService;
+    }
+
+    protected static GeneService getMockGeneService() {
+        if ( geneService == null ) {
+            geneService = new GeneService();
+            geneService.setDaoFactoryBean( daoFactoryBean );
+            geneService.init();
+        }
+
+        return geneService;
+    }
+
+    protected static PaperService getMockPaperService() {
+        if ( paperService == null ) {
+            paperService = new PaperService();
+            paperService.setDaoFactoryBean( daoFactoryBean );
+            paperService.init();
+        }
+
+        return paperService;
     }
 
 }
