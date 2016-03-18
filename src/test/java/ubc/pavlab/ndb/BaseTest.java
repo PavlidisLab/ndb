@@ -14,6 +14,7 @@ import ubc.pavlab.ndb.beans.services.CacheService;
 import ubc.pavlab.ndb.beans.services.GeneService;
 import ubc.pavlab.ndb.beans.services.PaperService;
 import ubc.pavlab.ndb.beans.services.RawKVService;
+import ubc.pavlab.ndb.beans.services.StatsService;
 import ubc.pavlab.ndb.beans.services.VariantService;
 import ubc.pavlab.ndb.dao.DAOFactory;
 import ubc.pavlab.ndb.exceptions.ConfigurationException;
@@ -65,6 +66,7 @@ public class BaseTest {
 
     private static CacheService cacheService = null;
     private static VariantService variantService = null;
+    private static StatsService statsService = null;
 
     static {
 
@@ -161,6 +163,20 @@ public class BaseTest {
         }
 
         return variantService;
+    }
+
+    protected static StatsService getMockStatsService() {
+        if ( statsService == null ) {
+            statsService = new StatsService();
+            statsService.setDaoFactoryBean( daoFactoryBean );
+
+            // Inject services
+            statsService.setCacheService( getMockCacheService() );
+
+            statsService.init();
+        }
+
+        return statsService;
     }
 
     // Utility functions
