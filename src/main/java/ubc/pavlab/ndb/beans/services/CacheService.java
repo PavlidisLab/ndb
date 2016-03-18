@@ -90,7 +90,7 @@ public class CacheService implements Serializable {
         log.info( "Gene Cache loaded with " + geneCache.size() + " genes." );
 
         for ( Paper p : paperService.listPapers() ) {
-            paperTreeByAuthor.put( p.getAuthor(), p );
+            paperTreeByAuthor.put( p.getAuthor().toUpperCase(), p );
             paperCache.put( p.getId(), p );
             ;
         }

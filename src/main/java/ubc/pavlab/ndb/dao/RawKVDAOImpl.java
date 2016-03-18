@@ -45,15 +45,15 @@ public class RawKVDAOImpl implements RawKVDAO {
 
     // SQL Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_STAR = "raw_key_value.id, paper_id, raw_id, `key`, value";
-    private static final String SQL_TABLE = "raw_key_value inner join raw_variant using(paper_id, raw_id)";
+    private static final String SQL_STAR = "rkv.id, paper_id, raw_id, rkv.key, value";
+    private static final String SQL_TABLE = "raw_key_value rkv inner join raw_variant rv using(paper_id, raw_id)";
 
     // SQL Statements
 
-    private static final String SQL_FIND_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE id = ?";
+    private static final String SQL_FIND_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE rkv.id = ?";
     private static final String SQL_FIND_BY_PAPER_RAW_VARIANT_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
-            + " WHERE paper_id = ? and raw_variant.id=?";
-    private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id";
+            + " WHERE paper_id = ? and rv.id=?";
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY rkv.id";
 
     // Vars ---------------------------------------------------------------------------------------
 
