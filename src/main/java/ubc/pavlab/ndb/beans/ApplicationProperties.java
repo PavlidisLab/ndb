@@ -44,8 +44,8 @@ public class ApplicationProperties implements Serializable {
 
     private static final Logger log = Logger.getLogger( ApplicationProperties.class );
 
-    private static final String PROPERTIES_PATH = "/usr/local/tomcat/";
-    private static final String PROPERTIES_BACKUP_PATH = System.getProperty( "user.dir" );
+    private static final String PROPERTIES_BACKUP_PATH = "/usr/local/tomcat/";
+    private static final String PROPERTIES_PATH = System.getProperty( "user.home" );
     private static final String PROPERTIES_FILE = "ndb.properties";
 
     private PropertiesFile prop = new PropertiesFile();
