@@ -14,11 +14,14 @@ import ubc.pavlab.ndb.beans.services.CacheService;
 import ubc.pavlab.ndb.beans.services.GeneService;
 import ubc.pavlab.ndb.beans.services.PaperService;
 import ubc.pavlab.ndb.beans.services.RawKVService;
+import ubc.pavlab.ndb.beans.services.VariantService;
 import ubc.pavlab.ndb.dao.DAOFactory;
 import ubc.pavlab.ndb.exceptions.ConfigurationException;
 import ubc.pavlab.ndb.model.Annovar;
 import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.Paper;
+import ubc.pavlab.ndb.model.Variant;
+import ubc.pavlab.ndb.model.enums.Category;
 
 /*
  * The ndb project
@@ -61,6 +64,7 @@ public class BaseTest {
     private static RawKVService rawKVService = null;
 
     private static CacheService cacheService = null;
+    private static VariantService variantService = null;
 
     static {
 
@@ -143,7 +147,159 @@ public class BaseTest {
         return cacheService;
     }
 
+    protected static VariantService getMockVariantService() {
+        if ( variantService == null ) {
+            variantService = new VariantService();
+            variantService.setDaoFactoryBean( daoFactoryBean );
+
+            // Inject services
+            variantService.setAnnovarService( getMockAnnovarService() );
+            variantService.setRawKVService( getMockRawKVService() );
+            variantService.setCacheService( getMockCacheService() );
+
+            variantService.init();
+        }
+
+        return variantService;
+    }
+
     // Utility functions
+
+    protected static final int VARIANT1_ID = 120;
+    protected static final int VARIANT1_EVENT_ID = 741;
+    protected static final int VARIANT1_SUBJECT_ID = 1607;
+
+    protected void assertIsVariant1( Variant v ) {
+        Assert.assertThat( v, Matchers.notNullValue() );
+        Assert.assertThat( v.getId(), Matchers.is( 120 ) );
+
+        Assert.assertThat( v.getPaper(), Matchers.notNullValue() );
+        Assert.assertThat( v.getPaper().getId(), Matchers.is( 18 ) );
+
+        Assert.assertThat( v.getRawVariantId(), Matchers.is( 736 ) );
+        Assert.assertThat( v.getEventId(), Matchers.is( 741 ) );
+        Assert.assertThat( v.getSubjectId(), Matchers.is( 1607 ) );
+        Assert.assertThat( v.getSampleId(), Matchers.is( "09C84345" ) );
+        Assert.assertThat( v.getChromosome(), Matchers.is( "3" ) );
+        Assert.assertThat( v.getStartHg19(), Matchers.is( 151538186 ) );
+        Assert.assertThat( v.getStopHg19(), Matchers.is( 151538186 ) );
+        Assert.assertThat( v.getRef(), Matchers.is( "A" ) );
+        Assert.assertThat( v.getAlt(), Matchers.is( "C" ) );
+
+        Assert.assertThat( v.getGenes(), Matchers.notNullValue() );
+        Assert.assertThat( v.getGenes().size(), Matchers.is( 1 ) );
+        assertIsGene1( v.getGenes().get( 0 ) );
+
+        Assert.assertThat( v.getCategory(), Matchers.is( Category.nonsynonymousSNV ) );
+
+        Assert.assertNull( v.getGeneDetail() );
+        Assert.assertThat( v.getFunc(), Matchers.is( "exonic" ) );
+
+        Assert.assertThat( v.getAaChanges(), Matchers.notNullValue() );
+        Assert.assertThat( v.getAaChanges().size(), Matchers.is( 1 ) );
+        Assert.assertThat( v.getAaChanges().get( 0 ), Matchers.is( "AADAC:NM_001086:exon3:c.A377C:p.D126A" ) );
+
+        Assert.assertThat( v.getCytoband(), Matchers.is( "3q25.1" ) );
+        Assert.assertThat( v.getDenovo(), Matchers.is( "yes" ) );
+        Assert.assertThat( v.getLoF(), Matchers.is( "unknown" ) );
+
+        Assert.assertThat( v.getRawKV(), Matchers.notNullValue() );
+        Assert.assertThat( v.getRawKV().size(), Matchers.is( 26 ) );
+
+        Assert.assertThat( v.getAnnovar(), Matchers.notNullValue() );
+        Assert.assertThat( v.getAnnovar().getVariantId(), Matchers.is( 120 ) );
+
+    }
+
+    protected static final int VARIANT2_ID = 129;
+    protected static final int VARIANT2_EVENT_ID = 3558;
+    protected static final int VARIANT2_SUBJECT_ID = 122;
+
+    protected void assertIsVariant2( Variant v ) {
+        Assert.assertThat( v, Matchers.notNullValue() );
+        Assert.assertThat( v.getId(), Matchers.is( 129 ) );
+
+        Assert.assertThat( v.getPaper(), Matchers.notNullValue() );
+        Assert.assertThat( v.getPaper().getId(), Matchers.is( 18 ) );
+
+        Assert.assertThat( v.getRawVariantId(), Matchers.is( 2051 ) );
+        Assert.assertThat( v.getEventId(), Matchers.is( 3558 ) );
+        Assert.assertThat( v.getSubjectId(), Matchers.is( 122 ) );
+        Assert.assertThat( v.getSampleId(), Matchers.is( "13585" ) );
+        Assert.assertThat( v.getChromosome(), Matchers.is( "12" ) );
+        Assert.assertThat( v.getStartHg19(), Matchers.is( 109577549 ) );
+        Assert.assertThat( v.getStopHg19(), Matchers.is( 109577549 ) );
+        Assert.assertThat( v.getRef(), Matchers.is( "A" ) );
+        Assert.assertThat( v.getAlt(), Matchers.is( "AG" ) );
+
+        Assert.assertThat( v.getGenes(), Matchers.notNullValue() );
+        Assert.assertThat( v.getGenes().size(), Matchers.is( 1 ) );
+        assertIsGene2( v.getGenes().get( 0 ) );
+
+        Assert.assertThat( v.getCategory(), Matchers.is( Category.frameshiftInsertion ) );
+
+        Assert.assertNull( v.getGeneDetail() );
+        Assert.assertThat( v.getFunc(), Matchers.is( "exonic" ) );
+
+        Assert.assertThat( v.getAaChanges(), Matchers.notNullValue() );
+        Assert.assertThat( v.getAaChanges().size(), Matchers.is( 1 ) );
+        Assert.assertThat( v.getAaChanges().get( 0 ), Matchers.is( "ACACB:NM_001093:exon1:c.340dupG:p.P113fs" ) );
+
+        Assert.assertThat( v.getCytoband(), Matchers.is( "12q24.11" ) );
+        Assert.assertThat( v.getDenovo(), Matchers.is( "yes" ) );
+        Assert.assertNull( v.getLoF() );
+
+        Assert.assertThat( v.getRawKV(), Matchers.notNullValue() );
+        Assert.assertThat( v.getRawKV().size(), Matchers.is( 26 ) );
+
+        Assert.assertThat( v.getAnnovar(), Matchers.notNullValue() );
+        Assert.assertThat( v.getAnnovar().getVariantId(), Matchers.is( 129 ) );
+    }
+
+    protected static final int VARIANT3_ID = 273;
+    protected static final int VARIANT3_EVENT_ID = 862;
+    protected static final int VARIANT3_SUBJECT_ID = 2174;
+
+    protected void assertIsVariant3( Variant v ) {
+        Assert.assertThat( v, Matchers.notNullValue() );
+        Assert.assertThat( v.getId(), Matchers.is( 273 ) );
+
+        Assert.assertThat( v.getPaper(), Matchers.notNullValue() );
+        Assert.assertThat( v.getPaper().getId(), Matchers.is( 18 ) );
+
+        Assert.assertThat( v.getRawVariantId(), Matchers.is( 668 ) );
+        Assert.assertThat( v.getEventId(), Matchers.is( 862 ) );
+        Assert.assertThat( v.getSubjectId(), Matchers.is( 2174 ) );
+        Assert.assertThat( v.getSampleId(), Matchers.is( "NDAR_INVFM678KRA_wes1" ) );
+        Assert.assertThat( v.getChromosome(), Matchers.is( "3" ) );
+        Assert.assertThat( v.getStartHg19(), Matchers.is( 14703152 ) );
+        Assert.assertThat( v.getStopHg19(), Matchers.is( 14703152 ) );
+        Assert.assertThat( v.getRef(), Matchers.is( "C" ) );
+        Assert.assertThat( v.getAlt(), Matchers.is( "T" ) );
+
+        Assert.assertThat( v.getGenes(), Matchers.notNullValue() );
+        Assert.assertThat( v.getGenes().size(), Matchers.is( 1 ) );
+        Assert.assertThat( v.getGenes().get( 0 ).getSymbol(), Matchers.is( "CCDC174" ) );
+
+        Assert.assertThat( v.getCategory(), Matchers.is( Category.synonymousSNV ) );
+
+        Assert.assertNull( v.getGeneDetail() );
+        Assert.assertThat( v.getFunc(), Matchers.is( "exonic" ) );
+
+        Assert.assertThat( v.getAaChanges(), Matchers.notNullValue() );
+        Assert.assertThat( v.getAaChanges().size(), Matchers.is( 1 ) );
+        Assert.assertThat( v.getAaChanges().get( 0 ), Matchers.is( "CCDC174:NM_016474:exon5:c.C423T:p.D141D" ) );
+
+        Assert.assertThat( v.getCytoband(), Matchers.is( "3p25.1" ) );
+        Assert.assertThat( v.getDenovo(), Matchers.is( "yes" ) );
+        Assert.assertThat( v.getLoF(), Matchers.is( "unknown" ) );
+
+        Assert.assertThat( v.getRawKV(), Matchers.notNullValue() );
+        Assert.assertThat( v.getRawKV().size(), Matchers.is( 26 ) );
+
+        Assert.assertThat( v.getAnnovar(), Matchers.notNullValue() );
+        Assert.assertThat( v.getAnnovar().getVariantId(), Matchers.is( 273 ) );
+    }
 
     protected static final int GENE1_ID = 13;
     protected static final String GENE1_SYMBOL = "AADAC";
