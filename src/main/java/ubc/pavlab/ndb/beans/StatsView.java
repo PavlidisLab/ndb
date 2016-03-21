@@ -161,7 +161,6 @@ public class StatsView implements Serializable {
         for ( Tuple2<String, T> t : lst ) {
             if ( t.getT1() != null ) {
                 counts.set( t.getT1(), t.getT2() );
-                log.info( t.getT1() );
             }
         }
 
