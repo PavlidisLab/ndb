@@ -17,9 +17,19 @@
 	</ui:define>
 	
 	<ui:define name="content">
-	<p:panel styleClass="no-border clearfix" style="float:right;">
-	<ui:include src="/searchBar.xhtml" />
-	</p:panel>
+	<h:form >
+		<p:panel styleClass="no-border clearfix" style="float:right;">
+			<ui:include src="/searchBar.xhtml" />
+		</p:panel>
+		<!-- BREADCRUMBS -->
+		<p:panel styleClass="no-border" >
+			<p:breadCrumb style="float:left;"> 
+				<p:menuitem value="Categories" url="#" />
+				<p:menuitem value="Home" url="index.xhtml" />
+				<p:menuitem value="Search" url="#" />
+			</p:breadCrumb>  	            
+		</p:panel>
+	</h:form>
 	<br/>
 	<p:growl id="msgs" showDetail="true" />
     
@@ -326,7 +336,11 @@
 		    </p:dataTable>
 		    	
 			<p:dialog header="Source Variant Information" widgetVar="dlg" modal="false" width="700px" height="500px" closeOnEscape="true" maximizable="true" >
-				
+									
+				<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" escape="false"/>
+				<p:outputPanel id="variantDetailHelp" style="float:right;">
+					<p:commandButton value="?" actionListener="#{variantView.paperInfo}" />					
+				</p:outputPanel>				
 				<p:outputPanel id="variantDetail" >
 							    	   		
 						<h1>
@@ -340,7 +354,7 @@
 				       		<h:outputText value="#{variantView.selectedVariant.paper.year}"  />
 				       	</h3>
 				       	<h2>						       		
-			       			<h:outputText value="Table: "  style="font-weight:bold"/>
+			       			<h:outputText value="Source: "  style="font-weight:bold"/>
 			       			<h:outputText value="#{variantView.selectedVariant.paper.paperTable}"  />
 			       		</h2>
 			            <h4>
@@ -359,9 +373,9 @@
 			</p:dialog>
 			
 			<p:dialog header="Paper Information" widgetVar="paperdlg" modal="false" closeOnEscape="true" resizable="false">
-			<p:outputPanel id="paperDetail" style="text-align:center;">
-				<composites:paperPanel paper="#{variantView.selectedPaper}" eventCnt="#{variantView.selectedPaperEventCnt}"/>
-			</p:outputPanel>
+				<p:outputPanel id="paperDetail" style="text-align:center;">
+					<composites:paperPanel paper="#{variantView.selectedPaper}" eventCnt="#{variantView.selectedPaperEventCnt}"/>
+				</p:outputPanel>
 			</p:dialog>
 			
 		</h:form>

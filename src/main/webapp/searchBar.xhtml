@@ -6,8 +6,12 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 				
-	            <p:panelGrid columns="3" styleClass="no-border" >
+				
+				
+				
+	            <h:panelGrid columns="4" styleClasses="no-border" >
 	            <h:form id="geneSearchForm" prependId="false">
+				
 	            <h:outputLabel for="gene" value="Gene Symbol:" style="font-weight:bold;margin-right:15px;"/>  
 		    	<p:autoComplete id="gene" value="#{searchView.geneId}" 
 		    					completeMethod="#{searchView.completeSymbol}" queryDelay="400" 
@@ -34,7 +38,7 @@
 			    					icon="ui-icon-check" update="regionSearchForm"
 			    					/>
 			    </h:form>
-			    </p:panelGrid>
+			    </h:panelGrid>
 			   
 			    
 			     </ui:composition>
