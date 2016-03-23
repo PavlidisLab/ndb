@@ -47,6 +47,7 @@
 	<ui:define name="content">
 	
 	<!-- BREADCRUMBS -->
+	
 	<p:panel styleClass="no-border" >
 		<p:breadCrumb style="float:left;"> 
 			<p:menuitem value="Categories" url="#" />
@@ -73,6 +74,8 @@
 	        </f:facet>
 			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
 			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
+			    <f:param name="breadcrumbsTexts" value="Statistics" />
+			    <f:param name="breadcrumbsLinks" value="#{view.viewId}" />
 			</p:link>
 	        - #{g.description}
     	</p:dataList>
@@ -109,6 +112,8 @@
 	        </f:facet>
 			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
 			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
+			    <f:param name="breadcrumbsTexts" value="Statistics" />
+			    <f:param name="breadcrumbsLinks" value="#{view.viewId}" />
 			</p:link>
 	        - #{g.description}
     	</p:dataList>
