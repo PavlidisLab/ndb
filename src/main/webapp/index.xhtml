@@ -8,58 +8,93 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:define name="pageTitle">Welcome to MARVDB</ui:define>
+	<ui:define name="pageTitle">MARVDB</ui:define>
 	
 	<ui:define name="css">
 		<h:outputStylesheet library="css" name="index.css" />
 	</ui:define>
 	
 	<ui:define name="content">
+	
+	<!-- BREADCRUMBS -->
+	<p:panel styleClass="no-border" >
+		<p:breadCrumb style="float:left;"> 
+			<p:menuitem value="Categories" url="#" />
+			<p:menuitem value="Home" url="index.xhtml" />
+		</p:breadCrumb>  	            
+	</p:panel>
+   
 	<div class="content-area">
 	  <div class="title">
-      <h1 style="margin:0 auto;">Welcome To MARVDB!</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
- 		
- 		</div>
- 		<p:separator style="width:75%;"/>
- 		<p:panel styleClass="no-border clearfix center-search-bar">
- 		<ui:include src="/searchBar.xhtml" />
+      	<h1 style="margin:0 auto;">Welcome To MARVDB!</h1>
+      	<p>
+      	  Search for variants using a Gene symbol or genomic coordinates (Hg19/GRCh37)
+      	</p> 	  
+ 	  </div>
+ 	  <p:separator style="width:75%;"/>
+ 	  	<p:panel styleClass="no-border clearfix center-search-bar">
+ 			<ui:include src="/searchBar.xhtml" />
  		</p:panel>
  		<p:separator style="width:75%;"/>
-      <p:panel styleClass="no-border" style="padding-top:50px;">
- 	  <p:panelGrid styleClass="no-border" columns="2" style="width:100%;text-align:left;">
+      	<p:panel styleClass="no-border" style="padding-top:50px;">
+ 	  	<p:panelGrid styleClass="no-border" columns="2" style="width:100%;text-align:left;">
  	  
- 	  	<p:panel styleClass="no-border">
- 	  	<div class="title">
- 	  	<h3>About MARVDB</h3>
+ 	  		<p:panel styleClass="no-border">
+	 	  		<div class="title">
+	 	  			<h3>About MARVDB</h3> 	  	
+	 	  			<p>
+	 	  				MARVDB is a database of human variants reported in peer-reviewed scientific literature. 
+      	 				The collection effort focuses primarily on studies pertaining to <strong>Austism Spectrum Disorder (ASD)</strong>, 
+      	 				but may also contain variants from other forms of <em>Neurological Diseases (NDs)</em>.
+	 	  			</p>
+	 	  			<p>	 	
+	 	  				For a full list of sources of variants in MARVDB, be sure to check out the <strong><p:link href="publications.xhtml">publications</p:link></strong> page. Documentation and description of our work can be found on the <strong><p:link href="help.xhtml">help</p:link></strong> page.		
+	 	  			</p>
+				</div>
+	 	  		<p:panelGrid columns="2" style="margin:0 auto 40px auto;">
+			 	  	<f:facet name="header">
+			        	Database Statistics
+			    	</f:facet>
+			
+			 	  	<h:outputText value="Total Variant Events:" />
+			 	  	<h:outputText value="#{statsService.eventCnt}" />
+			 	  	
+			 	  	<h:outputText value="Total Subjects:" />
+			 	  	<h:outputText value="#{statsService.subjectCnt}" />
+			 	  	
+			 	  	<h:outputText value="Total Papers:" />
+			 	  	<h:outputText value="#{statsService.paperCnt}" />
+			 	  	
+ 	  			</p:panelGrid> 	  	
+ 	  			
+ 	  				<h3>Recent News</h3>
+ 	  				<p:layout style="text-align:left;max-width:90%;min-height:50px;">					    
+    					<p:layoutUnit position="west" size="100" minSize="40" maxSize="200"  fullPage="true">
+							<strong>
+					        	2016-03-31
+					        </strong>
+					    </p:layoutUnit>
+					 		
+					    <p:layoutUnit position="center">
+					        MARVDB (Version 1.0) is officially released! Thank you for your support.
+					    </p:layoutUnit>
+					</p:layout>									
+ 	  				<div style="max-width:90%;">  <hr/> </div>
+ 	  				<p:layout style="text-align:left;max-width:90%;min-height:50px;">
+    					<p:layoutUnit position="west"  size="100" minSize="40" maxSize="200" fullPage="true">
+					        <strong>
+					        	-
+					        </strong>
+					    </p:layoutUnit>
+					 	
+					    <p:layoutUnit position="center">
+					        No further announcements.
+					    </p:layoutUnit>
+					</p:layout>				
  	  	
- 	  	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		</div>
- 	  	<p:panelGrid columns="2" style="margin:0 auto 40px auto;">
- 	  	<f:facet name="header">
-        	Database Statistics
-    	</f:facet>
-
- 	  	<h:outputText value="Total Variant Events:" />
- 	  	<h:outputText value="#{statsService.eventCnt}" />
+ 	  		</p:panel>
  	  	
- 	  	<h:outputText value="Total Subjects:" />
- 	  	<h:outputText value="#{statsService.subjectCnt}" />
- 	  	
- 	  	<h:outputText value="Total Papers:" />
- 	  	<h:outputText value="#{statsService.paperCnt}" />
- 	  	
- 	  	</p:panelGrid>
- 	  	
- 	  	<div class="title">
- 	  	<h3>Recent News</h3>
- 	  	
- 	  	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		</div>
- 	  	
- 	  	</p:panel>
- 	  	
- 	  	<p:panel styleClass="no-border">
+ 	  		<p:panel styleClass="no-border">
  	  	
 <!--   	    <p:dataList value="#{statsService.topGenesByVariantCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
 	        <f:facet name="header">
@@ -70,29 +105,29 @@
 			</p:link>
 	        - #{g.description}
     	</p:dataList> -->
+	    	
+	    	
+			  	<p:dataList value="#{statsService.topGenesByEventCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
+			        <f:facet name="header">
+			            Top Genes by Variant Event Count
+			        </f:facet>
+					<p:link outcome="variant" value="#{g.symbol}" target="_blank">
+					    <f:param name="NCBIGeneId" value="#{g.geneId}" />
+					</p:link>
+			        - #{g.description}
+		    	</p:dataList>
+		    	
+			  	<p:dataList value="#{statsService.topGenesByPaperCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
+			        <f:facet name="header">
+			            Top Genes by Frequency in Papers
+			        </f:facet>
+					<p:link outcome="variant" value="#{g.symbol}" target="_blank">
+					    <f:param name="NCBIGeneId" value="#{g.geneId}" />
+					</p:link>
+			        - #{g.description}
+		    	</p:dataList>
     	
-    	
-	  	<p:dataList value="#{statsService.topGenesByEventCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
-	        <f:facet name="header">
-	            Top Genes by Variant Event Count
-	        </f:facet>
-			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
-			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
-			</p:link>
-	        - #{g.description}
-    	</p:dataList>
-    	
-	  	<p:dataList value="#{statsService.topGenesByPaperCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
-	        <f:facet name="header">
-	            Top Genes by Frequency in Papers
-	        </f:facet>
-			<p:link outcome="variant" value="#{g.symbol}" target="_blank">
-			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
-			</p:link>
-	        - #{g.description}
-    	</p:dataList>
-    	
-    	</p:panel>
+    		</p:panel>
     	
     	<p:panel styleClass="no-border">
 

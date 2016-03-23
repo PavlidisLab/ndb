@@ -10,10 +10,11 @@
 	xmlns:hf="http://highfaces.org/ui"> 
 	
 	<ui:define name="pageTitle">Statistics</ui:define>
-	
+
 	<ui:define name="css">
 		<h:outputStylesheet library="css" name="stats.css" />
 	</ui:define>
+	
 
 	<ui:define name="js">
 		<script src="https://code.highcharts.com/highcharts.js"></script>
@@ -44,13 +45,21 @@
 	</ui:define>
 
 	<ui:define name="content">
-
+	
+	<!-- BREADCRUMBS -->
+	<p:panel styleClass="no-border" >
+		<p:breadCrumb style="float:left;"> 
+			<p:menuitem value="Categories" url="#" />
+			<p:menuitem value="Home" url="index.xhtml" />
+			<p:menuitem value="Statistics" url="stats.xhtml" />
+		</p:breadCrumb>  	            
+	</p:panel>
    
    <div class="content-area">
 	
 	<div class="section">
 
-	<h3>Stats</h3>
+	<h3>Statistics</h3>
 	
 	<p:separator/>
 	

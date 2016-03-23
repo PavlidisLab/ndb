@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -220,6 +221,24 @@ public class VariantView implements Serializable {
 
     public void setStatsService( StatsService statsService ) {
         this.statsService = statsService;
+    }
+
+    public void paperInfo() {
+        String INFOTEXT = "The information here is the source variant information parsed from the supplementary tables, documents, or directly from the main text. "
+                + "<br/><br/>"
+                + "These data are unfiltered and contains more information than what is displayed in the variant search results. "
+                
+                + "<br/><br/>"
+                + "This representation also precedes any modifications such as harmonization between different notation systems, or different coordinate assemblies (e.g. variant under the Hg18 assembly are displayed as is here, but lifted-over to Hg19 in the variant search results.) "
+                + "<br/><br/>"
+                + "The results in the variant results table resolves such discrepancies. "
+                
+                + "Different papers may have different fields."
+                ;
+        
+
+        FacesContext.getCurrentInstance().addMessage( null,
+                new FacesMessage( FacesMessage.SEVERITY_INFO, "About:", INFOTEXT ) );
     }
 
 }
