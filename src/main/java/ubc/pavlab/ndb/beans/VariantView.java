@@ -63,6 +63,9 @@ public class VariantView implements Serializable {
 
     private CSVExporter csvExporter;
 
+    private String breadcrumbsLinks;
+    private String breadcrumbsTexts;
+
     @PostConstruct
     public void init() {
         if ( FacesContext.getCurrentInstance().getPartialViewContext().isAjaxRequest() ) {
@@ -78,6 +81,10 @@ public class VariantView implements Serializable {
         String stop = requestParams.get( "stop" );
         String paperIdParam = requestParams.get( "paperId" );
         String overlapPaperIdParam = requestParams.get( "overlapPaperId" );
+
+        this.breadcrumbsLinks = requestParams.get( "breadcrumbsLinks" );
+        this.breadcrumbsTexts = requestParams.get( "breadcrumbsTexts" );
+
         if ( !StringUtils.isBlank( ncbiGeneId ) ) {
             // Search by Gene
             try {
@@ -227,18 +234,40 @@ public class VariantView implements Serializable {
         String INFOTEXT = "The information here is the source variant information parsed from the supplementary tables, documents, or directly from the main text. "
                 + "<br/><br/>"
                 + "These data are unfiltered and contains more information than what is displayed in the variant search results. "
-                
-                + "<br/><br/>"
+
+        + "<br/><br/>"
                 + "This representation also precedes any modifications such as harmonization between different notation systems, or different coordinate assemblies (e.g. variant under the Hg18 assembly are displayed as is here, but lifted-over to Hg19 in the variant search results.) "
-                + "<br/><br/>"
-                + "The results in the variant results table resolves such discrepancies. "
-                
-                + "Different papers may have different fields."
-                ;
-        
+                + "<br/><br/>" + "The results in the variant results table resolves such discrepancies. "
+
+        + "Different papers may have different fields.";
 
         FacesContext.getCurrentInstance().addMessage( null,
                 new FacesMessage( FacesMessage.SEVERITY_INFO, "About:", INFOTEXT ) );
+    }
+
+    private String[] parseBreadcrumbs( String bc ) {
+        // Use fro comma-delimited breadcrumbs
+        return bc.split( "," );
+    }
+
+    public String getBreadcrumbsLinks() {
+        // public String[] getBreadcrumbLinks() {
+        // Link to previous page
+        // if ( breadcrumbsLinks == null || breadcrumbsLinks.isEmpty() ) {
+        // return this.parseBreadcrumbs( "A,B" );
+        // }
+        // return this.parseBreadcrumbs( breadcrumbsLinks );
+        return breadcrumbsLinks;
+    }
+
+    public String getBreadcrumbsTexts() {
+        // public String[] getBreadcrumbTexts() {
+        // Text for link to previous page
+        // if ( breadcrumbsTexts == null || breadcrumbsTexts.isEmpty() ) {
+        // return this.parseBreadcrumbs( "X,Z" );
+        // }
+        // return this.parseBreadcrumbs( breadcrumbsTexts );
+        return breadcrumbsTexts;
     }
 
 }
