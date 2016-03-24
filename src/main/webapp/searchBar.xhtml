@@ -9,24 +9,23 @@
 				
 				
 				
-	            <h:panelGrid columns="4" styleClasses="no-border" >
-	            <h:form id="geneSearchForm" prependId="false">
-				
-	            <h:outputLabel for="gene" value="Gene Symbol:" style="font-weight:bold;margin-right:15px;"/>  
-		    	<p:autoComplete id="gene" value="#{searchView.geneId}" 
-		    					completeMethod="#{searchView.completeSymbol}" queryDelay="400" 
-		    					maxResults="20" minQueryLength="2" label="ID" 
-		    					emptyMessage="No gene suggestions available, please try again." var="g" 
-		    					itemLabel="#{g.symbol}" itemValue="#{g.geneId}" style="margin-right:8px;" placeholder="SYNGAP1">
-		    					<p:column>
-               					 		<h:outputText value="#{g.label}" />
-             							</p:column>				    	
-		    	</p:autoComplete> 
-			    <p:commandButton value="Submit"  styleClass="ui-priority-primary"
-			    					action="#{searchView.searchByGeneSymbol}"
-			    					icon="ui-icon-check" update="geneSearchForm"
-			    					/>
-			    </h:form>
+	            <h:panelGrid columns="3" styleClasses="no-border" >
+	            	<h:form id="geneSearchForm" prependId="false">				
+		            	<h:outputLabel for="gene" value="Gene Symbol:" style="font-weight:bold;margin-right:15px;"/>  
+			    		<p:autoComplete id="gene" value="#{searchView.geneId}" 
+			    					completeMethod="#{searchView.completeSymbol}" queryDelay="400" 
+			    					maxResults="20" minQueryLength="2" label="ID" 
+			    					emptyMessage="No gene suggestions available, please try again." var="g" 
+			    					itemLabel="#{g.symbol}" itemValue="#{g.geneId}" style="margin-right:8px;" placeholder="SYNGAP1">
+			    					<p:column>
+	               					 		<h:outputText value="#{g.label}" />
+	             							</p:column>				    	
+			    		</p:autoComplete> 
+				    	<p:commandButton value="Submit"  styleClass="ui-priority-primary"	
+				    					action="#{searchView.searchByGeneSymbol}"
+				    					icon="ui-icon-check" update="geneSearchForm"
+				    					/>
+			    	</h:form>
 		    	<h:outputText value="or"/>
 		    	<h:form id="regionSearchForm" prependId="false">
 		    	<h:outputLabel for="regionInput" value="Region:" style="font-weight:bold;margin-right:15px;"/>
