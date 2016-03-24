@@ -17,18 +17,15 @@
 	</ui:define>
 	
 	<ui:define name="content">
-	<h:form >
+	
 		<p:panel styleClass="no-border clearfix" style="float:right;">
 			<ui:include src="/searchBar.xhtml" />
 		</p:panel>
 		<!-- BREADCRUMBS -->
 		<p:panel styleClass="no-border" >
-			<p:breadCrumb style="float:left;" model="#{variantView.breadcrumbsModel}"/> 
-				
-		   					               
-           <ui:remove><p:menuitem value="#{variantView.breadcrumbsTexts[1]}" url="#{variantView.breadcrumbsLinks[1]}" rendered="#{not empty variantView.breadcrumbsTexts}" /></ui:remove>
+			<p:breadCrumb style="float:left;" model="#{variantView.breadcrumbsModel}"/> 	
 		</p:panel>
-	</h:form>
+	
 	<br/>
 	<p:growl id="msgs" showDetail="true" />
     
