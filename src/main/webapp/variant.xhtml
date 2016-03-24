@@ -23,12 +23,10 @@
 		</p:panel>
 		<!-- BREADCRUMBS -->
 		<p:panel styleClass="no-border" >
-			<p:breadCrumb style="float:left;"> 
-				<p:menuitem value="Categories" url="#" />
-				<p:menuitem value="Home" url="index.xhtml" />                	
-                <p:menuitem value="#{variantView.breadcrumbsTexts}" url="#{variantView.breadcrumbsLinks}" rendered="#{not empty variantView.breadcrumbsTexts}" />
-				<p:menuitem value="Search" url="#" />
-			</p:breadCrumb>  	            
+			<p:breadCrumb style="float:left;" model="#{variantView.breadcrumbsModel}"/> 
+				
+		   					               
+           <ui:remove><p:menuitem value="#{variantView.breadcrumbsTexts[1]}" url="#{variantView.breadcrumbsLinks[1]}" rendered="#{not empty variantView.breadcrumbsTexts}" /></ui:remove>
 		</p:panel>
 	</h:form>
 	<br/>

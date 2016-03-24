@@ -14,6 +14,9 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.MenuModel;
 
 import ubc.pavlab.ndb.beans.services.CacheService;
 import ubc.pavlab.ndb.beans.services.StatsService;
@@ -63,8 +66,10 @@ public class VariantView implements Serializable {
 
     private CSVExporter csvExporter;
 
-    private String breadcrumbsLinks;
-    private String breadcrumbsTexts;
+    private MenuModel breadcrumbsModel;
+
+    private String[] breadcrumbsLinks;
+    private String[] breadcrumbsTexts;
 
     @PostConstruct
     public void init() {
@@ -82,8 +87,9 @@ public class VariantView implements Serializable {
         String paperIdParam = requestParams.get( "paperId" );
         String overlapPaperIdParam = requestParams.get( "overlapPaperId" );
 
-        this.breadcrumbsLinks = requestParams.get( "breadcrumbsLinks" );
-        this.breadcrumbsTexts = requestParams.get( "breadcrumbsTexts" );
+        String breadcrumbsLinksStr = null;
+        String breadcrumbsTextsStr = null;
+        String breadcrumbsCurrentStr = null;
 
         if ( !StringUtils.isBlank( ncbiGeneId ) ) {
             // Search by Gene
@@ -91,6 +97,8 @@ public class VariantView implements Serializable {
                 Integer geneId = Integer.parseInt( ncbiGeneId );
                 this.query = cacheService.getGeneById( geneId ).getSymbol();
                 this.variants = this.variantService.fetchByGeneId( geneId );
+                breadcrumbsCurrentStr = "Search by gene";
+
             } catch ( NumberFormatException | NullPointerException e ) {
                 throw new IllegalArgumentException( "Malformed Search Parameters" );
             }
@@ -103,6 +111,9 @@ public class VariantView implements Serializable {
                 if ( StringUtils.isBlank( overlapPaperIdParam ) ) {
                     this.query = cacheService.getPaperById( paperId ).getPaperKey();
                     this.variants = this.variantService.fetchByPaperId( paperId );
+                    breadcrumbsLinksStr = "/publications.xhtml,/paper.xhtml?paperId=" + paperId;
+                    breadcrumbsTextsStr = "Publications," + this.query + "";
+                    breadcrumbsCurrentStr = "Search by paper";
                 } else {
                     Integer overlapPaperId = Integer.parseInt( overlapPaperIdParam );
                     if ( overlapPaperId == paperId ) {
@@ -113,6 +124,10 @@ public class VariantView implements Serializable {
                                 + cacheService.getPaperById( overlapPaperId ).getPaperKey();
                         this.variants = this.variantService.fetchByPaperOverlap( paperId, overlapPaperId );
                     }
+
+                    breadcrumbsLinksStr = "/stats.xhtml";
+                    breadcrumbsTextsStr = "Statistics";
+                    breadcrumbsCurrentStr = "Search by overlap";
                 }
 
             } catch ( NumberFormatException | NullPointerException e ) {
@@ -126,6 +141,8 @@ public class VariantView implements Serializable {
                 Integer stopCoord = Integer.parseInt( stop );
                 this.query = chr + ":" + start + "-" + stop;
                 this.variants = this.variantService.fetchByPosition( chr, startCoord, stopCoord );
+
+                breadcrumbsCurrentStr = "Search by coordinates";
             } catch ( NumberFormatException e ) {
                 throw new IllegalArgumentException( "Malformed Search Parameters" );
             }
@@ -133,6 +150,10 @@ public class VariantView implements Serializable {
             // Unknown Search
             throw new IllegalArgumentException( "Unknown Search Parameters" );
         }
+        // Generated breadcrumbs
+        this.breadcrumbsLinks = parseBreadcrumbs( breadcrumbsLinksStr );
+        this.breadcrumbsTexts = parseBreadcrumbs( breadcrumbsTextsStr );
+        setupBreadcrumbs( breadcrumbsCurrentStr );
 
         this.events = Event.groupVariants( this.variants );
 
@@ -245,29 +266,73 @@ public class VariantView implements Serializable {
                 new FacesMessage( FacesMessage.SEVERITY_INFO, "About:", INFOTEXT ) );
     }
 
+    public MenuModel getBreadcrumbsModel() {
+        return breadcrumbsModel;
+    }
+
+    private void setupBreadcrumbs( String current ) {
+        this.breadcrumbsModel = new DefaultMenuModel();
+
+        DefaultMenuItem item = new DefaultMenuItem( "" );
+        item.setUrl( "#" );
+        item.setIcon( "ui-icon-home" );
+        this.breadcrumbsModel.addElement( item );
+
+        item = new DefaultMenuItem( "Home" );
+        item.setUrl( "/index.xhtml" );
+        this.breadcrumbsModel.addElement( item );
+
+        for ( int i = 0; i < this.breadcrumbsLinks.length; i++ ) {
+            String text = this.breadcrumbsTexts[i];
+            String link = this.breadcrumbsLinks[i];
+
+            if ( text == null ) {
+                continue;
+            }
+
+            item = new DefaultMenuItem( text );
+            item.setUrl( link );
+            this.breadcrumbsModel.addElement( item );
+        }
+
+        if ( current == null ) {
+            item = new DefaultMenuItem( "Search" );
+        } else {
+            item = new DefaultMenuItem( current );
+        }
+        item.setUrl( "#" );
+        this.breadcrumbsModel.addElement( item );
+
+    }
+
     private String[] parseBreadcrumbs( String bc ) {
         // Use fro comma-delimited breadcrumbs
+        if ( bc == null ) {
+            String[] nullArray = new String[1];
+            nullArray[0] = null;
+            return nullArray;
+        }
         return bc.split( "," );
     }
 
-    public String getBreadcrumbsLinks() {
-        // public String[] getBreadcrumbLinks() {
-        // Link to previous page
-        // if ( breadcrumbsLinks == null || breadcrumbsLinks.isEmpty() ) {
-        // return this.parseBreadcrumbs( "A,B" );
-        // }
-        // return this.parseBreadcrumbs( breadcrumbsLinks );
-        return breadcrumbsLinks;
-    }
-
-    public String getBreadcrumbsTexts() {
-        // public String[] getBreadcrumbTexts() {
-        // Text for link to previous page
-        // if ( breadcrumbsTexts == null || breadcrumbsTexts.isEmpty() ) {
-        // return this.parseBreadcrumbs( "X,Z" );
-        // }
-        // return this.parseBreadcrumbs( breadcrumbsTexts );
-        return breadcrumbsTexts;
-    }
+    // public String getBreadcrumbsLinks() {
+    // public String[] getBreadcrumbsLinks() {
+    // // Link to previous page
+    // if ( breadcrumbsLinks == null || breadcrumbsLinks.isEmpty() ) {
+    // return this.parseBreadcrumbs( "" );
+    // }
+    // return this.parseBreadcrumbs( breadcrumbsLinks );
+    // // return breadcrumbsLinks;
+    // }
+    //
+    // // public String getBreadcrumbsTexts() {
+    // public String[] getBreadcrumbsTexts() {
+    // // Text for link to previous page
+    // if ( breadcrumbsTexts == null || breadcrumbsTexts.isEmpty() ) {
+    // return this.parseBreadcrumbs( "" );
+    // }
+    // return this.parseBreadcrumbs( breadcrumbsTexts );
+    // // return breadcrumbsTexts;
+    // }
 
 }
