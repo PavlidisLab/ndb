@@ -81,24 +81,26 @@
     	</p:panel>
     	
  	  	<p:panel styleClass="no-border">
- 	  	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+ 	  	<p> Typical usage of a genetic variant database may require counts of certain types of events. Herein, we present some summaries of the data collected through graphics and tabulations of counts.</p>
  	  	<p:panelGrid columns="2" style="margin:20px auto 20px auto;">
  	  	<f:facet name="header">
         	Database Statistics
-    	</f:facet>
-
- 	  	<h:outputText value="Total Variant Events:" />
- 	  	<h:outputText value="#{statsService.eventCnt}" />
- 	  	
- 	  	<h:outputText value="Total Subjects:" />
- 	  	<h:outputText value="#{statsService.subjectCnt}" />
- 	  	
- 	  	<h:outputText value="Total Papers:" />
- 	  	<h:outputText value="#{statsService.paperCnt}" />
- 	  	
+    	</f:facet>	 	  	
+        	<ui:include src="stat_summary.xhtml" />
  	  	</p:panelGrid>
  	  	
- 	  	<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+ 	  	
+ 	  	<p>
+ 	  	A <em>Variant Event</em> is a specific mutation that occurred on a specific proband. This counts disambiguates instances where the same proband across different cohorts is assigned different identifiers. This also accounts for instances where certain publications will report a complex variant as two events (e.g. a deletion followed by an insertion), while others may opt to report it as one (a substitution.) Unless specificied otherwise, this is count we use to do other statistics about number of variants in this database. 
+ 	  	</p>
+ 	  	
+ 	  	<p>A <em>de novo</em> variant is a type of genetic mutation that was not inherited from a parent, but rather from a germ cell from a parent. 
+ 	  	Many <p:link outcome="publications" value="publications" target="_blank" /> primarily report de novo variants across whole genomes, exomes, or specific targeted genes.</p>
+ 	  	
+ 	  	<p><em>Loss of function</em> variants are DNA mutations that affects transcription of RNA in a way that the resulting amino acid sequence is unlikely to produce a functionally relevant protein.
+ 	  	These mutations are usually of the <em>frameshift</em> type, meaning an insertion (or deletion) of a block that is not a multiple of 3. This causes an offset to the codon reading frame. 
+ 	  	Other loss of function variants include splice site variants; mutations that occur within 2 bases of an exon, preventing it from being spliced into the transcript .  
+ 	  	</p>
  	  	
  	  	</p:panel>
  	  	
