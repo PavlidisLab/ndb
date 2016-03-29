@@ -317,7 +317,7 @@ public class StatsDAOImpl implements StatsDAO {
 
     @Override
     public List<Integer> findTopGenesByDenovoLof( Integer n ) throws DAOException {
-
+        log.info( "SQL: Find genes by denovo AND lof. " );
         List<Integer> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, SQL_DENOVO_LOF_GENES, false, n );
