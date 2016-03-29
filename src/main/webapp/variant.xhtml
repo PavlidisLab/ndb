@@ -158,6 +158,9 @@
 		            <h:outputText value="#{event.denovo}" />          	
 		        </p:column>	
 		        
+		        <ui:remove>
+		        <!-- This column is removed, as we can tell LoF from the effect conditional colouring. I'm leaving this here because it can be useful to compare as a sanity check. -->
+		        <!-- The data from here is pulled from the literature as best as possible. -->
 		        <p:column sortBy="#{event.lof}" styleClass="row-gradient" >
 		            <f:facet name="header">
 		                <h:outputText id="lof" value="LoF"  />
@@ -166,6 +169,7 @@
 		            </f:facet>		            	            	
 		            <h:outputText value="#{event.lof}" />          	
 		        </p:column>		     
+		        </ui:remove>
 		        
 		        <p:column sortBy="#{event}"  styleClass="row-gradient" sortFunction="#{variantView.sortByEffects}">
 		            <f:facet name="header">

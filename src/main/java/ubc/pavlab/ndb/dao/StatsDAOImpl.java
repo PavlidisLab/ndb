@@ -116,6 +116,12 @@ public class StatsDAOImpl implements StatsDAO {
     private static final String SQL_LOF_CNT = " SELECT COUNT( DISTINCT event_id ) FROM " + SQL_VARIANT_TABLE
             + " WHERE func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substituition') ; ";
 
+    private static final String SQL_DENOVO_LOF_GENES = "SELECT gene_ID, count(distinct event_id) as cnt  " + "FROM "
+            + SQL_VARIANT_TABLE + " as var " + " inner join " + SQL_GENE_MAP_TABLE + " vmap on var.id=vmap.variant_id "
+            + " WHERE denovo = 'yes' AND "
+            + "(func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substituition')) "
+            + "GROUP BY gene ORDER BY cnt DESC limit ?";
+
     // Vars ---------------------------------------------------------------------------------------
 
     private DAOFactory daoFactory;
@@ -296,12 +302,28 @@ public class StatsDAOImpl implements StatsDAO {
     @Override
     public List<Tuple2<String, Integer>> findTotalEventsByContext() throws DAOException {
 
-        List<Tuple2<String, Integer>> results = new ArrayList<>();
+        List<Tuple2<String, Integer>> results = Lists.newArrayList();
         try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CONTEXT, false );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
                 results.add( new Tuple2<>( resultSet.getString( "func" ), resultSet.getInt( "cnt" ) ) );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+        return results;
+    }
+
+    @Override
+    public List<Integer> findTopGenesByDenovoLof( Integer n ) throws DAOException {
+
+        List<Integer> results = new ArrayList<>();
+        try (Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = prepareStatement( connection, SQL_DENOVO_LOF_GENES, false, n );
+                ResultSet resultSet = statement.executeQuery();) {
+            while ( resultSet.next() ) {
+                results.add( resultSet.getInt( "gene_id" ) );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
