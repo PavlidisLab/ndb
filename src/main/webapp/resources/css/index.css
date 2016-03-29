@@ -1,3 +1,23 @@
 div.ui-panel.center-search-bar table {
 	margin:0 auto;
 }
+
+.ui-layout-pane-north.ui-widget-content{
+ border: 0;
+}
+ 
+.ui-layout-pane-south.ui-widget-content{
+ border: 0;
+}
+ 
+.ui-layout-pane-east.ui-widget-content{
+ border: 0;
+}
+ 
+.ui-layout-pane-west.ui-widget-content{
+ border: 0;
+}
+ 
+.ui-layout-pane-center.ui-widget-content{
+ border: 0;
+}
