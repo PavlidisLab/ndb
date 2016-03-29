@@ -65,6 +65,8 @@ public class StatsService implements Serializable {
     private static final TimeUnit EXPIRATION_TIME_UNIT = TimeUnit.HOURS;
 
     private static final Integer TOP_N = 10;
+    private static final Integer TOP_N_LARGE = TOP_N * 2; // When the lists need to occupy the space for two regular
+                                                          // TOP_N lists.
 
     @ManagedProperty("#{daoFactoryBean}")
     private DAOFactoryBean daoFactoryBean;
@@ -95,6 +97,9 @@ public class StatsService implements Serializable {
 
     private final Supplier<List<Gene>> latestTopGenesByPaperCnt = Suppliers
             .memoizeWithExpiration( topGenesByPaperCntSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
+
+    private final Supplier<List<Gene>> latestTopGenesByDenovoLof = Suppliers
+            .memoizeWithExpiration( topGenesByDenovoLofSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
 
     // Specific Paper statistics
 
@@ -225,6 +230,10 @@ public class StatsService implements Serializable {
         return latestTopGenesByPaperCnt.get();
     }
 
+    public List<Gene> getTopGenesByDenovoLof() {
+        return latestTopGenesByDenovoLof.get();
+    }
+
     public List<Paper> getPapersWithVariants() {
         return papersWithVariants;
     }
@@ -273,6 +282,25 @@ public class StatsService implements Serializable {
             public List<Gene> get() {
                 log.info( "topGenesByPaperCntSupplier" );
                 List<Integer> geneIds = statsDAO.findTopGenesByPaperCnt( TOP_N );
+
+                List<Gene> genes = new ArrayList<>();
+
+                for ( Integer geneId : geneIds ) {
+                    genes.add( cacheService.getGeneById( geneId ) );
+                }
+
+                return genes;
+
+            }
+        };
+    }
+
+    private Supplier<List<Gene>> topGenesByDenovoLofSupplier() {
+        return new Supplier<List<Gene>>() {
+            @Override
+            public List<Gene> get() {
+                log.info( "topGenesByDenovoLofSupplier" );
+                List<Integer> geneIds = statsDAO.findTopGenesByDenovoLof( TOP_N_LARGE );
 
                 List<Gene> genes = new ArrayList<>();
 

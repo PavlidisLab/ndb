@@ -147,6 +147,8 @@ public interface StatsDAO {
 
     public List<Tuple2<String, Integer>> findTotalEventsByContext() throws DAOException;
 
+    public List<Integer> findTopGenesByDenovoLof( Integer n ) throws DAOException;
+
     public Map<Integer, Integer> overlappingEventsBetweenPapers( Integer paper_id ) throws DAOException;
 
 }
