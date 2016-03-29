@@ -77,6 +77,22 @@ public interface StatsDAO {
     public int findTotalEvents() throws DAOException;
 
     /**
+     * Returns the total number of LoF variants.
+     * 
+     * @return the total number of LoF variants.
+     * @throws DAOException If something fails at database level.
+     */
+    public int findTotalLof() throws DAOException;
+
+    /**
+     * Returns the total number of de novo variants.
+     * 
+     * @return the total number of de novo variants.
+     * @throws DAOException If something fails at database level.
+     */
+    public int findTotalDenovo() throws DAOException;
+
+    /**
      * Returns the total number of subjects.
      * 
      * @return the total number of subjects.

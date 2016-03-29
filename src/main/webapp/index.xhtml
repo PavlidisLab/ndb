@@ -57,18 +57,15 @@
 			 	  	<f:facet name="header">
 			        	Database Statistics
 			    	</f:facet>
-			
-			 	  	<h:outputText value="Total Variant Events:" />
-			 	  	<h:outputText value="#{statsService.eventCnt}" />
 			 	  	
-			 	  	<h:outputText value="Total Subjects:" />
-			 	  	<h:outputText value="#{statsService.subjectCnt}" />
+					
+        			<ui:include src="stat_summary.xhtml" />
+        			
+			 	  	<f:facet name="footer">
+ 	  					<em>For more details, refer to our <p:link href="stats.xhtml">publications</p:link> section.</em>			 	
+			 	  	</f:facet>
+ 	  			</p:panelGrid>   	
 			 	  	
-			 	  	<h:outputText value="Total Papers:" />
-			 	  	<h:outputText value="#{statsService.paperCnt}" />
-			 	  	
- 	  			</p:panelGrid> 	  	
- 	  			
  	  				<h3>Recent News</h3>
  	  				<p:layout style="text-align:left;max-width:90%;min-height:50px;" >					    
     					<p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true" >

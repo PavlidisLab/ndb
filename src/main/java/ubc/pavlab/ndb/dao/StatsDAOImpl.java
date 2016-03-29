@@ -70,8 +70,7 @@ public class StatsDAOImpl implements StatsDAO {
     // + "FROM variant v1 where v.event_id = v1.event_id AND v.id <> v1.id AND v.paper_id=?)";
 
     private static final String SQL_EVENT_OVERLAPS_BY_PAPER = "select paper_id, COUNT(distinct event_id) cnt from "
-            + SQL_VARIANT_TABLE
-            + " where event_id in (select distinct event_id from " + SQL_VARIANT_TABLE
+            + SQL_VARIANT_TABLE + " where event_id in (select distinct event_id from " + SQL_VARIANT_TABLE
             + " where paper_id = ?) group by paper_id";
 
     private static final String SQL_EVENT_CNT_BY_CATEGORY = "select category , COUNT(distinct event_id ) cnt from "
@@ -106,11 +105,16 @@ public class StatsDAOImpl implements StatsDAO {
             + SQL_VARIANT_TABLE + " where paper_id=? group by func";
 
     private static final String SQL_VARIANT_CNT_BY_CATEGORY_FOR_PAPER = "SELECT category, COUNT(*) FROM "
-            + SQL_VARIANT_TABLE
-            + " where paper_id=? group by category";
+            + SQL_VARIANT_TABLE + " where paper_id=? group by category";
 
     private static final String SQL_EVENT_CNT_BY_CATEGORY_FOR_PAPER = "SELECT category, COUNT(DISTINCT event_id) FROM "
             + SQL_VARIANT_TABLE + " where paper_id=? group by category";
+
+    private static final String SQL_DENOVO_CNT = " SELECT COUNT( DISTINCT event_id ) FROM " + SQL_VARIANT_TABLE
+            + " WHERE denovo = 'yes'; ";
+
+    private static final String SQL_LOF_CNT = " SELECT COUNT( DISTINCT event_id ) FROM " + SQL_VARIANT_TABLE
+            + " WHERE func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substituition') ; ";
 
     // Vars ---------------------------------------------------------------------------------------
 
@@ -196,6 +200,36 @@ public class StatsDAOImpl implements StatsDAO {
     }
 
     @Override
+    public int findTotalLof() throws DAOException {
+        int total = 0;
+        try (Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement( SQL_LOF_CNT );
+                ResultSet resultSet = statement.executeQuery();) {
+            if ( resultSet.next() ) {
+                total = resultSet.getInt( 1 );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+        return total;
+    }
+
+    @Override
+    public int findTotalDenovo() throws DAOException {
+        int total = 0;
+        try (Connection connection = daoFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement( SQL_DENOVO_CNT );
+                ResultSet resultSet = statement.executeQuery();) {
+            if ( resultSet.next() ) {
+                total = resultSet.getInt( 1 );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+        return total;
+    }
+
+    @Override
     public int findTotalSubjects() throws DAOException {
         int total = 0;
         try (Connection connection = daoFactory.getConnection();
@@ -229,8 +263,8 @@ public class StatsDAOImpl implements StatsDAO {
     public Map<Integer, Integer> overlappingEventsBetweenPapers( Integer paper_id ) throws DAOException {
         Map<Integer, Integer> counts = Maps.newHashMap();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_OVERLAPS_BY_PAPER,
-                        false, paper_id );
+                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_OVERLAPS_BY_PAPER, false,
+                        paper_id );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
                 counts.put( resultSet.getInt( "paper_id" ), resultSet.getInt( "cnt" ) );
@@ -372,8 +406,7 @@ public class StatsDAOImpl implements StatsDAO {
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
                 PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_CATEGORY_FOR_PAPER,
-                        false,
-                        paperId );
+                        false, paperId );
                 ResultSet resultSet = statement.executeQuery();) {
             while ( resultSet.next() ) {
                 String category = resultSet.getString( 1 );

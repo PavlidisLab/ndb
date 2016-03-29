@@ -82,6 +82,10 @@ public class StatsService implements Serializable {
             EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
     private final Supplier<Integer> latestSubjectCnt = Suppliers.memoizeWithExpiration( subjectCntSupplier(),
             EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
+    private final Supplier<Integer> latestsLofCnt = Suppliers.memoizeWithExpiration( lofCntSupplier(), EXPIRATION_TIME,
+            EXPIRATION_TIME_UNIT );
+    private final Supplier<Integer> latestDenovoCnt = Suppliers.memoizeWithExpiration( denovoCntSupplier(),
+            EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
 
     private final Supplier<List<Gene>> latestTopGenesByVariantCnt = Suppliers
             .memoizeWithExpiration( topGenesByVariantCntSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
@@ -201,6 +205,14 @@ public class StatsService implements Serializable {
         return latestSubjectCnt.get();
     }
 
+    public int getLofCnt() {
+        return latestsLofCnt.get();
+    }
+
+    public int getDenovoCnt() {
+        return latestDenovoCnt.get();
+    }
+
     public List<Gene> getTopGenesByVariantCnt() {
         return latestTopGenesByVariantCnt.get();
     }
@@ -294,6 +306,26 @@ public class StatsService implements Serializable {
         };
     }
 
+    private Supplier<Integer> lofCntSupplier() {
+        return new Supplier<Integer>() {
+            @Override
+            public Integer get() {
+                log.info( "lofCntSupplier" );
+                return statsDAO.findTotalLof();
+            }
+        };
+    }
+
+    private Supplier<Integer> denovoCntSupplier() {
+        return new Supplier<Integer>() {
+            @Override
+            public Integer get() {
+                log.info( "denovoCntSupplier" );
+                return statsDAO.findTotalDenovo();
+            }
+        };
+    }
+
     private Supplier<Integer> eventCntSupplier() {
         return new Supplier<Integer>() {
             @Override
@@ -324,6 +356,13 @@ public class StatsService implements Serializable {
 
     public void setCacheService( CacheService cacheService ) {
         this.cacheService = cacheService;
+    }
+
+    /**
+     * @return the latestDenovoCnt
+     */
+    public Supplier<Integer> getLatestDenovoCnt() {
+        return latestDenovoCnt;
     }
 
 }
