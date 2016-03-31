@@ -1,0 +1,29 @@
+#toc {    
+    display: inline-block;
+    display: table;
+    zoom: 1;
+    padding: 7px;     	
+ 	border: 1px solid #aaa;
+    background-color: #f9f9f9;
+    padding: 5px;
+    font-size: 105%;
+}
+
+#toctext {
+    display: table-cell;
+    text-decoration: inherit;
+}
+
+#toc li {
+	margin: 0 0 3px 0;   
+	width: 100%;
+}
+
+.section-content p {
+	padding-left: 1cm;
+	width: 50%;	
+}
+
+.section-content li {
+	width: 50%;
+}
