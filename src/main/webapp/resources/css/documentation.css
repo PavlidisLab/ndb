@@ -19,6 +19,10 @@
 	width: 100%;
 }
 
+.section-content h4 {
+	padding-left: 0.5cm;	
+}
+
 .section-content p {
 	padding-left: 1cm;
 	width: 50%;	
