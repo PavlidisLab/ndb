@@ -16,6 +16,11 @@
 		<h:outputStylesheet library="css" name="variant.css" />
 	</ui:define>
 	
+	
+	<ui:define name="js">
+		<script src="resources/js/adjust_headers.js"></script>
+	</ui:define>
+      
 	<ui:define name="content">
 	
 		<p:panel styleClass="no-border clearfix" style="float:right;">
@@ -34,12 +39,25 @@
 				<h2>Results for "#{variantView.query}"</h2>
 				<h4>Variant Events: #{fn:length(variantView.events)}</h4>
 			</div>
-				
-		    <p:dataTable id="variantTable" styleClass="right-aligned-paginator"
-		    			 var="event" value="#{variantView.events}" paginatorAlwaysVisible="true" paginator="true" paginatorPosition="top bottom"
-		                 paginatorTemplate="{Exporters}" style="margin-bottom:20px" tableStyle="table-layout: auto;"
-		                 scrollRows="#{variantView.liveScroll ? 20 : 0}" scrollable="#{variantView.liveScroll}" liveScroll="#{variantView.liveScroll}" scrollHeight="#{variantView.liveScroll ? 400 : null}">
-		 
+						
+			<p:remoteCommand oncomplete=" fix_header_wrapper(); " autoRun="true"/>
+			
+		    <p:dataTable id="variantTable" 
+		    			 styleClass="right-aligned-paginator" 
+		    			 widgetVar="variantTableWdg"
+		    			 tableStyle="table-layout: auto;"
+		    			 var="event" 
+		    			 value="#{variantView.events}" 
+		    			 paginatorAlwaysVisible="true" 
+		    			 paginator="true" 
+		    			 paginatorPosition="top bottom"
+		                 paginatorTemplate="{Exporters}" 		                 
+		                 scrollRows="#{variantView.liveScroll ? 20 : 0}" 		                 
+		                 liveScroll="#{variantView.liveScroll}"
+		                 scrollable="#{variantView.liveScroll}" 
+		                 scrollHeight="#{variantView.liveScroll ? 400 : null}"
+		                 >
+		 		
 		        <f:facet name="{Exporters}">
 		        	<span style="text-align:right;">
 <!-- 		            <h:commandLink>
@@ -66,14 +84,11 @@
 		        </f:facet>
 
 		 
-		        <p:column sortBy="#{event}" sortFunction="#{variantView.sortByGenes}">
+		        <p:column styleClass="centeredColumn" style="over" sortBy="#{event}" sortFunction="#{variantView.sortByGenes}">
 		            <f:facet name="header">
 		                <h:outputText id="Gene" value="Gene"/>
 		                <p:tooltip id="toolTipGene" for="Gene" value="Gene symbol on which the variant is located" />
 		            </f:facet>
-					
-		            <center> 
-		            	
 		            	<ui:repeat var="gene" value="#{event.genes}" varStatus="statusRepeatGenes">	
 							<p:link outcome="variant" value="#{gene.symbol}" target="_blank">
 							    <f:param name="NCBIGeneId" value="#{gene.geneId}" />
@@ -90,12 +105,11 @@
 									<h:graphicImage border="5"  library="img" name="NCBI.gif" width="30"/>
 							</h:outputLink>      	
 							<h:outputText value="&lt;br/&gt;" escape="false"  rendered="#{not statusRepeatGenes.last}" />			
-		            	</ui:repeat>		        
-		            </center>
+		            	</ui:repeat>
 		            		 
 		        </p:column>
 		        		       
-		        <p:column sortBy="#{event.subjectId}">
+		        <p:column styleClass="centeredColumn" sortBy="#{event.subjectId}">
 		            <f:facet name="header">
 		                <h:outputText id="Subject" value="Subject"/>
 		                <p:tooltip id="toolTipSubject" for="Subject" value="MARVDB-specific identifier for the proband source of the variant." />
@@ -103,7 +117,7 @@
 		            <h:outputText value="#{event.subjectId}" />		            
 		        </p:column>
 		        
-				<p:column rendered="#{not event.complex}" sortBy="#{event.ref}">
+				<p:column styleClass="centeredColumn" rendered="#{not event.complex}" sortBy="#{event.ref}">
 		            <f:facet name="header">
 		                <h:outputText id="REF" value="REF"/>
 		                <p:tooltip id="toolTipREF" for="REF" value="Reference base(s) affected by the variant" />
@@ -111,7 +125,7 @@
 		            <h:outputText value="#{event.ref}" />
 		        </p:column>
 		        
-		        <p:column rendered="#{not event.complex}" sortBy="#{event.alt}">
+		        <p:column styleClass="centeredColumn" rendered="#{not event.complex}" sortBy="#{event.alt}">
 		            <f:facet name="header">
 		                <h:outputText id="ALT" value="ALT"/>
 		                <p:tooltip id="toolTipALT" for="ALT" value="Modified base(s) caused by the variant" />
@@ -119,7 +133,7 @@
 		            <h:outputText value="#{event.alt}" />
 		        </p:column>
 		        
-		         <p:column rendered="#{not event.complex}" sortBy="#{event}" sortFunction="#{variantView.sortByLocation}">
+		         <p:column styleClass="centeredColumn" rendered="#{not event.complex}" sortBy="#{event}" sortFunction="#{variantView.sortByLocation}">
 		            <f:facet name="header">
 		                <h:outputText id="Location" value="Location"/>
 		                <p:tooltip id="toolTipLocation" for="Location" value="Location of the variant" />
@@ -129,12 +143,12 @@
 		            </h:outputLink>
 		        </p:column>	
 		        
-         		<p:column rendered="#{event.complex}" colspan="3" style="text-align:center;" styleClass="inline-row-toggle inline-icon">
+         		<p:column rendered="#{event.complex}" colspan="3" style="text-align:center;" styleClass="centeredColumn inline-row-toggle inline-icon">
 					<h:outputText value="Complex Event; expand row to view variants &nbps;" />
 					   <p:rowToggler/> 
 		        </p:column>	
 		        
-		        <p:column>
+		        <p:column styleClass="centeredColumn">
 		            <f:facet name="header">
 		                <h:outputText id="Functions" value="Context"/>
 		                <p:tooltip id="toolTipFunctions" for="Functions" value="Variant functional categories" />	
@@ -149,7 +163,7 @@
 		        </p:column>
 		        
 		        
-		        <p:column sortBy="#{event.denovo}" styleClass="row-gradient" >
+		        <p:column styleClass="centeredColumn row-gradient" sortBy="#{event.denovo}"  >
 		            <f:facet name="header">
 		                <h:outputText id="denovo" value="De novo"  />
 		                <p:tooltip id="toolTipDeNovo" for="denovo" value="De novo variant (i.e. Not inherited from parents.)" />	
@@ -161,7 +175,7 @@
 		        <ui:remove>
 		        <!-- This column is removed, as we can tell LoF from the effect conditional colouring. I'm leaving this here because it can be useful to compare as a sanity check. -->
 		        <!-- The data from here is pulled from the literature as best as possible. -->
-		        <p:column sortBy="#{event.lof}" styleClass="row-gradient" >
+		        <p:column styleClass="centeredColumn row-gradient" sortBy="#{event.lof}" >
 		            <f:facet name="header">
 		                <h:outputText id="lof" value="LoF"  />
 		                <p:tooltip id="toolTipLoF" for="lof" value="Loss of function caused by this variant." />	
@@ -171,7 +185,7 @@
 		        </p:column>		     
 		        </ui:remove>
 		        
-		        <p:column sortBy="#{event}"  styleClass="row-gradient" sortFunction="#{variantView.sortByEffects}">
+		        <p:column styleClass="centeredColumn row-gradient" sortBy="#{event}" sortFunction="#{variantView.sortByEffects}">
 		            <f:facet name="header">
 		                <h:outputText id="Effect" value="Effects"/>
 		                <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect" />	
@@ -184,7 +198,7 @@
 	            	</ui:repeat>	            	
 		        </p:column>
 		        
-		        <p:column sortBy="#{event.caddPhred}" styleClass="row-gradient #{(event.caddPhred > 50 ? 'ct6' : (event.caddPhred > 40 ? 'ct5' : (event.caddPhred > 30 ? 'ct4' : (event.caddPhred > 20 ? 'ct3' : (event.caddPhred > 10 ? 'ct2' : (event.caddPhred > 0 ? 'ct1' : ''))))))}">
+		        <p:column sortBy="#{event.caddPhred}" styleClass="centeredColumn row-gradient #{(event.caddPhred > 50 ? 'ct6' : (event.caddPhred > 40 ? 'ct5' : (event.caddPhred > 30 ? 'ct4' : (event.caddPhred > 20 ? 'ct3' : (event.caddPhred > 10 ? 'ct2' : (event.caddPhred > 0 ? 'ct1' : ''))))))}">
 		            <f:facet name="header">
 		                <h:outputText id="Cadd" value="CADD Phred"/>
 		                <p:tooltip id="toolTipCadd" for="Cadd" value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores." />	
@@ -194,7 +208,7 @@
 	            	<h:outputText value="#{event.caddPhred == 0 ? '-' : event.caddPhred}" />	            	
 		        </p:column>
 		        
-		        <p:column sortBy="#{event}" sortFunction="#{variantView.sortByPapers}">
+		        <p:column styleClass="centeredColumn" sortBy="#{event}" sortFunction="#{variantView.sortByPapers}">
 		            <f:facet name="header">
 		                <h:outputText id="Sources" value="Sources"/>
 		                <p:tooltip id="toolTipSources" for="Sources" value="Source(s) where variants from this event are reported." />		           
@@ -220,10 +234,10 @@
 	            	
 		        </p:column>
 		        <!-- Hack to fix a bug where the last column is not loaded using liveScroll and some rendered=false columns -->
-		        <p:column style="width:0px;padding:0;visibility:hidden">
+		        <p:column styleClass="centeredColumn terminal" style="width:0px;padding:0;visibility:hidden">
 		        </p:column>
 		        
-<!-- 				<p:column style="width:32px;">
+<!-- 				<p:column styleClass="centeredColumn" style="width:32px;">
 						<f:facet name="header">
 					        	<h:outputText id="More" value="More"/>
 				                <p:tooltip id="toolTipMore" for="More" value="Click this field for additional data about specific reported variants." />		           
@@ -247,7 +261,7 @@
 							<h:outputText value="#{variant.sampleId}" />
 						</p:column> -->
 						
-						<p:column style="min-width:8px;">
+						<p:column styleClass="centeredColumn" style="min-width:8px;">
 				            <f:facet name="header">
 				                <h:outputText id="REF" value="REF"/>
 				                <p:tooltip id="toolTipREF" for="REF" value="Reference base(s) affected by the variant" />
@@ -295,7 +309,7 @@
             	
 				        </p:column>
 				        
-				        <p:column styleClass="row-gradient #{(variant.annovar.caddPhred > 50 ? 'ct6' : (variant.annovar.caddPhred > 40 ? 'ct5' : (variant.annovar.caddPhred > 30 ? 'ct4' : (variant.annovar.caddPhred > 20 ? 'ct3' : (variant.annovar.caddPhred > 10 ? 'ct2' : (variant.annovar.caddPhred > 0 ? 'ct1' : ''))))))}">
+				        <p:column styleClass="centeredColumn row-gradient #{(variant.annovar.caddPhred > 50 ? 'ct6' : (variant.annovar.caddPhred > 40 ? 'ct5' : (variant.annovar.caddPhred > 30 ? 'ct4' : (variant.annovar.caddPhred > 20 ? 'ct3' : (variant.annovar.caddPhred > 10 ? 'ct2' : (variant.annovar.caddPhred > 0 ? 'ct1' : ''))))))}">
 				            <f:facet name="header">
 				                <h:outputText id="Cadd" value="CADD Phred"/>
 				                <p:tooltip id="toolTipCadd" for="Cadd" value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores." />	
@@ -305,7 +319,7 @@
 			            	<h:outputText value="#{variant.annovar.caddPhred == 0 ? '-' : variant.annovar.caddPhred}" />	            	
 				        </p:column>
 				        
-				         <p:column>
+				         <p:column styleClass="centeredColumn" >
 				            <f:facet name="header">
 				                <h:outputText id="Source" value="Source"/>
 				            	<p:tooltip id="toolTipSource" for="Source" value="Source of the reported variant" />	
@@ -316,7 +330,7 @@
 					            <f:setPropertyActionListener value="#{variant.paper}" target="#{variantView.selectedPaper}" />
 					        </p:commandLink>
 				        </p:column>
-				        <p:column style="width:16px;">
+				        <p:column styleClass="centeredColumn" style="width:16px;">
 					            
 				        	<p:commandLink update=":formResults:variantDetail" 
 				        					oncomplete="PF('dlg').show()" 
