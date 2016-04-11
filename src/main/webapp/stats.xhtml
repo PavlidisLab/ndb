@@ -36,7 +36,7 @@
 		
 		goToPaperOverlap = function(paperId, overlapPaperId) {
 		   var url = '#{request.contextPath}/variant.xhtml?paperId='+ paperId + '&amp;overlapPaperId=' + overlapPaperId;
-		   window.open(url, '_blank');
+		   window.open(url, "_self");
 		}
       </script>
 
@@ -84,7 +84,7 @@
  	  	</p>
  	  	
  	  	<p>A <em>de novo</em> variant is a type of genetic mutation that was not inherited from a parent, but rather from a germ cell from a parent. 
- 	  	Many <p:link outcome="publications" value="publications" target="_blank" /> primarily report de novo variants across whole genomes, exomes, or specific targeted genes.</p>
+ 	  	Many <p:link outcome="publications" value="publications"/> primarily report de novo variants across whole genomes, exomes, or specific targeted genes.</p>
  	  	
  	  	<p><em>Loss of function</em> variants are DNA mutations that affects transcription of RNA in a way that the resulting amino acid sequence is unlikely to produce a functionally relevant protein.
  	  	These mutations are usually of the <em>frameshift</em> type, meaning an insertion (or deletion) of a block that is not a multiple of 3. This causes an offset to the codon reading frame. 

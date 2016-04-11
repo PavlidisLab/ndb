@@ -90,7 +90,7 @@
 		                <p:tooltip id="toolTipGene" for="Gene" value="Gene symbol on which the variant is located" />
 		            </f:facet>
 		            	<ui:repeat var="gene" value="#{event.genes}" varStatus="statusRepeatGenes">	
-							<p:link outcome="variant" value="#{gene.symbol}" target="_blank">
+							<p:link outcome="variant" value="#{gene.symbol}" >
 							    <f:param name="NCBIGeneId" value="#{gene.geneId}" />
 							</p:link>	  
 							<h:outputText value="&nbsp;"/>	          		
