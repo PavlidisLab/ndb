@@ -53,17 +53,17 @@
 						The variant database can be queried through the search bar displayed at the top of the <p:link  href="index.xhtml" >home page</p:link>. Enter a Gene name under <strong>Gene Symbol</strong>, such as <em>ADNP, CHD8 or SYNGAP1</em>, and click <strong>Submit</strong>.
 					</p>
 					<p>
-						Alternatively, you can search for variants by genomic region. We are currently using <strong>Hg19/GRCh37</strong> genome assembly. In the <strong>Region</strong>, enter a chromosome number, start coordinate, and stop coordinate. For example, to search the 1<sup>st</sup> choromsome from coordinates 1000000 to 2000000, enter <strong>chr1:1000000-2000000</strong>.
+						Alternatively, you can search for variants by genomic region. We are currently using the <strong>Hg19/GRCh37</strong> genome assembly. For search by <strong>Region</strong>, you need a chromosome, start coordinate, and stop coordinate. For example, to search the 1<sup>st</sup> choromsome from coordinates 1000000 to 2000000, enter <strong>chr1:1000000-2000000</strong>.
 					</p>			
 				<h4>Searching for variants from specific publications.</h4>
 					<p>
-						Our <p:link  href="publications.xhtml" >publications</p:link> section lists descriptions of the work incorporated in our database. Click on the click the <span class="ui-icon ui-icon-circlesmall-plus" style="display: inline-block"/> icon of a specific paper to see the variant count of a given paper. Clicking the number will display the list of variants reported by the publication. 
+						Our <p:link  href="publications.xhtml" >publications</p:link> section lists descriptions of works incorporated in our database. Click on the <span class="ui-icon ui-icon-circlesmall-plus" style="display: inline-block"/> icon of a specific paper to see the publication details. The resulting page can search for all variants included in the publication by clicking the number under <em>Variant Event Count</em>. 
 					</p>
 					<p>
 						<em>Example:</em> The <p:link href="paper.xhtml?paperId=18"> De Rubeis, 2014 </p:link> study reports <p:link href="variant.xhtml?paperId=18">1384</p:link> variants included in our database.						
 					</p>
 					
-				<h4>Searching for variants overlaping different publications.</h4>
+				<h4>Searching for variants overlapping different publications.</h4>
 					<p>
 						It is possible to look up the overlapping variants between two different publications through our 
 						<p:link href="stats.xhtml">statistics</p:link> section. 
@@ -86,12 +86,12 @@
 							<li><strong>Reporting: </strong> Focus in terms of variant reporting. Some papers are looking for <em>de novo</em> variants; cases where the mutation is a inherited from the germ cell rather than the parent. 
 							When the sequenced proband's relative information is not available, variant identification is often done against a group of controls (Case-Control studies.) </li>
 							<li><strong>Effects: </strong> The publications' reported variants' functional effect or genetic context. Functional effects describe what the variant looks like, and the impact on the transcription reading frame. For example, variants that cause the reading frame to shift are called frameshift variants. If a variant does not changed the amino acid sequence, the it is a synonymous variant. The genetic context is more of less the location of the variant, such splice sites and 3'-end/5'-end untranslated region (3UTR, 5UTR). </li>
-							<li><strong>DOI: </strong> The Digital Object Identifier (DOI) is a tag assigned to digital objects, such as publications. It also serves as a permament web URL (when prefixed with https://dx.doi.org/ ) for work that may be accessible through different databases.</li>
+							<li><strong>DOI: </strong> The Digital Object Identifier (DOI) is a tag assigned to digital objects, such as publications. It also serves as a permanent web URL (when prefixed with https://dx.doi.org/ ) for work that may be accessible through different databases.</li>
 						</ul> 		
 							
 			<h3 id="statistics" class="section">Statistics</h3>
 				<p>
-				Our <p:link href="stats.xhtml"> statistics </p:link> section includes information computed from the data included in the database. We provide a few ranking of genes affected by the variants in our database,  based their frequency, predicted seveirty and heritability.
+				Our <p:link href="stats.xhtml"> statistics </p:link> section includes information the data included in the database. We provide a different rankings for genes implicated in the variants in our database, based their frequency, predicted severity and inheritance.
 				 </p>
 				 
 				 <p>
@@ -99,7 +99,7 @@
 				 </p>
 				
 				 <p>
-				 	We also include wheter the variant is reported as <em>de novo</em> or not, when the information is available from the publication material.
+				 	We also include whether the variant is reported as <em>de novo</em> or not, when the information is available from the publication material.
 				 </p>
 				 
 			<h3 id="harmonizing" class="section">Data harmonization</h3>
@@ -116,7 +116,7 @@
 			</ul>
 			
 			<p> In cases of doubts, the raw data for the publication's supplied material can be view for a any given variant through the "Sources" column in the variant results. Simply click the <span class="ui-icon ui-icon-search inline-icon" style="display: inline-block"/> icon. 
-			If you find any inconsistencies, pleasereport them to <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.</p>				        					 
+			If you find any inconsistencies, please report them to <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.</p>				        					 
 			
 						
 			<h4>Harmonizing publications</h4>
