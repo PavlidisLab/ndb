@@ -12,11 +12,22 @@ This document explains how to start the pipeline .
 
 0) Create/Launch virtual environment
 
-
+  In paperpipe/ :
+  
 ```
 #!bash
 
+virtualenv venv
 source venv/bin/activate
+
+# Install modules to virtual environment
+pip install luigi
+pip install simplejson
+pip install petl
+pip install pymysql
+pip install hgvs
+pip install openpyxl
+
 ```
 
 1) Launch pipeline server
@@ -41,9 +52,15 @@ The tasks are located in paperpipe/pipeline/flows/tasks.py. Each class is a type
 ./schedule_task.sh ../exampledata/dyrk1a/variants.xlsx LoadRawVariant
 ./schedule_task.sh ../exampledata/dyrk1a/variants.xlsx LoadVariant
 
+
+./schedule_task.sh ../exampledata/dyrk1a/variants.xlsx ClearPaper
+./schedule_task.sh ../exampledata/dyrk1a/variants.xlsx ClearRawKV
+./schedule_task.sh ../exampledata/dyrk1a/variants.xlsx ClearRawVariant
+./schedule_task.sh ../exampledata/dyrk1a/variants.xlsx ClearVariant
+
 ```
 
 ### Who do I talk to? ###
 
-* Repo owner or admin (Manuel Belmadani <manuel.belmadani@ubc.ca>)
+* Manuel Belmadani <manuel.belmadani@ubc.ca>
 * Other community or team contact
