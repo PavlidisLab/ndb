@@ -35,6 +35,23 @@
         initialSize="0"
         alternateUsernameAllowed="true"
     />
-    
+
+    <Resource
+        name="jdbc/ndb_test" 
+        type="javax.sql.DataSource"
+        factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+        maxActive="100" 
+        maxIdle="30" 
+        maxWait="10000" 
+        testWhileIdle="true"
+        timeBetweenEvictionRunsMillis="300000"
+        url="jdbc:mysql://localhost:3306/ndb_test"
+        driverClassName="com.mysql.jdbc.Driver"
+        username="xxxx" 
+        password="xxxx"
+        initialSize="0"
+        alternateUsernameAllowed="true"
+    />
+   
 
 </Context>

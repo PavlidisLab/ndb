@@ -8,8 +8,9 @@ class AbstractModel(object):
     def __init__(self, **kwargs):
 
         self.DATABASE_TABLES = {}
-
-        suffix = "_test" # Use suffix like _test to use the proper table version. Leave blank for production.
+        
+        #suffix = "_test" # Use suffix like _test to use the proper table version. Leave blank for production.
+        suffix = ""
 
         for table in [ 'papers',
                        'raw_key_value',

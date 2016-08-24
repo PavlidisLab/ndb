@@ -67,7 +67,8 @@ class Variant(AbstractModel):
                     "Use value directly instead of looking up raw variant"
                     transform_input = transform[0]
 
-                h, d = self.U.transform( transform_input, transform[1], transform[2], paper_id = self.paper_id )               
+                h, d = self.U.transform( transform_input, transform[1], transform[2], paper_id = self.paper_id )         
+      
                 for h,d in zip(h,d):
                     variant[h] = d
                 
@@ -119,9 +120,6 @@ class Variant(AbstractModel):
         for _data in self.data:
             data = self.precommit([_data])[0]
             petl.appenddb(data, self.U.connection, self.database_table, commit=True)
-            #print data[0]
-            #print data[1]
-            #print "Commit"
         return self.data
         
     def disambiguate_subjects(self, start, stop, tolerance=0):
