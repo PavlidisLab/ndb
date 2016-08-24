@@ -37,6 +37,12 @@ class Utils(object):
         pass
 
     def transform(self, i, f, o, paper_id=None):
+        """
+         i : input
+         f : function
+         o : output
+        """
+        
         h = o.split(",")
         d = None
 
@@ -104,6 +110,17 @@ class Utils(object):
         self.connection.commit()
 
         return rows
+
+    def delete_table_rows_by_field(self, table_name, id, field):
+        statement = ' DELETE FROM ' + table_name + " WHERE "+field+"='" +str(id)+ "' ; "
+        print "******************"
+        print statement
+        print "******************"
+        rows = self.execdb(statement)
+        self.connection.commit()
+
+        return rows
+
 
     def execdb(self, statement):            
         return self.connection.cursor().execute( statement )

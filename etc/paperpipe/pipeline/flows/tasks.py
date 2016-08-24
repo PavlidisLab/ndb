@@ -4,6 +4,7 @@ import ast
 import os 
 import copy
 import simplejson as json
+import operator
 
 # PaperPipe specific papers
 from utils import Utils
@@ -11,11 +12,28 @@ from paper import Paper
 from rawkv import RawKV
 from rawvariant import RawVariant
 from variant import Variant
+from annovar import Annovar
 
 def hash_filename(string):
     hash_object = hashlib.sha1(string)
     hex_dig = hash_object.hexdigest()
     return str(hex_dig)
+
+def blockable(fun):
+    def _decorator(self, *args, **kwargs):
+        print "SELF"
+        #print self
+        #print args
+        #print kwargs
+
+        if os.path.isfile(self.OUTPUT):
+            print "PAPERPIPE: File already exists. Not running this task." 
+            return
+        else:
+            print "PAPERPIPE:", self.OUTPUT, " does not appear to exist. "    
+            print "RUNNING ", type(self), " Loader for Paper", self.paper_id
+        return fun(self)
+    return _decorator
 
 class PPTask(luigi.Task):
     OUTPUT = None
@@ -252,25 +270,83 @@ class LoadVariant(PPTask):
         self.input() # Framework calls output before running tasks. This will set the output filename before checking if it exists.
         return luigi.LocalTarget( LoadVariant.OUTPUT )
 
+    @blockable
     def run(self):
-        if os.path.isfile(self.OUTPUT):
-            print "PAPERPIPE: File already exists. Not running this task." # TODO: This should not be needed.
-            return
-        else:
-            print "PAPERPIPE:", self.OUTPUT, " does not exist, apparently. "
-
-        print "RUNNING LoadVariant Loader for Paper", self.paper_id
         
         raw = self.requires() # Obtain requirement.
         variant = Variant(self.paper_id)
 
         variant.load(self.input())
+
+        print "Variant data:"
+        print variant.data
+        #exit()
+        
         data = variant.commit()
 
         with self.output().open('w') as f:
             for row in data:
                 f.write(str(row))
                 f.write("\n")
+
+class LoadAnnovar(PPTask):
+    book = luigi.Parameter()
+
+    """
+    Load Annovar by copy of the Variant data.
+    """
+    def __init__(self, book=None):
+        super(LoadAnnovar, self).__init__(book=book)            
+        self.paper_id = -1
+        self.INPUT = book
+
+    def input(self):
+        LoadAnnovar.OUTPUT = str("commits/annovar_paper"+str(self.paper_id)+".out")
+        return self.INPUT
+    
+    def output(self):
+        self.input() # Framework calls output before running tasks. This will set the output filename before checking if it exists.
+        return luigi.LocalTarget( LoadAnnovar.OUTPUT )
+
+    def requires(self):
+        requirement = LoadVariant(book=self.INPUT)
+        check_requirement = copy.deepcopy(requirement)                
+        if os.path.isfile(check_requirement.output().path):
+            self.set_paper_id_from_requirements(check_requirement)
+        self.input()
+        return requirement
+
+    @blockable
+    def run(self):
+        """
+        Run annovar for all variants in this paper.
+        """
+        annovar = Annovar(self.paper_id)
+        annovar.load( self.input() )
+        data = annovar.commit()    
+        
+        with self.output().open('w') as f:
+            for row in data:
+                f.write(str(row))
+                f.write("\n")
+
+            
+                
+            
+class ClearAnnovar(LoadAnnovar):
+    book = luigi.Parameter()
+
+    def __init__(self, book=None):
+        super(ClearAnnovar, self).__init__(book=book)
+        self.paper_id = -1
+        self.INPUT = book
+
+    def requires(self):
+        requirement = self.clear_requires(LoadAnnovar(book=self.INPUT))
+        return requirement
+
+    def run(self):
+        self.clear_run(Class=Annovar)
 
 class ClearVariant(LoadVariant):
     book = luigi.Parameter()
