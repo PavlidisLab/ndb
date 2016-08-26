@@ -279,7 +279,8 @@ class LoadVariant(PPTask):
         variant.load(self.input())
 
         print "Variant data:"
-        print variant.data
+        for var in variant.data:
+            print var
         #exit()
         
         data = variant.commit()

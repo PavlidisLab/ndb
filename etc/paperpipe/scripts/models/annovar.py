@@ -41,6 +41,8 @@ class Annovar(AbstractModel):
         self.database_table= "annovar_scores"
         self.properties_list = Annovar._Annovar__properties_list
         self.data = []
+        self.function = []
+        self.aa_change = [] 
 
     def insert(self, datadict):
         row = [datadict[k] for k in self.properties_list]
@@ -113,7 +115,8 @@ class Annovar(AbstractModel):
             anno_dict = {}
             AAChange = "."
             Function = []
-            for element in annos.split(";"):
+            annotations = annos.split(";")
+            for element in annotations:
 
                 if element == ".":
                     continue
@@ -127,21 +130,44 @@ class Annovar(AbstractModel):
                 if k == "GERP++_RS":
                     k = "GERP_RS"
                 if k == "AAChange.refGene":
-                    AAChange = v
-                if k in ["ExonicFunc.refGene", "Func.refGene"]:
-                    Function.append(v)
+                    self.aa_change.append(v)
+                    k = "aa_change"
+                if k == "Func.refGene":
+                    self.function.append(v)
+                    k = "func"
                 anno_dict[k] = v
-                print k, v
+                print k, v            
             anno_dict["variant_id"] = v_id
             self.insert(anno_dict)
-            #print obj.data
+        
 
     def commit(self):
         """
         Push model's to append to the database
         """
         tbl = [self.properties_list] + self.data
-        petl.appenddb( tbl, self.U.connection, self.database_table )
+        print "Insert:"
+        for t in tbl:
+            print t
+        print "Update:"
+        print self.aa_change
+        print self.function
+        for i in range(1, len( tbl )-1) :
+            row = tbl[i]
+            variant_id = row[0]
+            where = " id = '"+str(variant_id)+"' "
+
+            if self.aa_change[i]:
+                self.U.update_table_rows_by_field("variant", 
+                                                  "aa_change",
+                                                  self.aa_change[i],
+                                                  where)
+            if self.function[i]:
+                self.U.update_table_rows_by_field("variant", 
+                                                  "func",
+                                                  self.function[i],
+                                                  where)                                        
+        r = petl.appenddb( tbl, self.U.connection, self.database_table )
 
         return tbl
     

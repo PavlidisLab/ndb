@@ -111,6 +111,17 @@ class Utils(object):
 
         return rows
 
+    def update_table_rows_by_field(self, table_name, field, value, where):
+        statement = 'UPDATE ' + table_name + " SET "+field+"='" +str(value)+ "' WHERE "+where+" ; "
+        print "******************"
+        print statement
+        print "******************"
+        rows = self.execdb(statement)
+        self.connection.commit()
+
+        return rows
+
+
     def delete_table_rows_by_field(self, table_name, id, field):
         statement = ' DELETE FROM ' + table_name + " WHERE "+field+"='" +str(id)+ "' ; "
         print "******************"
