@@ -281,7 +281,6 @@ class LoadVariant(PPTask):
         print "Variant data:"
         for var in variant.data:
             print var
-        #exit()
         
         data = variant.commit()
 

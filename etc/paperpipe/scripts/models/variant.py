@@ -99,10 +99,12 @@ class Variant(AbstractModel):
         for i in range(len(_data)):
             header, row = _data[i]
             IDX = header.index(FIELD)
-            #x = row[:]
-            
+
             START = row[header.index('start_hg19')]
             STOP = row[header.index('stop_hg19')]
+            CHROMOSOME = row[header.index('chromosome')]
+            REF = row[header.index('ref')]
+            ALT = row[header.index('alt')]
         
             existingID = self.disambiguate_subjects(START, 
                                                     STOP, 
@@ -143,6 +145,9 @@ class Variant(AbstractModel):
             if _rows:
                 header = _rows[0]
                 SID = header.index("subject_id")
+                EID = header.index("event_id")
+                # TODO: <- Check that event_id is paired with subject.
+
                 rows = _rows[1:]
                 
                 for r in rows:
