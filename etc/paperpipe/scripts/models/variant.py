@@ -3,6 +3,10 @@ import utils
 from marvmodel import AbstractModel
 from rawvariant import RawVariant
 
+import sys
+print sys.path
+from fixer import fixer as vf
+
 class Variant(AbstractModel):
     __properties_list = "id,paper_id,raw_variant_id,event_id,subject_id,sample_id,chromosome,start_hg18,start_hg19,stop_hg19,ref,alt,gene,category,code_change,protein_change,good_mutation,gene_detail,func,aa_change,cytoband,denovo,lof".split(",")
 
@@ -103,18 +107,33 @@ class Variant(AbstractModel):
             START = row[header.index('start_hg19')]
             STOP = row[header.index('stop_hg19')]
             CHROMOSOME = row[header.index('chromosome')]
+            if 'ref' not in header:
+                header.append('ref')
+                row.append("")
             REF = row[header.index('ref')]
+            if 'alt' not in header:
+                header.append('alt')
+                row.append("")
             ALT = row[header.index('alt')]
-        
+            
+            fixer = vf.Fixer()
+            print dir(fixer)
+            CHROMOSOME,START,STOP,REF,ALT = fixer.repair_variant(CHROMOSOME,START,STOP,REF,ALT)
+
+            row[header.index('start_hg19')] = START
+            row[header.index('stop_hg19')] = STOP
+            row[header.index('chromosome')] = CHROMOSOME
+            row[header.index('ref')] = REF
+            row[header.index('alt')] = ALT
+            
             existingID = self.disambiguate_subjects(START, 
                                                     STOP, 
-                                                    tolerance=0)
+                                                    tolerance=0) # TODO: Update to 1 once events are considered.
             if existingID:
-                row[IDX] = existingID
-            
+                row[IDX] = existingID            
             if str(row[IDX]) == "-1":                
                 row[IDX] = self.get_biggest_ID(FIELD, table=self.database_table)
-            data.append([header, row])        
+            data.append([header, row])            
 
         return data
         
