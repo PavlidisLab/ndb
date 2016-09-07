@@ -1,7 +1,9 @@
+import os
 import operator
 import petl
 import utils
 from marvmodel import AbstractModel
+
 
 class Annovar(AbstractModel):
     __properties_list = ['variant_id',
@@ -43,6 +45,7 @@ class Annovar(AbstractModel):
         self.data = []
         self.function = []
         self.aa_change = [] 
+        self.gene = []
 
     def insert(self, datadict):
         row = [datadict[k] for k in self.properties_list]
@@ -89,12 +92,16 @@ class Annovar(AbstractModel):
                     line = line.replace("%ALT", ".")
                 templated.append(line)
 
-        VCF_FILE = "flows/tmp/todo.vcf"
+        TMP_DIR = "flows/tmp/"
+        VCF_FILE = TMP_DIR + "todo.vcf"
+        filesToRemove = [f for f in os.listdir(TMP_DIR)]
+        [os.remove(TMP_DIR + f) for f in filesToRemove]
+
         with open(VCF_FILE, "w") as f:
             for line in ( template + templated ):
                 f.write( line + "\n" )
 
-        #os.system("./remote_annovar.sh")
+        os.system("./remote_annovar.sh ")
 
         ANNOTATED_FILE = VCF_FILE + ".hg19_multianno.vcf"
         annotated = []
@@ -127,6 +134,8 @@ class Annovar(AbstractModel):
 
                 if v == ".":
                     v = None
+
+                #------------------#
                 if k == "GERP++_RS":
                     k = "GERP_RS"
                 if k == "AAChange.refGene":
@@ -135,6 +144,9 @@ class Annovar(AbstractModel):
                 if k == "Func.refGene":
                     self.function.append(v)
                     k = "func"
+                if k == "Gene.refGene":
+                    self.gene.append(v)
+
                 anno_dict[k] = v
                 print k, v            
             anno_dict["variant_id"] = v_id
@@ -152,8 +164,11 @@ class Annovar(AbstractModel):
         print "Update:"
         print self.aa_change
         print self.function
-        for i in range(1, len( tbl )-1) :
-            row = tbl[i]
+
+        # UPDATE PER VARIANTS
+        for i in range(len( self.data )) :
+            print "INDEX",i
+            row = self.data[i]
             variant_id = row[0]
             where = " id = '"+str(variant_id)+"' "
 
@@ -166,7 +181,32 @@ class Annovar(AbstractModel):
                 self.U.update_table_rows_by_field("variant", 
                                                   "func",
                                                   self.function[i],
-                                                  where)                                        
+                                                  where) 
+
+
+            ####### Update variant_gene
+            if self.gene[i]:
+                gene = self.gene[i]
+                query = "SELECT gene_id FROM gene WHERE symbol='"+gene+"';"
+                result = self.U.fetch_rows(query)
+                g_id =  int(result[1][0])
+
+                variant_gene = [ ["gene_id", "variant_id"], [str(g_id), str(variant_id)] ]
+                r = petl.appenddb( variant_gene, 
+                                   self.U.connection, 
+                                   "variant_gene")                                                         
+            else:
+                print "Variant", variant_id, "has no annovar genes."
+                print "Continue? Y/n"
+                r = raw_input()
+                if r == 'n': sys.exit(0)
+                
+            
+            ##### This should actually be done in annovar because we need the variant_id
+            g_header = ["variant_id", "gene_id"]
+            #g_data = [ row[  ]
+                                       
+        # Update the annovar table
         r = petl.appenddb( tbl, self.U.connection, self.database_table )
 
         return tbl

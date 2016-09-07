@@ -4,6 +4,10 @@ VCF=$1
 WORK="/home/mbelmadani/development/marvdb/annovar"
 
 echo "Submitting input"
+ssh mbelmadani@troy <<EOF 
+rm $WORK/tmp/*
+EOF
+
 rsync -a flows/tmp/ mbelmadani@troy:/home/mbelmadani/development/marvdb/annovar/tmp/
 
 echo "Generating output"

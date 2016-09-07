@@ -65,7 +65,9 @@ class PPTask(luigi.Task):
         try:
             model = Class(self.paper_id)
             model.load(self.input())
-        except:
+        except Exception as e:
+            print e
+            print "Task model =", str(type(model))
             model = Class() # Must be Paper
             # Hack. Hax. Haque.
             # Issues with whitespaces when exporting JSON also.
