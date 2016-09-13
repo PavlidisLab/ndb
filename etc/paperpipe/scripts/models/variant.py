@@ -144,6 +144,10 @@ class Variant(AbstractModel):
         return self.data
         
     def disambiguate_subjects(self, start, stop, tolerance=0):
+        """
+        For a given variant, check that there's only one subject + contiguous variant(s) within range +- tolerance
+        """
+        
 
         for RANGE in range(0, tolerance + 1):
             RANGE_START_left = str( start - RANGE ) 
@@ -160,28 +164,33 @@ class Variant(AbstractModel):
                                                                                                                                           RANGE_STOP_right)         
             #print query
             _rows = self.U.fetch_rows(query)
-            idxs = []
+            subject_ids = []
+            event_ids = []
+            ret_subject = None
+            ret_event = None
             if _rows:
                 header = _rows[0]
                 SID = header.index("subject_id")
                 EID = header.index("event_id")
+
                 # TODO: <- Check that event_id is paired with subject.
-
-                rows = _rows[1:]
-                
+                rows = _rows[1:]                
                 for r in rows:
-                    idxs.append( r[SID] )
+                    subject_ids.append( r[SID] )
+                    event_ids.append( r[EID] )
                 
-            if len(idxs) < 1:
-                continue
-            else:
-                for x in idxs:
-                    if x != idxs[0]:
-                        raise Exception("Multiple subject IDs for one position!")
-                    else:
-                        pass # Good
-                return idxs[0] # Found a disambiguation at this level
-
+            def check_unique(idxs, typeof=""):
+                if len(idxs) > 0:
+                    for x in idxs:
+                    # Case where we only found 1 ID
+                        if x != idxs[0]:
+                            # Error!
+                            raise Exception("Multiple "+typeof+" IDs for one position!")
+                        else:
+                            # Good!
+                            pass                     
+                    return idxs[0] # Found a disambiguation at this level
+        # Case where no ID was found
         return None
 
 def bootstrap():
