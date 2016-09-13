@@ -46,6 +46,7 @@ class Annovar(AbstractModel):
         self.function = []
         self.aa_change = [] 
         self.gene = []
+        self.category = []
 
     def insert(self, datadict):
         row = [datadict[k] for k in self.properties_list]
@@ -92,8 +93,10 @@ class Annovar(AbstractModel):
                     line = line.replace("%ALT", ".")
                 templated.append(line)
 
+
         TMP_DIR = "flows/tmp/"
         VCF_FILE = TMP_DIR + "todo.vcf"
+        """
         filesToRemove = [f for f in os.listdir(TMP_DIR)]
         [os.remove(TMP_DIR + f) for f in filesToRemove]
 
@@ -102,7 +105,7 @@ class Annovar(AbstractModel):
                 f.write( line + "\n" )
 
         os.system("./remote_annovar.sh ")
-
+        """
         ANNOTATED_FILE = VCF_FILE + ".hg19_multianno.vcf"
         annotated = []
         with open(ANNOTATED_FILE, 'r') as f:
@@ -149,6 +152,14 @@ class Annovar(AbstractModel):
 
                 anno_dict[k] = v
                 print k, v            
+
+            if anno_dict["func"] ==  "splicing" and \
+               anno_dict["ExonicFunc.refGene"] == None:
+                anno_dict["category"] = "splicing"
+                self.category.append("splicing")
+            else:
+                self.category.append(anno_dict["ExonicFunc.refGene"])                 
+            
             anno_dict["variant_id"] = v_id
             self.insert(anno_dict)
         
@@ -181,6 +192,11 @@ class Annovar(AbstractModel):
                 self.U.update_table_rows_by_field("variant", 
                                                   "func",
                                                   self.function[i],
+                                                  where) 
+            if self.category[i]:
+                self.U.update_table_rows_by_field("variant", 
+                                                  "category",
+                                                  self.category[i],
                                                   where) 
 
 
@@ -215,9 +231,18 @@ class Annovar(AbstractModel):
         """
         Requires custom delete method since it doesn't have a paper_id
         """
+
+        # Clear annovar data from variant table
         for _data in self.data:
             variant_id = _data[0]
             self.U.delete_table_rows_by_field(self.database_table, variant_id, "variant_id")
+
+            # Clear categoryfrom Variant table
+            ## Not required
+            
+            # Clear variant_gene table link
+            self.U.delete_table_rows_by_field("variant_gene", variant_id, "variant_id")        
+
         return self.data
 
     def usage(self):

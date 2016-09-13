@@ -68,7 +68,7 @@ class PPTask(luigi.Task):
         except Exception as e:
             print e
             print "Task model =", str(type(model))
-            model = Class() # Must be Paper
+            model = Class(self.paper_id) # Must be Paper
             # Hack. Hax. Haque.
             # Issues with whitespaces when exporting JSON also.
             with open(requirement_commit, 'r') as f:
