@@ -51,6 +51,7 @@ class AbstractModel(object):
         #TODO: Should be from Utils class
         """
         Gets the biggest available "ID" of this model type.
+        TODO: This should be rename to something like get next ID, or get available ID.
         """
         if table == None:
             database_table = self.database_table
