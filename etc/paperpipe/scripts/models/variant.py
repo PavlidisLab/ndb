@@ -161,9 +161,9 @@ class Variant(AbstractModel):
             """
 
             current_sample = row[SAMPLE_ID]
-            if len(events[current_sample]) > 0:
+            if events and len(events[current_sample]) > 0:
                 row[EVENT_ID] = events[current_sample][0] 
-  
+
             if str(row[EVENT_ID]) == "-1":
                 row[EVENT_ID] = self.get_biggest_ID(EVENT_FIELD, table=self.database_table)
 
