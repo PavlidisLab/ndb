@@ -109,13 +109,15 @@ class Variant(AbstractModel):
             Add possibly missing fields that will certainly be generated in this iteration.
             Includes: ref, alt, event_id
             """
-            if 'ref' not in header:
-                header.append('ref')
-                row.append("")
-            REF = row[header.index('ref')]
-            if 'alt' not in header:
-                header.append('alt')
-                row.append("")
+            
+            required = ['ref', 'alt', 'start_hg19', 'stop_hg19','chromosome']
+            
+
+            for req in required:                
+                if req not in header:
+                    header.append(req)
+                    row.append("")
+
             if EVENT_FIELD not in header:
                 header.append(EVENT_FIELD)
                 row.append("-1")
@@ -128,9 +130,18 @@ class Variant(AbstractModel):
             STOP = row[header.index('stop_hg19')]
             CHROMOSOME = row[header.index('chromosome')]
             ALT = row[header.index('alt')]
+            REF = row[header.index('ref')]
             
             fixer = vf.Fixer()
+
+            _before = [CHROMOSOME,START,STOP,REF,ALT]
             CHROMOSOME,START,STOP,REF,ALT = fixer.repair_variant(CHROMOSOME,START,STOP,REF,ALT)
+            
+            if REF == ALT == "N":
+                # Skipping variant because fixer could not fix.
+                print "Could not fix:", _before
+                print "Skipping"
+                continue
 
             row[header.index('start_hg19')] = START
             row[header.index('stop_hg19')] = STOP
@@ -175,7 +186,15 @@ class Variant(AbstractModel):
         
     def commit(self):
         for _data in self.data:
-            data = self.precommit([_data])[0]
+            try:
+                predata = self.precommit([_data])
+                if len(predata) < 1:
+                    continue
+                data = predata[0]
+            except Exception as e:
+                print "error with", _data
+                raise e
+
             petl.appenddb(data, self.U.connection, self.database_table, commit=True)
         return self.data
 

@@ -9,7 +9,8 @@ class RawVariant(AbstractModel):
         "_assigned",
         "_autoincrement",
         "_stamp",
-        "_linked"
+        "_linked",
+        "_strand"
     ]
 
     def __init__(self, paper_id, **kwargs):
@@ -24,6 +25,7 @@ class RawVariant(AbstractModel):
 
         self.properties_list =  RawVariant._RawVariant__properties_list
         self.rkv = None
+        self.refGene = "../res/refGene.txt"
 
 
     def set_rkv(self, rkv):
@@ -73,14 +75,15 @@ class RawVariant(AbstractModel):
             # Filter instructions with empty fields
             if ins[FIELD_IDX] is not None:
                 valid_instructions.append(ins)
-        instructions = valid_instructions        
-        ##################################################################
+        instructions = valid_instructions                
 
+        strands = {}
+
+        ##################################################################
         # TRANSFORM DATA ACCORDING TO INSTRUCTIONS
-        
         #for k in rkv_buckets.keys() :
         #    print k,":",rkv_buckets[k]        
-
+        
         for raw_id in sorted( rkv_buckets.keys() ):
             """
             For each Raw ID, go through instructions and fetch important properties
@@ -101,7 +104,7 @@ class RawVariant(AbstractModel):
             for ins in instructions:
                 command = ins[FIELD_IDX]
 
-                #print "command:", command
+                print "command:", command
                 if command in RawVariant.INSTRUCTION_SET:        
                     """ Handle instructions by type """
                     if command == '_stamp':
@@ -117,6 +120,67 @@ class RawVariant(AbstractModel):
                         # not be necessary...
                         # We could also implement this as the paper_id and raw_id 
                         continue
+                    elif command == '_strand':
+                        # TODO: Handle other ways than by transcript ID
+                        # Adjust the strand of the transcript based of RefGene.
+
+                        if len(strands.keys()) < 1:                       
+                            TRANSCRIPT_IDX = 1
+                            STRAND_IDX = 3
+                            with open( self.refGene , 'r') as f:
+                                for _refGene in f: # Header included by that's ok
+                                    refGene = _refGene.strip().split("\t")
+                                    #print refGene[TRANSCRIPT_IDX], "=", refGene[STRAND_IDX]
+                                    strands[refGene[TRANSCRIPT_IDX]] = refGene[STRAND_IDX]
+
+                        else:
+                            pass
+                        
+                        k = ins[FIELDMAPPING_IDX] 
+                        v = ins[MAPPINGVALUE_IDX] 
+                        
+                        transcript_field, v = v.split(",")
+                        
+                        try:
+                            transcript = ducket[transcript_field]
+                            col_name = [ k ]                            
+                            allele = ducket[v]
+                        except:
+                            print transcript_field, v
+                            print "Well it was this one"
+                            
+                        try:
+                            #print "IT WASN'T BECAUSE OF", transcript, v, transcript_field
+                            #print strands.keys()
+                            #print "strand is in transcript?"
+                            #print (transcript in strands.keys())
+                            #raw_input()
+                            #print "STRAND:", strands[transcript]
+                            #print "DATA:", data
+                            data = ""
+                            if strands[transcript] == "-":
+                                for token in allele[:]:
+                                    if token == 'A':
+                                        data += 'T'
+                                    elif token == 'C':
+                                        data += 'G'
+                                    elif token == 'G':
+                                        data += 'C'
+                                    elif token == 'T':
+                                        data += 'A'
+                            else:
+                                data = allele
+                            data = [ data ]      
+
+                        except:
+                            print "Error before reverse completements."
+                            raise RuntimeError("Error using " + type(x).__name__ + " " + str(x) +
+                                               " for command'" +command+
+                                               " Transcript: " + transcript+
+                                               "'. Check that input file is correctly mapped." )
+
+                        
+
                     else:
                         raise RuntimeError("List of known instructions in " + type(x).__name__ +" includes '"+command+"' but no code was made to catch it." )                        
                 else:
@@ -143,6 +207,7 @@ class RawVariant(AbstractModel):
 
     #@Override
     def commit(self):
+        print "\n".join([str(x) for x in self.data])
         petl.appenddb(self.data, self.U.connection, self.database_table)
         return self.data
         

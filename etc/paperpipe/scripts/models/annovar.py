@@ -96,7 +96,7 @@ class Annovar(AbstractModel):
 
         TMP_DIR = "flows/tmp/"
         VCF_FILE = TMP_DIR + "todo.vcf"
-        """
+        
         filesToRemove = [f for f in os.listdir(TMP_DIR)]
         [os.remove(TMP_DIR + f) for f in filesToRemove]
 
@@ -105,7 +105,7 @@ class Annovar(AbstractModel):
                 f.write( line + "\n" )
 
         os.system("./remote_annovar.sh ")
-        """
+        
         ANNOTATED_FILE = VCF_FILE + ".hg19_multianno.vcf"
         annotated = []
         with open(ANNOTATED_FILE, 'r') as f:
@@ -157,8 +157,10 @@ class Annovar(AbstractModel):
                anno_dict["ExonicFunc.refGene"] == None:
                 anno_dict["category"] = "splicing"
                 self.category.append("splicing")
-            else:
-                self.category.append(anno_dict["ExonicFunc.refGene"])                 
+            elif "ExonicFunc.refGene" in anno_dict.keys() and anno_dict["ExonicFunc.refGene"]:
+                category_text = anno_dict["ExonicFunc.refGene"].replace("_", " ")
+                self.category.append(category_text)
+            #else: it's intergenic
             
             anno_dict["variant_id"] = v_id
             self.insert(anno_dict)
@@ -193,7 +195,7 @@ class Annovar(AbstractModel):
                                                   "func",
                                                   self.function[i],
                                                   where) 
-            if self.category[i]:
+            if len(self.category) > i and self.category[i]:
                 self.U.update_table_rows_by_field("variant", 
                                                   "category",
                                                   self.category[i],
@@ -203,9 +205,23 @@ class Annovar(AbstractModel):
             ####### Update variant_gene
             if self.gene[i]:
                 gene = self.gene[i]
+                if gene == "NONE,NONE":
+                    print "WARNING! WARNING! WARNING!"
+                    print "Annovar receives NONE,NONE, as the gene here. Possibly because the variant is on the X chromsome."
+                    print "Please check this error and fix properly"
+                    print " Escaping the error for now."
+                    continue
                 query = "SELECT gene_id FROM gene WHERE symbol='"+gene+"';"
                 result = self.U.fetch_rows(query)
-                g_id =  int(result[1][0])
+                
+                try:
+                    g_id =  int(result[1][0])
+                except Exception as e:
+                    print result
+                    print query
+                    print gene
+                    raise e
+                    
 
                 variant_gene = [ ["gene_id", "variant_id"], [str(g_id), str(variant_id)] ]
                 r = petl.appenddb( variant_gene, 

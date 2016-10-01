@@ -46,18 +46,25 @@ class Utils(object):
         h = o.split(",")
         d = None
 
-        if f == 'parse_hgvs':
-            d = self.convert_hgvs(i)
+        if f in ['parse_hgvs', 'parse_reformat_hgvs']:
+            
+            d = None
+            if f == 'parse_reformat_hgvs':
+                d = self.convert_hgvs(i, REFORMAT=True)
+            else:
+                d = self.convert_hgvs(i)
             
             if d['uncertain'] == True:
                 raise RuntimeError("HGVS mapping reportedly 'uncertain' : '"+d['uncertain']+"'")
-
-            d = [d['chr'],
-                 d['start'],
-                 d['end'],
-                 d['ref'],
-                 d['alt'],
-            ]
+            if d == None:
+                d = [ None ] * 5
+            else:
+                d = [d['chr'],
+                     d['start'],
+                     d['end'],
+                     d['ref'],
+                     d['alt'],
+                 ]
         elif f == 'prepend_paper':
             d = [str("Paper#"+str(paper_id)+":"+str(i))]
 
@@ -139,13 +146,62 @@ class Utils(object):
     def fetch_rows(self, statement):
         return petl.fromdb(self.connection, statement)
 
-    def parse_hgvs(self, var_c):
+    def parse_hgvs(self, _var_c):
         """
         Returns chromosome:start-stop coordinates from a given HGVS variant string
         """
-        var_g = self.vm.c_to_g(
-            self.parser.parse_hgvs_variant(var_c)
-        )
+        MAX_ATTEMPS = 25 # Maximum number of attemps to infer the transcript version
+        var_c = _var_c
+        var_g = None
+        check_me = True
+        index = 1
+        r = None
+        while not var_g and check_me:
+            try:
+                var_g = self.vm.c_to_g(
+                    self.parser.parse_hgvs_variant(var_c)
+                )
+                check_me = False
+            except Exception as e:
+                if index > MAX_ATTEMPS:
+                    print "Could not increment to a proper version, please check this transcript and that it exists in UTA"
+                    print "Ignoring", var_c
+                    r = 9
+                if not r:
+                    print "Failed to match hgvs using", var_c
+                    print e
+                    print e.message
+                    
+                    print "Possible solutions:"
+                    print "1 - Add/Increment versions of transcript?"
+                    print "2 - Decrement versions of transcript?"
+                    print "9 - Ignore variant."
+                    print "0 - Abort?"
+                    
+                    r = 1 #raw_input()
+
+                if str(r) == "0":
+                    print r, ": abort."
+                    exit(0)
+                elif str(r) == "1":
+                    if index == 1 and var_c.count(".") > 1:
+                        # Case where we already have a version number but it's not in UTA
+                        raise NotImplementedError
+                    else:
+                        # Case where version is straight-up missing.
+                        # Rewrite variant:
+                        
+                    # also, simply increment
+                        var_c = _var_c.replace(":", "."+str(index)+":")
+                        index += 1
+                        print "Retrying with", var_c, "."                        
+                elif str(r) == "9":
+                    # Ignoring variant
+                    return None
+                else:
+                    print "Unknown option:", r
+                    raise NotImplementedError                                        
+
         return var_g
 
     def NC_to_chr(self, NC):
@@ -156,6 +212,15 @@ class Utils(object):
     def explode_hgvs(self, g):
         data = {}
 
+        if g is None:
+            data['chr'] = None
+            data['start'] = None
+            data['end'] = None
+            data['ref'] = "N"
+            data['alt'] = "N"
+            data['uncertain'] = None
+            return data
+
         data['chr'] = self.NC_to_chr(g.ac)
         data['start'] = g.posedit.pos.start.base
         data['end'] = g.posedit.pos.end.base
@@ -165,8 +230,43 @@ class Utils(object):
 
         return data
 
-    def convert_hgvs(self, c):
-        return self.explode_hgvs(self.parse_hgvs(c))
+    def convert_hgvs(self, _c, REFORMAT=False):
+        if REFORMAT and ">" not in _c:
+            """
+            Attempt at fixing non-standard code changes
+            E.g: NM_001199378:c.G3194A
+            Should become NM_001199378:c.3194G>A
+            """
+            transcript, c = _c.split(".")
+            queue = []
+            buff = ""
+            for x in c:
+                # STEP 1: Collect non number characters after c.
+                if ord(x) in xrange(ord('A'), ord('Z')):
+                    buff += x
+                elif len(buff) > 0:
+                    queue.append(buff)
+                    buff = ""
+            if len(buff) > 0:
+                queue.append(buff) # In case the buffer is still filled.
+                buff = "" 
+
+            if len(queue) > 2:
+                print "ERROR PARSING", _c
+                print "Queue:", queue
+                raise ValueError("Queue has more than two blocks of nucleotide changes!")
+                exit()
+            
+            # STEP 2: Remove block of nucleotides (now stored in queue)
+            for x in queue:
+                c = c.replace(x, "")
+            
+            # STEP 3: Add two blocks of nucleotide after coordinate, joined with >
+            c += ">".join(queue)
+            c = transcript + "." + c
+        else:
+            c = _c
+        return self.explode_hgvs( self.parse_hgvs(c) )
 
     def test(self):
         """ Test"""
