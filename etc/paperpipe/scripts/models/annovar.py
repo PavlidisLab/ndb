@@ -93,7 +93,7 @@ class Annovar(AbstractModel):
                     line = line.replace("%ALT", ".")
                 templated.append(line)
 
-
+        # TODO: It would be nice if these files had names specific to the input.
         TMP_DIR = "flows/tmp/"
         VCF_FILE = TMP_DIR + "todo.vcf"
         
