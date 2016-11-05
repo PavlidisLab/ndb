@@ -38,19 +38,25 @@ class Fixer(object):
         elif ref == alt and ref == "N":
             """ N == ref == alt means that we have to skip this variant."""
             return None, None, None, ref, alt
-        elif (ref in empty) or (alt in empty):
-            """ The variant needs an anchor. """
-            
-            # Get rid of non-nucleotides
-            if ref in empty:
-                ref_ = self.get_ref(chromosome, start_, start_)
-            if alt in empty:
-                alt_ = self.get_ref(chromosome, start_, start_)
+        elif (ref in empty):
+            """Variant need an anchor a _ => pa p"""
+            start = start_ -1
+            anchor = self.get_ref(chromosome, start_, start_)
 
-            start_ = start - 1
-            nc = self.get_ref(chromosome, start_, start_)
-            ref_ = str(nc + ref_).upper()
-            alt_ = str(nc + alt_).upper()
+            alt_ = anchor + alt_
+            # Get rid of non-nucleotides
+            ref_ = anchor
+            stop_ = None # Needs to be reset
+
+        elif (alt in empty):
+            """ Variant needs an anchor. _ b => p pb"""
+            start_ = start_ - 1
+            anchor = self.get_ref(chromosome, start_, start_)
+
+            ref_ = anchor + ref_
+            # Get rid of non-nucleotides
+            alt_ = anchor
+            stop_ = None # Needs to be reset
 
         if stop_ in [None, '', 0]:
             stop_ = start_ + (len(ref_) - 1)

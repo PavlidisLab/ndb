@@ -19,15 +19,17 @@ class Utils(object):
         self.dbuser=dbconfigs['dbuser']
         self.dbpass=dbconfigs['dbpass']
         self.db=dbconfigs['db']
+        self.host=dbconfigs['host']
+        if self.host == "": self.host="localhost"
 
-        self.assembly="GRCh37"
-
-        self.connection = pymysql.connect(user=self.dbuser, 
+        self.connection = pymysql.connect(host=self.host,
+                                          user=self.dbuser, 
                                           password=self.dbpass, 
                                           database=self.db,
                                           charset='utf8')
         self.connection.cursor().execute('SET SQL_MODE=ANSI_QUOTES')
 
+        self.assembly="GRCh37"
         self.hdp = hgvs.dataproviders.uta.connect()
         self.parser = hgvs.parser.Parser()
         self.vm = hgvs.variantmapper.EasyVariantMapper(
