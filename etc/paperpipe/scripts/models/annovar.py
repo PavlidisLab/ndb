@@ -160,7 +160,8 @@ class Annovar(AbstractModel):
             elif "ExonicFunc.refGene" in anno_dict.keys() and anno_dict["ExonicFunc.refGene"]:
                 category_text = anno_dict["ExonicFunc.refGene"].replace("_", " ")
                 self.category.append(category_text)
-            #else: it's intergenic
+            else:
+                self.category.append(None)
             
             anno_dict["variant_id"] = v_id
             self.insert(anno_dict)

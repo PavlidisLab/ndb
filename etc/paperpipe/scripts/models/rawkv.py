@@ -41,7 +41,12 @@ class RawKV(AbstractModel):
 
     #@Override
     def commit(self):
-        petl.appenddb(self.data, self.U.connection, self.database_table)
+        try:
+            petl.appenddb(self.data, self.U.connection, self.database_table)
+        except Exception as e:
+            print "EXCEPTION on insert to " , self.database_table
+            print self.data
+            raise e
         return self.data
         
     def usage(self):
