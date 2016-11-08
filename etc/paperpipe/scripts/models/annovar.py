@@ -145,7 +145,9 @@ class Annovar(AbstractModel):
                     self.aa_change.append(v)
                     k = "aa_change"
                 if k == "Func.refGene":
-                    self.function.append(v)
+                    func_text = v.replace("\x3b", ";") # Hex encoding issue with annovar.
+                    func_text = func_text.replace("x3b", ";") # Hex encoding issue with annovar.
+                    self.function.append(func_text)
                     k = "func"
                 if k == "Gene.refGene":
                     self.gene.append(v)
@@ -159,6 +161,8 @@ class Annovar(AbstractModel):
                 self.category.append("splicing")
             elif "ExonicFunc.refGene" in anno_dict.keys() and anno_dict["ExonicFunc.refGene"]:
                 category_text = anno_dict["ExonicFunc.refGene"].replace("_", " ")
+                category_text = category_text.replace("\x3b", ";") # Hex encoding issue with annovar.
+                category_text = category_text.replace("x3b", ";") # Hex encoding issue with annovar.
                 self.category.append(category_text)
             else:
                 self.category.append(None)
@@ -210,6 +214,7 @@ class Annovar(AbstractModel):
                     print "WARNING! WARNING! WARNING!"
                     print "Annovar receives NONE,NONE, as the gene here. Possibly because the variant is on the X chromsome."
                     print "Please check this error and fix properly"
+                    raw_input()
                     print " Escaping the error for now."
                     continue
                 query = "SELECT gene_id FROM gene WHERE symbol='"+gene+"';"
@@ -218,9 +223,10 @@ class Annovar(AbstractModel):
                 try:
                     g_id =  int(result[1][0])
                 except Exception as e:
+                    print "Exception raised while fetching gene:", gene
                     print result
                     print query
-                    print gene
+                    raw_input()
                     raise e
                     
 
