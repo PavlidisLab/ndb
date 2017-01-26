@@ -1,7 +1,9 @@
 from subprocess import check_output, CalledProcessError
 
 class Fixer(object):
-    def get_ref(self, chromosome, start, stop):
+    def get_ref(self, _chromosome, start, stop):
+        chromosome = _chromosome.replace("chr", "")
+            
         start_str = "-start={0}".format(str(start - 1))  # 0 based
         stop_str = "-end={0}".format(str(stop))  # Don't remove 1 here because it is [start,stop)
         chromosome_str = "-seq=chr{0}".format(chromosome)
@@ -61,11 +63,16 @@ class Fixer(object):
         if stop_ in [None, '', 0]:
             stop_ = start_ + (len(ref_) - 1)
 
+        ref_ = ref_.upper()
+        alt_ = alt_.upper()
+
         try:
             #Sanity check that variant ref matches reference genome.
-            expected = self.get_ref(chromosome, start_, stop_)
+            expected = str(self.get_ref(chromosome, start_, stop_)).upper()
+            ref_ = ref_.upper()
             if expected != ref_:
-                raise ValueError("Excepted is not the same between reference genome and current variant: " + expected + " v.s. " + ref_)        
+                #raise ValueError("Expected is not the same between reference genome and current variant: " + expected + " v.s. " + ref_ + " for location "+ str(chromosome)+":"+str(start_)+"-"+str(stop_))
+                print "Expected is not the same between reference genome and current variant: " + expected + " v.s. " + ref_ + " for location "+ str(chromosome)+":"+str(start_)+"-"+str(stop_)
         except ValueError as v:
             print v
             print "Something went wrong when trying to match reference variant to reference genome."
