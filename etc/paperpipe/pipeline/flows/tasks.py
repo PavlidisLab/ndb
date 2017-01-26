@@ -166,6 +166,7 @@ class LoadRawKV(PPTask):
         super(LoadRawKV, self).__init__(book=book)
         self.paper_id = -1
         self.INPUT = book
+        print "Initialized", type(self)
 
     def requires(self):
         requirement = LoadPaper(book=self.INPUT)
@@ -193,7 +194,10 @@ class LoadRawKV(PPTask):
 
         print "RUNNING RawKV Loader for Paper", self.paper_id
         r = RawKV(self.paper_id)
+
+        print "Loading input for:", type(self)
         r.load(self.input())
+        print "Input loaded"
         data = r.commit()
 
         with self.output().open('w') as f:

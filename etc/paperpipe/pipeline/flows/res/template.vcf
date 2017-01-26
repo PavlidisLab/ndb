@@ -25,4 +25,4 @@
 ##contig=<ID=chrX,length=155270560>
 ##contig=<ID=chrY,length=59373566>
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	Path
-%CHROMOSOME	%POSITION	.	%REF	%ALT	.	.	.
+%CHROMOSOME	%POSITION	%ID	%REF	%ALT	.	.	.

@@ -159,7 +159,7 @@ class Variant(AbstractModel):
 
             events, subjects  = self.disambiguate_subjects(START, 
                                                            STOP, 
-                                                           tolerance=3) # 3 because condons; one might consider them in the same event. 
+                                                           tolerance=3) # 3 because codons; one might consider them in the same event. 
             """
             print events
             print SAMPLE_ID

@@ -16,8 +16,12 @@ class RawKV(AbstractModel):
         self.properties_list =  RawKV._RawKV__properties_list
 
     def load(self, filename, **kwargs):
+        print "Loading paper."
         rkv = self.U.load_paper(filename, sheet=self.sheet, **kwargs)
         header = None
+        
+        COUNTER = 0
+        print "Obtaining header."
         for row in rkv:
             header = row
             break
@@ -25,15 +29,19 @@ class RawKV(AbstractModel):
         header = [str(x) for x in header]
 
         rows = []
+        print "Processing headers."
         for r in range(1, len(rkv)):
+            print "Header r=",r,"/",len(rkv)
             row = [str(x) if type(x) == int else x for x in rkv[r]]
             paperid_vector = [self.paper_id] * len(row)
             rawid_vector = [r] * len(row)
 
             rows.append( zip(paperid_vector, rawid_vector, header, row ) )
-        
+
         table = []
         for r in rows:
+            print "Row numbers:", COUNTER
+            COUNTER+=1
             table = table + r
 
         self.data = table

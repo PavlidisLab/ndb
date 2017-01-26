@@ -73,30 +73,45 @@ class Annovar(AbstractModel):
         template = []
         templated = []
         with open("flows/res/template.vcf", "r") as f:
+            # Extract rows from vcf templates
             for line in f:
                 template.append(line.strip())
-            variant_row = template[-1]
-            template = template[:-1]
-            #print "\n".join(template)
-            for content in contents:
-                line = variant_row[:]
-                line = line.strip()
-                line = line.replace("%CHROMOSOME", content[0])
-                line = line.replace("%POSITION", str(content[1]) )
-                if content[2]:
-                    line = line.replace("%REF", content[2])
-                else:
-                    line = line.replace("%REF", ".")
-                if content[3]:
-                    line = line.replace("%ALT", content[3])
-                else:
-                    line = line.replace("%ALT", ".")
-                templated.append(line)
+
+        variant_row = template[-1]
+        template = template[:-1]        
+
+        ordered = [] # Used later since annovar doesn't handle duplicates well.
+        VARIANT_INDEX = -1
+        for content in contents:
+            VARIANT_INDEX += 1
+            CHR_vcf, POS_vcf, REF_vcf, ALT_vcf = str(content[0]), str(content[1]), str(content[2]), str(content[3])
+
+            line = variant_row[:]
+            line = line.strip()
+            line = line.replace("%CHROMOSOME", CHR_vcf)
+            line = line.replace("%POSITION", POS_vcf )
+
+            if not REF_vcf:
+                REF_vcf = "."
+            if not ALT_vcf:
+                ALT_vcf = "."
+
+            line = line.replace("%REF", REF_vcf)
+            line = line.replace("%ALT", ALT_vcf)
+            line = line.replace("%ID", str(variant_ids[VARIANT_INDEX]))
+
+
+            templated.append(line)
+
+            #key = ":".join( [str(x) for x in [CHR_vcf, POS_vcf, REF_vcf, ALT_vcf]] ) 
+            key = VARIANT_INDEX
+            ordered.append(key)
 
         # TODO: It would be nice if these files had names specific to the input.
         TMP_DIR = "flows/tmp/"
         VCF_FILE = TMP_DIR + "todo.vcf"
         
+
         filesToRemove = [f for f in os.listdir(TMP_DIR)]
         [os.remove(TMP_DIR + f) for f in filesToRemove]
 
@@ -105,9 +120,11 @@ class Annovar(AbstractModel):
                 f.write( line + "\n" )
 
         os.system("./remote_annovar.sh ")
-        
+
+
         ANNOTATED_FILE = VCF_FILE + ".hg19_multianno.vcf"
         annotated = []
+        annotated_dict = {}
         with open(ANNOTATED_FILE, 'r') as f:
             for line in f:
                 if line[0] == "#":
@@ -115,17 +132,44 @@ class Annovar(AbstractModel):
                 else:
                     record = line.strip()
                     record = record.split("\t")
+                    
+                    try:
+                        #key = ":".join( [str(x) for x in [record[0], record[2], record[3], record[4]] ] )
+                        key = record[2]
+
+                    except:
+                        print "WEIRD RECORD!"
+                        print record
+                        raw_input()
+                        continue
+                    if key in annotated_dict.keys():
+                        print key, "exists!"
+                        if record != annotated_dict[key]:
+                            print "AND IS NOT THE SAME!"
+                            print annotated_dict[key]
+                            print "vs"
+                            print record
+                            raw_input()
+                        else : print "But is the same."
+
+                    annotated_dict[key] = record
                     annotated.append(record)
 
-        annotations = {}
-
-        for v_id, a in zip(variant_ids, annotated):
-            print "ID:", v_id
+        annotations = {}        
+        for v_id, o in zip(variant_ids, ordered):
+            print "ID:", v_id, o
+            #a = annotated_dict[o]
+            try:
+                a = annotated_dict[str(v_id)]
+            except:
+                print annotated_dict.keys()
+                exit()
             annos = a[-1]
             anno_dict = {}
             AAChange = "."
             Function = []
             annotations = annos.split(";")
+
             for element in annotations:
 
                 if element == ".":
@@ -145,8 +189,9 @@ class Annovar(AbstractModel):
                     self.aa_change.append(v)
                     k = "aa_change"
                 if k == "Func.refGene":
-                    func_text = v.replace("\x3b", ";") # Hex encoding issue with annovar.
+                    func_text = v.replace("\\x3b", ";") # Hex encoding issue with annovar.
                     func_text = func_text.replace("x3b", ";") # Hex encoding issue with annovar.
+                    func_text = ";".join( list(set(func_text.split(";"))) )
                     self.function.append(func_text)
                     k = "func"
                 if k == "Gene.refGene":
@@ -161,8 +206,9 @@ class Annovar(AbstractModel):
                 self.category.append("splicing")
             elif "ExonicFunc.refGene" in anno_dict.keys() and anno_dict["ExonicFunc.refGene"]:
                 category_text = anno_dict["ExonicFunc.refGene"].replace("_", " ")
-                category_text = category_text.replace("\x3b", ";") # Hex encoding issue with annovar.
+                category_text = category_text.replace("\\x3b", ";") # Hex encoding issue with annovar.
                 category_text = category_text.replace("x3b", ";") # Hex encoding issue with annovar.
+                category_text = ";".join( list(set(category_text.split(";"))) )
                 self.category.append(category_text)
             else:
                 self.category.append(None)
@@ -217,19 +263,39 @@ class Annovar(AbstractModel):
                     raw_input()
                     print " Escaping the error for now."
                     continue
-                query = "SELECT gene_id FROM gene WHERE symbol='"+gene+"';"
-                result = self.U.fetch_rows(query)
-                
-                try:
-                    g_id =  int(result[1][0])
-                except Exception as e:
-                    print "Exception raised while fetching gene:", gene
-                    print result
-                    print query
-                    raw_input()
-                    raise e
-                    
 
+                while True:
+                    query = "SELECT gene_id FROM gene WHERE symbol='"+gene+"';"
+                    result = self.U.fetch_rows(query)
+                    answer = ""
+                    try:
+                        g_id =  int(result[1][0])
+                        break
+                    except Exception as e:
+                        print "Exception raised while fetching gene:", gene
+                        print result
+                        print query
+                        print "Enter 'quit' to abort everything. Not that some updates might have been effected." 
+                        print "Enter 'continue' to skip gene."
+                        print "Enter a delimiter (e.g. ',') to split genes and use the first one"                        
+                        print "Enter GENE=... to force the gene name."
+                        answer = raw_input()
+                        if answer == "quit":
+                            raise e
+                        elif answer == "continue":
+                            break
+                        elif answer[:5] == "GENE=":
+                            gene=answer[5:]
+                            print "SETTING GENE NAME TO:", gene
+                        else:
+                            gene = gene.split(answer)[0]
+                            
+                    
+                if answer == "continue":
+                    answer = ""
+                    continue
+                answer = ""
+                
                 variant_gene = [ ["gene_id", "variant_id"], [str(g_id), str(variant_id)] ]
                 r = petl.appenddb( variant_gene, 
                                    self.U.connection, 
