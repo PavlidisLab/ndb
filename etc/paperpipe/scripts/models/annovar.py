@@ -44,7 +44,7 @@ class Annovar(AbstractModel):
         self.properties_list = Annovar._Annovar__properties_list
         self.data = []
         self.function = []
-        self.aa_change = [] 
+        self.aa_change = []
         self.gene = []
         self.category = []
 
@@ -53,7 +53,7 @@ class Annovar(AbstractModel):
         self.data.append(row)
 
     def load(self, filename):
-        #TODO: You could get requirement's table name instead 
+        #TODO: You could get requirement's table name instead
         variants = self.U.fetch_table_rows_by_paper("variant" , self.paper_id)
         variant_ids = []
         header = variants[0]
@@ -62,9 +62,9 @@ class Annovar(AbstractModel):
         START_IDX = header.index("start_hg19")
         REF_IDX = header.index("ref")
         ALT_IDX = header.index("alt")
-        
+
         contents = []
-        for row in variants[1:] :        
+        for row in variants[1:] :
             variant_ids.append(row[VARIANT_ID_IDX])
             content = list(operator.itemgetter(CHROMOSOME_IDX, START_IDX, REF_IDX, ALT_IDX)(row))
             contents.append( content )
@@ -78,7 +78,7 @@ class Annovar(AbstractModel):
                 template.append(line.strip())
 
         variant_row = template[-1]
-        template = template[:-1]        
+        template = template[:-1]
 
         ordered = [] # Used later since annovar doesn't handle duplicates well.
         VARIANT_INDEX = -1
@@ -103,15 +103,15 @@ class Annovar(AbstractModel):
 
             templated.append(line)
 
-            #key = ":".join( [str(x) for x in [CHR_vcf, POS_vcf, REF_vcf, ALT_vcf]] ) 
+            #key = ":".join( [str(x) for x in [CHR_vcf, POS_vcf, REF_vcf, ALT_vcf]] )
             key = VARIANT_INDEX
             ordered.append(key)
 
         # TODO: It would be nice if these files had names specific to the input.
         TMP_DIR = "flows/tmp/"
         VCF_FILE = TMP_DIR + "todo.vcf"
-        
-
+        if(not os.path.isdir(TMP_DIR)):
+            os.makedirs(TMP_DIR)
         filesToRemove = [f for f in os.listdir(TMP_DIR)]
         [os.remove(TMP_DIR + f) for f in filesToRemove]
 
@@ -132,7 +132,7 @@ class Annovar(AbstractModel):
                 else:
                     record = line.strip()
                     record = record.split("\t")
-                    
+
                     try:
                         #key = ":".join( [str(x) for x in [record[0], record[2], record[3], record[4]] ] )
                         key = record[2]
@@ -155,7 +155,7 @@ class Annovar(AbstractModel):
                     annotated_dict[key] = record
                     annotated.append(record)
 
-        annotations = {}        
+        annotations = {}
         for v_id, o in zip(variant_ids, ordered):
             print "ID:", v_id, o
             #a = annotated_dict[o]
@@ -198,7 +198,7 @@ class Annovar(AbstractModel):
                     self.gene.append(v)
 
                 anno_dict[k] = v
-                print k, v            
+                print k, v
 
             if anno_dict["func"] ==  "splicing" and \
                anno_dict["ExonicFunc.refGene"] == None:
@@ -212,10 +212,10 @@ class Annovar(AbstractModel):
                 self.category.append(category_text)
             else:
                 self.category.append(None)
-            
+
             anno_dict["variant_id"] = v_id
             self.insert(anno_dict)
-        
+
 
     def commit(self):
         """
@@ -237,20 +237,20 @@ class Annovar(AbstractModel):
             where = " id = '"+str(variant_id)+"' "
 
             if self.aa_change[i]:
-                self.U.update_table_rows_by_field("variant", 
+                self.U.update_table_rows_by_field("variant",
                                                   "aa_change",
                                                   self.aa_change[i],
                                                   where)
             if self.function[i]:
-                self.U.update_table_rows_by_field("variant", 
+                self.U.update_table_rows_by_field("variant",
                                                   "func",
                                                   self.function[i],
-                                                  where) 
+                                                  where)
             if len(self.category) > i and self.category[i]:
-                self.U.update_table_rows_by_field("variant", 
+                self.U.update_table_rows_by_field("variant",
                                                   "category",
                                                   self.category[i],
-                                                  where) 
+                                                  where)
 
 
             ####### Update variant_gene
@@ -275,9 +275,9 @@ class Annovar(AbstractModel):
                         print "Exception raised while fetching gene:", gene
                         print result
                         print query
-                        print "Enter 'quit' to abort everything. Not that some updates might have been effected." 
+                        print "Enter 'quit' to abort everything. Not that some updates might have been effected."
                         print "Enter 'continue' to skip gene."
-                        print "Enter a delimiter (e.g. ',') to split genes and use the first one"                        
+                        print "Enter a delimiter (e.g. ',') to split genes and use the first one"
                         print "Enter GENE=... to force the gene name."
                         answer = raw_input()
                         if answer == "quit":
@@ -289,33 +289,33 @@ class Annovar(AbstractModel):
                             print "SETTING GENE NAME TO:", gene
                         else:
                             gene = gene.split(answer)[0]
-                            
-                    
+
+
                 if answer == "continue":
                     answer = ""
                     continue
                 answer = ""
-                
+
                 variant_gene = [ ["gene_id", "variant_id"], [str(g_id), str(variant_id)] ]
-                r = petl.appenddb( variant_gene, 
-                                   self.U.connection, 
-                                   "variant_gene")                                                         
+                r = petl.appenddb( variant_gene,
+                                   self.U.connection,
+                                   "variant_gene")
             else:
                 print "Variant", variant_id, "has no annovar genes."
                 print "Continue? Y/n"
                 r = raw_input()
                 if r == 'n': sys.exit(0)
-                
-            
+
+
             ##### This should actually be done in annovar because we need the variant_id
             g_header = ["variant_id", "gene_id"]
             #g_data = [ row[  ]
-                                       
+
         # Update the annovar table
         r = petl.appenddb( tbl, self.U.connection, self.database_table )
 
         return tbl
-    
+
     def delete(self):
         """
         Requires custom delete method since it doesn't have a paper_id
@@ -328,9 +328,9 @@ class Annovar(AbstractModel):
 
             # Clear categoryfrom Variant table
             ## Not required
-            
+
             # Clear variant_gene table link
-            self.U.delete_table_rows_by_field("variant_gene", variant_id, "variant_id")        
+            self.U.delete_table_rows_by_field("variant_gene", variant_id, "variant_id")
 
         return self.data
 

@@ -3,7 +3,7 @@ from subprocess import check_output, CalledProcessError
 class Fixer(object):
     def get_ref(self, _chromosome, start, stop):
         chromosome = _chromosome.replace("chr", "")
-            
+
         start_str = "-start={0}".format(str(start - 1))  # 0 based
         stop_str = "-end={0}".format(str(stop))  # Don't remove 1 here because it is [start,stop)
         chromosome_str = "-seq=chr{0}".format(chromosome)
@@ -11,8 +11,8 @@ class Fixer(object):
             chromosome_str = "-seq=chrX"
         elif chromosome_str == "-seq=chr24":
             chromosome_str = "-seq=chrY"
-        exe = "/home/mbelmadani/development/ndb/etc/paperpipe/scripts/models/fixer/twoBitToFa"
-        genome = "/home/mbelmadani/development/ndb/etc/paperpipe/scripts/models/fixer/hg19.2bit"
+        exe = "../scripts/models/fixer/twoBitToFa"
+        genome = "../scripts/models/fixer/hg19.2bit"
 
         fix =  check_output(  [ exe, genome, 'stdout', chromosome_str, start_str, stop_str ]  )
         return "".join( fix.split('\n')[1:] )
@@ -36,7 +36,7 @@ class Fixer(object):
         if ref == alt and ref in empty:
             """ The unrepairable case """
             print "Error: ref and alt cannot both be empty..."
-            raise ValueError        
+            raise ValueError
         elif ref == alt and ref == "N":
             """ N == ref == alt means that we have to skip this variant."""
             return None, None, None, ref, alt
@@ -88,7 +88,7 @@ class Fixer(object):
 
 if __name__ == "__main__":
     import sys
-    
+
     args = sys.argv[1:]
     f = Fixer()
     if len(args) < 5:
