@@ -18,7 +18,7 @@ class Variant(AbstractModel):
 
         self.sheet = "variant"
         self.database_table = self.DATABASE_TABLES['variant']
-        
+
         self.properties_list = Variant._Variant__properties_list
         self.excluded = Variant._Variant__excluded
 
@@ -34,24 +34,24 @@ class Variant(AbstractModel):
         FUNCTION_IDX = ifo_header.index(u"function")
         OUTPUT_IDX = ifo_header.index(u"output")
 
-        raw_variants = self.U.fetch_table_rows_by_paper( RawVariant(self.paper_id).database_table, 
+        raw_variants = self.U.fetch_table_rows_by_paper( RawVariant(self.paper_id).database_table,
                                                          self.paper_id )
         raw_header = raw_variants[0]
         commit_header = []
         commit_data = []
 
-        intersection =  self.U.intersection( RawVariant(self.paper_id).database_table, 
-                                             self.database_table, 
+        intersection =  self.U.intersection( RawVariant(self.paper_id).database_table,
+                                             self.database_table,
                                              self.paper_id )
 
 
         for r in raw_variants[1:]:
             variant = {}
 
-            # Transfer unmodified values            
+            # Transfer unmodified values
             for i in intersection:
                 variant[raw_header[i]] = r[i]
-            
+
             # Apply modifications
             for _transform in ifo:
                 #transform = [z.strip() if z is not None else None for z in _transform]
@@ -71,16 +71,16 @@ class Variant(AbstractModel):
                     "Use value directly instead of looking up raw variant"
                     transform_input = transform[0]
 
-                h, d = self.U.transform( transform_input, transform[1], transform[2], paper_id = self.paper_id )         
-      
+                h, d = self.U.transform( transform_input, transform[1], transform[2], paper_id = self.paper_id )
+
                 for h,d in zip(h,d):
                     variant[h] = d
-                
+
             ks = variant.keys()
             vs = []
             for k in ks:
-                vs.append(variant[k])                
-            
+                vs.append(variant[k])
+
             # Remove excluded fields or NoneTypes
             pops = []
             for i in range(len(vs)):
@@ -109,11 +109,11 @@ class Variant(AbstractModel):
             Add possibly missing fields that will certainly be generated in this iteration.
             Includes: ref, alt, event_id
             """
-            
-            required = ['ref', 'alt', 'start_hg19', 'stop_hg19','chromosome']
-            
 
-            for req in required:                
+            required = ['ref', 'alt', 'start_hg19', 'stop_hg19','chromosome']
+
+
+            for req in required:
                 if req not in header:
                     header.append(req)
                     row.append("")
@@ -131,12 +131,12 @@ class Variant(AbstractModel):
             CHROMOSOME = row[header.index('chromosome')]
             ALT = row[header.index('alt')]
             REF = row[header.index('ref')]
-            
+
             fixer = vf.Fixer()
 
             _before = [CHROMOSOME,START,STOP,REF,ALT]
             CHROMOSOME,START,STOP,REF,ALT = fixer.repair_variant(CHROMOSOME,START,STOP,REF,ALT)
-            
+
             if REF == ALT == "N":
                 # Skipping variant because fixer could not fix.
                 print "Could not fix:", _before
@@ -148,23 +148,23 @@ class Variant(AbstractModel):
             row[header.index('chromosome')] = CHROMOSOME
             row[header.index('ref')] = REF
             row[header.index('alt')] = ALT
-            
+
 
             existing_subject_id = self.get_subject_for_sample(row[SAMPLE_ID])
             print existing_subject_id
             if not existing_subject_id:
-                existing_subject_id = "-1"                            
+                existing_subject_id = "-1"
             row[SUBJECT_ID] = existing_subject_id
-                
 
-            events, subjects  = self.disambiguate_subjects(START, 
-                                                           STOP, 
-                                                           tolerance=3) # 3 because codons; one might consider them in the same event. 
+
+            events, subjects  = self.disambiguate_subjects(START,
+                                                           STOP,
+                                                           tolerance=3) # 3 because codons; one might consider them in the same event.
             """
             print events
             print SAMPLE_ID
             print events[row[SAMPLE_ID]]
-            
+
             print subjects
             print SAMPLE_ID
             print subjects[row[SAMPLE_ID]]
@@ -173,17 +173,17 @@ class Variant(AbstractModel):
 
             current_sample = row[SAMPLE_ID]
             if events and len(events[current_sample]) > 0:
-                row[EVENT_ID] = events[current_sample][0] 
+                row[EVENT_ID] = events[current_sample][0]
 
             if str(row[EVENT_ID]) == "-1":
                 row[EVENT_ID] = self.get_biggest_ID(EVENT_FIELD, table=self.database_table)
 
-            if str(row[SUBJECT_ID]) == "-1":                
-                row[SUBJECT_ID] = self.get_biggest_ID(SUBJECT_FIELD, table=self.database_table)                
+            if str(row[SUBJECT_ID]) == "-1":
+                row[SUBJECT_ID] = self.get_biggest_ID(SUBJECT_FIELD, table=self.database_table)
 
-            data.append([header, row])            
+            data.append([header, row])
         return data
-        
+
     def commit(self):
         for _data in self.data:
             try:
@@ -212,35 +212,35 @@ class Variant(AbstractModel):
         else:
             subject = rows[1][0]
         return subject
-        
+
     def disambiguate_subjects(self, start, stop, tolerance=0):
         """
         For a given variant, check that there's only one subject + contiguous variant(s) within range +- tolerance
-        """        
+        """
         for RANGE in range(0, tolerance + 1):
             print "RANGE:", RANGE
-            RANGE_START_left = ( int(start) - int(RANGE) ) 
-            RANGE_START_right = ( int(start) + int(RANGE) ) 
+            RANGE_START_left = ( int(start) - int(RANGE) )
+            RANGE_START_right = ( int(start) + int(RANGE) )
 
-            RANGE_STOP_left = ( int(stop) - int(RANGE) ) 
-            RANGE_STOP_right = ( int(stop) + int(RANGE) ) 
+            RANGE_STOP_left = ( int(stop) - int(RANGE) )
+            RANGE_STOP_right = ( int(stop) + int(RANGE) )
 
 
-            query = "SELECT * FROM {0} WHERE start_hg19 >= {1} AND start_hg19 <= {2} AND stop_hg19 >= {3}  AND stop_hg19 <= {4} ;".format(self.database_table, 
-                                                                                                                                          RANGE_START_left, 
-                                                                                                                                          RANGE_START_right, 
-                                                                                                                                          RANGE_STOP_left, 
+            query = "SELECT * FROM {0} WHERE start_hg19 >= {1} AND start_hg19 <= {2} AND stop_hg19 >= {3}  AND stop_hg19 <= {4} ;".format(self.database_table,
+                                                                                                                                          RANGE_START_left,
+                                                                                                                                          RANGE_START_right,
+                                                                                                                                          RANGE_STOP_left,
                                                                                                                                           RANGE_STOP_right)
-            
+
             #print query
             _rows = self.U.fetch_rows(query)
-            header = None # Header fields 
+            header = None # Header fields
             rows = None # Actual data
             sample_ids = []
             event_ids = []
             sample_events = defaultdict(list)
             sample_subjects = defaultdict(list)
-            
+
             if _rows:
                 header = _rows[0]
                 SID = header.index("sample_id")
@@ -265,9 +265,9 @@ class Variant(AbstractModel):
                 subjs = set(sample_subjects[sample])
                 events = set(sample_events[sample])
                 if len(subjs) > 1:
-                    raise Exception("Error: Multiple contiguous variant subjects for same sample ID.")                
+                    raise Exception("Error: Multiple contiguous variant subjects for same sample ID.")
                 if len(events) > 1:
-                    raise Exception("Error: Multiple contiguous variant events for same sample ID.")                    
+                    raise Exception("Error: Multiple contiguous variant events for same sample ID.")
             if len(sample_events.keys()) > 0:
                 # Found a clustered event
                 return sample_events, sample_subjects
