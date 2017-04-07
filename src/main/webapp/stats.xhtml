@@ -14,9 +14,12 @@
 	<ui:define name="css">
 		<h:outputStylesheet library="css" name="stats.css" />
 	</ui:define>
-	
 
 	<ui:define name="js">
+		<script type="text/javascript">
+	        	googleAnalyticsTrackPageviewIfConfigured( "/MARVdb/stats" );
+	    </script>
+	    
 		<script src="https://code.highcharts.com/highcharts.js"></script>
 		<script src="https://code.highcharts.com/modules/heatmap.js"></script>
 		<script src="https://code.highcharts.com/modules/exporting.js"></script>

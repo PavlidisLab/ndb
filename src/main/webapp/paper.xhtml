@@ -15,6 +15,12 @@
 		<h:outputStylesheet library="css" name="style.css" />
 	</ui:define>
 	
+	<ui:define name="js">
+		<script type="text/javascript">
+	        	googleAnalyticsTrackPageviewIfConfigured( "/MARVdb/paper/#{paperView.paper.paperKey}" );
+	    </script>
+	</ui:define>
+	
 	<ui:define name="content">
 	<p:panel styleClass="no-border clearfix" style="float:right;">
 		<ui:include src="/searchBar.xhtml" />
