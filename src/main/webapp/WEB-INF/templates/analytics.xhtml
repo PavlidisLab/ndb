@@ -1,0 +1,46 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <f:verbatim rendered="#{empty (applicationProperties.getProperty('ndb.ga_tracker'))}">
+        <script type="text/javascript">
+        		console.log("No Tracker.");
+                if ( typeof googleAnalyticsTrackPageviewIfConfigured === 'undefined' ) {
+                   var googleAnalyticsTrackPageviewIfConfigured = function(pageURL) {/* no op, for sandbox and development */
+                      console.log("Didn't track: " + pageURL);
+                   };
+                }
+        </script>
+        </f:verbatim>
+
+	<f:verbatim rendered="#{not empty (applicationProperties.getProperty('ndb.ga_tracker'))}">
+		<script type="text/javascript">
+		var _gaq = _gaq || [];
+		var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+		_gaq.push([ '_require', 'inpage_linkid', pluginUrl ]);
+		_gaq.push([ '_setAccount', "#{applicationProperties.getProperty('ndb.ga_tracker')}" ]);
+		_gaq.push([ '_setDomainName', "#{applicationProperties.getProperty('ndb.ga_domain')}" ]);
+		_gaq.push([ '_trackPageview' ]);
+		(function() {
+		   var ga = document.createElement('script');
+		   ga.type = 'text/javascript';
+		   ga.async = true;
+		   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www')
+		         + '.google-analytics.com/ga.js';
+		   var s = document.getElementsByTagName('script')[0];
+		   s.parentNode.insertBefore(ga, s);
+		})();
+		if ( typeof googleAnalyticsTrackPageviewIfConfigured === 'undefined' ) {
+		   var googleAnalyticsTrackPageviewIfConfigured = googleAnalyticsTrackPageviewIfConfigured || function(pageURL) {
+		      if ( typeof _gaq !== 'undefined' ) {
+		         _gaq.push([ '_setAccount', "#{applicationProperties.getProperty('ndb.ga_tracker')}" ]);
+		         _gaq.push([ '_trackPageview', pageURL ]);
+		      }
+		   };
+		}
+      </script>
+	</f:verbatim>
+
+</ui:composition>
