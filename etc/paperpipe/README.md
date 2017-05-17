@@ -27,10 +27,16 @@ pip install petl
 pip install pymysql
 pip install hgvs
 pip install openpyxl
-
+```
+1) Update the database configuration file in paperpipe/pipeline/db.config using your MySQL credentials:
+```
+dbuser=administrator
+dbpass=aSafePassword456
+db=ndbtest
+host=localhost
 ```
 
-1) Launch pipeline server
+2) Launch pipeline server
 
 ```
 #!bash
@@ -41,7 +47,7 @@ mbelmad+ 13526  0.0  0.1  80184 20500 ?        S    10:49   0:00 /home/mbelmadan
 start_server.sh will boot up the pipeline server (process name luigid). You can also use kill_server.sh to stop it. The poll.sh script checks if there's an instance of the server running.
 By default the pipeline web interface is accessible from: http://localhost:8082/static/visualiser/index.html
 
-2) Launch a task on the pipeline
+3) Launch a task on the pipeline
 
 The tasks are located in paperpipe/pipeline/flows/tasks.py. Each class is a type of tasks.
 
