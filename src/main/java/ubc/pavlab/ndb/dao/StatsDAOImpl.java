@@ -120,7 +120,7 @@ public class StatsDAOImpl implements StatsDAO {
             + SQL_VARIANT_TABLE + " as var " + " inner join " + SQL_GENE_MAP_TABLE + " vmap on var.id=vmap.variant_id "
             + " WHERE denovo = 'yes' AND "
             + "(func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substituition')) "
-            + "GROUP BY gene ORDER BY cnt DESC limit ?";
+            + "GROUP BY gene_id ORDER BY cnt DESC limit ?";
 
     // Vars ---------------------------------------------------------------------------------------
 
