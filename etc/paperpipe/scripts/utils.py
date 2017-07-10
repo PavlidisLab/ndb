@@ -3,13 +3,26 @@ import pymysql
 
 import hgvs.dataproviders.uta
 import hgvs.parser
-import hgvs.variantmapper
+from hgvs.assemblymapper import AssemblyMapper
 
 from math import floor
 
 class Utils(object):
     def __init__(self):
         
+        self.initDB()
+        self.assembly="GRCh37"
+        self.hdp = hgvs.dataproviders.uta.connect()
+        self.parser = hgvs.parser.Parser()
+        self.vm = AssemblyMapper(
+            self.hdp,
+            assembly_name=self.assembly,
+            alt_aln_method='splign')
+
+
+        pass
+
+    def initDB(self):
         dbconfigs = {}
         with open("db.config", 'r') as f:
             for line in f:
@@ -29,14 +42,14 @@ class Utils(object):
                                           charset='utf8')
         self.connection.cursor().execute('SET SQL_MODE=ANSI_QUOTES')
 
-        self.assembly="GRCh37"
-        self.hdp = hgvs.dataproviders.uta.connect()
-        self.parser = hgvs.parser.Parser()
-        self.vm = hgvs.variantmapper.EasyVariantMapper(
-            self.hdp, primary_assembly=self.assembly, alt_aln_method='splign')
+    def resetDB(self):
+        self.connection.close()
+        self.initDB()
 
-
-        pass
+    def chunks(self, l, n):
+        """Yield successive n-sized chunks from l."""
+        for i in xrange(0, len(l), n):
+            yield l[i:i + n]
 
     def transform(self, i, f, o, paper_id=None):
         """
@@ -180,7 +193,8 @@ class Utils(object):
                     print "9 - Ignore variant."
                     print "0 - Abort?"
                     
-                    r = 1 #raw_input()
+                    r = 1
+                    #raw_input()
 
                 if str(r) == "0":
                     print r, ": abort."

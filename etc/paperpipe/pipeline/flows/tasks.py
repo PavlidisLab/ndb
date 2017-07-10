@@ -68,7 +68,10 @@ class PPTask(luigi.Task):
         except Exception as e:
             #print e
             #print "Task model =", str(type(Class)) #, " | ", "id = ", self.paper_id
-            model = Class() # Must be Paper
+            if type(Class) == type(Paper):
+                model = Class() # Must be Paper
+            else:
+                model = Class(self.paper_id) # Must be Paper
             # Hack. Hax. Haque.
             # Issues with whitespaces when exporting JSON also.
             with open(requirement_commit, 'r') as f:
@@ -287,8 +290,15 @@ class LoadVariant(PPTask):
         print "Variant data:"
         for var in variant.data:
             print var
-        
-        data = variant.commit()
+
+        print
+        print " Committing ... "
+        try:
+            data = variant.commit()
+        except Exception as e:
+            print e
+            print e.message
+            raise e 
 
         with self.output().open('w') as f:
             for row in data:

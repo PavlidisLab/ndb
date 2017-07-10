@@ -96,7 +96,7 @@ class Variant(AbstractModel):
         ###########################################
 
     def precommit(self, _data):
-        #print "DATA:",_data
+        print "Precommiting..."
         data = []
         SUBJECT_FIELD = 'subject_id'
         SAMPLE_FIELD = 'sample_id'
@@ -132,11 +132,14 @@ class Variant(AbstractModel):
             ALT = row[header.index('alt')]
             REF = row[header.index('ref')]
 
+            print "Initializing Fixer."
             fixer = vf.Fixer()
 
             _before = [CHROMOSOME,START,STOP,REF,ALT]
+            print "Fixing variant..."
             CHROMOSOME,START,STOP,REF,ALT = fixer.repair_variant(CHROMOSOME,START,STOP,REF,ALT)
-
+            print "Fixed___________"
+            
             if REF == ALT == "N":
                 # Skipping variant because fixer could not fix.
                 print "Could not fix:", _before
@@ -181,7 +184,9 @@ class Variant(AbstractModel):
             if str(row[SUBJECT_ID]) == "-1":
                 row[SUBJECT_ID] = self.get_biggest_ID(SUBJECT_FIELD, table=self.database_table)
 
+            print "Adding data to row:", row
             data.append([header, row])
+        print "Precommit done!"
         return data
 
     def commit(self):
@@ -192,7 +197,8 @@ class Variant(AbstractModel):
                     continue
                 data = predata[0]
             except Exception as e:
-                print "error with", _data
+                print "error caugth in commit()", _data
+                print "Reason:", e.message
                 raise e
 
             petl.appenddb(data, self.U.connection, self.database_table, commit=True)
@@ -265,9 +271,10 @@ class Variant(AbstractModel):
                 subjs = set(sample_subjects[sample])
                 events = set(sample_events[sample])
                 if len(subjs) > 1:
-                    raise Exception("Error: Multiple contiguous variant subjects for same sample ID.")
+                    raise Exception("Error: Multiple neighbouring variant subjects for same sample ID.")
                 if len(events) > 1:
-                    raise Exception("Error: Multiple contiguous variant events for same sample ID.")
+                    print "Multiple events", events, "for subjects", subjs
+                    raise Exception("Error: Multiple contiguous variant events for same sample ID. This can be caused by duplicates in the import spreadsheet.")
             if len(sample_events.keys()) > 0:
                 # Found a clustered event
                 return sample_events, sample_subjects
