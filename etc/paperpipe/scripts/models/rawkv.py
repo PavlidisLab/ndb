@@ -50,7 +50,21 @@ class RawKV(AbstractModel):
     #@Override
     def commit(self):
         try:
-            petl.appenddb(self.data, self.U.connection, self.database_table)
+            if len(self.data) < 1000:
+                petl.appenddb(self.data, self.U.connection, self.database_table)
+            else:
+
+                self.U.resetDB()                
+                
+                head = self.data[0]
+                rest = self.data[1:]
+                BINSIZE = 1000
+                
+                for chunk in self.U.chunks(rest, BINSIZE):
+                    dataSlice = [head] + chunk
+                    petl.appenddb(dataSlice, self.U.connection, self.database_table)                    
+                    
+                    
         except Exception as e:
             print "EXCEPTION on insert to " , self.database_table
             print self.data

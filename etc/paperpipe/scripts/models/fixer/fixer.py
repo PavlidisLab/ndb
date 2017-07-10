@@ -1,8 +1,17 @@
 from subprocess import check_output, CalledProcessError
+import os
+import sys
 
 class Fixer(object):
-    def get_ref(self, _chromosome, start, stop):
-        chromosome = _chromosome.replace("chr", "")
+
+    def __init__(self):
+        self.exe = "../scripts/models/fixer/twoBitToFa"
+        self.genome = "../scripts/models/fixer/hg19.2bit"
+
+        if not (os.path.isfile(self.exe) and os.path.isfile(self.genome)):
+            raise Exception("Error from "+ sys.argv[0] + ": twoBitToFa and hg19.2bit are not accessible in the fixer directory.")
+    
+    def get_ref(self, chromosome, start, stop):
 
         start_str = "-start={0}".format(str(start - 1))  # 0 based
         stop_str = "-end={0}".format(str(stop))  # Don't remove 1 here because it is [start,stop)
@@ -11,10 +20,8 @@ class Fixer(object):
             chromosome_str = "-seq=chrX"
         elif chromosome_str == "-seq=chr24":
             chromosome_str = "-seq=chrY"
-        exe = "../scripts/models/fixer/twoBitToFa"
-        genome = "../scripts/models/fixer/hg19.2bit"
 
-        fix =  check_output(  [ exe, genome, 'stdout', chromosome_str, start_str, stop_str ]  )
+        fix =  check_output(  [ self.exe, self.genome, 'stdout', chromosome_str, start_str, stop_str ]  )
         return "".join( fix.split('\n')[1:] )
 
     def repair_variant(self, chromosome, start, stop, ref, alt):
@@ -28,9 +35,11 @@ class Fixer(object):
         ---- Otherwise, don't touch it, but run sanity check anyways.
 
         """
+        print "BEFORE", chromosome,":",start,stop,ref,alt
         start_, ref_, alt_ = start, ref, alt
         stop_ = stop
-
+        chromosome_ = chromosome.replace("chr", "").replace("23", "X").replace("24", "Y")
+        
         empty = [None, '', "-", "0"]
 
         if ref == alt and ref in empty:
@@ -43,7 +52,7 @@ class Fixer(object):
         elif (ref in empty):
             """Variant need an anchor a _ => pa p"""
             start = start_ -1
-            anchor = self.get_ref(chromosome, start_, start_)
+            anchor = self.get_ref(chromosome_, start_, start_)
 
             alt_ = anchor + alt_
             # Get rid of non-nucleotides
@@ -53,30 +62,33 @@ class Fixer(object):
         elif (alt in empty):
             """ Variant needs an anchor. _ b => p pb"""
             start_ = start_ - 1
-            anchor = self.get_ref(chromosome, start_, start_)
+            anchor = self.get_ref(chromosome_, start_, start_)
 
             ref_ = anchor + ref_
             # Get rid of non-nucleotides
             alt_ = anchor
             stop_ = None # Needs to be reset
 
-        if stop_ in [None, '', 0]:
+        if stop_ in empty: #[None, '', 0]:
             stop_ = start_ + (len(ref_) - 1)
 
         ref_ = ref_.upper()
         alt_ = alt_.upper()
 
+        print "AFTER", chromosome_,":",start_,stop_,ref_,alt_
+        
         try:
             #Sanity check that variant ref matches reference genome.
-            expected = str(self.get_ref(chromosome, start_, stop_)).upper()
+            expected = str(self.get_ref(chromosome_, start_, stop_)).upper()
             ref_ = ref_.upper()
             if expected != ref_:
                 #raise ValueError("Expected is not the same between reference genome and current variant: " + expected + " v.s. " + ref_ + " for location "+ str(chromosome)+":"+str(start_)+"-"+str(stop_))
-                print "Expected is not the same between reference genome and current variant: " + expected + " v.s. " + ref_ + " for location "+ str(chromosome)+":"+str(start_)+"-"+str(stop_)
+                print "Expected is not the same between reference genome and current variant: " + expected + " v.s. " + ref_ + " for location "+ str(chromosome_)+":"+str(start_)+"-"+str(stop_)
+                raw_input()
         except ValueError as v:
             print v
             print "Something went wrong when trying to match reference variant to reference genome."
-            print "chromosome:", chromosome
+            print "chromosome:", chromosome_
             print "start:", start_
             print "stop:", stop_
             print "ref:", ref_
@@ -84,7 +96,7 @@ class Fixer(object):
             raise v
 
         # Everything looks good.
-        return chromosome, start_, stop_, ref_, alt_
+        return chromosome_, start_, stop_, ref_, alt_
 
 if __name__ == "__main__":
     import sys

@@ -32,7 +32,7 @@ class Annovar(AbstractModel):
                          'phyloP46way_placental',
                          'phyloP100way_vertebrate',
                          'SiPhy_29way_logOdds',
-                         'exac03',
+                         'exac03',                         
                          'clinvar_20150629'
     ]
 
@@ -185,6 +185,8 @@ class Annovar(AbstractModel):
                 #------------------#
                 if k == "GERP++_RS":
                     k = "GERP_RS"
+                if k == "ExAC_ALL":
+                    k = "exac03"
                 if k == "AAChange.refGene":
                     self.aa_change.append(v)
                     k = "aa_change"
@@ -222,6 +224,7 @@ class Annovar(AbstractModel):
         Push model's to append to the database
         """
         tbl = [self.properties_list] + self.data
+        
         print "Insert:"
         for t in tbl:
             print t
