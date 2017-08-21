@@ -45,13 +45,13 @@ public final class VariantDTO {
     private final String aaChange;
     private final String cytoband;
 
-    private final String denovo;
+    private final String inheritance;
     private final String lof;
 
     public VariantDTO( Integer id, Integer paperId, Integer rawVariantId, Integer eventId, Integer subjectId,
             String sampleId, String chromosome, Integer startHg19, Integer stopHg19, String ref, String alt,
             String gene, String category, String geneDetail, String func, String aaChange, String cytoband,
-            String denovo, String lof ) {
+            String inheritance, String lof ) {
         this.id = id;
         this.paperId = paperId;
         this.rawVariantId = rawVariantId;
@@ -69,7 +69,7 @@ public final class VariantDTO {
         this.func = func;
         this.aaChange = aaChange;
         this.cytoband = cytoband;
-        this.denovo = denovo;
+        this.inheritance = inheritance;
         this.lof = lof;
 
     }
@@ -142,8 +142,8 @@ public final class VariantDTO {
         return cytoband;
     }
 
-    public String getDenovo() {
-        return denovo;
+    public String getInheritance() {
+        return inheritance;
     }
 
     public String getLoF() {

@@ -166,13 +166,13 @@
 		        </p:column>
 		        
 		        
-		        <p:column styleClass="centeredColumn row-gradient" sortBy="#{event.denovo}"  >
+		        <p:column styleClass="centeredColumn row-gradient" sortBy="#{event.inheritance}"  >
 		            <f:facet name="header">
-		                <h:outputText id="denovo" value="De novo"  />
-		                <p:tooltip id="toolTipDeNovo" for="denovo" value="De novo variant (i.e. Not inherited from parents.)" />	
+		                <h:outputText id="inheritance" value="Inheritance"  />
+		                <p:tooltip id="toolTipInheritance" for="inheritance" value="De novo variant (i.e. Not inherited from parents.)" />	
 		           
 		            </f:facet>		            	            	
-		            <h:outputText value="#{event.denovo}" />          	
+		            <h:outputText value="#{event.inheritance}" />          	
 		        </p:column>	
 		        
 		        <ui:remove>
