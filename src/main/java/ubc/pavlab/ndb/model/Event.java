@@ -49,7 +49,7 @@ public class Event {
     private final Integer stop;
     private final String ref;
     private final String alt;
-    private final String denovo;
+    private final String inheritance;
     private final String lof;
     private final List<Gene> genes;
     // private final List<Paper> papers;
@@ -133,7 +133,7 @@ public class Event {
             this.stop = null;
             this.ref = null;
             this.alt = null;
-            this.denovo = null;
+            this.inheritance = null;
             this.lof = null;
 
         } else {
@@ -141,7 +141,7 @@ public class Event {
             this.stop = testVariant.getStopHg19();
             this.ref = testVariant.getRef();
             this.alt = testVariant.getAlt();
-            this.denovo = testVariant.getDenovo();
+            this.inheritance = testVariant.getInheritance();
             this.lof = testVariant.getLoF();
         }
 
@@ -184,8 +184,8 @@ public class Event {
         return alt;
     }
 
-    public String getDenovo() {
-        return denovo;
+    public String getInheritance() {
+        return inheritance;
     }
 
     public String getLof() {

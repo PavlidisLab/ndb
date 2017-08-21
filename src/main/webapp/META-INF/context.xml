@@ -20,6 +20,24 @@
     />
     
     <Resource
+        name="jdbc/marvdb_staging" 
+        type="javax.sql.DataSource"
+        factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+        maxActive="100" 
+        maxIdle="30" 
+        maxWait="10000" 
+        testWhileIdle="true"
+        timeBetweenEvictionRunsMillis="300000"
+        url="jdbc:mysql://abe:3306/marvdb_staging"
+        driverClassName="com.mysql.jdbc.Driver"
+        initialSize="0"
+        alternateUsernameAllowed="true"
+        username="XXXXXXXXXXX" 
+        password="XXXXXXXXXXX"
+    />
+    
+    
+    <Resource
         name="jdbc/ndb_local" 
         type="javax.sql.DataSource"
         factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"

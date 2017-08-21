@@ -26,6 +26,7 @@ class Utils(object):
         dbconfigs = {}
         with open("db.config", 'r') as f:
             for line in f:
+                if line[0] == "#": continue
                 k,v = (line.strip()).split("=")
                 dbconfigs[k] = v
 

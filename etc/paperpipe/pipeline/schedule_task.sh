@@ -1,9 +1,12 @@
+#!/bin/bash
 #
-# Demo script to submit a task to the scheduler
+# Submit a task to the scheduler
 #
+set -eu
 
 BOOK=$1
 JOB=$2
+
 if [ $# -eq 0 ]
   then
     BOOK="../exampledata/dyrk1a/variants.xlsx"
