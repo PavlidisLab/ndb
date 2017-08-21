@@ -30,8 +30,8 @@ class Fixer(object):
         1 - If ref and alt are none, then error, we can't repair this.
         2 - If ref is empty but not alt (insertion), then decrease start position by 1, and prepend base to ref and alt
         3 - If alt is empty but not ref (deletion), the decreate start position by 1, and prepend base to ref and alt.
-        4 - If stop is missing, then compute using the distance from start + ref
-
+        4 - If stop is missing, then compute using the distance from start + length(ref)
+        5 - If start is missing. then compute using the distance from stop - length(ref)
         ---- Otherwise, don't touch it, but run sanity check anyways.
 
         """
@@ -70,8 +70,10 @@ class Fixer(object):
             stop_ = None # Needs to be reset
 
         if stop_ in empty: #[None, '', 0]:
-            stop_ = start_ + (len(ref_) - 1)
-
+            stop_ = start_ + (len(ref_) - 1 )
+        elif start_ in empty:
+            start_ = stop_ - (len(ref_) - 1 )
+        
         ref_ = ref_.upper()
         alt_ = alt_.upper()
 

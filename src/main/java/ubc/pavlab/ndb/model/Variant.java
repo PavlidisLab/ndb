@@ -55,7 +55,7 @@ public class Variant {
     private final String func;
     private final List<String> aaChanges;
     private final String cytoband;
-    private final String denovo;
+    private final String inheritance;
     private final String lof;
 
     private final List<RawKV> rawKV;
@@ -72,7 +72,7 @@ public class Variant {
         this.stopHg19 = dto.getStopHg19();
         this.ref = dto.getRef();
         this.alt = dto.getAlt();
-        this.denovo = dto.getDenovo();
+        this.inheritance = dto.getInheritance();
         this.lof = dto.getLoF();
 
         this.annovar = annovar;
@@ -171,8 +171,8 @@ public class Variant {
         return cytoband;
     }
 
-    public String getDenovo() {
-        return denovo;
+    public String getInheritance() {
+        return inheritance;
     }
 
     public String getLoF() {

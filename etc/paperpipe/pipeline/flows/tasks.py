@@ -68,9 +68,11 @@ class PPTask(luigi.Task):
         except Exception as e:
             #print e
             #print "Task model =", str(type(Class)) #, " | ", "id = ", self.paper_id
-            if type(Class) == type(Paper):
+            #if type(Class) == type(Paper):
+            try:
                 model = Class() # Must be Paper
-            else:
+            #else:
+            except:
                 model = Class(self.paper_id) # Must be Paper
             # Hack. Hax. Haque.
             # Issues with whitespaces when exporting JSON also.

@@ -275,6 +275,51 @@ class Annovar(AbstractModel):
                         g_id =  int(result[1][0])
                         break
                     except Exception as e:
+
+                        """ ATTEMPT TO RESOLVE BY REMOVING READTHROUGH """
+                        if "-" and "," in gene:
+                            genes = gene.split(",")
+                            splitgenes = []
+                            for splitgene in genes:
+                                if "-" in splitgene:
+                                    continue
+                                else:
+                                    splitgenes.append(splitgene)
+                            
+                            if len(splitgenes) == 1:
+                                gene = splitgenes[0]
+                                print "Resolved by removing 'readthrough' genes; using", gene
+                                #raw_input()
+                                continue
+                                
+                        
+                        """ ATTEMPT TO RESOLVE BY SYNONYMS """
+                        query_synonyms = "SELECT gene_id, symbol, synonyms FROM gene WHERE synonyms LIKE '%"+gene+"%';"
+                        synonyms = self.U.fetch_rows(query_synonyms)
+                        print "---- Potential synonyms for ", gene, "----"
+                        for row in synonyms:
+                            print row
+                        print "----------------------------"
+
+                        if len(synonyms) == 2 and gene in synonyms[1][2].split("|"):
+                            gene = synonyms[1][1] # Set name to the symbol where gene was a synonym.
+                            print "Resolved by synonyms (type 1). Using gene as synonym."
+                            #raw_input()
+                            continue
+                        
+                        if len(synonyms) > 2:
+                            replacement = None
+                            for synonym in synonyms[1:] :
+                                if gene in synonym[2].split("|"):
+                                    if replacement is not None:
+                                        print "ERROR! Multiple match for", replacement, "when parsing", synonym
+                                    else:
+                                        replacement = synonym[1] # Set name to the symbol where gene was a synonym.
+                                        print "Resolved by synonyms (type 2). Using gene as synonym."
+                            gene = replacement
+                            raw_input()
+                            continue
+                        
                         print "Exception raised while fetching gene:", gene
                         print result
                         print query
