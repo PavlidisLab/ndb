@@ -223,7 +223,6 @@ public class VariantDAOTest extends BaseTest {
         Assert.assertThat( dto.getFunc(), Matchers.is( "exonic" ) );
         Assert.assertThat( dto.getAaChange(), Matchers.is( "AADAC:NM_001086:exon3:c.A377C:p.D126A," ) );
         Assert.assertThat( dto.getCytoband(), Matchers.is( "3q25.1" ) );
-        Assert.assertThat( dto.getDenovo(), Matchers.is( "yes" ) );
         Assert.assertThat( dto.getLoF(), Matchers.is( "unknown" ) );
     }
 
@@ -246,7 +245,6 @@ public class VariantDAOTest extends BaseTest {
         Assert.assertThat( dto.getFunc(), Matchers.is( "exonic" ) );
         Assert.assertThat( dto.getAaChange(), Matchers.is( "ACACB:NM_001093:exon1:c.340dupG:p.P113fs," ) );
         Assert.assertThat( dto.getCytoband(), Matchers.is( "12q24.11" ) );
-        Assert.assertThat( dto.getDenovo(), Matchers.is( "yes" ) );
         Assert.assertNull( dto.getLoF() );
     }
 
@@ -269,7 +267,6 @@ public class VariantDAOTest extends BaseTest {
         Assert.assertThat( dto.getFunc(), Matchers.is( "exonic" ) );
         Assert.assertThat( dto.getAaChange(), Matchers.is( "CCDC174:NM_016474:exon5:c.C423T:p.D141D," ) );
         Assert.assertThat( dto.getCytoband(), Matchers.is( "3p25.1" ) );
-        Assert.assertThat( dto.getDenovo(), Matchers.is( "yes" ) );
         Assert.assertThat( dto.getLoF(), Matchers.is( "unknown" ) );
     }
 
