@@ -216,7 +216,6 @@ public class BaseTest {
         Assert.assertThat( v.getAaChanges().get( 0 ), Matchers.is( "AADAC:NM_001086:exon3:c.A377C:p.D126A" ) );
 
         Assert.assertThat( v.getCytoband(), Matchers.is( "3q25.1" ) );
-        Assert.assertThat( v.getDenovo(), Matchers.is( "yes" ) );
         Assert.assertThat( v.getLoF(), Matchers.is( "unknown" ) );
 
         Assert.assertThat( v.getRawKV(), Matchers.notNullValue() );
@@ -262,7 +261,6 @@ public class BaseTest {
         Assert.assertThat( v.getAaChanges().get( 0 ), Matchers.is( "ACACB:NM_001093:exon1:c.340dupG:p.P113fs" ) );
 
         Assert.assertThat( v.getCytoband(), Matchers.is( "12q24.11" ) );
-        Assert.assertThat( v.getDenovo(), Matchers.is( "yes" ) );
         Assert.assertNull( v.getLoF() );
 
         Assert.assertThat( v.getRawKV(), Matchers.notNullValue() );
@@ -307,7 +305,6 @@ public class BaseTest {
         Assert.assertThat( v.getAaChanges().get( 0 ), Matchers.is( "CCDC174:NM_016474:exon5:c.C423T:p.D141D" ) );
 
         Assert.assertThat( v.getCytoband(), Matchers.is( "3p25.1" ) );
-        Assert.assertThat( v.getDenovo(), Matchers.is( "yes" ) );
         Assert.assertThat( v.getLoF(), Matchers.is( "unknown" ) );
 
         Assert.assertThat( v.getRawKV(), Matchers.notNullValue() );
