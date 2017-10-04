@@ -86,7 +86,10 @@ class Fixer(object):
             if expected != ref_:
                 #raise ValueError("Expected is not the same between reference genome and current variant: " + expected + " v.s. " + ref_ + " for location "+ str(chromosome)+":"+str(start_)+"-"+str(stop_))
                 print "Expected is not the same between reference genome and current variant: " + expected + " v.s. " + ref_ + " for location "+ str(chromosome_)+":"+str(start_)+"-"+str(stop_)
-                raw_input()
+                reply = raw_input()
+                if reply == 'q':
+                    print "Terminated by user."
+                    exit(-1)
         except ValueError as v:
             print v
             print "Something went wrong when trying to match reference variant to reference genome."

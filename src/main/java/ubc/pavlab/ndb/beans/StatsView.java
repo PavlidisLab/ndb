@@ -219,12 +219,21 @@ public class StatsView implements Serializable {
         }
 
         Collections.sort( ints ); // Sorted ASCENDING
-        List<Integer> top = ints.subList( ints.size() - TOP, ints.size() );
-
+        
+        List<Integer> top = null;
         int bottom = 0;
-        for ( int i : ints.subList( 0, ints.size() - TOP ) ) {
-            bottom += i;
+
+        if ( ints.size() <= TOP){
+        	top = ints;
+        } else {
+        	top = ints.subList( ints.size() - TOP, ints.size() );
+
+            for ( int i : ints.subList( 0, ints.size() - TOP ) ) {
+                bottom += i;
+            }
         }
+        
+
 
         int min = top.get( 0 );
         for ( String k : data.keySet() ) {
