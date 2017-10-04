@@ -6,10 +6,9 @@ class Paper(AbstractModel):
     __properties_list = ['id',
                          'author',
                          'paper_table',
-                         'mut_reporting',
-                         'scope',
+                         'summary',
+                         'technology',
                          'cohort_source',
-                         'reported_effects',
                          'doi',
                          'title',
                          'paper_key',
@@ -17,7 +16,9 @@ class Paper(AbstractModel):
                          'year',
                          'cases',
                          'count',
-                         'design']
+                         'design',
+                         'pubmed_id',
+                         'pubmed_url']
     
     def __init__(self, **kwargs):
         super(Paper, self).__init__()

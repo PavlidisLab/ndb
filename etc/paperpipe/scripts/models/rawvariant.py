@@ -4,7 +4,7 @@ from marvmodel import AbstractModel
 from rawkv import RawKV
 
 class RawVariant(AbstractModel):
-    __properties_list = "paper_id,raw_id,sample_id,chromosome,start_hg19,stop_hg19,ref,alt,gene,effect,code_change,protein_change,aa_change,variant,strand,lof,inheritance,validation_method,validation_status,valid".split(",")
+    __properties_list = "paper_id,raw_id,sample_id,chromosome,start_hg19,stop_hg19,ref,alt,gene,effect,code_change,protein_change,aa_change,variant,strand,lof,inheritance,validation_method,validation_status,valid,phenotype".split(",")
     INSTRUCTION_SET = [
         "_assigned",
         "_autoincrement",
