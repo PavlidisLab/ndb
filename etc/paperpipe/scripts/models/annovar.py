@@ -317,7 +317,6 @@ class Annovar(AbstractModel):
                                         replacement = synonym[1] # Set name to the symbol where gene was a synonym.
                                         print "Resolved by synonyms (type 2). Using gene as synonym."
                             gene = replacement
-                            raw_input()
                             continue
                         
                         print "Exception raised while fetching gene:", gene
@@ -327,7 +326,13 @@ class Annovar(AbstractModel):
                         print "Enter 'continue' to skip gene."
                         print "Enter a delimiter (e.g. ',') to split genes and use the first one"
                         print "Enter GENE=... to force the gene name."
-                        answer = raw_input()
+
+                        if "," in gene:
+                            # If comma is in gene, split and use the first one.
+                            answer = ","
+                        else:
+                            # If not, prompt user for judicious opinion.
+                            answer = raw_input()
                         if answer == "quit":
                             raise e
                         elif answer == "continue":
