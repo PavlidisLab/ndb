@@ -52,7 +52,7 @@ class PPTask(luigi.Task):
             print "RUNNING ", type(self).__name__ ," Deleter for Paper", self.paper_id
         except:
             # Must be Paper then.
-            print "RUNNING ", type(self).__name__ ," Deleter for Paper import# ", hash_filename(self.INPUT)
+            print "RUNNING ", type(self).__name__ ," Deleter for Paper import# ", hash_filename(os.path.basename(self.INPUT))
 
         rows = []
         with open( requirement_commit, 'r' ) as data:
@@ -140,7 +140,7 @@ class LoadPaper(PPTask):
 
     def input(self):
         #INPUT = "/home/mbelmadani/development/paperpipe/exampledata/dyrk1a/variants.xlsx"
-        tag = hash_filename(self.INPUT)
+        tag = hash_filename(os.path.basename(self.INPUT))
         LoadPaper.OUTPUT = str("commits/paper"+tag+".out")
         return self.INPUT
     

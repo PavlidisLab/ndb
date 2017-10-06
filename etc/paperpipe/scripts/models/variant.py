@@ -114,6 +114,7 @@ class Variant(AbstractModel):
 
 
             for req in required:
+                # If any of the required fields are missing, append them to the header and the row
                 if req not in header:
                     header.append(req)
                     row.append("")
@@ -154,8 +155,9 @@ class Variant(AbstractModel):
 
 
             existing_subject_id = self.get_subject_for_sample(row[SAMPLE_ID])
-            print existing_subject_id
-            if not existing_subject_id:
+            print "Existing subject id for this subject:", existing_subject_id
+
+            if existing_subject_id is None:
                 existing_subject_id = "-1"
             row[SUBJECT_ID] = existing_subject_id
 
@@ -206,8 +208,10 @@ class Variant(AbstractModel):
 
     def get_subject_for_sample(self, sample):
         query = "SELECT DISTINCT subject_id FROM {0} WHERE sample_id = '{1}'  ;".format(self.database_table, sample)
-
+        print "QUERY",query
         rows = self.U.fetch_rows(query)
+        print "ROWS", rows
+
         subject = "-1"
         if len(rows) > 2: # [0] => Header [1:] => data
             print "Problem:"
