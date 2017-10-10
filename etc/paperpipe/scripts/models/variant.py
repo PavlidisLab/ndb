@@ -8,7 +8,7 @@ from rawvariant import RawVariant
 from fixer import fixer as vf
 
 class Variant(AbstractModel):
-    __properties_list = "id,paper_id,raw_variant_id,event_id,subject_id,sample_id,chromosome,start_hg18,start_hg19,stop_hg19,ref,alt,gene,category,code_change,protein_change,good_mutation,gene_detail,func,aa_change,cytoband,lof,inheritance,validation_method,validation_status,valid".split(",")
+    __properties_list = "id,paper_id,raw_variant_id,event_id,subject_id,sample_id,chromosome,start_hg18,start_hg19,stop_hg19,ref,alt,gene,category,code_change,protein_change,good_mutation,gene_detail,func,aa_change,cytoband,lof,inheritance,validation_method,validation_reported,validation".split(",")
 
     __excluded = "id".split(",")
 
