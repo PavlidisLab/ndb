@@ -9,6 +9,9 @@ db.config
 pipeline/commits/
 exampledata/
 
+# PASSWORDS
+db_credentials.sh
+
 # Editors
 \#*\#
 *~
