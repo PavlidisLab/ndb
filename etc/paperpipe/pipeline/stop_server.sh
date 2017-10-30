@@ -1,3 +1,3 @@
 #!/bin/bash
-ps ux | grep [l]uigid | cut -f2 -d" " | xargs kill -9
+ps aux | grep [l]uigid | tr -s ' ' | cut -f2 -d" " | xargs kill -9
 
