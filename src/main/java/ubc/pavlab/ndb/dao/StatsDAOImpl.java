@@ -111,14 +111,14 @@ public class StatsDAOImpl implements StatsDAO {
             + SQL_VARIANT_TABLE + " where paper_id=? group by category";
 
     private static final String SQL_DENOVO_CNT = " SELECT COUNT( DISTINCT event_id ) FROM " + SQL_VARIANT_TABLE
-            + " WHERE inheritance = 'denovo'; ";
+            + " WHERE inheritance = 'd'; ";
 
     private static final String SQL_LOF_CNT = " SELECT COUNT( DISTINCT event_id ) FROM " + SQL_VARIANT_TABLE
             + " WHERE func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substituition') ; ";
 
     private static final String SQL_DENOVO_LOF_GENES = "SELECT gene_ID, count(distinct event_id) as cnt  " + "FROM "
             + SQL_VARIANT_TABLE + " as var " + " inner join " + SQL_GENE_MAP_TABLE + " vmap on var.id=vmap.variant_id "
-            + " WHERE inheritance = 'yes' AND "
+            + " WHERE inheritance = 'd' AND "
 	    + "(func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substituition')) " // TODO: Do we still want those categories
             + "GROUP BY gene_id ORDER BY cnt DESC limit ?";
 
