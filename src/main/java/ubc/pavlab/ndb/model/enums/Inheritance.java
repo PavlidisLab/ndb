@@ -41,6 +41,9 @@ public enum Inheritance {
     private String label;
 
     Inheritance( String label ){
+        if (label == null){
+            this.label = "";
+        }
         this.label = label;
     }
 
