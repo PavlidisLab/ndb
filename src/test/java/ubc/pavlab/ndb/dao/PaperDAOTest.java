@@ -69,16 +69,10 @@ public class PaperDAOTest extends BaseTest {
         Assert.assertThat( dto.getAuthor(), Matchers.is( "De Rubeis" ) );
         Assert.assertThat( dto.getPaper_table(),
                 Matchers.is( "Supplementary Table 3, Willsey et al. 2013 (Table S1)" ) );
-        Assert.assertThat( dto.getMut_reporting(), Matchers.is( "De novo, inherited" ) );
-        Assert.assertThat( dto.getScope(), Matchers.is( "WES" ) );
-        Assert.assertThat( dto.isParents(), Matchers.is( false ) );
-        Assert.assertThat( dto.getCohort(), Matchers.nullValue() );
+        Assert.assertThat( dto.getTechnology(), Matchers.is( "WES" ) );
         Assert.assertThat( dto.getCohort_source(),
                 Matchers.is( "ARRA, BAC, ISMMS, SSC, UK 10K,  Boston Children's Hospital, Goethe-Universit" ) );
-        Assert.assertThat( dto.getCohort_size(), Matchers.is( 0 ) );
         Assert.assertThat( dto.getCount(), Matchers.is( "3871 cases" ) );
-        Assert.assertThat( dto.getReported_effects(),
-                Matchers.is( "Missense, Frameshift, Nonsense, Splice Site, Codon Deletion, New Start" ) );
         Assert.assertThat( dto.getDOI(), Matchers.is( "10.1038/nature13772" ) );
         Assert.assertThat( dto.getKey(), Matchers.is( "DeRubeis" ) );
         Assert.assertThat( dto.getYear(), Matchers.is( "2014" ) );
@@ -97,15 +91,9 @@ public class PaperDAOTest extends BaseTest {
         Assert.assertThat( dto.getUrl(), Matchers.nullValue() );
         Assert.assertThat( dto.getAuthor(), Matchers.is( "Iossifov" ) );
         Assert.assertThat( dto.getPaper_table(), Matchers.is( "Supplementary Table 2: List of de novo mutations" ) );
-        Assert.assertThat( dto.getMut_reporting(), Matchers.is( "De novo" ) );
-        Assert.assertThat( dto.getScope(), Matchers.is( "WES" ) );
-        Assert.assertThat( dto.isParents(), Matchers.is( false ) );
-        Assert.assertThat( dto.getCohort(), Matchers.nullValue() );
+        Assert.assertThat( dto.getTechnology(), Matchers.is( "WES" ) );
         Assert.assertThat( dto.getCohort_source(), Matchers.is( "SSC" ) );
-        Assert.assertThat( dto.getCohort_size(), Matchers.is( 0 ) );
         Assert.assertThat( dto.getCount(), Matchers.is( "2517 families" ) );
-        Assert.assertThat( dto.getReported_effects(), Matchers.is(
-                "3UTR, 5UTR, Frameshift, Missense, Codon Deletion, Codon Insertion, No Stop, Nonsense, No Start" ) );
         Assert.assertThat( dto.getDOI(), Matchers.is( "10.1038/nature13908" ) );
         Assert.assertThat( dto.getKey(), Matchers.is( "Iossifov2" ) );
         Assert.assertThat( dto.getYear(), Matchers.is( "2014" ) );
