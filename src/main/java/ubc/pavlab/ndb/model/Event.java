@@ -190,23 +190,8 @@
         }
 
         public String getInheritanceText() {
-            /*String inheritanceText = "";
-            char code =  this.inheritance.charAt( 0 );
-            switch (code) {
-                case 'd':  inheritanceText = "De novo";
-                    break;
-                case 'p':  inheritanceText = "Paternal";
-                    break;
-                case 'f':  inheritanceText = "Paternal"; // FIXME: Those should all be set to 'p' in the database.
-                    break;
-                case 'm':  inheritanceText = "Maternal";
-                    break;
-                case 'i':  inheritanceText = "Inherited";
-                    break;
-                case 'u':  inheritanceText = "Unknown";
-                    break;
-            }
-            return inheritanceText;*/
+            if (inheritance == null) { return ""; }
+            
             Inheritance inheritanceText = Inheritance.valueOf( inheritance );
             return inheritanceText.getLabel();
         }
