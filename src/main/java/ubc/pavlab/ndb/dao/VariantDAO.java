@@ -112,7 +112,7 @@ public interface VariantDAO {
      * @return A list of all Gene Ids from the database matching the given Variant Id.
      * @throws DAOException If something fails at database level.
      */
-    public List<Integer> findGeneIdsForVariantId( Integer id ) throws DAOException;
+    public List<Integer>  ( Integer id ) throws DAOException;
 
     /**
      * Returns a list of all Variant Ids from the database matching the given Gene Id. The list is never null and
