@@ -34,6 +34,7 @@
 
     import ubc.pavlab.ndb.model.enums.Category;
     import ubc.pavlab.ndb.model.enums.Inheritance;
+    import ubc.pavlab.ndb.model.enums.Validation;
 
     /**
      * TODO Document Me
@@ -51,6 +52,8 @@
         private final String ref;
         private final String alt;
         private final String inheritance;
+        private final String validation;
+        private final String validationMethod;
         private final String lof;
         private final List<Gene> genes;
         // private final List<Paper> papers;
@@ -135,6 +138,8 @@
                 this.ref = null;
                 this.alt = null;
                 this.inheritance = null;
+                this.validation = null;
+                this.validationMethod = null;
                 this.lof = null;
 
             } else {
@@ -143,6 +148,8 @@
                 this.ref = testVariant.getRef();
                 this.alt = testVariant.getAlt();
                 this.inheritance = testVariant.getInheritance();
+                this.validation = testVariant.getValidation();
+                this.validationMethod = testVariant.getValidationMethod();
                 this.lof = testVariant.getLoF();
             }
 
@@ -191,10 +198,19 @@
 
         public String getInheritanceText() {
             if (inheritance == null) { return ""; }
-            
+
             Inheritance inheritanceText = Inheritance.valueOf( inheritance );
             return inheritanceText.getLabel();
         }
+
+        public String getValidationText() {
+            if (validation == null) { return ""; }
+
+            Validation validationText = Validation.valueOf( validation );
+            return validationText.getLabel();
+        }
+
+        public String getValidationMethod() { return validationMethod; }
 
         public String getLof() {
             return lof;
