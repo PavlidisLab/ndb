@@ -47,7 +47,7 @@ public class VariantDAOImpl implements VariantDAO {
 
     // SQL Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_STAR = "id, paper_id, raw_variant_id, event_id, subject_id, sample_id, chromosome, start_hg19, stop_hg19, ref, alt, gene, category, gene_detail, func, aa_change, cytoband, inheritance, lof";
+    private static final String SQL_STAR = "id, paper_id, raw_variant_id, event_id, subject_id, sample_id, chromosome, start_hg19, stop_hg19, ref, alt, gene, category, gene_detail, func, aa_change, cytoband, inheritance, lof, validation, validation_method";
     private static final String SQL_TABLE = "variant";
 
     private static final String SQL_GENE_MAP_TABLE = "variant_gene";
@@ -270,7 +270,8 @@ public class VariantDAOImpl implements VariantDAO {
                 resultSet.getInt( "start_hg19" ), resultSet.getInt( "stop_hg19" ), resultSet.getString( "ref" ),
                 resultSet.getString( "alt" ), resultSet.getString( "gene" ), resultSet.getString( "category" ),
                 resultSet.getString( "gene_detail" ), resultSet.getString( "func" ), resultSet.getString( "aa_change" ),
-                resultSet.getString( "cytoband" ), resultSet.getString( "inheritance" ), resultSet.getString( "lof" ) );
+                resultSet.getString( "cytoband" ), resultSet.getString( "inheritance" ), resultSet.getString( "lof" ),
+                resultSet.getString( "validation" ), resultSet.getString( "validation_method" ) );
     }
 
 }

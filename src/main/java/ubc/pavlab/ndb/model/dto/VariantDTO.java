@@ -48,10 +48,13 @@ public final class VariantDTO {
     private final String inheritance;
     private final String lof;
 
+    private final String validation;
+    private final String validationMethod;
+
     public VariantDTO( Integer id, Integer paperId, Integer rawVariantId, Integer eventId, Integer subjectId,
             String sampleId, String chromosome, Integer startHg19, Integer stopHg19, String ref, String alt,
             String gene, String category, String geneDetail, String func, String aaChange, String cytoband,
-            String inheritance, String lof ) {
+            String inheritance, String lof, String validation, String validationMethod ) {
         this.id = id;
         this.paperId = paperId;
         this.rawVariantId = rawVariantId;
@@ -71,6 +74,8 @@ public final class VariantDTO {
         this.cytoband = cytoband;
         this.inheritance = inheritance;
         this.lof = lof;
+        this.validation = validation;
+        this.validationMethod = validationMethod;
 
     }
 
@@ -144,6 +149,14 @@ public final class VariantDTO {
 
     public String getInheritance() {
         return inheritance;
+    }
+
+    public String getValidation() {
+        return validation;
+    }
+
+    public String getValidationMethod() {
+        return validationMethod;
     }
 
     public String getLoF() {

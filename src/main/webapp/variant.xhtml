@@ -173,9 +173,18 @@
 		           
 		            </f:facet>		            	            	
 		            <h:outputText value="#{event.inheritanceText}" />
-		        </p:column>	
-		        
-		        <ui:remove>
+		        </p:column>
+
+				<p:column styleClass="centeredColumn row-gradient" sortBy="#{event.validationText}"  >
+					<f:facet name="header">
+						<h:outputText id="validation" value="Validation"  />
+						<p:tooltip id="toolTipValidation" for="validation" value="Status of validation by secondary method for existance of variant." />
+
+					</f:facet>
+					<h:outputText value="#{event.validationText}" title="Validation method: #{event.validationMethod}"  />
+				</p:column>
+
+				<ui:remove>
 		        <!-- This column is removed, as we can tell LoF from the effect conditional colouring. I'm leaving this here because it can be useful to compare as a sanity check. -->
 		        <!-- The data from here is pulled from the literature as best as possible. -->
 		        <p:column styleClass="centeredColumn row-gradient" sortBy="#{event.lof}" >

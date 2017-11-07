@@ -58,6 +58,9 @@ public class Variant {
     private final String inheritance;
     private final String lof;
 
+    private final String validation;
+    private final String validationMethod;
+
     private final List<RawKV> rawKV;
 
     public Variant( VariantDTO dto, Annovar annovar, List<RawKV> rawKV, Paper paper, List<Gene> genes,
@@ -73,6 +76,8 @@ public class Variant {
         this.ref = dto.getRef();
         this.alt = dto.getAlt();
         this.inheritance = dto.getInheritance();
+        this.validation = dto.getValidation();
+        this.validationMethod = dto.getValidationMethod();
         this.lof = dto.getLoF();
 
         this.annovar = annovar;
@@ -173,6 +178,14 @@ public class Variant {
 
     public String getInheritance() {
         return inheritance;
+    }
+
+    public String getValidation() {
+        return validation;
+    }
+
+    public String getValidationMethod() {
+        return validationMethod;
     }
 
     public String getLoF() {
