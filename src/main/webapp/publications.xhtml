@@ -108,29 +108,40 @@
 		    		<h:outputText style="font-weight:bold; text-align:center;" value="#{paper.year}" /> 
 		    	
 		    </p:column>
-		    <p:column id="headScope" headerText="Scope" sortBy="#{paper.scope}" >
+		    <p:column id="headTechnology" headerText="Technology" sortBy="#{paper.technology}" >
 		    	<f:facet name="header">
-		     		<h:outputText value="Scope"/>		                
-		            <p:tooltip trackMouse="true" id="toolTipScope" for="headScope" value="Experimental details from sequencing (e.g. Whole-Genome Sequencing, Whole-Exome sequencing, gene specific.)" atPosition="right center"/>
+		     		<h:outputText value="Technology"/>
+		            <p:tooltip trackMouse="true" id="toolTipTechnology" for="headTechnology" value="Experimental details from sequencing (e.g. Whole-Genome Sequencing, Whole-Exome sequencing, gene specific.)" atPosition="right center"/>
 		        </f:facet>
-		        <h:outputText value="#{paper.scope}" />
+		        <h:outputText value="#{paper.technology}" />
 		    </p:column>
-		    
-		    <p:column id="headReporting" headerText="Reporting" sortBy="#{paper.mutReporting}">
-		    	<f:facet name="header">
-		     			<h:outputText value="Reporting"/>		                
-		                <p:tooltip trackMouse="true" id="toolTipReporting" for="headReporting" value="Specific aim behind reported variants." />
-		        </f:facet>
-		        <h:outputText value="#{paper.mutReporting}" />
-		    </p:column>
-		    
-		    <p:column id="headEffects" sortBy="#{paper.reportedEffects}">
-		     		<f:facet name="header">
-		     			<h:outputText value="Effects"/>		                
-		                <p:tooltip trackMouse="true" id="toolTipEffects" for="headEffects" value="Overview of variant effect categories covered by reported variants." atPosition="right center"/>
-		            </f:facet>
-		            <h:outputText value="#{paper.reportedEffects}" />
-		    </p:column>
+
+			<p:column id="headPubmed" headerText="Pubmed" sortBy="#{paper.pubmed_id}">
+				<f:facet name="header">
+					<h:outputText value="Pubmed"/>
+					<p:tooltip trackMouse="true" id="toolTipPubmed" for="headPubmed" value="Publication identifier on Pubmed." />
+				</f:facet>
+				<h:outputLink value="#{paper.pubmed_url}" target="_blank" >
+					<h:outputText value="#{paper.pubmed_id}" />
+				</h:outputLink>
+			</p:column>
+
+
+			<p:column id="headCount" headerText="Count" sortBy="#{paper.count}">
+				<f:facet name="header">
+					<h:outputText value="Count"/>
+					<p:tooltip trackMouse="true" id="toolTipCount" for="headCount" value="Sample counts per study." />
+				</f:facet>
+				<h:outputText value="#{paper.count}" />
+			</p:column>
+
+			<p:column id="headCases" headerText="Cases" sortBy="#{paper.cases}">
+				<f:facet name="header">
+					<h:outputText value="Cases"/>
+					<p:tooltip trackMouse="true" id="toolTipCases" for="headCases" value="Types of cases included in each study." />
+				</f:facet>
+				<h:outputText value="#{paper.cases}" />
+			</p:column>
 		   
 		    <p:column id="headDoi" headerText="doi" sortBy="#{paper.doi}" >
 		    	<f:facet name="header">

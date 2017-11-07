@@ -34,23 +34,18 @@ public final class PaperDTO {
     private final String title;
     private final String year;
     private final String doi;
+    private final String pubmed_id;
     private final String author;
     private final String paper_table;
-    private final String mut_reporting;
-    private final String scope;
-    private final boolean parents;
-    private final String cohort;
+    private final String technology;
     private final String cohort_source;
-    private final Integer cohort_size;
     private final String count;
-    private final String reported_effects;
     private final String cases;
     private final String design;
     private final String publisher;
 
-    public PaperDTO( Integer id, String url, String title, String key, String year, String doi, String author,
-            String paper_table, String mut_reporting, String scope, boolean parents, String cohort,
-            String cohort_source, Integer cohort_size, String count, String reported_effects, String cases,
+    public PaperDTO( Integer id, String url, String title, String key, String year, String doi, String pubmed_id, String author,
+            String paper_table, String technology, String cohort_source,  String count, String cases,
             String design, String publisher ) {
         super();
         this.id = id;
@@ -59,16 +54,12 @@ public final class PaperDTO {
         this.title = title;
         this.year = year;
         this.doi = doi;
+        this.pubmed_id = pubmed_id;
         this.author = author;
         this.paper_table = paper_table;
-        this.mut_reporting = mut_reporting;
-        this.scope = scope;
-        this.parents = parents;
-        this.cohort = cohort;
+        this.technology = technology;
         this.cohort_source = cohort_source;
-        this.cohort_size = cohort_size;
         this.count = count;
-        this.reported_effects = reported_effects;
         this.cases = cases;
         this.design = design;
         this.publisher = publisher;
@@ -90,36 +81,12 @@ public final class PaperDTO {
         return paper_table;
     }
 
-    public String getMut_reporting() {
-        return mut_reporting;
-    }
-
-    public String getScope() {
-        return scope;
-    }
-
-    public boolean isParents() {
-        return parents;
-    }
-
-    public String getCohort() {
-        return cohort;
-    }
-
     public String getCohort_source() {
         return cohort_source;
     }
 
-    public Integer getCohort_size() {
-        return cohort_size;
-    }
-
     public String getCount() {
         return count;
-    }
-
-    public String getReported_effects() {
-        return reported_effects;
     }
 
     public String getDOI() {
@@ -149,5 +116,14 @@ public final class PaperDTO {
     public String getPublisher() {
         return publisher;
     }
+
+    public String getPubmed_id() {
+        return pubmed_id;
+    }
+
+    public String getTechnology() {
+        return technology;
+    }
+
 
 }

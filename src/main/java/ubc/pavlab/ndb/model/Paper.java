@@ -28,6 +28,8 @@ import ubc.pavlab.ndb.model.dto.PaperDTO;
  * @version $Id$
  */
 public final class Paper implements Comparable<Paper> {
+
+
     private final Integer id;
     private final String url;
     private final String title;
@@ -36,17 +38,13 @@ public final class Paper implements Comparable<Paper> {
     private final String year;
     private final String author;
     private final String paperTable;
-    private final String mutReporting;
-    private final String scope;
-    private final boolean parents;
-    private final String cohort;
+    private final String technology;
     private final String cohortSource;
-    private final Integer cohortSize;
     private final String count;
-    private final String reportedEffects;
     private final String cases;
     private final String design;
     private final String publisher;
+    private final String pubmed_id;
 
     public Paper( PaperDTO dto ) {
         this.id = dto.getId();
@@ -59,22 +57,18 @@ public final class Paper implements Comparable<Paper> {
 
         this.author = dto.getAuthor();
         this.paperTable = dto.getPaper_table();
-        this.mutReporting = dto.getMut_reporting();
-        this.scope = dto.getScope();
-        this.parents = dto.isParents();
-        this.cohort = dto.getCohort();
+        this.technology = dto.getTechnology();
         this.cohortSource = dto.getCohort_source();
-        this.cohortSize = dto.getCohort_size();
         this.count = dto.getCount();
-        this.reportedEffects = dto.getReported_effects();
         this.cases = dto.getCases();
         this.design = dto.getDesign();
         this.publisher = dto.getPublisher();
+        this.pubmed_id = dto.getPubmed_id();
 
     }
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public String getUrl() {
@@ -90,32 +84,12 @@ public final class Paper implements Comparable<Paper> {
         return paperTable;
     }
 
-    public String getMutReporting() {
-        return mutReporting;
-    }
-
-    public String getScope() {
-        return scope;
-    }
-
-    public boolean isParents() {
-        return parents;
-    }
-
-    public String getCohort() {
-        return cohort;
+    public String getTechnology() {
+        return technology;
     }
 
     public String getCohortSource() {
         return cohortSource;
-    }
-
-    public Integer getCohortSize() {
-        return cohortSize;
-    }
-
-    public String getReportedEffects() {
-        return reportedEffects;
     }
 
     @Override
@@ -178,6 +152,15 @@ public final class Paper implements Comparable<Paper> {
 
     public String getPublisher() {
         return publisher;
+    }
+
+    public String getPubmed_id() {
+        return pubmed_id;
+    }
+
+    public String getPubmed_url() {
+        return "https://www.ncbi.nlm.nih.gov/pubmed/" + this.pubmed_id;
+
     }
 
 }
