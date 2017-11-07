@@ -399,20 +399,16 @@ public class BaseTest {
     protected static final String PAPER1_KEY = "Iossifov2";
     protected static final String PAPER1_AUTHOR = "Iossifov";
 
+    // TODO: These tests are likely broken since the 'rebuild' branch.
     protected void assertIsPaper1( Paper e ) {
         Assert.assertThat( e, Matchers.notNullValue() );
         Assert.assertThat( e.getId(), Matchers.is( 7 ) );
         Assert.assertThat( e.getUrl(), Matchers.is( "https://dx.doi.org/10.1038/nature13908" ) );
         Assert.assertThat( e.getAuthor(), Matchers.is( "Iossifov" ) );
         Assert.assertThat( e.getPaperTable(), Matchers.is( "Supplementary Table 2: List of de novo mutations" ) );
-        Assert.assertThat( e.getMutReporting(), Matchers.is( "De novo" ) );
-        Assert.assertThat( e.getScope(), Matchers.is( "WES" ) );
-        Assert.assertThat( e.isParents(), Matchers.is( false ) );
-        Assert.assertThat( e.getCohort(), Matchers.nullValue() );
+
         Assert.assertThat( e.getCohortSource(), Matchers.is( "SSC" ) );
-        Assert.assertThat( e.getCohortSize(), Matchers.is( 0 ) );
-        Assert.assertThat( e.getReportedEffects(), Matchers.is(
-                "3UTR, 5UTR, Frameshift, Missense, Codon Deletion, Codon Insertion, No Stop, Nonsense, No Start" ) );
+
         Assert.assertThat( e.getDoi(), Matchers.is( "10.1038/nature13908" ) );
         Assert.assertThat( e.getTitle(),
                 Matchers.is( "The contribution of de novo coding mutations to autism spectrum disorder" ) );
@@ -428,6 +424,8 @@ public class BaseTest {
     protected static final String PAPER2_KEY = "O'Roak";
     protected static final String PAPER2_AUTHOR = "O'Roak";
 
+
+    // TODO: These tests are likely broken since the 'rebuild' branch.
     protected void assertIsPaper2( Paper e ) {
         Assert.assertThat( e, Matchers.notNullValue() );
         Assert.assertThat( e.getId(), Matchers.is( 16 ) );
@@ -435,14 +433,8 @@ public class BaseTest {
         Assert.assertThat( e.getAuthor(), Matchers.is( "O'Roak" ) );
         Assert.assertThat( e.getPaperTable(),
                 Matchers.is( "Supplementary Table 3: All 242 de novo point mutations found in 189 trios" ) );
-        Assert.assertThat( e.getMutReporting(), Matchers.is( "De novo" ) );
-        Assert.assertThat( e.getScope(), Matchers.is( "WES" ) );
-        Assert.assertThat( e.isParents(), Matchers.is( false ) );
-        Assert.assertThat( e.getCohort(), Matchers.nullValue() );
+        Assert.assertThat( e.getTechnology(), Matchers.is( "WES" ) );
         Assert.assertThat( e.getCohortSource(), Matchers.is( "SSC" ) );
-        Assert.assertThat( e.getCohortSize(), Matchers.is( 0 ) );
-        Assert.assertThat( e.getReportedEffects(),
-                Matchers.is( "Missense, Frameshift, Codon Deletion, Nonsense, Codon Insertion, Splice Site" ) );
         Assert.assertThat( e.getDoi(), Matchers.is( "10.1038/nature10989" ) );
         Assert.assertThat( e.getTitle(), Matchers
                 .is( "Sporadic autism exomes reveal a highly interconnected protein network of de novo mutations" ) );

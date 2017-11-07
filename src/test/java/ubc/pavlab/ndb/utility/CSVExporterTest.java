@@ -103,8 +103,22 @@ public class CSVExporterTest {
 
         //Paper
         Paper p = new Paper(
-                new PaperDTO( 1, null, null, "key1", null, null, "author1", null, null, null, false, null, null,
-                        null, null, null, null, null, null ) );
+                new PaperDTO(
+                        1,
+                        null,
+                        null,
+                        "key1",
+                        null,
+                        null,
+                        null,
+                        "author1",
+                        null,
+                        null,
+                        null,
+                        "0",
+                        null,
+                        null,
+                        null) );
         Mockito.when( v.getPaper() ).thenReturn( p );
 
         variants.add( v );
@@ -140,8 +154,22 @@ public class CSVExporterTest {
 
         //Paper
         p = new Paper(
-                new PaperDTO( 2, null, null, "key2", null, null, "author2", null, null, null, false, null, null, null,
-                        null, null, null, null, null ) );
+                new PaperDTO(
+                        2,
+                        null,
+                        null,
+                        "key2",
+                        null,
+                        null,
+                        null,
+                        "author2",
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                         null) );
         Mockito.when( v.getPaper() ).thenReturn( p );
 
         variants.add( v );
@@ -177,8 +205,21 @@ public class CSVExporterTest {
 
         //Paper
         p = new Paper(
-                new PaperDTO( 3, null, null, "key3", null, null, "author3", null, null, null, false, null, null, null,
-                        null, null, null, null, null ) );
+                new PaperDTO( 3,
+                        null,
+                        null,
+                        "key3",
+                        null,
+                        null,
+                        null,
+                        "author3",
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null) );
         Mockito.when( v.getPaper() ).thenReturn( p );
 
         variants.add( v );
