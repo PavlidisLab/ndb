@@ -239,6 +239,10 @@ public class VariantView implements Serializable {
         return Event.COMPARE_LOCATION.compare( ( Event ) e1, ( Event ) e2 );
     }
 
+    public int sortByFuncs( Object e1, Object e2 ) {
+        return Event.COMPARE_FUNCS.compare( ( Event ) e1, ( Event ) e2 );
+    }
+
     public void setVariantService( VariantService variantService ) {
         this.variantService = variantService;
     }
