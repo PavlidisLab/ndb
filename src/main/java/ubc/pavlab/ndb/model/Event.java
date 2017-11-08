@@ -367,4 +367,26 @@
             }
         };
 
+
+        public static final Comparator<Event> COMPARE_FUNCS = new Comparator<Event>() {
+            @Override
+            public int compare( Event e1, Event e2 ) {
+                Iterator<String> it1 = e1.getFuncs().iterator();
+                Iterator<String> it2 = e2.getFuncs().iterator();
+
+                while ( it1.hasNext() && it2.hasNext() ) {
+                    String a = it1.next();
+                    String b = it2.next();
+
+                    int res = ( a.compareTo( b ) > 0 ) ? 1 : ( ( b.compareTo( a ) > 0 ) ? -1 : 0 );
+                    if ( res != 0 ) {
+                        return res;
+                    }
+                }
+
+                return Integer.compare( e1.getFuncs().size(), e2.getFuncs().size() );
+            }
+        };
+
+
     }
