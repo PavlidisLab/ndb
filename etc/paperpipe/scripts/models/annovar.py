@@ -330,9 +330,17 @@ class Annovar(AbstractModel):
                         if "," in gene:
                             # If comma is in gene, split and use the first one.
                             answer = ","
+                        elif "\\x" in gene:
+                            # Sometimes, "\x3b" or \x2c get inserted for delimiters.
+                            answer = "\\x"
+                        elif gene[:3] == "LOC" or gene == "NONE":
+                            # To make this automated and more straight forward, skip any LOC as they wont be in geneinfo.
+                            # Important that this condition set checks for , or \x before anything else. At this point we assume we have no other options.
+                            answer = "continue"
                         else:
                             # If not, prompt user for judicious opinion.
                             answer = raw_input()
+
                         if answer == "quit":
                             raise e
                         elif answer == "continue":
