@@ -62,8 +62,13 @@
         private final List<Variant> variants;
 
         private final Double caddPhred;
+        private final Double exacFreq;
 
         private final boolean complex;
+
+        public Double getExacFreq() {
+            return exacFreq;
+        }
 
         public Event( Collection<Variant> variants ) throws IllegalArgumentException {
             if ( variants == null || variants.isEmpty() ) {
@@ -88,14 +93,21 @@
             Variant testVariant = variantsCopy.iterator().next();
 
             Double caddMax = 0.0;
+            Double exacMax = 0.0;
 
             for ( Variant variant : variantsCopy ) {
 
                 genes.addAll( variant.getGenes() );
                 papers.add( variant.getPaper() );
                 Double cadd = variant.getAnnovar().getCaddPhred();
+                Double exac = variant.getAnnovar().getExac03();
+
                 if ( cadd != null ) {
                     caddMax = Math.max( cadd, caddMax );
+                }
+
+                if ( exac != null ) {
+                    exacMax = Math.max( exac, exacMax );
                 }
 
                 if ( variant.getFunc() != null ) {
@@ -154,6 +166,7 @@
             }
 
             this.caddPhred = caddMax;
+            this.exacFreq = exacMax;
 
             this.complex = complex;
 

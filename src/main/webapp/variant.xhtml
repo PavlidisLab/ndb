@@ -219,6 +219,15 @@
 	            	
 	            	<h:outputText value="#{event.caddPhred == 0 ? '-' : event.caddPhred}" />	            	
 		        </p:column>
+
+				<p:column sortBy="#{event.exacFreq}" >
+					<f:facet name="header">
+						<h:outputText id="exacFreq" value="ExAC v0.3"/>
+						<p:tooltip id="toolTipExacFreq" for="exacFreq" value="ExAC population frequency (version 0.3)." />
+					</f:facet>
+
+					<h:outputText value="#{event.exacFreq == 0.0 ? '-' : event.exacFreq}" />
+				</p:column>
 		        
 		        <p:column styleClass="centeredColumn" sortBy="#{event}" sortFunction="#{variantView.sortByPapers}">
 		            <f:facet name="header">

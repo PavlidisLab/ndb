@@ -240,9 +240,7 @@ public class Annovar {
         return siphy29wayLogOdds;
     }
 
-    public Double getExac03() {
-        return exac03;
-    }
+    public Double getExac03() { return exac03; }
 
     public String getClinvar20150629() {
         return clinvar20150629;
