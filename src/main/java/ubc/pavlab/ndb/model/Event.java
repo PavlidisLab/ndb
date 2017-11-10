@@ -46,6 +46,7 @@
 
         private final Integer id;
         private final Integer subjectId;
+        private final String sampleId;
         private final String chromosome;
         private final Integer start;
         private final Integer stop;
@@ -128,6 +129,9 @@
                 if ( !variant.getSubjectId().equals( testVariant.getSubjectId() ) ) {
                     throw new IllegalArgumentException( "Variant list contains multiple Subjects" );
                 }
+                // Note: For samples, we could do a check similar to the one right above for subjects, however I can
+                // anticipate situations where two distinct Sample IDs are actually the same proband, so that test
+                // would not be useful here.
 
                 if ( !complex && !( variant.getStartHg19().equals( testVariant.getStartHg19() )
                         && variant.getStopHg19().equals( testVariant.getStopHg19() )
@@ -143,6 +147,7 @@
             this.chromosome = testVariant.getChromosome();
 
             this.subjectId = testVariant.getSubjectId();
+            this.sampleId = testVariant.getSampleId();
 
             if ( complex ) {
                 this.start = null;
@@ -183,6 +188,9 @@
 
         public Integer getSubjectId() {
             return subjectId;
+        }
+        public String getSampleId() {
+            return sampleId;
         }
 
         public String getChromosome() {

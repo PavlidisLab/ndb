@@ -117,7 +117,7 @@
 		                <h:outputText id="Subject" value="Subject"/>
 		                <p:tooltip id="toolTipSubject" for="Subject" value="MARVdb-specific identifier for the proband source of the variant." />
 		            </f:facet>
-		            <h:outputText value="#{event.subjectId}" />		            
+		            <h:outputText value="#{event.subjectId}" title="#{event.sampleId}"/>
 		        </p:column>
 		        
 				<p:column styleClass="centeredColumn" rendered="#{not event.complex}" sortBy="#{event.ref}">
