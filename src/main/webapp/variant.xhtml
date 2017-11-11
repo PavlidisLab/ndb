@@ -200,7 +200,7 @@
 		        <p:column styleClass="centeredColumn row-gradient" sortBy="#{event}" sortFunction="#{variantView.sortByEffects}">
 		            <f:facet name="header">
 		                <h:outputText id="Effect" value="Effects"/>
-		                <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect" />	
+		                <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect." />
 		           
 		            </f:facet>
 	            	
@@ -209,6 +209,19 @@
 	            		<h:outputText value=", " rendered="#{not status.last}" /> 	            		          			            			          
 	            	</ui:repeat>	            	
 		        </p:column>
+
+				<p:column styleClass="centeredColumn row-gradient" >
+					<f:facet name="header">
+						<h:outputText id="HGVS" value="HGVS"/>
+						<p:tooltip id="toolTipHGVS" for="HGVS" value="HGVS variant notation." />
+
+					</f:facet>
+
+					<ui:repeat var="a" value="#{event.AAChanges}"  varStatus="status">
+						<h:outputText value="#{a.transcript}:#{a.hgvsC}:#{a.hgvsP}" title="#{a.context}"/>
+						<h:outputText value=", " rendered="#{not status.last}" />
+					</ui:repeat>
+				</p:column>
 		        
 		        <p:column sortBy="#{event.caddPhred}" styleClass="centeredColumn row-gradient #{(event.caddPhred > 50 ? 'ct6' : (event.caddPhred > 40 ? 'ct5' : (event.caddPhred > 30 ? 'ct4' : (event.caddPhred > 20 ? 'ct3' : (event.caddPhred > 10 ? 'ct2' : (event.caddPhred > 0 ? 'ct1' : ''))))))}">
 		            <f:facet name="header">
