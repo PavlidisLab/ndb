@@ -60,6 +60,7 @@
         // private final List<Paper> papers;
         private final List<String> funcs;
         private final List<Category> categories;
+        private final List<AAChange> aaChanges;
         private final List<Variant> variants;
 
         private final Double caddPhred;
@@ -89,6 +90,7 @@
             Set<Paper> papers = Sets.newHashSet();
             Set<String> funcs = Sets.newHashSet();
             Set<Category> categories = Sets.newHashSet();
+            Set<AAChange> aaChanges = Sets.newHashSet();
 
             boolean complex = false;
             Variant testVariant = variantsCopy.iterator().next();
@@ -117,6 +119,15 @@
                 if ( variant.getCategory() != null ) {
                     categories.add( variant.getCategory() );
                 }
+
+                if ( variant.getAaChanges() != null ) {
+                    for (String aaChange : variant.getAaChanges()) {
+                        if (! aaChange.equals( "UNKNOWN" )){
+                            aaChanges.add( new AAChange(aaChange) );
+                        }
+                    }
+                }
+
 
                 if ( !variant.getEventId().equals( testVariant.getEventId() ) ) {
                     throw new IllegalArgumentException( "Variant list contains multiple event Ids" );
@@ -179,6 +190,7 @@
             // this.papers = ImmutableList.copyOf( papers );
             this.funcs = ImmutableList.copyOf( funcs );
             this.categories = ImmutableList.copyOf( categories );
+            this.aaChanges = ImmutableList.copyOf( aaChanges );
             this.variants = ImmutableList.copyOf( variantsCopy );
         }
 
@@ -266,10 +278,8 @@
         public List<Category> getCategories() {
             return categories;
         }
-
-        public List<Variant> getVariants() {
-            return variants;
-        }
+        public List<AAChange> getAAChanges() { return aaChanges; }
+        public List<Variant> getVariants() { return variants; }
 
         public boolean isComplex() {
             return complex;
