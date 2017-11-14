@@ -12,6 +12,7 @@
     <composite:interface>
         <composite:attribute name="paper" />
         <composite:attribute name="eventCnt" />
+		<composite:attribute name="showMore" default="True" />
     </composite:interface>
     <composite:implementation>
     
@@ -32,11 +33,9 @@
 	                </p:row>
 	                
 	 				<p:row>
-	                <p:column><h:outputText value="Author" /></p:column>
+	                <p:column><h:outputText value="Authors" /></p:column>
 	                <p:column colspan="2">
-	                	<p:link outcome="paper" value="#{cc.attrs.paper.author}" >
-						    <f:param name="paperId" value="#{cc.attrs.paper.id}" />
-						</p:link>
+						<h:outputText value="#{cc.attrs.paper.author}" />
 	                </p:column>
 	 				</p:row>
 	 				        
@@ -105,8 +104,20 @@
 				        		<h:outputText value="#{step.value}" />
 				    		</p:column>
 				    	</p:dataTable>   
-			    	</ui:remove>	 
-	            </p:panelGrid>
+			    	</ui:remove>
+
+					<p:row rendered="#{cc.attrs.showMore}">
+						<p:column colspan="1">
+							<h:outputText />
+						</p:column>
+						<p:column colspan="1">
+							<p:link outcome="paper" value="More" >
+								<f:param name="paperId" value="#{cc.attrs.paper.id}" />
+							</p:link>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+
 </composite:implementation>
 
 
