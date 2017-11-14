@@ -139,12 +139,13 @@ public class VariantView implements Serializable {
             try {
                 Integer startCoord = Integer.parseInt( start );
                 Integer stopCoord = Integer.parseInt( stop );
+
                 this.query = chr + ":" + start + "-" + stop;
                 this.variants = this.variantService.fetchByPosition( chr, startCoord, stopCoord );
 
                 breadcrumbsCurrentStr = "Search by coordinates";
             } catch ( NumberFormatException e ) {
-                throw new IllegalArgumentException( "Malformed Search Parameters" );
+                throw new IllegalArgumentException( "Invalid Coordinates: Position out of bounds of chromosome " + chr + ".");
             }
         } else {
             // Unknown Search
