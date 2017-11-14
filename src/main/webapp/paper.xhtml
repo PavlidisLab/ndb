@@ -44,8 +44,9 @@
 			<!-- Paper information -->
 			<p:panel header="Summary" style="width:600px;padding:0;" styleClass="no-border no-padding">
 			
-				<composites:paperPanel paper="#{paperView.paper}" variantCnt="#{paperView.variantCnt}" eventCnt="#{paperView.eventCnt}"/>
-	    	
+				<composites:paperPanel paper="#{paperView.paper}" eventCnt="#{paperView.eventCnt}" showMore="False"/>
+
+
 	    	<p:panel header="Breakdown by exonic function" style="width:600px;padding:0;margin-top:25px;" styleClass="no-border no-padding">
 	    	
 	    	<!-- Stats about paper on variant level -->
