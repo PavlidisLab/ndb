@@ -54,7 +54,7 @@ public class AAChange {
             if (aaChangeArray.length == 5) {
                 this.hgvsP = aaChangeArray[4];
             } else {
-                this.hgvsP = "N/A";
+                this.hgvsP = "p.N/A";
             }
 
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -71,18 +71,29 @@ public class AAChange {
     }
 
     @Override
-    public boolean equals( Object obj ) {
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
 
-        if ( this == obj ) return true;
-        if ( obj == null ) return false;
-        if ( getClass() != obj.getClass() ) return false;
-        AAChange other = (AAChange) obj;
-        if ( gene.toString() == null ) {
-            if ( other.gene.toString() != null ) return false;
-        } else if ( !gene.toString().equals( other.gene.toString() ) ) return false;
-        return true;
+        AAChange aaChange = (AAChange) o;
+
+        if ( gene != null ? !gene.equals( aaChange.gene ) : aaChange.gene != null ) return false;
+        if ( transcript != null ? !transcript.equals( aaChange.transcript ) : aaChange.transcript != null )
+            return false;
+        if ( context != null ? !context.equals( aaChange.context ) : aaChange.context != null ) return false;
+        if ( hgvsC != null ? !hgvsC.equals( aaChange.hgvsC ) : aaChange.hgvsC != null ) return false;
+        return hgvsP != null ? hgvsP.equals( aaChange.hgvsP ) : aaChange.hgvsP == null;
     }
 
+    @Override
+    public int hashCode() {
+        int result = gene != null ? gene.hashCode() : 0;
+        result = 31 * result + (transcript != null ? transcript.hashCode() : 0);
+        result = 31 * result + (context != null ? context.hashCode() : 0);
+        result = 31 * result + (hgvsC != null ? hgvsC.hashCode() : 0);
+        result = 31 * result + (hgvsP != null ? hgvsP.hashCode() : 0);
+        return result;
+    }
 
     public String getGene() {
         return gene;
