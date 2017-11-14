@@ -90,7 +90,7 @@
             Set<Paper> papers = Sets.newHashSet();
             Set<String> funcs = Sets.newHashSet();
             Set<Category> categories = Sets.newHashSet();
-            Set<AAChange> aaChanges = Sets.newHashSet();
+            Set<AAChange> aaChanges = Sets.newLinkedHashSet();
 
             boolean complex = false;
             Variant testVariant = variantsCopy.iterator().next();
