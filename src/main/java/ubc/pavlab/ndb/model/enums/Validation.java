@@ -21,7 +21,6 @@
 package ubc.pavlab.ndb.model.enums;
 
 /**
- * TODO Document Me
  *      Categories for different types of validation.
  *      -y - Yes.
  *      -n - No.
@@ -43,5 +42,15 @@ public enum Validation {
 
     public String getLabel(){
         return this.label;
+    }
+
+    public static Validation getEnum(String value) {
+        if ( value == null || value.trim().equals( "" )) {
+            return null;
+        }
+        String trimValue = value.trim();
+        for(Validation v : values())
+            if(v.getLabel().equalsIgnoreCase(trimValue)) return v;
+        throw new IllegalArgumentException();
     }
 }

@@ -130,7 +130,9 @@ public class VariantView implements Serializable {
                     breadcrumbsCurrentStr = "Search by overlap";
                 }
 
-            } catch ( NumberFormatException | NullPointerException e ) {
+            } catch (NullPointerException e ){
+                throw new NullPointerException( "A pointer was exceptionally null." );
+            }catch ( NumberFormatException e) {
                 throw new IllegalArgumentException( "Malformed Search Parameters" );
             }
 
@@ -164,7 +166,7 @@ public class VariantView implements Serializable {
             complexVariant |= event.isComplex();
         }
 
-        csvExporter = new CSVExporter( "variants.csv" );
+        csvExporter = new CSVExporter( "variants.tsv" );
 
         log.info( "Variants: " + this.variants.size() );
         log.info( "Events: " + this.events.size() );

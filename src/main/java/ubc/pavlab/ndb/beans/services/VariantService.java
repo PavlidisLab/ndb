@@ -43,6 +43,8 @@ import ubc.pavlab.ndb.model.RawKV;
 import ubc.pavlab.ndb.model.Variant;
 import ubc.pavlab.ndb.model.dto.VariantDTO;
 import ubc.pavlab.ndb.model.enums.Category;
+import ubc.pavlab.ndb.model.enums.Inheritance;
+import ubc.pavlab.ndb.model.enums.Validation;
 
 /**
  * Service layer on top of VariantDAO. Contains methods for fetching information related to variants from the database
@@ -172,6 +174,24 @@ public class VariantService implements Serializable {
         } catch ( IllegalArgumentException e ) {
             log.warn( "Unknown Category (" + dto.getCategory() + " )" );
         }
+
+        Inheritance inheritance = null;
+        try {
+            if  (dto.getInheritance() != null) {
+                inheritance = Inheritance.valueOf( dto.getInheritance() );
+            }
+        } catch ( IllegalArgumentException e ) {
+            log.warn( "Unknown Inheritance code (" + dto.getInheritance() + ")" );
+        }
+
+        Validation validation = null;
+        try {
+            if (dto.getValidation() != null) {
+                validation = Validation.valueOf(  dto.getValidation() );
+            }
+        } catch ( IllegalArgumentException e ) {
+            log.warn( "Unknown Validation code (" + dto.getValidation() + ")" );
+        }
         // Populate Genes
 
         List<Integer> geneIds = variantDAO.findGeneIdsForVariantId( dto.getId() );
@@ -226,7 +246,7 @@ public class VariantService implements Serializable {
         // Get paper Information from cache
         Paper paper = cacheService.getPaperById( dto.getPaperId() );
 
-        return new Variant( dto, annovar, rawKV, paper, genes, category );
+        return new Variant( dto, annovar, rawKV, paper, genes, category, inheritance, validation );
     }
 
     private List<Variant> map( List<VariantDTO> dtos ) {

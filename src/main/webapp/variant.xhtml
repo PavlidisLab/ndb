@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
 <ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -21,7 +21,7 @@
 		<script type="text/javascript">
 	        	googleAnalyticsTrackPageviewIfConfigured( "/MARVdb/variant" );
 	    </script>
-		<script src="resources/js/adjust_headers.js"></script>
+		<script type="text/javascript" src="resources/js/adjust_headers.js" />
 	</ui:define>
       
 	<ui:define name="content">
@@ -87,7 +87,7 @@
 		        </f:facet>
 
 		 
-		        <p:column styleClass="centeredColumn" style="over" sortBy="#{event}" sortFunction="#{variantView.sortByGenes}">
+		        <p:column styleClass="centeredColumn" sortBy="#{event}" sortFunction="#{variantView.sortByGenes}">
 		            <f:facet name="header">
 		                <h:outputText id="Gene" value="Gene"/>
 		                <p:tooltip id="toolTipGene" for="Gene" value="Gene symbol on which the variant is located" />
@@ -147,7 +147,7 @@
 		        </p:column>	
 		        
          		<p:column rendered="#{event.complex}" colspan="3" style="text-align:center;" styleClass="centeredColumn inline-row-toggle inline-icon">
-					<h:outputText value="Complex Event; expand row to view variants &nbps;" />
+					<h:outputText value="Complex Event; expand row to view variants &#160;" />
 					   <p:rowToggler/> 
 		        </p:column>	
 		        
@@ -166,22 +166,30 @@
 		        </p:column>
 		        
 		        
-		        <p:column styleClass="centeredColumn row-gradient" sortBy="#{event.inheritance}"  >
+		        <p:column styleClass="centeredColumn row-gradient"  >
 		            <f:facet name="header">
 		                <h:outputText id="inheritance" value="Inheritance"  />
 		                <p:tooltip id="toolTipInheritance" for="inheritance" value="De novo variant (i.e. Not inherited from parents.)" />	
 		           
-		            </f:facet>		            	            	
-		            <h:outputText value="#{event.inheritanceText}" />
-		        </p:column>
+		            </f:facet>
+					<ui:repeat var="c" value="#{event.inheritances}"  varStatus="status">
+						<h:outputText value="#{c.label}" />
+						<h:outputText value=", " rendered="#{not status.last}" />
+					</ui:repeat>
 
-				<p:column styleClass="centeredColumn row-gradient" sortBy="#{event.validationText}"  >
+				</p:column>
+
+				<p:column styleClass="centeredColumn row-gradient" >
 					<f:facet name="header">
 						<h:outputText id="validation" value="Validation"  />
 						<p:tooltip id="toolTipValidation" for="validation" value="Status of validation by secondary method for existance of variant." />
 
 					</f:facet>
-					<h:outputText value="#{event.validationText}" title="Validation method: #{event.validationMethod}"  />
+					<ui:repeat var="c" value="#{event.validations}"  varStatus="status">
+						<h:outputText value="#{c.label}" title="event.validationMethodsText" />
+						<h:outputText value=", " rendered="#{not status.last}" />
+					</ui:repeat>
+
 				</p:column>
 
 				<ui:remove>
@@ -297,24 +305,24 @@
 						
 						<p:column styleClass="centeredColumn" style="min-width:8px;">
 				            <f:facet name="header">
-				                <h:outputText id="REF" value="REF"/>
-				                <p:tooltip id="toolTipREF" for="REF" value="Reference base(s) affected by the variant" />
+				                <h:outputText id="cmplxREF" value="REF"/>
+				                <p:tooltip id="cmplxToolTipREF" for="cmplxREF" value="Reference base(s) affected by the variant" />
 				            </f:facet>
 				            <h:outputText value="#{variant.ref}" />
 				        </p:column>
 				        
 				        <p:column>
 				            <f:facet name="header">
-				                <h:outputText id="ALT" value="ALT"/>
-				                <p:tooltip id="toolTipALT" for="ALT" value="Modified base(s) caused by the variant" />
+				                <h:outputText id="cmplxALT" value="ALT"/>
+				                <p:tooltip id="cmplxToolTipALT" for="cmplxALT" value="Modified base(s) caused by the variant" />
 				            </f:facet>
 				            <h:outputText value="#{variant.alt}" />
 				        </p:column>
 				        
 				         <p:column>
 				            <f:facet name="header">
-				                <h:outputText id="Location" value="Location"/>
-				                <p:tooltip id="toolTipLocation" for="Location" value="Location of the variant" />
+				                <h:outputText id="cmplxLocation" value="Location"/>
+				                <p:tooltip id="cmplxToolTipLocation" for="cmplxLocation" value="Location of the variant" />
 				            </f:facet>
 				            <h:outputLink target="_blank" value="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&amp;position=chr#{variant.chromosome}%3A#{variant.start}-#{variant.stop}">			            	
 				            	<h:outputText value="chr#{variant.chromosome}:#{variant.start}-#{variant.stop}" />
@@ -334,8 +342,8 @@
 				        
 				        <p:column>
 				            <f:facet name="header">
-				                <h:outputText id="Effect" value="Effect"/>
-				                <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect" />	
+				                <h:outputText id="cmplxEffect" value="Effect"/>
+				                <p:tooltip id="cmplxtoolTipEffect" for="cmplxEffect" value="Reported variant effect" />
 				           
 				            </f:facet>
 				            
@@ -345,8 +353,8 @@
 				        
 				        <p:column styleClass="centeredColumn row-gradient #{(variant.annovar.caddPhred > 50 ? 'ct6' : (variant.annovar.caddPhred > 40 ? 'ct5' : (variant.annovar.caddPhred > 30 ? 'ct4' : (variant.annovar.caddPhred > 20 ? 'ct3' : (variant.annovar.caddPhred > 10 ? 'ct2' : (variant.annovar.caddPhred > 0 ? 'ct1' : ''))))))}">
 				            <f:facet name="header">
-				                <h:outputText id="Cadd" value="CADD Phred"/>
-				                <p:tooltip id="toolTipCadd" for="Cadd" value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores." />	
+				                <h:outputText id="cmplxCadd" value="CADD Phred"/>
+				                <p:tooltip id="cmplxtoolTipCadd" for="cmplxCadd" value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores." />
 				           
 				            </f:facet>
 			            	

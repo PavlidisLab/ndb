@@ -27,6 +27,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import ubc.pavlab.ndb.model.dto.VariantDTO;
 import ubc.pavlab.ndb.model.enums.Category;
+import ubc.pavlab.ndb.model.enums.Validation;
+import ubc.pavlab.ndb.model.enums.Inheritance;
 
 /**
  * Represents a variant-subject pairing
@@ -51,20 +53,21 @@ public class Variant {
 
     private final List<Gene> genes;
     private final Category category;
+    private final Validation validation;
+    private final Inheritance inheritance;
+
     private final String geneDetail;
     private final String func;
     private final List<String> aaChanges;
     private final String cytoband;
-    private final String inheritance;
     private final String lof;
 
-    private final String validation;
     private final String validationMethod;
 
     private final List<RawKV> rawKV;
 
     public Variant( VariantDTO dto, Annovar annovar, List<RawKV> rawKV, Paper paper, List<Gene> genes,
-            Category category ) {
+            Category category, Inheritance inheritance, Validation validation) {
         this.id = dto.getId();
         this.rawVariantId = dto.getRawVariantId();
         this.eventId = dto.getEventId();
@@ -75,8 +78,6 @@ public class Variant {
         this.stopHg19 = dto.getStopHg19();
         this.ref = dto.getRef();
         this.alt = dto.getAlt();
-        this.inheritance = dto.getInheritance();
-        this.validation = dto.getValidation();
         this.validationMethod = dto.getValidationMethod();
         this.lof = dto.getLoF();
 
@@ -85,6 +86,9 @@ public class Variant {
 
         this.genes = genes;
         this.category = category;
+        this.inheritance = inheritance;
+
+        this.validation = validation;
         this.geneDetail = dto.getGeneDetail();
         this.func = dto.getFunc();
 
@@ -176,11 +180,11 @@ public class Variant {
         return cytoband;
     }
 
-    public String getInheritance() {
+    public Inheritance getInheritance() {
         return inheritance;
     }
 
-    public String getValidation() {
+    public Validation getValidation() {
         return validation;
     }
 
