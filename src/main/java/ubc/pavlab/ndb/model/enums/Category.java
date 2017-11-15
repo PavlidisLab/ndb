@@ -20,7 +20,6 @@
 package ubc.pavlab.ndb.model.enums;
 
 /**
- * TODO Document Me
  *      The impact for the variant effect is colored by tiers 
  *      inspired by http://uswest.ensembl.org/info/genome/variation/predicted_data.html#consequences 
  * @author mjacobson

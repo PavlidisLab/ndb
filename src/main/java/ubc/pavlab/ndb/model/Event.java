@@ -52,14 +52,15 @@
         private final Integer stop;
         private final String ref;
         private final String alt;
-        private final String inheritance;
-        private final String validation;
-        private final String validationMethod;
+
         private final String lof;
         private final List<Gene> genes;
-        // private final List<Paper> papers;
         private final List<String> funcs;
         private final List<Category> categories;
+        private final List<Inheritance> inheritances;
+        private final List<Validation> validations;
+        private final List<String> validationMethods;
+
         private final List<AAChange> aaChanges;
         private final List<Variant> variants;
 
@@ -90,6 +91,9 @@
             Set<Paper> papers = Sets.newHashSet();
             Set<String> funcs = Sets.newHashSet();
             Set<Category> categories = Sets.newHashSet();
+            Set<Inheritance> inheritances = Sets.newHashSet();
+            Set<Validation> validations = Sets.newHashSet();
+            Set<String> validationMethods = Sets.newHashSet();
             Set<AAChange> aaChanges = Sets.newLinkedHashSet();
 
             boolean complex = false;
@@ -118,6 +122,15 @@
                 }
                 if ( variant.getCategory() != null ) {
                     categories.add( variant.getCategory() );
+                }
+                if ( variant.getInheritance() != null ) {
+                    inheritances.add( variant.getInheritance() );
+                }
+                if ( variant.getValidation() != null ) {
+                    validations.add( variant.getValidation() );
+                }
+                if ( variant.getValidationMethod() != null ) {
+                    validationMethods.add( variant.getValidationMethod() );
                 }
 
                 if ( variant.getAaChanges() != null ) {
@@ -165,9 +178,6 @@
                 this.stop = null;
                 this.ref = null;
                 this.alt = null;
-                this.inheritance = null;
-                this.validation = null;
-                this.validationMethod = null;
                 this.lof = null;
 
             } else {
@@ -175,9 +185,6 @@
                 this.stop = testVariant.getStopHg19();
                 this.ref = testVariant.getRef();
                 this.alt = testVariant.getAlt();
-                this.inheritance = testVariant.getInheritance();
-                this.validation = testVariant.getValidation();
-                this.validationMethod = testVariant.getValidationMethod();
                 this.lof = testVariant.getLoF();
             }
 
@@ -190,6 +197,9 @@
             // this.papers = ImmutableList.copyOf( papers );
             this.funcs = ImmutableList.copyOf( funcs );
             this.categories = ImmutableList.copyOf( categories );
+            this.inheritances = ImmutableList.copyOf( inheritances );
+            this.validations = ImmutableList.copyOf( validations );
+            this.validationMethods = ImmutableList.copyOf( validationMethods );
             this.aaChanges = ImmutableList.copyOf( aaChanges );
             this.variants = ImmutableList.copyOf( variantsCopy );
         }
@@ -201,6 +211,7 @@
         public Integer getSubjectId() {
             return subjectId;
         }
+
         public String getSampleId() {
             return sampleId;
         }
@@ -225,25 +236,24 @@
             return alt;
         }
 
-        public String getInheritance() {
-            return inheritance;
-        }
 
-        public String getInheritanceText() {
-            if (inheritance == null) { return ""; }
-
-            Inheritance inheritanceText = Inheritance.valueOf( inheritance );
-            return inheritanceText.getLabel();
-        }
-
-        public String getValidationText() {
-            if (validation == null) { return ""; }
-
-            Validation validationText = Validation.valueOf( validation );
-            return validationText.getLabel();
-        }
-
-        public String getValidationMethod() { return validationMethod; }
+//        public String getInheritanceText() {
+//            StringBuilder result = new StringBuilder();
+//            for ( Inheritance i : inheritances ) {
+//                result.append( i.getLabel() );
+//                result.append( ";" );
+//            }
+//            return result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "";
+//        }
+//
+//        public String getValidationText() {
+//            StringBuilder result = new StringBuilder();
+//            for ( Validation v : validations ) {
+//                result.append( v.getLabel() );
+//                result.append( ";" );
+//            }
+//            return result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "";
+//        }
 
         public String getLof() {
             return lof;
@@ -278,6 +288,25 @@
         public List<Category> getCategories() {
             return categories;
         }
+        public List<Validation> getValidations() {
+            return validations;
+        }
+        public List<String> getValidationMethods() { return validationMethods; }
+
+        public String getValidationMethodsText() {
+
+            StringBuilder result = new StringBuilder();
+            for ( Variant v : getVariants() ) {
+                result.append( v.getValidationMethod() );
+                result.append( ";" );
+            }
+            return result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" ;
+        }
+
+        public List<Inheritance> getInheritances() {
+            return inheritances;
+        }
+
         public List<AAChange> getAAChanges() { return aaChanges; }
         public List<Variant> getVariants() { return variants; }
 

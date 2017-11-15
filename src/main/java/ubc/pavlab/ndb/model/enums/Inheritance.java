@@ -20,7 +20,6 @@
 package ubc.pavlab.ndb.model.enums;
 
 /**
- * TODO Document Me
  *      Categories for different types of inheritance.
  *      -De novo is a reported as not being inherited.
  *      -Inherited is the opposite.
@@ -50,4 +49,15 @@ public enum Inheritance {
     public String getLabel(){
         return this.label;
     }
+
+    public static Inheritance getEnum(String value) {
+        if ( value == null || value.trim().equals( "" )) {
+            return null;
+        }
+        String trimValue = value.trim();
+        for(Inheritance v : values())
+            if(v.getLabel().equalsIgnoreCase(trimValue)) return v;
+        throw new IllegalArgumentException();
+    }
+
 }

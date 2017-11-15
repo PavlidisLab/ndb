@@ -20,7 +20,9 @@
 package ubc.pavlab.ndb.utility;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
@@ -29,10 +31,12 @@ import org.apache.log4j.Logger;
 
 import com.google.common.collect.Lists;
 
+import ubc.pavlab.ndb.model.AAChange;
 import ubc.pavlab.ndb.model.Event;
 import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.Variant;
 import ubc.pavlab.ndb.model.enums.Category;
+import ubc.pavlab.ndb.model.enums.Inheritance;
 
 /**
  * Exports Data as CSV
@@ -54,12 +58,14 @@ public class CSVExporter extends Exporter {
 
     public void loadData( Collection<Event> events ) {
         StringBuilder csvText = new StringBuilder();
-        CSVFormat format = CSVFormat.RFC4180.withHeader().withDelimiter( ',' );
+        Date today = Calendar.getInstance().getTime();
+        String timestampHeader = "Downloaded from MARVdb on " + today.toString();
+        CSVFormat format = CSVFormat.RFC4180.withHeader(timestampHeader).withDelimiter( '\t' );
         CSVPrinter printer;
         try {
             printer = new CSVPrinter( csvText, format );
-            printer.printRecord( "Variant Event ID", "Gene", "Subject", "REF", "ALT", "Location", "Context",
-                    "Effects", "CADD Phred", "Sources" );
+            printer.printRecord( "Variant Event ID", "Gene", "Subject", "Sample_ID", "REF", "ALT", "Location", "Context",
+                    "Effects", "HGVS", "CADD_1.0_Phred", "ExAC_0.3", "Inheritance", "Validation_Status", "Validation_Method", "Sources" );
 
             for ( Event event : events ) {
                 if ( event.isComplex() ) {
@@ -90,21 +96,44 @@ public class CSVExporter extends Exporter {
             result.append( ";" );
         }
         csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
-
         csvData.add( e.getSubjectId().toString() );
-
+        csvData.add( e.getSampleId() );
         csvData.add( e.getRef() );
         csvData.add( e.getAlt() );
         csvData.add( "chr" + e.getChromosome() + ":" + e.getStart().toString() + "-" + e.getStop().toString() );
-
         csvData.add( e.getFunc() );
-        csvData.add( e.getCategory().getLabel() );
 
+        if (e.getCategory() != null){
+            csvData.add( e.getCategory().getLabel() );
+        } else {
+            csvData.add( "NULL" ); // TODO: Return Null or Nothing (or .) ?
+        }
+
+
+        result = new StringBuilder();
+        for ( String aa : e.getAaChanges() ) {
+            //result.append( aa.getTranscript() + ":" + aa.getContext() + ":" + ":" + aa.getHgvsC() + ":" + aa.getHgvsP() );
+            result.append( aa );
+            result.append( ";" );
+        }
+        csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
         Double cadd = e.getAnnovar().getCaddPhred();
-
         csvData.add( cadd == 0 ? "-" : cadd.toString() );
+        csvData.add( String.valueOf( e.getAnnovar().getExac03() ) );
 
-        csvData.add( e.getPaper().getAuthor() );
+        if (e.getInheritance() == null){
+            csvData.add("");
+        }else{
+            csvData.add(e.getInheritance().getLabel());
+        }
+
+        if (e.getValidation() == null){
+            csvData.add("");
+        }else{
+            csvData.add(e.getValidation().getLabel());
+        }
+        csvData.add( e.getValidationMethod() );
+        csvData.add( e.getPaper().getPaperKey() );
 
         return csvData;
     }
@@ -122,6 +151,7 @@ public class CSVExporter extends Exporter {
         csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
 
         csvData.add( e.getSubjectId().toString() );
+        csvData.add( e.getSampleId() );
 
         csvData.add( e.getRef() );
         csvData.add( e.getAlt() );
@@ -141,11 +171,49 @@ public class CSVExporter extends Exporter {
         }
         csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
 
+
+        result = new StringBuilder();
+        for ( AAChange aa : e.getAAChanges() ) {
+            result.append( aa.getTranscript() + ":" + aa.getContext() + ":" + ":" + aa.getHgvsC() + ":" + aa.getHgvsP() );
+            result.append( ";" );
+        }
+        csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
+
         csvData.add( e.getCaddPhred() == 0 ? "-" : e.getCaddPhred().toString() );
+        csvData.add( String.valueOf( e.getExacFreq() ) );
+
+
+        // Add inheritance
+        //  csvData.add( e.getInheritanceText() );
+        result = new StringBuilder();
+        for ( Variant v : e.getVariants() ) {
+            if (v.getInheritance() != null) {
+                result.append( v.getInheritance().getLabel() );
+                result.append( ";" );
+            }
+        }
+        csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
+
+        // Append Validation
+        result = new StringBuilder();
+        for ( Variant v : e.getVariants() ) {
+            if ( v.getValidation() != null ) {
+                result.append( v.getValidation().getLabel() );
+                result.append( ";" );
+            }
+        }
+        csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
 
         result = new StringBuilder();
         for ( Variant v : e.getVariants() ) {
-            result.append( v.getPaper().getAuthor() );
+            result.append( v.getValidationMethod() );
+            result.append( ";" );
+        }
+        csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
+
+        result = new StringBuilder();
+        for ( Variant v : e.getVariants() ) {
+            result.append( v.getPaper().getPaperKey() );
             result.append( ";" );
         }
         csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
