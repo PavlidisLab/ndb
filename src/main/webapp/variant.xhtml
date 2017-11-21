@@ -220,14 +220,40 @@
 
 				<p:column styleClass="centeredColumn row-gradient" >
 					<f:facet name="header">
-						<h:outputText id="HGVS" value="HGVS"/>
-						<p:tooltip id="toolTipHGVS" for="HGVS" value="HGVS variant notation." />
+						<h:outputText id="transcript" value="Transcript"/>
+						<p:tooltip id="toolTipTranscript" for="transcript" value="Transcript used for the cDNA/Protein mutation." />
 
 					</f:facet>
 
 					<ui:repeat var="a" value="#{event.AAChanges}"  varStatus="status">
-						<h:outputText value="#{a.transcript}:#{a.hgvsC}:#{a.hgvsP}" title="#{a.context}"/>
-						<h:outputText value=", " rendered="#{not status.last}" />
+						<h:outputText value="#{a.transcript}" />
+						<h:outputText value="&lt;br /&gt;" escape="false" rendered="#{not status.last}" />
+					</ui:repeat>
+				</p:column>
+
+				<p:column styleClass="centeredColumn row-gradient" >
+					<f:facet name="header">
+						<h:outputText id="cDNA" value="cDNA"/>
+						<p:tooltip id="toolTipCDNA" for="cDNA" value="cDNA variant notation." />
+
+					</f:facet>
+
+					<ui:repeat var="a" value="#{event.AAChanges}"  varStatus="status">
+						<h:outputText value="#{a.hgvsC}" title="#{a.context}"/>
+						<h:outputText value="&lt;br /&gt;" escape="false" rendered="#{not status.last}" />
+					</ui:repeat>
+				</p:column>
+
+				<p:column styleClass="centeredColumn row-gradient" >
+					<f:facet name="header">
+						<h:outputText id="protein" value="Protein"/>
+						<p:tooltip id="toolTipProtein" for="protein" value="Protein variant notation." />
+
+					</f:facet>
+
+					<ui:repeat var="a" value="#{event.AAChanges}"  varStatus="status">
+						<h:outputText value="#{a.hgvsP}" title="#{a.context}"/>
+						<h:outputText value="&lt;br /&gt;" escape="false" rendered="#{not status.last}" />
 					</ui:repeat>
 				</p:column>
 		        
