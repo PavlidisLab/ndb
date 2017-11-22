@@ -53,7 +53,7 @@
 					>
 
 		    <p:column headerText="Details" style="width:32px;text-align: center">
-               	<p:link outcome="paper" value="" target="_blank" styleClass="ui-icon ui-icon-circlesmall-plus" style="margin:0 auto;">
+               	<p:link outcome="paper" value="" target="_blank" styleClass="iconVisit fa fa-book " style="margin:0 auto;">
 				    <f:param name="paperId" value="#{paper.id}" />
 				</p:link>
 		    </p:column>
@@ -116,6 +116,31 @@
 		        <h:outputText value="#{paper.technology}" />
 		    </p:column>
 
+			<p:column id="headSubjects" headerText="Subjects" sortBy="#{paper.design}">
+				<f:facet name="header">
+					<h:outputText value="Subjects"/>
+					<p:tooltip trackMouse="true" id="toolTipSubjects" for="headSubjects" value="Sample subjectss per study." />
+				</f:facet>
+				<h:outputText value="#{paper.design}: #{paper.count}" />
+			</p:column>
+
+			<p:column id="headDiagnosis" headerText="Diagnosis" sortBy="#{paper.cases}">
+				<f:facet name="header">
+					<h:outputText value="Diagnosis"/>
+					<p:tooltip trackMouse="true" id="toolTipDiagnosis" for="headDiagnosis" value="Types of diagnosis included in each study." />
+				</f:facet>
+				<h:outputText value="#{paper.cases}" />
+			</p:column>
+		   
+		    <p:column id="headDoi" headerText="doi" sortBy="#{paper.doi}" >
+		    	<f:facet name="header">
+		     		<h:outputText value="URL"/>
+		            <p:tooltip trackMouse="true" id="toolTipDoi" for="headDoi" value="Digital object identifier." atPosition="right center"/>
+		        </f:facet>
+		        <p:link target="_blank" href="#{paper.url}">
+		        	<h:outputText value="#{paper.doi}" />
+		        </p:link>
+		    </p:column>
 			<p:column id="headPubmed" headerText="Pubmed" sortBy="#{paper.pubmed_id}">
 				<f:facet name="header">
 					<h:outputText value="Pubmed"/>
@@ -125,34 +150,6 @@
 					<h:outputText value="#{paper.pubmed_id}" />
 				</h:outputLink>
 			</p:column>
-
-
-			<p:column id="headCount" headerText="Count" sortBy="#{paper.count}">
-				<f:facet name="header">
-					<h:outputText value="Count"/>
-					<p:tooltip trackMouse="true" id="toolTipCount" for="headCount" value="Sample counts per study." />
-				</f:facet>
-				<h:outputText value="#{paper.count}" />
-			</p:column>
-
-			<p:column id="headCases" headerText="Cases" sortBy="#{paper.cases}">
-				<f:facet name="header">
-					<h:outputText value="Cases"/>
-					<p:tooltip trackMouse="true" id="toolTipCases" for="headCases" value="Types of cases included in each study." />
-				</f:facet>
-				<h:outputText value="#{paper.cases}" />
-			</p:column>
-		   
-		    <p:column id="headDoi" headerText="doi" sortBy="#{paper.doi}" >
-		    	<f:facet name="header">
-		     		<h:outputText value="DOI"/>		                
-		            <p:tooltip trackMouse="true" id="toolTipDoi" for="headDoi" value="Digital object identifier." atPosition="right center"/>
-		        </f:facet>
-		        <p:link target="_blank" href="#{paper.url}">
-		        	<h:outputText value="#{paper.doi}" />
-		        </p:link>
-		    </p:column>
-		    
 		    <p:column id="headSource" headerText="Source"  >
 		    	<f:facet name="header">
 		     		<h:outputText value="Source"/>		                
