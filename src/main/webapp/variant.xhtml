@@ -259,7 +259,7 @@
 		        
 		        <p:column sortBy="#{event.caddPhred}" styleClass="centeredColumn row-gradient #{(event.caddPhred > 50 ? 'ct6' : (event.caddPhred > 40 ? 'ct5' : (event.caddPhred > 30 ? 'ct4' : (event.caddPhred > 20 ? 'ct3' : (event.caddPhred > 10 ? 'ct2' : (event.caddPhred > 0 ? 'ct1' : ''))))))}">
 		            <f:facet name="header">
-		                <h:outputText id="Cadd" value="CADD Phred"/>
+		                <h:outputText id="Cadd" value="CADD-Phred v1.0"/>
 		                <p:tooltip id="toolTipCadd" for="Cadd" value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores." />	
 		           
 		            </f:facet>
@@ -379,7 +379,7 @@
 				        
 				        <p:column styleClass="centeredColumn row-gradient #{(variant.annovar.caddPhred > 50 ? 'ct6' : (variant.annovar.caddPhred > 40 ? 'ct5' : (variant.annovar.caddPhred > 30 ? 'ct4' : (variant.annovar.caddPhred > 20 ? 'ct3' : (variant.annovar.caddPhred > 10 ? 'ct2' : (variant.annovar.caddPhred > 0 ? 'ct1' : ''))))))}">
 				            <f:facet name="header">
-				                <h:outputText id="cmplxCadd" value="CADD Phred"/>
+				                <h:outputText id="cmplxCadd" value="CADD-Phred v1.0"/>
 				                <p:tooltip id="cmplxtoolTipCadd" for="cmplxCadd" value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores." />
 				           
 				            </f:facet>

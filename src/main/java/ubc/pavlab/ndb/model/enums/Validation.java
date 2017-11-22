@@ -32,7 +32,8 @@ package ubc.pavlab.ndb.model.enums;
 public enum Validation {
     y("Yes"),
     n("No"),
-    u("Unknown");
+    // u("Unknown");
+    u("");
 
     private String label;
 
