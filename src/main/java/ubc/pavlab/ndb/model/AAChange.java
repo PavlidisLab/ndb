@@ -47,15 +47,11 @@ public class AAChange {
         String [] aaChangeArray = null;
         try {
             aaChangeArray = aaChangeString.split(":");
-            this.gene = aaChangeArray[0];
-            this.transcript = aaChangeArray[1];
-            this.context = aaChangeArray[2];
-            this.hgvsC = aaChangeArray[3];
-            if (aaChangeArray.length == 5) {
-                this.hgvsP = aaChangeArray[4];
-            } else {
-                this.hgvsP = "p.N/A";
-            }
+            this.gene = aaChangeArray.length > 0 ? aaChangeArray[0] : "N/A";
+            this.transcript = aaChangeArray.length  > 1 ? aaChangeArray[1] : "N/A";
+            this.context = aaChangeArray.length  > 2 ? aaChangeArray[2] : "N/A";
+            this.hgvsC = aaChangeArray.length  > 3 ? aaChangeArray[3] : "N/A";
+            this.hgvsP = aaChangeArray.length  > 4 ? aaChangeArray[4] : "N/A";
 
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Exception thrown trying to split 'aaChangeString' :" + aaChangeString);

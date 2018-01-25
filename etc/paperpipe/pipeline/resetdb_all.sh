@@ -22,7 +22,7 @@ source db_credentials.sh
 DATABASE_IN=" mysql -u$DBUSER -p$DBPASS "
 DATABASE_NAME=" marvdb_staging "
 
-PAPERMARKER="[$1,"
+PAPERMARKER="[$1," # Not a fan of this, but here because in the commit files, the first element in the [] list is the paper ID, so hence the [.
 export PAPERMARKER
 
 if [[ "$case"=="all" ]]; then
