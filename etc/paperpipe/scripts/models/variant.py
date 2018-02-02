@@ -136,15 +136,19 @@ class Variant(AbstractModel):
             print "Initializing Fixer."
             fixer = vf.Fixer()
 
-            _before = [CHROMOSOME,START,STOP,REF,ALT]
+            old = "{}:{}-{}{}>{}".format(*[x if type(x) != str or len(x) > 0 else "None" for x in [CHROMOSOME,START,STOP,REF,ALT]] )
             print "Fixing variant..."
             CHROMOSOME,START,STOP,REF,ALT = fixer.repair_variant(CHROMOSOME,START,STOP,REF,ALT)
-            print "Fixed___________"
+            new = "{}:{}-{}{}>{}".format(CHROMOSOME,START,STOP,REF,ALT)
+            print "Fixed",old,"to",new
             
             if REF == ALT == "N":
                 # Skipping variant because fixer could not fix.
-                print "Could not fix:", _before
+                print "Could not fix:", old
                 print "Skipping"
+                print "TODO: MUST LOG THESE INSTANCES FOR PRODUCTION."
+                print "THIS WILL KEEP FAILING UNTIL LOGS HAVE BEEN ADDED."
+                exit(-1)
                 continue
 
             row[header.index('start_hg19')] = START
@@ -161,22 +165,32 @@ class Variant(AbstractModel):
                 existing_subject_id = "-1"
             row[SUBJECT_ID] = existing_subject_id
 
-
-            events, subjects  = self.disambiguate_subjects(START,
+            
+            #print "CALL TO DISAMBIGUATE USING start stop:", START, STOP
+            events, subjects  = self.disambiguate_subjects(CHROMOSOME,
+                                                           START,
                                                            STOP,
-                                                           tolerance=1) # Exact match or nothing.
+                                                           tolerance=1) # Immediately adjacent or else nothing.
+
             """
+	    print "events:"
             print events
             print SAMPLE_ID
             print events[row[SAMPLE_ID]]
 
+            print "subjects:"
             print subjects
             print SAMPLE_ID
             print subjects[row[SAMPLE_ID]]
-            raw_input()
-            """
+            raw_input() """
 
             current_sample = row[SAMPLE_ID]
+            """ print "current_sample", current_sample
+            print "all events", events.keys()
+            print events[current_sample]
+            print "all subjects", subjects.keys()
+            print subjects[current_sample] """
+            
             if events and len(events[current_sample]) > 0:
                 row[EVENT_ID] = events[current_sample][0]
 
@@ -194,12 +208,14 @@ class Variant(AbstractModel):
     def commit(self):
         for _data in self.data:
             try:
+                predata = None
                 predata = self.precommit([_data])
                 if len(predata) < 1:
                     continue
                 data = predata[0]
             except Exception as e:
-                print "error caugth in commit()", _data
+                print "error caught in commit()", _data
+                print "predata:", predata
                 print "Reason:", e.message
                 raise e
 
@@ -223,11 +239,14 @@ class Variant(AbstractModel):
             subject = rows[1][0]
         return subject
 
-    def disambiguate_subjects(self, start, stop, tolerance=0):
+    def disambiguate_subjects(self, chromosome, start, stop, tolerance=1):
         """
         For a given variant, check that there's only one subject + contiguous variant(s) within range +- tolerance
         """
-        for RANGE in range(0, tolerance + 1):
+        
+        sample_events, sample_subjects = defaultdict(list),defaultdict(list) # Return values
+        
+        for RANGE in xrange(0, tolerance + 1):
             print "RANGE:", RANGE
             RANGE_START_left = ( int(start) - int(RANGE) )
             RANGE_START_right = ( int(start) + int(RANGE) )
@@ -236,13 +255,14 @@ class Variant(AbstractModel):
             RANGE_STOP_right = ( int(stop) + int(RANGE) )
 
 
-            query = "SELECT * FROM {0} WHERE start_hg19 >= {1} AND start_hg19 <= {2} AND stop_hg19 >= {3}  AND stop_hg19 <= {4} ;".format(self.database_table,
+            query = "SELECT * FROM {0} WHERE ((start_hg19 >= {1} AND start_hg19 <= {2}) OR (stop_hg19 >= {3}  AND stop_hg19 <= {4})) AND chromosome={5} ;".format(self.database_table,
                                                                                                                                           RANGE_START_left,
                                                                                                                                           RANGE_START_right,
                                                                                                                                           RANGE_STOP_left,
-                                                                                                                                          RANGE_STOP_right)
+                                                                                                                                          RANGE_STOP_right,
+                                                                                                                                          chromosome)
 
-            #print query
+            # print "Query:", query
             _rows = self.U.fetch_rows(query)
             header = None # Header fields
             rows = None # Actual data
@@ -281,12 +301,13 @@ class Variant(AbstractModel):
                     raise Exception("Error: Multiple contiguous variant events for same sample ID. This can be caused by duplicates in the import spreadsheet.")
             if len(sample_events.keys()) > 0:
                 # Found a clustered event
-                return sample_events, sample_subjects
+                # print "Breaking at tolerance:", tolerance
+                break                
             else:
+                # print "Not breaking at tolerance:", tolerance
                 pass # Proceed with tolerance increase
 
-        # Case where no ID was found
-        return None, None
+        return sample_events, sample_subjects #None, None
 
 def bootstrap():
     # TODO: Remove for production
