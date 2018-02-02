@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu
 
+trap 'echo Error at line $LINENO $(basename "$0")' ERR
+
 TASK="all"
 PAPERID="UNDEFINED"
 
@@ -31,7 +33,9 @@ DATABASE_NAME=" marvdb_staging "
 PAPERMARKER="[$PAPERID," # Not a fan of this, but here because in the commit files, the first element in the [] list is the paper ID, so hence the [.
 export PAPERMARKER
 
-if [[ "$TASK"=="all" ]]; then
+if [[ "$TASK" == "all" ]]; then
+
+    echo "DELETING ALL COMMITS."
     echo "use $DATABASE_NAME; $DELETE_ANNOVAR $DELETE_VARIANT $DELETE_RAWVARIANT $DELETE_RAWKV $DELETE_PAPER " | $DATABASE_IN
 
     RELCOMMITS=$(find commits/ -name "*_paper$PAPERID.out" | wc -l)
@@ -50,34 +54,35 @@ if [[ "$TASK"=="all" ]]; then
 
 fi
 
-if [[ "$TASK"=="annovar" ]]; then
-    #echo "use $DATABASE_NAME; $DELETE_ANNOVAR " | $DATABASE_IN 
+if [[ "$TASK" == "annovar" ]]; then
+    #echo "use $DATABASE_NAME; $DELETE_ANNOVAR " | $DATABASE_IN
+    echo "Task is $TASK"
     rm commits/$TASK"_paper"$PAPERID.out
     echo "'$TASK' commit file deleted."       
 fi
 
-if [[ "$TASK"=="variant" ]]; then    
+if [[ "$TASK" == "variant" ]]; then    
     echo "use $DATABASE_NAME;  $DELETE_VARIANT " | $DATABASE_IN 
     echo ";variant; deleted for paper $PAPERID"
     rm commits/$TASK"_paper"$PAPERID.out
     echo "'$TASK' commit file deleted."   
 fi
 
-if [[ "$TASK"=="raw_variant" ]]; then
+if [[ "$TASK" == "raw_variant" ]]; then
     echo "use $DATABASE_NAME;  $DELETE_RAWVARIANT " | $DATABASE_IN 
     echo ";raw_variant; deleted for paper $PAPERID"
     rm commits/$TASK"_paper"$PAPERID.out
     echo "'$TASK' commit file deleted."   
 fi
 
-if [[ "$TASK"=="raw_key_value" ]]; then
+if [[ "$TASK" == "raw_key_value" ]]; then
     echo "use $DATABASE_NAME; $DELETE_RAWKV  " | $DATABASE_IN 
     echo ";raw_key_value; deleted for paper $PAPERID"
     rm commits/$TASK"_paper"$PAPERID.out
     echo "'$TASK' commit file deleted."   
 fi
 
-if [[ "$TASK"=="paper" ]]; then
+if [[ "$TASK" == "paper" ]]; then
     echo "use $DATABASE_NAME; $DELETE_PAPER " | $DATABASE_IN
     echo ";papers; deleted for paper $PAPERID"
     
