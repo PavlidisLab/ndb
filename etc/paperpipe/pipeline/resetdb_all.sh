@@ -1,76 +1,89 @@
 #!/bin/bash
 set -eu
 
+TASK="all"
+PAPERID="UNDEFINED"
+
 if [[ $# -lt 1 ]]; then
     echo "Usage:"
-    echo "$0 PAPERID (Optional, CASE)"
-    echo "CASE can be all, annovar, variant, raw_variant, raw_key_value, or paper"
+    echo "$0 PAPERID (Optional, TASK)"
+    echo "TASK can be all, annovar, variant, raw_variant, raw_key_value, or paper"
     exit -1
 fi
 
+PAPERID=$1
+if [ "$#" -eq 2 ]; then TASK=$2; fi
+if [ "$#" -gt 2 ]; then echo "Too many arguments." ; $0 ; exit -1 ; fi
+echo "Preparing to delete $TASK from paper# $PAPERID";
 
-case="all"
-if [ -z ${2+x} ]; then echo "Deleting all tables from paper# $1"; else case=$2 ; fi
 
-DELETE_ANNOVAR=" DELETE FROM variant where paper_id=$1; "
-DELETE_VARIANT=" DELETE FROM variant where paper_id=$1; "
-DELETE_RAWVARIANT=" DELETE FROM raw_variant where paper_id=$1; "
-DELETE_RAWKV=" DELETE FROM raw_key_value where paper_id=$1; "
-DELETE_PAPER=" DELETE FROM papers where id=$1; "
+
+DELETE_ANNOVAR=" DELETE FROM variant where paper_id=$PAPERID; "
+DELETE_VARIANT=" DELETE FROM variant where paper_id=$PAPERID; "
+DELETE_RAWVARIANT=" DELETE FROM raw_variant where paper_id=$PAPERID; "
+DELETE_RAWKV=" DELETE FROM raw_key_value where paper_id=$PAPERID; "
+DELETE_PAPER=" DELETE FROM papers where id=$PAPERID; "
 
 source db_credentials.sh
-DATABASE_IN=" mysql -u$DBUSER -p$DBPASS "
+DATABASE_IN=" mysql -u$DBUSER -p$DBPASS -h$HOST "
 DATABASE_NAME=" marvdb_staging "
 
-PAPERMARKER="[$1," # Not a fan of this, but here because in the commit files, the first element in the [] list is the paper ID, so hence the [.
+PAPERMARKER="[$PAPERID," # Not a fan of this, but here because in the commit files, the first element in the [] list is the paper ID, so hence the [.
 export PAPERMARKER
 
-if [[ "$case"=="all" ]]; then
+if [[ "$TASK"=="all" ]]; then
     echo "use $DATABASE_NAME; $DELETE_ANNOVAR $DELETE_VARIANT $DELETE_RAWVARIANT $DELETE_RAWKV $DELETE_PAPER " | $DATABASE_IN
-    find commits/ -name "*_paper$1.out" -exec rm {} \; 
+
+    RELCOMMITS=$(find commits/ -name "*_paper$PAPERID.out" | wc -l)
+    echo "Number of relevant commits found:" $RELCOMMITS
+    if [ "$RELCOMMITS" -eq "0" ]; then
+	echo "Exiting."
+	exit	   
+    fi
+    find commits/ -name "*_paper$PAPERID.out" -delete  
 
     # Delete paper
     paperCommit=$(grep -F $PAPERMARKER commits/paper* /dev/null | cut -f1 -d":")
     echo "Removing $paperCommit"
     rm $paperCommit
-    echo "Commit files for paper $1 deleted"
+    echo "Commit files for paper $PAPERID deleted"
 
 fi
 
-if [[ "$case"=="annovar" ]]; then
+if [[ "$TASK"=="annovar" ]]; then
     #echo "use $DATABASE_NAME; $DELETE_ANNOVAR " | $DATABASE_IN 
-    rm commits/$case"_paper"$1.out
-    echo "'$case' commit file deleted."       
+    rm commits/$TASK"_paper"$PAPERID.out
+    echo "'$TASK' commit file deleted."       
 fi
 
-if [[ "$case"=="variant" ]]; then    
+if [[ "$TASK"=="variant" ]]; then    
     echo "use $DATABASE_NAME;  $DELETE_VARIANT " | $DATABASE_IN 
-    echo ";variant; deleted for paper $1"
-    rm commits/$case"_paper"$1.out
-    echo "'$case' commit file deleted."   
+    echo ";variant; deleted for paper $PAPERID"
+    rm commits/$TASK"_paper"$PAPERID.out
+    echo "'$TASK' commit file deleted."   
 fi
 
-if [[ "$case"=="raw_variant" ]]; then
+if [[ "$TASK"=="raw_variant" ]]; then
     echo "use $DATABASE_NAME;  $DELETE_RAWVARIANT " | $DATABASE_IN 
-    echo ";raw_variant; deleted for paper $1"
-    rm commits/$case"_paper"$1.out
-    echo "'$case' commit file deleted."   
+    echo ";raw_variant; deleted for paper $PAPERID"
+    rm commits/$TASK"_paper"$PAPERID.out
+    echo "'$TASK' commit file deleted."   
 fi
 
-if [[ "$case"=="raw_key_value" ]]; then
+if [[ "$TASK"=="raw_key_value" ]]; then
     echo "use $DATABASE_NAME; $DELETE_RAWKV  " | $DATABASE_IN 
-    echo ";raw_key_value; deleted for paper $1"
-    rm commits/$case"_paper"$1.out
-    echo "'$case' commit file deleted."   
+    echo ";raw_key_value; deleted for paper $PAPERID"
+    rm commits/$TASK"_paper"$PAPERID.out
+    echo "'$TASK' commit file deleted."   
 fi
 
-if [[ "$case"=="paper" ]]; then
+if [[ "$TASK"=="paper" ]]; then
     echo "use $DATABASE_NAME; $DELETE_PAPER " | $DATABASE_IN
-    echo ";papers; deleted for paper $1"
+    echo ";papers; deleted for paper $PAPERID"
     
     # Delete paper
     paperCommit=$(grep -F $PAPERMARKER commits/paper* /dev/null | cut -f1 -d":")
     rm $paperCommit
-    echo "'$case' commit file deleted."   
+    echo "'$TASK' commit file deleted."   
 fi
 

@@ -4,15 +4,19 @@
 #
 set -eu
 
-BOOK=$1
-JOB=$2
-
-if [ $# -eq 0 ]
+if [ "$#" -lt "2" ]
   then
     BOOK="../exampledata/dyrk1a/variants.xlsx"
     JOB=LoadVariant
-    echo "No arguments supplied. Using template at $BOOK"
+    echo ""
+    echo "Usage:"
+    echo "$0 $BOOK $JOB"
+    echo ""
+    exit
 fi
+
+BOOK=$1
+JOB=$2
 
 echo "Loading book: $BOOK"
 #PYTHONPATH='flows:../scripts/models' luigi --module main LoadPaper --book $BOOK
