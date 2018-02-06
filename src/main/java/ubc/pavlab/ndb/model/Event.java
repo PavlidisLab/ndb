@@ -297,6 +297,9 @@
 
             StringBuilder result = new StringBuilder();
             for ( Variant v : getVariants() ) {
+                if (v.getValidationMethod() == null){
+                    continue;
+                }
                 result.append( v.getValidationMethod() );
                 result.append( ";" );
             }
