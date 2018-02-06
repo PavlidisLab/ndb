@@ -1,3 +1,5 @@
+import shutil
+import os
 import sys
 import petl
 from collections import defaultdict
@@ -21,6 +23,12 @@ class Variant(AbstractModel):
 
         self.properties_list = Variant._Variant__properties_list
         self.excluded = Variant._Variant__excluded
+        self.LOGDIR="variant_log/"+str(self.paper_id)+"/"
+        self.LOGFILE=self.LOGDIR+"log"
+        
+        if os.path.exists(self.LOGFILE):
+            os.remove(self.LOGFILE)
+        os.makedirs(self.LOGDIR, 0755)
 
     def load(self, filename, **kwargs):
         to_commit = []
@@ -146,10 +154,14 @@ class Variant(AbstractModel):
                 # Skipping variant because fixer could not fix.
                 print "Could not fix:", old
                 print "Skipping"
-                print "TODO: MUST LOG THESE INSTANCES FOR PRODUCTION."
-                print "THIS WILL KEEP FAILING UNTIL LOGS HAVE BEEN ADDED."
-                exit(-1)
+                with open(self.LOGFILE, 'a') as f:
+                    f.write("Could not fix", _data[i])
+                    f.write("\n")
                 continue
+            else:
+                with open(self.LOGFILE, 'a') as f:
+                    f.write("Fixed "+old+" to "+new) 
+                    f.write("\n")
 
             row[header.index('start_hg19')] = START
             row[header.index('stop_hg19')] = STOP
@@ -255,7 +267,7 @@ class Variant(AbstractModel):
             RANGE_STOP_right = ( int(stop) + int(RANGE) )
 
 
-            query = "SELECT * FROM {0} WHERE ((start_hg19 >= {1} AND start_hg19 <= {2}) OR (stop_hg19 >= {3}  AND stop_hg19 <= {4})) AND chromosome={5} ;".format(self.database_table,
+            query = "SELECT * FROM {0} WHERE ((start_hg19 >= {1} AND start_hg19 <= {2}) OR (stop_hg19 >= {3}  AND stop_hg19 <= {4})) AND chromosome='{5}' ;".format(self.database_table,
                                                                                                                                           RANGE_START_left,
                                                                                                                                           RANGE_START_right,
                                                                                                                                           RANGE_STOP_left,
