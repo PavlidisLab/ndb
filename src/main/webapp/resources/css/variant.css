@@ -219,3 +219,9 @@ td.panelGridKey {
     color:cornflowerblue;
 
 }
+
+td.allele {
+    table-layout: fixed;
+    word-wrap: break-word;
+    padding: 4px 2px !important ;
+}
