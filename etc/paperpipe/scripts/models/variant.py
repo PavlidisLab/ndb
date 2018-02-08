@@ -23,12 +23,15 @@ class Variant(AbstractModel):
 
         self.properties_list = Variant._Variant__properties_list
         self.excluded = Variant._Variant__excluded
-        self.LOGDIR="variant_log/"+str(self.paper_id)+"/"
+        self.LOGDIR="variant_log/"+str(self.paper_id)+"/"        
         self.LOGFILE=self.LOGDIR+"log"
-        
+
         if os.path.exists(self.LOGFILE):
             os.remove(self.LOGFILE)
-        os.makedirs(self.LOGDIR, 0755)
+
+        if not os.path.exists(self.LOGDIR):
+            os.makedirs(self.LOGDIR, 0775)
+        
 
     def load(self, filename, **kwargs):
         to_commit = []
