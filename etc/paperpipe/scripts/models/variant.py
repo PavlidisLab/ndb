@@ -66,26 +66,33 @@ class Variant(AbstractModel):
             # Apply modifications
             for _transform in ifo:
                 #transform = [z.strip() if z is not None else None for z in _transform]
+                # Obtain transformation input, function and output (elem 0,1,2)
                 transform = [str(z).strip() for z in _transform if z is not None]
                 #print _transform
                 #print transform
 
                 transform_input = None
                 try:
-                    "Attempt to get data from raw variant"
+                    # Attempt to get data from raw variant
                     if transform[0] == 'NULL':
                         IDX=0
-                    else:
-                        IDX = raw_header.index( transform[0] )
-                        transform_input = r[IDX]
-                except:
-                    "Use value directly instead of looking up raw variant"
-                    transform_input = transform[0]
+                    else:                        
+                        if transform[0] in raw_header:
+                            IDX = raw_header.index( transform[0] )
+                            transform_input = r[IDX]
+                        else:
+                            # Use value directly instead of looking up raw variant
+                            transform_input = transform[0]
 
+                except Exception as e:
+                    print "Error! Transform failed"
+                    raise e                    
+
+                # Apply transformation
                 h, d = self.U.transform( transform_input, transform[1], transform[2], paper_id = self.paper_id )
 
-                for h,d in zip(h,d):
-                    variant[h] = d
+                for h_,d_ in zip(h,d):
+                    variant[h_] = d_
 
             ks = variant.keys()
             vs = []
@@ -94,12 +101,13 @@ class Variant(AbstractModel):
 
             # Remove excluded fields or NoneTypes
             pops = []
-            for i in range(len(vs)):
+            for i in xrange(len(vs)):
                 if vs[i] is None or \
                    ks[i] in self.excluded:
                     pops.append(i)
-            ks = [ks[x] for x in range(len(ks)) if x not in pops]
-            vs = [vs[x] for x in range(len(vs)) if x not in pops]
+
+            ks = [ks[x] for x in xrange(len(ks)) if x not in pops]
+            vs = [vs[x] for x in xrange(len(vs)) if x not in pops]
 
             if self.data is None:
                 self.data = []
@@ -112,8 +120,10 @@ class Variant(AbstractModel):
         SUBJECT_FIELD = 'subject_id'
         SAMPLE_FIELD = 'sample_id'
         EVENT_FIELD = 'event_id'
+        
+        print "Len:", len(_data)
 
-        for i in range(len(_data)):
+        for i in xrange(len(_data)):
             header, row = _data[i]
 
             """
@@ -217,11 +227,21 @@ class Variant(AbstractModel):
 
             print "Adding data to row:", row
             data.append([header, row])
+
+            # print "Data"
+            # print header
+            # print row
+            # raw_input()
+
         print "Precommit done!"
         return data
 
     def commit(self):
+        print "Len of data:", len(self.data)
+        countLine = 0
         for _data in self.data:
+            countLine += 1
+            print "Current row", countLine
             try:
                 predata = None
                 predata = self.precommit([_data])
@@ -333,4 +353,5 @@ def bootstrap():
 
 
 if __name__ == "__main__":
-    bootstrap()
+    print "Uncomment bootstrap() "
+    # bootstrap()

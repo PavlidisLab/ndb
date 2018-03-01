@@ -189,10 +189,13 @@ class Annovar(AbstractModel):
                     k = "exac03"
                 if k == "AAChange.refGene":
                     # TODO: Added fix but not sure if correct.
-                    aa_text = v.replace("\\x3b", ";") # Hex encoding issue with annovar. 
-                    aa_text = func_text.replace("x3b", ";") # Hex encoding issue with annovar.
-                    aa_text = ";".join( list(set(func_text.split(";"))) )
-                    self.aa_change.append(v)
+                    if v is None:
+                        aa_text = None
+                    else:
+                        aa_text = v.replace("\\x3b", ";") # Hex encoding issue with annovar. 
+                        aa_text = func_text.replace("x3b", ";") # Hex encoding issue with annovar.
+                        aa_text = ";".join( list(set(func_text.split(";"))) )
+                    self.aa_change.append(aa_text)
                     k = "aa_change"
                 if k == "Func.refGene":
                     func_text = v.replace("\\x3b", ";") # Hex encoding issue with annovar.

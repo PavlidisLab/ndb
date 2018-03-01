@@ -57,8 +57,12 @@ class Utils(object):
          i : input
          f : function
          o : output
+
+         Returns a list of key-values extracted from transformation methods.
+         e.g. extract chr,start,end,ref,alt from an HGVS variant.
+         
         """
-        
+
         h = o.split(",")
         d = None
 
