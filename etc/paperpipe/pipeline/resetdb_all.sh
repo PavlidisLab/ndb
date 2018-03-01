@@ -9,7 +9,7 @@ PAPERID="UNDEFINED"
 if [[ $# -lt 1 ]]; then
     echo "Usage:"
     echo "$0 PAPERID (Optional, TASK)"
-    echo "TASK can be all, annovar, variant, raw_variant, raw_key_value, or paper"
+    echo "TASK can be all, annovar, variant, rawvariant, rkv, or paper"
     exit -1
 fi
 
@@ -68,14 +68,14 @@ if [[ "$TASK" == "variant" ]]; then
     echo "'$TASK' commit file deleted."   
 fi
 
-if [[ "$TASK" == "raw_variant" ]]; then
+if [[ "$TASK" == "rawvariant" ]]; then
     echo "use $DATABASE_NAME;  $DELETE_RAWVARIANT " | $DATABASE_IN 
     echo ";raw_variant; deleted for paper $PAPERID"
     rm commits/$TASK"_paper"$PAPERID.out
     echo "'$TASK' commit file deleted."   
 fi
 
-if [[ "$TASK" == "raw_key_value" ]]; then
+if [[ "$TASK" == "rkv" ]]; then
     echo "use $DATABASE_NAME; $DELETE_RAWKV  " | $DATABASE_IN 
     echo ";raw_key_value; deleted for paper $PAPERID"
     rm commits/$TASK"_paper"$PAPERID.out
