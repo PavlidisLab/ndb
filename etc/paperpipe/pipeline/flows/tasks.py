@@ -21,17 +21,13 @@ def hash_filename(string):
 
 def blockable(fun):
     def _decorator(self, *args, **kwargs):
-        print "SELF"
-        #print self
-        #print args
-        #print kwargs
-
         if os.path.isfile(self.OUTPUT):
             print "PAPERPIPE: File already exists. Not running this task." 
             return
         else:
             print "PAPERPIPE:", self.OUTPUT, " does not appear to exist. "    
             print "RUNNING ", type(self), " Loader for Paper", self.paper_id
+
         return fun(self)
     return _decorator
 

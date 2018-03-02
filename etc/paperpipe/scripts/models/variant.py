@@ -47,6 +47,7 @@ class Variant(AbstractModel):
 
         raw_variants = self.U.fetch_table_rows_by_paper( RawVariant(self.paper_id).database_table,
                                                          self.paper_id )
+        print "Fetched", len(raw_variants), "raw variants."
         raw_header = raw_variants[0]
         commit_header = []
         commit_data = []
@@ -54,6 +55,8 @@ class Variant(AbstractModel):
         intersection =  self.U.intersection( RawVariant(self.paper_id).database_table,
                                              self.database_table,
                                              self.paper_id )
+
+        print "Intersection: ", len(intersection), "raw variants."
 
 
         for r in raw_variants[1:]:
@@ -121,8 +124,7 @@ class Variant(AbstractModel):
         SAMPLE_FIELD = 'sample_id'
         EVENT_FIELD = 'event_id'
         
-        print "Len:", len(_data)
-
+        print "Precommit len:", len(_data)
         for i in xrange(len(_data)):
             header, row = _data[i]
 
@@ -133,14 +135,14 @@ class Variant(AbstractModel):
 
             required = ['ref', 'alt', 'start_hg19', 'stop_hg19','chromosome']
 
-
             for req in required:
-                # If any of the required fields are missing, append them to the header and the row
-                if req not in header:
+                # If any of the required fields are missing, append them to the header and and initialize the row to ""
+                if req not in header:                    
                     header.append(req)
                     row.append("")
 
             if EVENT_FIELD not in header:
+                # Initialize event field if missing
                 header.append(EVENT_FIELD)
                 row.append("-1")
 
@@ -191,30 +193,14 @@ class Variant(AbstractModel):
             row[SUBJECT_ID] = existing_subject_id
 
             
-            #print "CALL TO DISAMBIGUATE USING start stop:", START, STOP
+            # Find variant events that cluster at distance tolerance with this variant
+            # Return sampleid -> events, subjects dict tuple
             events, subjects  = self.disambiguate_subjects(CHROMOSOME,
                                                            START,
                                                            STOP,
                                                            tolerance=1) # Immediately adjacent or else nothing.
 
-            """
-	    print "events:"
-            print events
-            print SAMPLE_ID
-            print events[row[SAMPLE_ID]]
-
-            print "subjects:"
-            print subjects
-            print SAMPLE_ID
-            print subjects[row[SAMPLE_ID]]
-            raw_input() """
-
             current_sample = row[SAMPLE_ID]
-            """ print "current_sample", current_sample
-            print "all events", events.keys()
-            print events[current_sample]
-            print "all subjects", subjects.keys()
-            print subjects[current_sample] """
             
             if events and len(events[current_sample]) > 0:
                 row[EVENT_ID] = events[current_sample][0]
@@ -228,20 +214,21 @@ class Variant(AbstractModel):
             print "Adding data to row:", row
             data.append([header, row])
 
-            # print "Data"
-            # print header
-            # print row
-            # raw_input()
-
         print "Precommit done!"
         return data
 
     def commit(self):
         print "Len of data:", len(self.data)
+        print "Preview"
+        print self.data[:10]
+        raw_input()
+
         countLine = 0
-        for _data in self.data:
+        for _data in self.data: # Process data row by row
+            # Currently, each row has the header and the data as element 0 and 1
+
             countLine += 1
-            print "Current row", countLine
+            print "Current row:", countLine
             try:
                 predata = None
                 predata = self.precommit([_data])
@@ -249,12 +236,13 @@ class Variant(AbstractModel):
                     continue
                 data = predata[0]
             except Exception as e:
-                print "error caught in commit()", _data
+                print "error caught in precommit()", _data
                 print "predata:", predata
                 print "Reason:", e.message
                 raise e
 
             petl.appenddb(data, self.U.connection, self.database_table, commit=True)
+
         return self.data
 
     def get_subject_for_sample(self, sample):
@@ -281,7 +269,8 @@ class Variant(AbstractModel):
         
         sample_events, sample_subjects = defaultdict(list),defaultdict(list) # Return values
         
-        for RANGE in xrange(0, tolerance + 1):
+        # for RANGE in xrange(0, tolerance + 1):
+        for RANGE in [tolerance]: # FIXME: Don't need to check all, just the biggest tolerance.
             print "RANGE:", RANGE
             RANGE_START_left = ( int(start) - int(RANGE) )
             RANGE_START_right = ( int(start) + int(RANGE) )
@@ -297,7 +286,6 @@ class Variant(AbstractModel):
                                                                                                                                           RANGE_STOP_right,
                                                                                                                                           chromosome)
 
-            # print "Query:", query
             _rows = self.U.fetch_rows(query)
             header = None # Header fields
             rows = None # Actual data
@@ -312,12 +300,9 @@ class Variant(AbstractModel):
                 UID = header.index("subject_id")
                 EID = header.index("event_id")
                 rows = [row for row in _rows[1:]]
-                # TODO: <- Check that event_id is paired with subject.
-            #print "header/rows"
-            #print header
-            #print rows
+
             for r in rows:
-                print "r", r
+                print "Ambiguous subject:", r
                 sample_ids.append( r[SID] )
                 event_ids.append( r[EID] )
                 sample_events[r[SID]].append( r[EID] )
@@ -334,6 +319,7 @@ class Variant(AbstractModel):
                 if len(events) > 1:
                     print "Multiple events", events, "for subjects", subjs
                     raise Exception("Error: Multiple contiguous variant events for same sample ID. This can be caused by duplicates in the import spreadsheet.")
+
             if len(sample_events.keys()) > 0:
                 # Found a clustered event
                 # print "Breaking at tolerance:", tolerance
