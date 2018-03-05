@@ -221,7 +221,7 @@ class Variant(AbstractModel):
         print "Len of data:", len(self.data)
         print "Preview"
         print self.data[:10]
-        raw_input()
+
 
         countLine = 0
         for _data in self.data: # Process data row by row
@@ -285,7 +285,6 @@ class Variant(AbstractModel):
                                                                                                                                           RANGE_STOP_left,
                                                                                                                                           RANGE_STOP_right,
                                                                                                                                           chromosome)
-
             _rows = self.U.fetch_rows(query)
             header = None # Header fields
             rows = None # Actual data
@@ -315,6 +314,7 @@ class Variant(AbstractModel):
                 subjs = set(sample_subjects[sample])
                 events = set(sample_events[sample])
                 if len(subjs) > 1:
+                    print "Multiple subjects", subjs, "for events", events
                     raise Exception("Error: Multiple neighbouring variant subjects for same sample ID.")
                 if len(events) > 1:
                     print "Multiple events", events, "for subjects", subjs
@@ -326,7 +326,8 @@ class Variant(AbstractModel):
                 break                
             else:
                 # print "Not breaking at tolerance:", tolerance
-                pass # Proceed with tolerance increase
+                # Proceed with tolerance increase
+                pass 
 
         return sample_events, sample_subjects #None, None
 

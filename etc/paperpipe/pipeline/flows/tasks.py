@@ -285,12 +285,12 @@ class LoadVariant(PPTask):
 
         variant.load(self.input())
 
-        print "Variant data:"
-        for var in variant.data:
-            print var
+        print "Variant data stats:"
+        print "len", len(variant.data)
+        print "Preview:", variant.data[:10]
 
-        print
-        print " Committing ... "
+        print " Preparing to commit ... "
+
         try:
             data = variant.commit()
         except Exception as e:

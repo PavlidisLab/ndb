@@ -19,9 +19,6 @@ class Utils(object):
             assembly_name=self.assembly,
             alt_aln_method='splign')
 
-
-        pass
-
     def initDB(self):
         dbconfigs = {}
         with open("db.config", 'r') as f:
