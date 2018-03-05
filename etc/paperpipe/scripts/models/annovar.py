@@ -3,7 +3,7 @@ import operator
 import petl
 import utils
 from marvmodel import AbstractModel
-
+from genemap import annovar_to_ncbi
 
 class Annovar(AbstractModel):
     __properties_list = ['variant_id',
@@ -323,6 +323,14 @@ class Annovar(AbstractModel):
                                     else:
                                         replacement = synonym[1] # Set name to the symbol where gene was a synonym.
                                         print "Resolved by synonyms (type 2). Using gene as synonym."
+                            gene = replacement
+                            continue
+
+                        if gene in annovar_to_ncbi.keys():
+                            """
+                            Handle cases where the annovar gene does not work with the NCBI gene table
+                            """
+                            replacement = annovar_to_ncbi[gene]
                             gene = replacement
                             continue
                         
