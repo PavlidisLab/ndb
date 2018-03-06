@@ -1,3 +1,3 @@
 #!/bin/bash
-ps aux | grep [l]uigid | tr -s ' ' | cut -f2 -d" " | xargs kill -9
+ps aux | grep [l]uigid | grep $whoami | tr -s ' ' | cut -f2 -d" " | xargs kill -9
 
