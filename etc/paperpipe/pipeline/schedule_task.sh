@@ -23,4 +23,4 @@ echo "Loading book: $BOOK"
 #PYTHONPATH='flows:../scripts/models' luigi --module main LoadRawKV --book $BOOK
 #PYTHONPATH='flows:../scripts/models' luigi --module main LoadPaper --book $1 --local-scheduler
 
-PYTHONPATH='flows:../scripts/models' luigi --module tasks $JOB --book $BOOK --worker-keep-alive --worker-count-uniques
+PYTHONPATH='flows:../scripts/models' luigi --module tasks $JOB --book $BOOK --worker-keep-alive --worker-count-uniques --scheduler-port 16901
