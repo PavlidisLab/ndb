@@ -1,10 +1,10 @@
 #!/bin/bash
 
 VCF=$1
-MACHINE="ranier"
+MACHINE="krusty"
 
 WORK="/space/grp/MARVdb/curation/tools/annovar"
-UNAME="$USER" #   <-- CHANGE TO YOUR USERNAME, do not commit to git
+UNAME=$(whoami)
 
 echo "Submitting input"
 ssh $UNAME@$MACHINE <<EOF
