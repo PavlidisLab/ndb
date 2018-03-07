@@ -5,6 +5,7 @@ import petl
 from collections import defaultdict
 
 import utils
+
 from marvmodel import AbstractModel
 from rawvariant import RawVariant
 from fixer import fixer as vf
@@ -23,8 +24,8 @@ class Variant(AbstractModel):
 
         self.properties_list = Variant._Variant__properties_list
         self.excluded = Variant._Variant__excluded
-        self.LOGDIR="variant_log/"+str(self.paper_id)+"/"        
-        self.LOGFILE=self.LOGDIR+"log"
+        self.LOGDIR="variant_log/"
+        self.LOGFILE=self.LOGDIR+str(self.paper_id)+".log"        
 
         if os.path.exists(self.LOGFILE):
             os.remove(self.LOGFILE)
@@ -88,7 +89,7 @@ class Variant(AbstractModel):
                             transform_input = transform[0]
 
                 except Exception as e:
-                    print "Error! Transform failed"
+                    eprint("Error! Transform failed")
                     raise e                    
 
                 # Apply transformation
@@ -158,26 +159,31 @@ class Variant(AbstractModel):
 
             print "Initializing Fixer."
             fixer = vf.Fixer()
-
             old = "{}:{}-{}{}>{}".format(*[x if type(x) != str or len(x) > 0 else "None" for x in [CHROMOSOME,START,STOP,REF,ALT]] )
+
             print "Fixing variant..."
             CHROMOSOME,START,STOP,REF,ALT = fixer.repair_variant(CHROMOSOME,START,STOP,REF,ALT)
             new = "{}:{}-{}{}>{}".format(CHROMOSOME,START,STOP,REF,ALT)
             print "Fixed",old,"to",new
             
-            if REF == ALT == "N":
-                # Skipping variant because fixer could not fix.
-                print "Could not fix:", old
-                print "Skipping"
-                with open(self.LOGFILE, 'a') as f:
-                    f.write("Could not fix", _data[i])
-                    f.write("\n")
-                continue
-            else:
-                with open(self.LOGFILE, 'a') as f:
-                    f.write("Fixed "+old+" to "+new) 
-                    f.write("\n")
+            try:
+                if REF == ALT == "N":
+                    # Skipping variant because fixer could not fix.
+                    print "Could not fix:", old
+                    print "Skipping"
+                    with open(self.LOGFILE, 'a') as f:
+                        f.write("Could not fix", _data[i])
+                        f.write("\n")
+                        continue
+                else:
+                    with open(self.LOGFILE, 'a') as f:
+                        f.write("Fixed "+old+" to "+new) 
+                        f.write("\n")
 
+            except Exception as e:
+                print "Failure trying to write to log file."
+                raise e
+                
             row[header.index('start_hg19')] = START
             row[header.index('stop_hg19')] = STOP
             row[header.index('chromosome')] = CHROMOSOME
