@@ -20,7 +20,7 @@ echo "Preparing to delete $TASK from paper# $PAPERID";
 
 
 
-DELETE_ANNOVAR=" DELETE FROM variant where paper_id=$PAPERID; "
+DELETE_ANNOVAR=" DELETE FROM annovar_scores where variant_id in (SELECT id FROM variant WHERE paper_id=$PAPERID); "
 DELETE_VARIANT=" DELETE FROM variant where paper_id=$PAPERID; "
 DELETE_RAWVARIANT=" DELETE FROM raw_variant where paper_id=$PAPERID; "
 DELETE_RAWKV=" DELETE FROM raw_key_value where paper_id=$PAPERID; "
@@ -55,7 +55,7 @@ if [[ "$TASK" == "all" ]]; then
 fi
 
 if [[ "$TASK" == "annovar" ]]; then
-    #echo "use $DATABASE_NAME; $DELETE_ANNOVAR " | $DATABASE_IN
+    echo "use $DATABASE_NAME; $DELETE_ANNOVAR " | $DATABASE_IN
     echo "Task is $TASK"
     rm commits/$TASK"_paper"$PAPERID.out
     echo "'$TASK' commit file deleted."       
