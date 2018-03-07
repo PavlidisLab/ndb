@@ -30,9 +30,9 @@ DELETE_RAWVARIANT=" DELETE FROM raw_variant where paper_id=$PAPERID; "
 DELETE_RAWKV=" DELETE FROM raw_key_value where paper_id=$PAPERID; "
 DELETE_PAPER=" DELETE FROM papers where id=$PAPERID; "
 
-source db_credentials.sh
-DATABASE_IN=" mysql -u$DBUSER -p$DBPASS -h$HOST "
-DATABASE_NAME=" marvdb_staging "
+source db.config
+DATABASE_IN=" mysql -u$dbuser -p$dbpass -h$host "
+DATABASE_NAME=" $db "
 
 PAPERMARKER="[$PAPERID," # Not a fan of this, but here because in the commit files, the first element in the [] list is the paper ID, so hence the [.
 export PAPERMARKER
