@@ -28,6 +28,8 @@ class Annovar(AbstractModel):
                          'VEST3_score',
                          'CADD_raw',
                          'CADD_phred',
+                         'CADD13_raw',
+                         'CADD13_phred',
                          'GERP_RS',
                          'phyloP46way_placental',
                          'phyloP100way_vertebrate',
@@ -198,6 +200,12 @@ class Annovar(AbstractModel):
                     k = "GERP_RS"
                 if k == "ExAC_ALL":
                     k = "exac03"
+
+                if  k == 'CADD13_RawScore':
+                    k = 'CADD13_raw'
+                if k == 'CADD13_PHRED':
+                    k = 'CADD13_phred'
+
                 if k == "AAChange.refGene":
                     # TODO: Added fix but not sure if correct.
                     if v is None:
