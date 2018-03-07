@@ -43,6 +43,7 @@ class Annovar(AbstractModel):
         self.database_table= "annovar_scores"
         self.properties_list = Annovar._Annovar__properties_list
         self.data = []
+        self.variant_ordered = []
         self.function = []
         self.aa_change = []
         self.gene = []
@@ -55,8 +56,9 @@ class Annovar(AbstractModel):
     def load(self, filename):
         #TODO: You could get requirement's table name instead
         variants = self.U.fetch_table_rows_by_paper("variant" , self.paper_id)
-        variant_ids = []
+        self.variant_ordered = []
         header = variants[0]
+
         VARIANT_ID_IDX = header.index("id")
         CHROMOSOME_IDX = header.index("chromosome")
         START_IDX = header.index("start_hg19")
@@ -65,7 +67,7 @@ class Annovar(AbstractModel):
 
         contents = []
         for row in variants[1:] :
-            variant_ids.append(row[VARIANT_ID_IDX])
+            self.variant_ordered.append(row[VARIANT_ID_IDX])
             content = list(operator.itemgetter(CHROMOSOME_IDX, START_IDX, REF_IDX, ALT_IDX)(row))
             contents.append( content )
 
@@ -77,10 +79,12 @@ class Annovar(AbstractModel):
             for line in f:
                 template.append(line.strip())
 
+        # The last line in the template has a variant format template
         variant_row = template[-1]
+
+        # Rest of file is the header
         template = template[:-1]
 
-        ordered = [] # Used later since annovar doesn't handle duplicates well.
         VARIANT_INDEX = -1
         for content in contents:
             VARIANT_INDEX += 1
@@ -98,14 +102,14 @@ class Annovar(AbstractModel):
 
             line = line.replace("%REF", REF_vcf)
             line = line.replace("%ALT", ALT_vcf)
-            line = line.replace("%ID", str(variant_ids[VARIANT_INDEX]))
 
+            # Use the variant ID as a sample ID to allow duplicates in vcf
+            line = line.replace("%ID", str(self.variant_ordered[VARIANT_INDEX]))
 
             templated.append(line)
 
             #key = ":".join( [str(x) for x in [CHR_vcf, POS_vcf, REF_vcf, ALT_vcf]] )
             key = VARIANT_INDEX
-            ordered.append(key)
 
         # TODO: It would be nice if these files had names specific to the input.
         TMP_DIR = "flows/tmp/"
@@ -138,46 +142,53 @@ class Annovar(AbstractModel):
                         key = record[2]
 
                     except:
-                        print "WEIRD RECORD!"
+                        print "Key error; Record too short."
                         print record
                         raw_input()
                         continue
+
+                    # Match input annotated against record from annovar.
                     if key in annotated_dict.keys():
-                        print key, "exists!"
                         if record != annotated_dict[key]:
-                            print "AND IS NOT THE SAME!"
+                            print "Key is in record, but is not the same"
                             print annotated_dict[key]
                             print "vs"
                             print record
-                            raw_input()
-                        else : print "But is the same."
-
+                            raise Exception("Key is in record, but is not the same: " + str(annotated_dict[key])  + " vs " + str(record) )                                
                     annotated_dict[key] = record
-                    annotated.append(record)
 
-        annotations = {}
-        for v_id, o in zip(variant_ids, ordered):
-            print "ID:", v_id, o
-            #a = annotated_dict[o]
+
+        self.variant_ordered = [] # Empty and repopulate since records might be missing from annovar
+
+        for v_id in annotated_dict.keys():
+            #print "ID:", v_id,
+            #raw_input()
+
             try:
-                a = annotated_dict[str(v_id)]
-            except:
-                print annotated_dict.keys()
-                exit()
+                a = annotated_dict[v_id]
+            except:                
+                raise Exception("Variant ID '" + str(v_id) + "'  not found in annotated_dict")
+
             annos = a[-1]
             anno_dict = {}
             AAChange = "."
             Function = []
             annotations = annos.split(";")
 
-            for element in annotations:
+            self.variant_ordered.append(v_id)
+            func_text = None
+            aa_text = None
+            gene_text = None
 
-                if element == ".":
+            for element in annotations:
+                
+                if element == "." or "=" not in element:
                     continue
                 try:
                     k,v = element.split("=")
                 except:
                     print "================> WARNING: Skipping", element
+                    raise Exception("Annotation not found in value " + str(v) + " for key " + str(k) )
 
                 if v == ".":
                     v = None
@@ -190,24 +201,34 @@ class Annovar(AbstractModel):
                 if k == "AAChange.refGene":
                     # TODO: Added fix but not sure if correct.
                     if v is None:
-                        aa_text = None
+                        aa_text = ""
                     else:
                         aa_text = v.replace("\\x3b", ";") # Hex encoding issue with annovar. 
-                        aa_text = func_text.replace("x3b", ";") # Hex encoding issue with annovar.
-                        aa_text = ";".join( list(set(func_text.split(";"))) )
-                    self.aa_change.append(aa_text)
+                        aa_text = aa_text.replace("x3b", ";") # Hex encoding issue with annovar.
+                        aa_text = ";".join( list(set(aa_text.split(";"))) )
                     k = "aa_change"
+                    v = aa_text
+
                 if k == "Func.refGene":
                     func_text = v.replace("\\x3b", ";") # Hex encoding issue with annovar.
                     func_text = func_text.replace("x3b", ";") # Hex encoding issue with annovar.
                     func_text = ";".join( list(set(func_text.split(";"))) )
-                    self.function.append(func_text)
                     k = "func"
+                    v = func_text
+
                 if k == "Gene.refGene":
-                    self.gene.append(v)
+                    gene_text = v
 
                 anno_dict[k] = v
-                print k, v
+                # Print key values
+                # print k, v
+                
+            ########################
+
+            # Load update vectors
+            self.aa_change.append(aa_text)
+            self.function.append(func_text)
+            self.gene.append(gene_text)
 
             if anno_dict["func"] ==  "splicing" and \
                anno_dict["ExonicFunc.refGene"] == None:
@@ -231,21 +252,23 @@ class Annovar(AbstractModel):
         Push model's to append to the database
         """
         tbl = [self.properties_list] + self.data
-        
-        print "Insert:"
-        for t in tbl:
-            print t
-        print "Update:"
-        print self.aa_change
-        print self.function
 
         # UPDATE PER VARIANTS
-        for i in range(len( self.data )) :
+        # Check that vectors are the same length
+        sanity_check = [len(x) for x in [self.variant_ordered, self.aa_change, self.function, self.gene, self.category]]
+        if (sum(sanity_check) / float(len(sanity_check))) != sanity_check[0] :
+            raise Exception("Sanity check failed; vectors are not the same length.")
+
+        for i in xrange(len( self.variant_ordered )) :
             print "INDEX",i
             row = self.data[i]
-            variant_id = row[0]
+            variant_id = self.variant_ordered[i] #row[0]
             where = " id = '"+str(variant_id)+"' "
-
+            
+            # print row
+            # print "variant_id, self.gene[i], self.aa_change[i], self.function[i], self.category[i]"
+            # print variant_id, self.gene[i], self.aa_change[i], self.function[i], self.category[i]
+            # raw_input()
             if self.aa_change[i]:
                 self.U.update_table_rows_by_field("variant",
                                                   "aa_change",
@@ -256,7 +279,8 @@ class Annovar(AbstractModel):
                                                   "func",
                                                   self.function[i],
                                                   where)
-            if len(self.category) > i and self.category[i]:
+
+            if self.category[i]:
                 self.U.update_table_rows_by_field("variant",
                                                   "category",
                                                   self.category[i],
@@ -266,18 +290,18 @@ class Annovar(AbstractModel):
             ####### Update variant_gene
             if self.gene[i]:
                 gene = self.gene[i]
+                synonyms = None
                 if gene == "NONE,NONE":
                     print "WARNING! WARNING! WARNING!"
                     print "Annovar receives NONE,NONE, as the gene here. Possibly because the variant is on the X chromsome."
                     print "Please check this error and fix properly"
-                    raw_input()
-                    print " Escaping the error for now."
-                    continue
+                    raise Exception("Annovar returned NONE,NONE as the gene.")
 
                 while True:
                     query = "SELECT gene_id FROM gene WHERE symbol='"+gene+"';"
                     result = self.U.fetch_rows(query)
                     answer = ""
+
                     try:
                         g_id =  int(result[1][0])
                         break
@@ -301,8 +325,10 @@ class Annovar(AbstractModel):
                                 
                         
                         """ ATTEMPT TO RESOLVE BY SYNONYMS """
+                        # The returned record format is gene_id, symbol, synonyms (pipe delimited)
                         query_synonyms = "SELECT gene_id, symbol, synonyms FROM gene WHERE synonyms LIKE '%"+gene+"%';"
                         synonyms = self.U.fetch_rows(query_synonyms)
+           
                         print "---- Potential synonyms for ", gene, "----"
                         for row in synonyms:
                             print row
@@ -314,6 +340,7 @@ class Annovar(AbstractModel):
                             #raw_input()
                             continue
                         
+                        # Check each synonyms for a match
                         if len(synonyms) > 2:
                             replacement = None
                             for synonym in synonyms[1:] :
@@ -342,6 +369,9 @@ class Annovar(AbstractModel):
                         print "Enter a delimiter (e.g. ',') to split genes and use the first one"
                         print "Enter GENE=... to force the gene name."
 
+
+                        # Trouble shootingspecific cases
+
                         if "," in gene:
                             # If comma is in gene, split and use the first one.
                             answer = ","
@@ -357,15 +387,19 @@ class Annovar(AbstractModel):
                             answer = raw_input()
 
                         if answer == "quit":
+                            # Abort
                             raise e
                         elif answer == "continue":
+                            # Don't give it a gene
                             break
                         elif answer[:5] == "GENE=":
+                            # Try again with user inputed gene
                             gene=answer[5:]
-                            print "SETTING GENE NAME TO:", gene
+                            print "Trying with user input:", gene
                         else:
+                            # Use a delimiter
+                            print "Splitting using", answer, "as delimiter."
                             gene = gene.split(answer)[0]
-
 
                 if answer == "continue":
                     answer = ""
@@ -378,14 +412,12 @@ class Annovar(AbstractModel):
                                    "variant_gene")
             else:
                 print "Variant", variant_id, "has no annovar genes."
-                print "Continue? Y/n"
+                print "Continue? [Y]/n"
                 r = raw_input()
                 if r == 'n': sys.exit(0)
 
-
             ##### This should actually be done in annovar because we need the variant_id
             g_header = ["variant_id", "gene_id"]
-            #g_data = [ row[  ]
 
         # Update the annovar table
         r = petl.appenddb( tbl, self.U.connection, self.database_table )
