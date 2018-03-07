@@ -18,9 +18,13 @@ if [ "$#" -eq 2 ]; then TASK=$2; fi
 if [ "$#" -gt 2 ]; then echo "Too many arguments." ; $0 ; exit -1 ; fi
 echo "Preparing to delete $TASK from paper# $PAPERID";
 
-
-
 DELETE_ANNOVAR=" DELETE FROM annovar_scores where variant_id in (SELECT id FROM variant WHERE paper_id=$PAPERID); "
+
+DELETE_ANNOVAR_CATEGORY=" UPDATE variant SET category = NULL WHERE paper_id=$PAPERID; "
+DELETE_ANNOVAR_AACHANGE=" UPDATE variant SET aa_change = NULL  WHERE paper_id=$PAPERID; "
+DELETE_ANNOVAR_FUNC=" UPDATE variant SET func = NULL  WHERE paper_id=$PAPERID; "
+DELETE_ANNOVAR_GENE=" DELETE FROM variant_gene WHERE variant_id in (SELECT id FROM variant WHERE paper_id=$PAPERID); "
+
 DELETE_VARIANT=" DELETE FROM variant where paper_id=$PAPERID; "
 DELETE_RAWVARIANT=" DELETE FROM raw_variant where paper_id=$PAPERID; "
 DELETE_RAWKV=" DELETE FROM raw_key_value where paper_id=$PAPERID; "
@@ -36,7 +40,7 @@ export PAPERMARKER
 if [[ "$TASK" == "all" ]]; then
 
     echo "DELETING ALL COMMITS."
-    echo "use $DATABASE_NAME; $DELETE_ANNOVAR $DELETE_VARIANT $DELETE_RAWVARIANT $DELETE_RAWKV $DELETE_PAPER " | $DATABASE_IN
+    echo "use $DATABASE_NAME; $DELETE_ANNOVAR ;  $DELETE_ANNOVAR_CATEGORY; $DELETE_ANNOVAR_FUNC; $DELETE_ANNOVAR_GENE; $DELETE_ANNOVAR_AACHANGE; $DELETE_VARIANT $DELETE_RAWVARIANT $DELETE_RAWKV $DELETE_PAPER " | $DATABASE_IN
 
     RELCOMMITS=$(find commits/ -name "*_paper$PAPERID.out" | wc -l)
     echo "Number of relevant commits found:" $RELCOMMITS
@@ -55,7 +59,7 @@ if [[ "$TASK" == "all" ]]; then
 fi
 
 if [[ "$TASK" == "annovar" ]]; then
-    echo "use $DATABASE_NAME; $DELETE_ANNOVAR " | $DATABASE_IN
+    echo "use $DATABASE_NAME; $DELETE_ANNOVAR; $DELETE_ANNOVAR_CATEGORY; $DELETE_ANNOVAR_FUNC; $DELETE_ANNOVAR_GENE; $DELETE_ANNOVAR_AACHANGE; " | $DATABASE_IN
     echo "Task is $TASK"
     rm commits/$TASK"_paper"$PAPERID.out
     echo "'$TASK' commit file deleted."       
