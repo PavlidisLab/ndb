@@ -48,12 +48,18 @@ if [[ "$TASK" == "all" ]]; then
 	echo "Exiting."
 	exit	   
     fi
-    find commits/ -name "*_paper$PAPERID.out" -delete  
 
-    # Delete paper
+    # Delete all other commit files
+    echo "Files to delete (excluding the paper commit):"
+    echo "Total:" $(find commits/ -name "*_paper$PAPERID.out" | wc -l)
+    find commits/ -name "*_paper$PAPERID.out"
+    find commits/ -name "*_paper$PAPERID.out" -delete
+
+    # Delete paper commit file
     paperCommit=$(grep -F $PAPERMARKER commits/paper* /dev/null | cut -f1 -d":")
     echo "Removing $paperCommit"
     rm $paperCommit
+
     echo "Commit files for paper $PAPERID deleted"
 
 fi
