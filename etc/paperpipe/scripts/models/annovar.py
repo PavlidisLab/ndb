@@ -406,10 +406,11 @@ class Annovar(AbstractModel):
                     continue
                 answer = ""
 
-                variant_gene = [ ["gene_id", "variant_id"], [str(g_id), str(variant_id)] ]
-                r = petl.appenddb( variant_gene,
-                                   self.U.connection,
-                                   "variant_gene")
+                if g_id is not None:
+                    variant_gene = [ ["gene_id", "variant_id"], [str(g_id), str(variant_id)] ]
+                    r = petl.appenddb( variant_gene,
+                                       self.U.connection,
+                                       "variant_gene")
             else:
                 print "Variant", variant_id, "has no annovar genes."
                 print "Continue? [Y]/n"
