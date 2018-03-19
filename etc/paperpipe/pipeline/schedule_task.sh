@@ -15,12 +15,30 @@ if [ "$#" -lt "2" ]
     exit
 fi
 
+INTERACTIVE=0
+if [ "$#" -gt "2" ]
+  then
+    if [ "$3" == "--interactive" ]
+    then
+	INTERACTIVE=1
+    fi
+fi
+
 BOOK=$1
 JOB=$2
+
+PAPERNAME=$(echo $BOOK | rev | cut -f1 -d"/" | cut -d"." -f2 | rev )
 
 echo "Loading book: $BOOK"
 #PYTHONPATH='flows:../scripts/models' luigi --module main LoadPaper --book $BOOK
 #PYTHONPATH='flows:../scripts/models' luigi --module main LoadRawKV --book $BOOK
 #PYTHONPATH='flows:../scripts/models' luigi --module main LoadPaper --book $1 --local-scheduler
 
-PYTHONPATH='flows:../scripts/models' luigi --module tasks $JOB --book $BOOK --worker-keep-alive --worker-count-uniques --scheduler-port 16901
+
+
+if [ $INTERACTIVE -eq 0  ];
+then
+    PYTHONPATH="flows:../scripts/models" luigi --module tasks $JOB --book $BOOK --worker-count-last-scheduled --scheduler-port 16901 > logs/$PAPERNAME.log 2> logs/$PAPERNAME.err
+else
+    PYTHONPATH="flows:../scripts/models" luigi --module tasks $JOB --book $BOOK --worker-count-last-scheduled --scheduler-port 16901
+fi
