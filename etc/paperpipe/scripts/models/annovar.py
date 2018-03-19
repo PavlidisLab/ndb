@@ -305,10 +305,16 @@ class Annovar(AbstractModel):
                     print "Please check this error and fix properly"
                     raise Exception("Annovar returned NONE,NONE as the gene.")
 
-                while True:
+                while True :
+                    answer = ""
+
+                    if gene is None:
+                        answer = "continue"
+                        break
+
                     query = "SELECT gene_id FROM gene WHERE symbol='"+gene+"';"
                     result = self.U.fetch_rows(query)
-                    answer = ""
+
 
                     try:
                         g_id =  int(result[1][0])
@@ -399,6 +405,7 @@ class Annovar(AbstractModel):
                             raise e
                         elif answer == "continue":
                             # Don't give it a gene
+                            g_id = None
                             break
                         elif answer[:5] == "GENE=":
                             # Try again with user inputed gene
@@ -409,13 +416,14 @@ class Annovar(AbstractModel):
                             print "Splitting using", answer, "as delimiter."
                             gene = gene.split(answer)[0]
 
+                answer = ""                
+                # This is the only wait the variant_gene step gets skipped.
                 if answer == "continue":
-                    answer = ""
-                    continue
-                answer = ""
-
-                variant_gene = [ ["gene_id", "variant_id"], [str(g_id), str(variant_id)] ]
-                r = petl.appenddb( variant_gene,
+                    answer = ""                    
+                    continue # Move on to the next row
+                else:
+                    variant_gene = [ ["gene_id", "variant_id"], [str(g_id), str(variant_id)] ]
+                    r = petl.appenddb( variant_gene,
                                    self.U.connection,
                                    "variant_gene")
             else:
