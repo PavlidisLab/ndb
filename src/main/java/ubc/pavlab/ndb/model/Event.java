@@ -32,6 +32,7 @@
     import com.google.common.collect.Lists;
     import com.google.common.collect.Sets;
 
+    import org.apache.log4j.Logger;
     import ubc.pavlab.ndb.model.enums.Category;
     import ubc.pavlab.ndb.model.enums.Inheritance;
     import ubc.pavlab.ndb.model.enums.Validation;
@@ -43,6 +44,8 @@
      * @version $Id$
      */
     public class Event {
+
+        private static final Logger log = Logger.getLogger( Event.class );
 
         private final Integer id;
         private final Integer subjectId;
@@ -166,6 +169,7 @@
 
             }
 
+
             this.id = testVariant.getEventId();
 
             this.chromosome = testVariant.getChromosome();
@@ -192,6 +196,11 @@
             this.exacFreq = exacMax;
 
             this.complex = complex;
+
+            if (genes.contains( null ) ){
+                log.warn( "Null gene found for variant " + String.valueOf( this.id ) );
+                genes.removeAll( Collections.singleton( null ) );
+            }
 
             this.genes = ImmutableList.copyOf( genes );
             // this.papers = ImmutableList.copyOf( papers );
