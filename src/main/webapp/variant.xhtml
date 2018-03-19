@@ -154,9 +154,9 @@
 
 				<p:column style="width:10px; text-align: center;" >
 					<f:facet name="header">
-						<h:outputText class="fal fa-check-square" value="" title="Variant validation" />
+						<h:outputText class="fa fa-check-square" value="" title="Variant validation" />
 					</f:facet>
-					<h:outputText class="fal fa-check-square validatedIcon" value="" title="Variant validated by: #{event.validationMethodsText}" rendered="${fn:contains(event.validations, 'y')}" />
+					<h:outputText class="fa fa-check-square validatedIcon" value="" title="Variant validated by: #{event.validationMethodsText}" rendered="${fn:contains(event.validations, 'y')}" />
 				</p:column>
 
 				<p:column rendered="#{event.complex}" colspan="4" style="text-align:center;" styleClass="centeredColumn inline-row-toggle inline-icon">
