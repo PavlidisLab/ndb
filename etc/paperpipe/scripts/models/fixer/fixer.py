@@ -70,9 +70,9 @@ class Fixer(object):
             stop_ = None # Needs to be reset
 
         if stop_ in empty: #[None, '', 0]:
-            stop_ = start_ + (len(ref_) - 1 )
+            stop_ = int(start_) + (len(ref_) - 1 )
         elif start_ in empty:
-            start_ = stop_ - (len(ref_) - 1 )
+            start_ = int(stop_) - (len(ref_) - 1 )
         
         ref_ = ref_.upper()
         alt_ = alt_.upper()

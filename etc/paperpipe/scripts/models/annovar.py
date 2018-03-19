@@ -28,6 +28,8 @@ class Annovar(AbstractModel):
                          'VEST3_score',
                          'CADD_raw',
                          'CADD_phred',
+                         'CADD13_raw',
+                         'CADD13_phred',
                          'GERP_RS',
                          'phyloP46way_placental',
                          'phyloP100way_vertebrate',
@@ -198,6 +200,12 @@ class Annovar(AbstractModel):
                     k = "GERP_RS"
                 if k == "ExAC_ALL":
                     k = "exac03"
+
+                if  k == 'CADD13_RawScore':
+                    k = 'CADD13_raw'
+                if k == 'CADD13_PHRED':
+                    k = 'CADD13_phred'
+
                 if k == "AAChange.refGene":
                     # TODO: Added fix but not sure if correct.
                     if v is None:
@@ -297,10 +305,16 @@ class Annovar(AbstractModel):
                     print "Please check this error and fix properly"
                     raise Exception("Annovar returned NONE,NONE as the gene.")
 
-                while True:
+                while True :
+                    answer = ""
+
+                    if gene is None:
+                        answer = "continue"
+                        break
+
                     query = "SELECT gene_id FROM gene WHERE symbol='"+gene+"';"
                     result = self.U.fetch_rows(query)
-                    answer = ""
+
 
                     try:
                         g_id =  int(result[1][0])
@@ -391,6 +405,7 @@ class Annovar(AbstractModel):
                             raise e
                         elif answer == "continue":
                             # Don't give it a gene
+                            g_id = None
                             break
                         elif answer[:5] == "GENE=":
                             # Try again with user inputed gene
@@ -401,16 +416,18 @@ class Annovar(AbstractModel):
                             print "Splitting using", answer, "as delimiter."
                             gene = gene.split(answer)[0]
 
+
+                # This is the only wait the variant_gene step gets skipped.
                 if answer == "continue":
                     answer = ""
-                    continue
-                answer = ""
+                    continue # FIXME: I think this should be break, not continue ...
 
                 if g_id is not None:
                     variant_gene = [ ["gene_id", "variant_id"], [str(g_id), str(variant_id)] ]
                     r = petl.appenddb( variant_gene,
                                        self.U.connection,
                                        "variant_gene")
+
             else:
                 print "Variant", variant_id, "has no annovar genes."
                 print "Continue? [Y]/n"

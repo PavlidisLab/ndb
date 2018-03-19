@@ -278,18 +278,18 @@ class Variant(AbstractModel):
         # for RANGE in xrange(0, tolerance + 1):
         for RANGE in [tolerance]: # FIXME: Don't need to check all, just the biggest tolerance.
             print "RANGE:", RANGE
-            RANGE_START_left = ( int(start) - int(RANGE) )
-            RANGE_START_right = ( int(start) + int(RANGE) )
+            RANGE_left = ( int(start) - int(RANGE) )
+            RANGE_right = ( int(stop) + int(RANGE) )
 
-            RANGE_STOP_left = ( int(stop) - int(RANGE) )
-            RANGE_STOP_right = ( int(stop) + int(RANGE) )
+            #RANGE_STOP_left = ( int(stop) - int(RANGE) )
+            #RANGE_STOP_right = ( int(stop) + int(RANGE) )
 
 
             query = "SELECT * FROM {0} WHERE ((start_hg19 >= {1} AND start_hg19 <= {2}) OR (stop_hg19 >= {3}  AND stop_hg19 <= {4})) AND chromosome='{5}' ;".format(self.database_table,
-                                                                                                                                          RANGE_START_left,
-                                                                                                                                          RANGE_START_right,
-                                                                                                                                          RANGE_STOP_left,
-                                                                                                                                          RANGE_STOP_right,
+                                                                                                                                          RANGE_left,
+                                                                                                                                          RANGE_right,
+                                                                                                                                          RANGE_left,
+                                                                                                                                          RANGE_right,
                                                                                                                                           chromosome)
             _rows = self.U.fetch_rows(query)
             header = None # Header fields
