@@ -142,5 +142,6 @@ a.iconVisit {
 }
 
 a.iconVisit:visited {
-	color:grey;
+	// color:grey;
+	color:black;
 }
