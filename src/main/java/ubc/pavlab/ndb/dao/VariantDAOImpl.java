@@ -63,8 +63,10 @@ public class VariantDAOImpl implements VariantDAO {
             + " WHERE event_id = ?";
     private static final String SQL_FIND_BY_SUBJECT_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
             + " WHERE subject_id = ?";
+
+    // TODO: Warning: This was modifed to find event by coordinates. This possibly breaks indexing from MySQL; revisit if performance suffers.
     private static final String SQL_FIND_BY_POSITION = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
-            + " WHERE chromosome = ? and start_hg19 >= ? and stop_hg19 <= ?";
+            + " WHERE event_id in (SELECT event_id FROM " +SQL_TABLE+ " WHERE chromosome = ? and (start_hg19 >= ? and start_hg19 <= ? or stop_hg19 >= ? and stop_hg19 <= ?))";
     private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id";
 
     private static final String SQL_MAP_GENE_IDS_BY_VARIANT_ID = "SELECT gene_id FROM " + SQL_GENE_MAP_TABLE
@@ -138,7 +140,7 @@ public class VariantDAOImpl implements VariantDAO {
         if ( chr == null || start == null || stop == null ) {
             return Lists.newArrayList();
         }
-        return findAll( SQL_FIND_BY_POSITION, chr, start, stop );
+        return findAll( SQL_FIND_BY_POSITION, chr, start, stop, start, stop );
     }
 
     @Override

@@ -38,11 +38,10 @@
 	</p:panel>
 	<br/>
 	<h:form style="padding:30px;">
-		<h2 style="margin:0 auto 30px auto">Publications</h2>    	
-	    
+		<h2 style="margin:0 auto 30px auto">Publications</h2>
 	    <p>
-	    	Below is the complete list of publications included in our database. For more information about a specific publications or its metadata, click 
-	    	the <span class="ui-icon ui-icon-circlesmall-plus" style="display: inline-block"/> icon. 	    	 
+	    	Below is the complete list of publications included in our database. For more information about a specific publications, click
+	    	the <span class="iconVisit fa fa-book " style="display: inline-block"/> icon under "Details".
 	    </p>
 	    <p>To access the original publication, click on the <span class="ui-icon ui-icon-extlink" style="display: inline-block"/> icon under the <em>Source</em> column.</p>
 	    
@@ -122,9 +121,17 @@
 			<p:column id="headSubjects" headerText="Subjects" sortBy="#{paper.design}">
 				<f:facet name="header">
 					<h:outputText value="Subjects"/>
-					<p:tooltip trackMouse="true" id="toolTipSubjects" for="headSubjects" value="Sample subjectss per study." />
+					<p:tooltip trackMouse="true" id="toolTipSubjects" for="headSubjects" value="Samples/Subjects/Families per study." />
 				</f:facet>
 				<h:outputText value="#{paper.design}: #{paper.count}" />
+			</p:column>
+
+			<p:column id="headCohort" headerText="Cohorts" sortBy="#{paper.cohortSource}">
+				<f:facet name="header">
+					<h:outputText value="Cohort Source"/>
+					<p:tooltip trackMouse="true" id="toolTipCohort" for="headCohort" value="Cohort sources for the study. Can be either the name of the cohort or the region/country where the cohort was recruited." />
+				</f:facet>
+				<h:outputText value="#{paper.cohortSource}" />
 			</p:column>
 
 			<p:column id="headDiagnosis" headerText="Diagnosis" sortBy="#{paper.cases}">
