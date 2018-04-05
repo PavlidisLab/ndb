@@ -20,13 +20,10 @@
 package ubc.pavlab.ndb.beans.services;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
@@ -122,7 +119,12 @@ public class StatsService implements Serializable {
 
         Builder<Paper> papersWithVariantsBuilder = new ImmutableList.Builder<>();
 
-        for ( Paper p : cacheService.listPapers() ) {
+
+        List<Paper> listPapersByName = cacheService.listPapers().stream()
+                .sorted(Comparator.comparing( Paper::getPaperKey ).reversed() )
+                .collect( Collectors.toList());
+
+        for ( Paper p : listPapersByName  ) {
 
             int cnt = statsDAO.findTotalVariantsByPaperId( p.getId() );
 
@@ -144,7 +146,6 @@ public class StatsService implements Serializable {
         }
 
         papersWithVariants = papersWithVariantsBuilder.build();
-
     }
 
     private static final Comparator<Tuple2<String, Integer>> TUPLE_COMPARE_T1 = new Comparator<Tuple2<String, Integer>>() {

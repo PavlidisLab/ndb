@@ -68,6 +68,13 @@ public class HeatmapModel<M> {
         return gson.toJson( data );
     }
 
+    public void resortData() {
+        data.get( 0 );
+        data.get( 1 );
+
+        return;
+    }
+
     public List<Number[]> getData() {
         return data;
     }

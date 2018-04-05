@@ -124,8 +124,8 @@
 
 		         <p:column style="width:200px; text-align: center;" styleClass="centeredColumn" rendered="#{not event.complex}" sortBy="#{event}" sortFunction="#{variantView.sortByLocation}">
 		            <f:facet name="header">
-		                <h:outputText id="Variant" value="Variant"/>
-		                <p:tooltip id="toolTipVariant" for="Variant" value="Location of the variant and allele change" />
+		                <h:outputText id="Location" value="Location"/>
+		                <p:tooltip id="toolTipLocation" for="Location" value="Genomic location of the reference allele." />
 		            </f:facet>
 		            <h:outputLink target="_blank" value="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&amp;position=chr#{event.chromosome}%3A#{event.start}-#{event.stop}">			            	
 		            	<h:outputText value="chr#{event.chromosome}:#{event.start}-#{event.stop}" />
@@ -152,12 +152,7 @@
 
 				</p:column>
 
-				<p:column style="width:10px; text-align: center;" >
-					<f:facet name="header">
-						<h:outputText class="fa fa-check-square" value="" title="Variant validation" />
-					</f:facet>
-					<h:outputText class="fa fa-check-square validatedIcon" value="" title="Variant validated by: #{event.validationMethodsText}" rendered="${fn:contains(event.validations, 'y')}" />
-				</p:column>
+
 
 				<p:column rendered="#{event.complex}" colspan="4" style="text-align:center;" styleClass="centeredColumn inline-row-toggle inline-icon">
 					<h:outputText value="Complex Event; expand row to view variants &#160;" />
@@ -178,6 +173,12 @@
           	
 		        </p:column>
 
+				<p:column style="width:10px; text-align: center;" >
+					<f:facet name="header">
+						<h:outputText class="fa fa-check-square" value="" title="Variant validation" />
+					</f:facet>
+					<h:outputText class="fa fa-check-square validatedIcon" value="" title="Variant validated by: #{event.validationMethodsText}" rendered="${fn:contains(event.validations, 'y')}" />
+				</p:column>
 
 		        <p:column style="text-align: center;" >
 		            <f:facet name="header">
@@ -336,31 +337,33 @@
 							<h:outputText value="#{variant.sampleId}" />
 						</p:column> -->
 						
-						<p:column  style="min-width:8px;">
-				            <f:facet name="header">
-				                <h:outputText id="cmplxREF" value="REF"/>
-				                <p:tooltip id="cmplxToolTipREF" for="cmplxREF" value="Reference base(s) affected by the variant" />
-				            </f:facet>
-				            <h:outputText value="#{variant.ref}" />
-				        </p:column>
-				        
-				        <p:column>
-				            <f:facet name="header">
-				                <h:outputText id="cmplxALT" value="ALT"/>
-				                <p:tooltip id="cmplxToolTipALT" for="cmplxALT" value="Modified base(s) caused by the variant" />
-				            </f:facet>
-				            <h:outputText value="#{variant.alt}" />
-				        </p:column>
 
-				         <p:column>
+
+				         <p:column style="text-align: center;" >
 				            <f:facet name="header">
 				                <h:outputText id="cmplxLocation" value="Location"/>
 				                <p:tooltip id="cmplxToolTipLocation" for="cmplxLocation" value="Location of the variant" />
 				            </f:facet>
-				            <h:outputLink target="_blank" value="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&amp;position=chr#{variant.chromosome}%3A#{variant.start}-#{variant.stop}">			            	
+				            <h:outputLink target="_blank" value="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&amp;position=chr#{variant.chromosome}%3A#{variant.start}-#{variant.stop}">
 				            	<h:outputText value="chr#{variant.chromosome}:#{variant.start}-#{variant.stop}" />
 				            </h:outputLink>
-				        </p:column>	
+				        </p:column>
+
+						<p:column  style="text-align: center; min-width:8px;">
+							<f:facet name="header">
+								<h:outputText id="cmplxREF" value="REF"/>
+								<p:tooltip id="cmplxToolTipREF" for="cmplxREF" value="Reference base(s) affected by the variant" />
+							</f:facet>
+							<h:outputText value="#{variant.ref}" />
+						</p:column>
+
+						<p:column style="text-align: center; min-width:8px;">
+							<f:facet name="header">
+								<h:outputText id="cmplxALT" value="ALT"/>
+								<p:tooltip id="cmplxToolTipALT" for="cmplxALT" value="Modified base(s) caused by the variant" />
+							</f:facet>
+							<h:outputText value="#{variant.alt}" />
+						</p:column>
 				        
 				        <p:column>
 				            <f:facet name="header">
@@ -393,7 +396,7 @@
 			            	
 			            	<h:outputText value="#{variant.annovar.caddPhred == 0 ? '-' : variant.annovar.caddPhred}" />	            	
 				        </p:column>
-				        
+
 				         <p:column  >
 				            <f:facet name="header">
 				                <h:outputText id="Source" value="Source"/>

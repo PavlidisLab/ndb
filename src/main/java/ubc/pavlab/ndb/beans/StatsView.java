@@ -19,11 +19,8 @@
 package ubc.pavlab.ndb.beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
@@ -93,13 +90,23 @@ public class StatsView implements Serializable {
 
         // Make bar charts
 
-        variantCategoriesBarModel = makeBarChart( statsService.getEventCntByCategory(),
+        Set<String> categoriesToAvoid = new HashSet<>(Arrays.asList("other", "unknown"));
+        Set<String> functionsToAvoid = new HashSet<>(Arrays.asList("other", "unknown"));
+
+        variantCategoriesBarModel = makeBarChart(
+                statsService.getEventCntByCategory()
+                        .stream()
+                        .filter(tuple -> tuple != null && tuple.getT1() != null && tuple.getT2() != null && !categoriesToAvoid.contains( tuple.getT1()) )
+                        .collect( Collectors.toList() ),
                 "Total Variant Events by Category", "Category", "Variants" );
 
         Axis xAxis = variantCategoriesBarModel.getAxis( AxisType.X );
         xAxis.setTickAngle( -25 );
 
-        variantFuncBarModel = makeBarChart( statsService.getEventCntByContext(), "Total Variant Events by Function",
+        variantFuncBarModel = makeBarChart( statsService.getEventCntByContext()
+                        .stream()
+                        .filter(tuple -> tuple != null && tuple.getT1() != null && tuple.getT2() != null && !functionsToAvoid.contains( tuple.getT1()) && !tuple.getT1().contains( ";" ) )
+                        .collect( Collectors.toList() ), "Total Variant Events by Function",
                 "Function", "Variants" );
 
         // makeCategoryCharts();
@@ -125,6 +132,8 @@ public class StatsView implements Serializable {
 
         }
 
+        // TODO:
+        //heatmapModel.resortData();
         return heatmapModel;
     }
 
