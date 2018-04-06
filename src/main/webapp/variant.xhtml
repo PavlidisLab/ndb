@@ -53,7 +53,7 @@
 						 paginatorTemplate="{Exporters}"
 						 scrollRows="#{variantView.liveScroll ? 20 : 0}"
 						 scrollable="#{variantView.liveScroll}"
-						 scrollHeight="#{variantView.liveScroll ? 400 : null}"
+						 scrollHeight="#{variantView.liveScroll ? 580 : null}"
 						 liveScroll="#{variantView.liveScroll}"
 
 		                 >
@@ -180,7 +180,7 @@
 					<h:outputText class="fa fa-check-square validatedIcon" value="" title="Variant validated by: #{event.validationMethodsText}" rendered="${fn:contains(event.validations, 'y')}" />
 				</p:column>
 
-		        <p:column style="text-align: center;" >
+		        <p:column style="width:100px; text-align: center;" >
 		            <f:facet name="header">
 		                <h:outputText id="inheritance" value="Inheritance"  />
 		                <p:tooltip id="toolTipInheritance" for="inheritance" value="De novo variant (i.e. Not inherited from parents.)" />
@@ -192,35 +192,7 @@
 
 				</p:column>
 
-			<!--
-			<p:column  >
-				<f:facet name="header">
-					<h:outputText id="validation" value="Validation"  />
-					<p:tooltip id="toolTipValidation" for="validation" value="Status of validation by secondary method for existance of variant." />
-
-				</f:facet>
-
-				<ui:repeat var="c" value="#{event.validations}"  varStatus="status">
-					<h:outputText value="#{c.label}" title="event.validationMethodsText" />
-					<h:outputText value=", " rendered="#{not status.last}" />
-				</ui:repeat>
-			</p:column>
-				-->
-
-				<ui:remove>
-		        <!-- This column is removed, as we can tell LoF from the effect conditional colouring. I'm leaving this here because it can be useful to compare as a sanity check. -->
-		        <!-- The data from here is pulled from the literature as best as possible. -->
-		        <p:column sortBy="#{event.lof}" >
-		            <f:facet name="header">
-		                <h:outputText id="lof" value="LoF"  />
-		                <p:tooltip id="toolTipLoF" for="lof" value="Loss of function caused by this variant." />	
-		           
-		            </f:facet>		            	            	
-		            <h:outputText value="#{event.lof}" />          	
-		        </p:column>		     
-		        </ui:remove>
-
-				<p:column style="text-align: center;" styleClass="row-gradient" sortBy="#{event}" sortFunction="#{variantView.sortByEffects}">
+				<p:column  style="width:200px; text-align: center;" styleClass="row-gradient" sortBy="#{event}" sortFunction="#{variantView.sortByEffects}">
 					<f:facet name="header">
 						<h:outputText id="Effect" value="Effects"/>
 						<p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect." />
@@ -233,7 +205,7 @@
 					</ui:repeat>
 				</p:column>
 
-				<p:column>
+				<p:column  style="width:100px; text-align: left;" >
 					<f:facet name="header">
 						<h:outputText id="transcript" value="Transcript"/>
 						<p:tooltip id="toolTipTranscript" for="transcript" value="Transcript used for the cDNA/Protein mutation." />
@@ -246,7 +218,7 @@
 					</ui:repeat>
 				</p:column>
 
-				<p:column styleClass="centeredColumn row-gradient" >
+				<p:column style="width:100px; text-align: left;" styleClass="centeredColumn row-gradient" >
 					<f:facet name="header">
 						<h:outputText id="cDNA" value="cDNA"/>
 						<p:tooltip id="toolTipCDNA" for="cDNA" value="cDNA variant notation." />
@@ -259,7 +231,7 @@
 					</ui:repeat>
 				</p:column>
 
-				<p:column styleClass="centeredColumn row-gradient" >
+				<p:column style="width:60px; text-align: left;" styleClass="centeredColumn row-gradient" >
 					<f:facet name="header">
 						<h:outputText id="protein" value="Protein"/>
 						<p:tooltip id="toolTipProtein" for="protein" value="Protein variant notation." />
@@ -273,7 +245,7 @@
 				</p:column>
 		        
 		        <p:column sortBy="#{event.caddPhred}"
-						  style="text-align: right;"
+						  style="width:60px; text-align: right;"
 						  styleClass="centeredColumn row-gradient #{(event.caddPhred > 50 ? 'ct6' : (event.caddPhred > 40 ? 'ct5' : (event.caddPhred > 30 ? 'ct4' : (event.caddPhred > 20 ? 'ct3' : (event.caddPhred > 10 ? 'ct2' : (event.caddPhred > 0 ? 'ct1' : ''))))))}">
 		            <f:facet name="header">
 		                <h:outputText id="Cadd" value="CADD-Phred v1.0"/>
@@ -284,7 +256,7 @@
 	            	<h:outputText value="#{event.caddPhred == 0 ? '-' : event.caddPhred}" />	            	
 		        </p:column>
 
-				<p:column style="text-align: right;" sortBy="#{event.exacFreq}" >
+				<p:column style="width:60px; text-align: right;" sortBy="#{event.exacFreq}" >
 					<f:facet name="header">
 						<h:outputText id="exacFreq" value="ExAC v0.3"/>
 						<p:tooltip id="toolTipExacFreq" for="exacFreq" value="ExAC population frequency (version 0.3)." />
@@ -295,7 +267,7 @@
 					<h:outputText value="-" rendered="#{event.exacFreq eq 0.0}" />
 				</p:column>
 		        
-		        <p:column  sortBy="#{event}" sortFunction="#{variantView.sortByPapers}">
+		        <p:column style="width:120px; text-align: right;" sortBy="#{event}" sortFunction="#{variantView.sortByPapers}">
 		            <f:facet name="header">
 		                <h:outputText id="Sources" value="Sources"/>
 		                <p:tooltip id="toolTipSources" for="Sources" value="Source(s) where variants from this event are reported." />		           
