@@ -53,9 +53,8 @@
 						 paginatorTemplate="{Exporters}"
 						 scrollRows="#{variantView.liveScroll ? 20 : 0}"
 						 scrollable="#{variantView.liveScroll}"
-						 scrollHeight="#{variantView.liveScroll ? 580 : null}"
+						 scrollHeight="#{variantView.liveScroll ? 500 : null}"
 						 liveScroll="#{variantView.liveScroll}"
-
 		                 >
 				<f:facet name="{Exporters}">
 		        	<span style="text-align:right;">
@@ -82,7 +81,7 @@
 		            </span>
 				</f:facet>
 
-				<p:column  style="text-align: left;" sortBy="#{event}" sortFunction="#{variantView.sortByGenes}">
+				<p:column  style="width:150px; text-align: left;" sortBy="#{event}" sortFunction="#{variantView.sortByGenes}">
 		            <f:facet name="header">
 		                <h:outputText id="Gene" value="Gene"/>
 		                <p:tooltip id="toolTipGene" for="Gene" value="Gene symbol on which the variant is located" />
@@ -159,7 +158,7 @@
 					   <p:rowToggler/> 
 		        </p:column>	
 		        
-		        <p:column style="text-align: center;" rendered="#{not event.complex}"  sortBy="#{event}" sortFunction="#{variantView.sortByFuncs}" >
+		        <p:column style="width:60px;  text-align: center;" rendered="#{not event.complex}"  sortBy="#{event}" sortFunction="#{variantView.sortByFuncs}" >
 		            <f:facet name="header">
 		                <h:outputText id="Functions" value="Context"/>
 		                <p:tooltip id="toolTipFunctions" for="Functions" value="Variant functional categories" />	
@@ -337,7 +336,7 @@
 							<h:outputText value="#{variant.alt}" />
 						</p:column>
 				        
-				        <p:column>
+				        <p:column style="text-align: center; ">
 				            <f:facet name="header">
 				                <h:outputText id="Function" value="Context" />
 				                <p:tooltip id="toolTipFunction" for="Function" value="Variant functional category" />

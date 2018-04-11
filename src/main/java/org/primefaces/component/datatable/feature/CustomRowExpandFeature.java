@@ -44,8 +44,7 @@ public class CustomRowExpandFeature extends RowExpandFeature {
     private static final Logger log = Logger.getLogger( CustomRowExpandFeature.class );
 
     @Override
-    public void encodeExpansion( FacesContext context, DataTableRenderer renderer, DataTable table, int rowIndex,
-            boolean hidden ) throws IOException {
+    public void encodeExpansion( FacesContext context, DataTableRenderer renderer, DataTable table, int rowIndex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         RowExpansion rowExpansion = table.getRowExpansion();
@@ -62,9 +61,9 @@ public class CustomRowExpandFeature extends RowExpandFeature {
         }
 
         writer.startElement( "tr", null );
-        if ( hidden ) {
+        /*if ( hidden ) {
             writer.writeAttribute( "style", "display:none", null );
-        }
+        }*/
         writer.writeAttribute( "class", styleClass, null );
 
         writer.startElement( "td", null );
