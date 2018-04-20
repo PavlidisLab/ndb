@@ -37,7 +37,7 @@ public class VariantView implements Serializable {
 
     private static final Logger log = Logger.getLogger( VariantView.class );
 
-    private static final int LAZY_LOAD_MAX_SIZE = 50;
+    private static final int LAZY_LOAD_MAX_SIZE = 150;
 
     private String query;
 
@@ -324,6 +324,15 @@ public class VariantView implements Serializable {
             return nullArray;
         }
         return bc.split( "," );
+    }
+
+    public int tableHeight(){
+        if (variants == null) {
+            return 25;
+        }
+
+        return Math.min( 25*variants.size() + 25, 500);
+
     }
 
     // public String getBreadcrumbsLinks() {

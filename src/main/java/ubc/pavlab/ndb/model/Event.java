@@ -210,7 +210,7 @@
             this.validations = ImmutableList.copyOf( validations );
             this.validationMethods = ImmutableList.copyOf( validationMethods );
             this.aaChanges = ImmutableList.copyOf( aaChanges );
-            this.variants = ImmutableList.copyOf( variantsCopy );
+            this.variants = variantsCopy ;
         }
 
         public Integer getId() {
@@ -320,7 +320,10 @@
         }
 
         public List<AAChange> getAAChanges() { return aaChanges; }
-        public List<Variant> getVariants() { return variants; }
+
+        public List<Variant> getVariants() {
+            return variants;
+        }
 
         public boolean isComplex() {
             return complex;

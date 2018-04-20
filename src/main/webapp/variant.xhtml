@@ -44,7 +44,6 @@
 			
 		    <p:dataTable id="variantTable"
 						 styleClass="right-aligned-paginator"
-
 						 var="event"
 		    			 value="#{variantView.events}"
 						 paginatorAlwaysVisible="true"
@@ -55,7 +54,8 @@
 						 scrollable="#{variantView.liveScroll}"
 						 scrollHeight="#{variantView.liveScroll ? 500 : null}"
 						 liveScroll="#{variantView.liveScroll}"
-		                 >
+						 widgetVar="variantTable"> <!-- There's a bug with datatables that cause missing columns until this happens. -->
+
 				<f:facet name="{Exporters}">
 		        	<span style="text-align:right;">
 <!-- 		            <h:commandLink>
@@ -310,7 +310,7 @@
 						
 
 
-				         <p:column style="text-align: center;" >
+				         <p:column style="text-align: center;" sortBy="#{variant.start}" >
 				            <f:facet name="header">
 				                <h:outputText id="cmplxLocation" value="Location"/>
 				                <p:tooltip id="cmplxToolTipLocation" for="cmplxLocation" value="Location of the variant" />
@@ -320,7 +320,7 @@
 				            </h:outputLink>
 				        </p:column>
 
-						<p:column  style="text-align: center; min-width:8px;">
+						<p:column  style="text-align: center; min-width:8px;"  sortBy="#{variant.ref}">
 							<f:facet name="header">
 								<h:outputText id="cmplxREF" value="REF"/>
 								<p:tooltip id="cmplxToolTipREF" for="cmplxREF" value="Reference base(s) affected by the variant" />
@@ -328,7 +328,7 @@
 							<h:outputText value="#{variant.ref}" />
 						</p:column>
 
-						<p:column style="text-align: center; min-width:8px;">
+						<p:column style="text-align: center; min-width:8px;" sortBy="#{variant.alt}">
 							<f:facet name="header">
 								<h:outputText id="cmplxALT" value="ALT"/>
 								<p:tooltip id="cmplxToolTipALT" for="cmplxALT" value="Modified base(s) caused by the variant" />
@@ -358,7 +358,8 @@
             	
 				        </p:column>
 				        
-				        <p:column styleClass="centeredColumn row-gradient #{(variant.annovar.caddPhred > 50 ? 'ct6' : (variant.annovar.caddPhred > 40 ? 'ct5' : (variant.annovar.caddPhred > 30 ? 'ct4' : (variant.annovar.caddPhred > 20 ? 'ct3' : (variant.annovar.caddPhred > 10 ? 'ct2' : (variant.annovar.caddPhred > 0 ? 'ct1' : ''))))))}">
+				        <p:column sortBy="#{variant.annovar.caddPhred}"
+								  styleClass="centeredColumn row-gradient #{(variant.annovar.caddPhred > 50 ? 'ct6' : (variant.annovar.caddPhred > 40 ? 'ct5' : (variant.annovar.caddPhred > 30 ? 'ct4' : (variant.annovar.caddPhred > 20 ? 'ct3' : (variant.annovar.caddPhred > 10 ? 'ct2' : (variant.annovar.caddPhred > 0 ? 'ct1' : ''))))))}">
 				            <f:facet name="header">
 				                <h:outputText id="cmplxCadd" value="CADD-Phred v1.0"/>
 				                <p:tooltip id="cmplxtoolTipCadd" for="cmplxCadd" value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores." />
@@ -368,7 +369,19 @@
 			            	<h:outputText value="#{variant.annovar.caddPhred == 0 ? '-' : variant.annovar.caddPhred}" />	            	
 				        </p:column>
 
-				         <p:column  >
+						<p:column style="width:60px; text-align: right;" sortBy="#{variant.annovar.exac03}" >
+							<f:facet name="header">
+								<h:outputText id="exacFreq" value="ExAC v0.3"/>
+								<p:tooltip id="toolTipExacFreq" for="exacFreq" value="ExAC population frequency (version 0.3)." />
+							</f:facet>
+							<h:outputLink target="_blank" value="http://exac.broadinstitute.org/variant/#{variant.chromosome}-#{variant.start}-#{variant.ref}-#{variant.alt}" rendered="#{variant.annovar.exac03 gt 0.0}">
+								<h:outputText value="#{variant.annovar.exac03}" />
+							</h:outputLink>
+							<h:outputText value="-" rendered="#{variant.annovar.exac03 eq 0.0}" />
+						</p:column>
+
+
+						<p:column  >
 				            <f:facet name="header">
 				                <h:outputText id="Source" value="Source"/>
 				            	<p:tooltip id="toolTipSource" for="Source" value="Source of the reported variant" />	
@@ -391,7 +404,11 @@
 					        </p:commandLink>
 		    				
 		    				
-						</p:column>				
+						</p:column>
+
+						<!-- Hack to fix a bug where the last column is not loaded using liveScroll and some rendered=false columns -->
+						<p:column styleClass="centeredColumn terminal" style="width:0px;padding:0;visibility:hidden">
+						</p:column>
 					</p:dataTable>
 		        </p:rowExpansion>	
 	            		 	 
