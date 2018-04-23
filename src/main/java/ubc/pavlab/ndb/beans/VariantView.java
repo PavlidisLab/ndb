@@ -327,6 +327,7 @@ public class VariantView implements Serializable {
     }
 
     public int tableHeight(){
+	//Stub. Update as needed.
         if (variants == null) {
             return 25;
         }

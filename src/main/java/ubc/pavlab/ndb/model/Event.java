@@ -320,10 +320,7 @@
         }
 
         public List<AAChange> getAAChanges() { return aaChanges; }
-
-        public List<Variant> getVariants() {
-            return variants;
-        }
+        public List<Variant> getVariants() { return variants; }
 
         public boolean isComplex() {
             return complex;
