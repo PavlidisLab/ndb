@@ -43,19 +43,17 @@
 			</div>
 			
 		    <p:dataTable id="variantTable"
-						 styleClass="right-aligned-paginator"
-						 var="event"
-		    			 value="#{variantView.events}"
-						 paginatorAlwaysVisible="true"
-						 paginator="true"
-						 paginatorPosition="top bottom"
-						 paginatorTemplate="{Exporters}"
-						 scrollRows="#{variantView.liveScroll ? 20 : 0}"
-						 scrollable="#{variantView.liveScroll}"
-						 scrollHeight="#{variantView.liveScroll ? 500 : null}"
-						 liveScroll="#{variantView.liveScroll}"
-						 widgetVar="variantTable"> <!-- There's a bug with datatables that cause missing columns until this happens. -->
-
+				 styleClass="right-aligned-paginator"
+				 var="event"
+				 value="#{variantView.events}"
+				 paginatorAlwaysVisible="true"
+				 paginator="true"
+				 paginatorPosition="top bottom"
+				 paginatorTemplate="{Exporters}"
+				 scrollRows="#{variantView.liveScroll ? 20 : 0}"
+				 scrollable="#{variantView.liveScroll}"
+				 scrollHeight="#{variantView.liveScroll ? 500 : null}"
+				 liveScroll="#{variantView.liveScroll}" >
 				<f:facet name="{Exporters}">
 		        	<span style="text-align:right;">
 <!-- 		            <h:commandLink>
