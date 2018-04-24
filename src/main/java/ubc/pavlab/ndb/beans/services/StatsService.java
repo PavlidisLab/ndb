@@ -301,7 +301,7 @@ public class StatsService implements Serializable {
             @Override
             public List<Gene> get() {
                 log.info( "topGenesByDenovoLofSupplier" );
-                List<Integer> geneIds = statsDAO.findTopGenesByDenovoLof( TOP_N_LARGE );
+                List<Integer> geneIds = statsDAO.findTopGenesByDenovoLof( TOP_N );
 
                 List<Gene> genes = new ArrayList<>();
 

@@ -86,17 +86,17 @@ public class StatsDAOImpl implements StatsDAO {
     private static final String SQL_PAPER_CNT_WITH_VARIANTS = "select COUNT(distinct paper_id) from "
             + SQL_VARIANT_TABLE;
 
-    private static final String SQL_TOP_GENES_BY_VARIANT = "select gene_id, COUNT(*) cnt from " + SQL_VARIANT_TABLE
-            + " var inner join " + SQL_GENE_MAP_TABLE
-            + " vmap on var.id=vmap.variant_id group by gene_id order by cnt DESC limit ?";
+    private static final String SQL_TOP_GENES_BY_VARIANT = "SELECT gene_id, COUNT(*) cnt FROM " + SQL_VARIANT_TABLE
+            + " var INNER JOIN " + SQL_GENE_MAP_TABLE
+            + " vmap ON var.id=vmap.variant_id WHERE func IN ('exonic', 'splicing', 'splicing;exonic')  GROUP BY gene_id ORDER BY cnt DESC LIMIT ?";
 
-    private static final String SQL_TOP_GENES_BY_EVENT = "select gene_id, COUNT(distinct event_id) cnt from "
-            + SQL_VARIANT_TABLE + " var inner join " + SQL_GENE_MAP_TABLE
-            + " vmap on var.id=vmap.variant_id group by gene_id order by cnt DESC limit ?";
+    private static final String SQL_TOP_GENES_BY_EVENT = "SELECT gene_id, COUNT(distinct event_id) cnt FROM "
+            + SQL_VARIANT_TABLE + " var INNER JOIN " + SQL_GENE_MAP_TABLE
+            + " vmap ON var.id=vmap.variant_id WHERE func IN ('exonic', 'splicing', 'splicing;exonic')  GROUP BY gene_id ORDER BY cnt DESC LIMIT ?";
 
-    private static final String SQL_TOP_GENES_BY_PAPER = "select gene_id, COUNT(distinct paper_id) cnt from "
-            + SQL_VARIANT_TABLE + " var inner join " + SQL_GENE_MAP_TABLE
-            + " vmap on var.id=vmap.variant_id group by gene_id order by cnt DESC limit ?";
+    private static final String SQL_TOP_GENES_BY_PAPER = "SELECT gene_id, COUNT(distinct paper_id) cnt FROM "
+            + SQL_VARIANT_TABLE + " var INNER JOIN " + SQL_GENE_MAP_TABLE
+            + " vmap ON var.id=vmap.variant_id WHERE func IN ('exonic', 'splicing', 'splicing;exonic') GROUP BY gene_id ORDER BY cnt DESC LIMIT ?";
 
     private static final String SQL_VARIANT_CNT_BY_CONTEXT_FOR_PAPER = "SELECT func, COUNT(*) FROM " + SQL_VARIANT_TABLE
             + " where paper_id=? group by func";
@@ -114,12 +114,12 @@ public class StatsDAOImpl implements StatsDAO {
             + " WHERE inheritance = 'd'; ";
 
     private static final String SQL_LOF_CNT = " SELECT COUNT( DISTINCT event_id ) FROM " + SQL_VARIANT_TABLE
-            + " WHERE func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substituition') ; ";
+            + " WHERE func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substitution') ; ";
 
     private static final String SQL_DENOVO_LOF_GENES = "SELECT gene_ID, count(distinct event_id) as cnt  " + "FROM "
             + SQL_VARIANT_TABLE + " as var " + " inner join " + SQL_GENE_MAP_TABLE + " vmap on var.id=vmap.variant_id "
             + " WHERE inheritance = 'd' AND "
-	    + "(func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substituition')) " // TODO: Do we still want those categories
+	    + "(func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substitution')) " // TODO: Do we still want those categories
             + "GROUP BY gene_id ORDER BY cnt DESC limit ?";
 
     // Vars ---------------------------------------------------------------------------------------
