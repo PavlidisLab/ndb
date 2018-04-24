@@ -45,15 +45,20 @@
  		</p:panel>
  		<p:separator style="width:75%;"/>
       	<p:panel styleClass="no-border" style="padding-top:50px;">
- 	  	<p:panelGrid styleClass="no-border" columns="3" style="width:100%;text-align:left;">
-		
-	    	
-    		<p:panel styleClass="no-border">
-		    	<ui:include src="stats_table_topdenovolof.xhtml"></ui:include>		    
-   			</p:panel>	  
- 	  		<p:panel styleClass="no-border">
-	 	  		<div class="title">
-	 	  			<h3>About MARVdb</h3> 	  	
+ 	  	<p:panelGrid styleClass="no-border" columns="2" style="width:100%;text-align:left;">
+
+            <p:panelGrid styleClass="no-border" rows="2" columns="1" style="width:100%;text-align:left;">
+                <p:panel styleClass="no-border">
+                    <ui:include src="stats_table_topdenovolof.xhtml"></ui:include>
+                </p:panel>
+                    <p:panel styleClass="no-border">
+                    <ui:include src="stats_table_topgenesbyeventcnt.xhtml"></ui:include>
+                </p:panel>
+            </p:panelGrid>
+
+			<p:panel styleClass="no-border">
+	 	  		<div>
+	 	  			<h3>About MARVdb</h3>
 	 	  			<p>
 	 	  				MARVdb is a database of human variants reported in peer-reviewed scientific literature. 
       	 				The collection effort focuses primarily on studies pertaining to <strong>Austism Spectrum Disorder (ASD)</strong>, 
@@ -65,52 +70,64 @@
 	 	  				More help and descriptions of our work can be found on the <strong><p:link href="documentation.xhtml">documentation</p:link></strong> page.		
 	 	  			</p>
 				</div>
-	 	  		<p:panelGrid columns="2" style="margin:0 auto 40px auto;">
-			 	  	<f:facet name="header">
-			        	Database Statistics
-			    	</f:facet>
-			 	  	
-					
-        			<ui:include src="stat_summary.xhtml" />
-        			
-			 	  	<f:facet name="footer">
- 	  					<em>For more details, refer to our <p:link href="stats.xhtml">statistics</p:link> section.</em>			 	
-			 	  	</f:facet>
- 	  			</p:panelGrid>   	
-			 	  	
- 	  				<h2>Recent News</h2>
- 	  				<p:layout style="text-align:left;max-width:90%;min-height:50px;" >					    
-    					<p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true" >
+                <div id="news">
+ 	  				<h3>Recent News</h3>
+
+                    <p:layout style="text-align:left;max-width:80%;min-height:50px;" >
+
+                        <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true" >
+                            <strong>
+                                2018-04-24
+                            </strong>
+                        </p:layoutUnit>
+                        <p:layoutUnit position="center">
+                            A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long
+                        </p:layoutUnit>
+                    </p:layout>
+
+
+                    <p:layout style="text-align:left;max-width:80%;min-height:50px;" >
+
+                        <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true" >
+                            <strong>
+                                2018-04-23
+                            </strong>
+                        </p:layoutUnit>
+                        <p:layoutUnit position="center">
+                            Our development/beta instance is available at <a href="https://dev.marvdb.msl.ubc.ca/">https://dev.marvdb.msl.ubc.ca/</a>.
+                        </p:layoutUnit>
+                    </p:layout>
+
+                    <p:layout style="text-align:left;max-width:80%;min-height:150px;" >
+                        <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true" >
 							<strong>
 					        	2016-03-31
 					        </strong>
 					    </p:layoutUnit>
 					    <p:layoutUnit position="center">
-					        MARVdb (Version 1.0) is officially released! Thank you for your support.
+					        Thank you for using MARVdb!
 					    </p:layoutUnit>
+
+
 					</p:layout>									
  	  				<div style="max-width:90%;">  <hr/> </div>
  	  				<p:layout style="text-align:left;max-width:90%;min-height:50px;">
     					<p:layoutUnit position="west"  size="100" minSize="40" maxSize="200" fullPage="true">
 					        <strong>
-					        	-
+					        	<!-- Content date -->
 					        </strong>
 					    </p:layoutUnit>
 					 	
 					    <p:layoutUnit position="center">
+                            <!-- Content -->
 					        No further announcements.
 					    </p:layoutUnit>
-					</p:layout>				
- 	  	
+					</p:layout>
+                </div>
  	  		</p:panel>
  	  	
 	  		
-    		<p:panel styleClass="no-border">
-			  	<ui:include src="stats_table_topgenesbyeventcnt.xhtml"></ui:include>
-			  	<br/>
-		    	<ui:include src="stats_table_topgenesbypapercnt.xhtml"></ui:include>
-	    	</p:panel>
-			  			    	
+
   	    	
     		
  	  </p:panelGrid>
