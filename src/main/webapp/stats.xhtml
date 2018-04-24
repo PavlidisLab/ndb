@@ -69,30 +69,41 @@
 	
 		
  	  	<p:panel styleClass="no-border">
-		    	<ui:include src="stats_table_topdenovolof.xhtml"></ui:include>		    
-   		</p:panel>	
+			<p:panelGrid columns="2" style="margin:20px auto 20px auto;">
+				<f:facet name="header"> Database Statistics </f:facet>
+				<ui:include src="stat_summary.xhtml" />
+			</p:panelGrid>
+			<br/>
+			<ui:include src="stats_table_topdenovolof.xhtml"></ui:include>
+		</p:panel>
     	
  	  	<p:panel styleClass="no-border">
- 	  	<p> Typical usage of a genetic variant database may require counts of certain types of events. Herein, we present some summaries of the data collected through graphics and tabulations of counts.</p>
- 	  	<p:panelGrid columns="2" style="margin:20px auto 20px auto;">
- 	  	<f:facet name="header">
-        	Database Statistics
-    	</f:facet>	 	  	
-        	<ui:include src="stat_summary.xhtml" />
- 	  	</p:panelGrid>
+			<h4>Overview</h4>
+
+			<p>
+				Genetic variant databases can hold very diverse types of events, distributed differently across genes, publications and predicted mutational effect.
+				Herein, we present a summary of our curation results and some definitions of the terminology we use.
+			</p>
+
+			<h4>Definitions</h4>
+ 	  		<p>
+ 	  			A <em>Variant Event</em> is a specific mutation that occurred on a specific proband. We combine distinct variant reports for the same sample under a single <em>event</em>, and we also
+				attempt to disambiguate instances where the same sample can have different identifier across many studies.
+
+				This also accounts for instances where certain publications will report a multi-nucleotide variant as multiple reports of single nucleotide variants (e.g. a deletion followed by an insertion can be respresented as a substitution), which are <em>Complex Events</em> in our terminology.
+				Unless specificied otherwise, we use the number of events as the count for statistics when describing summary counts of variants in this database.
+ 	  		</p>
  	  	
+ 	  		<p>
+				A <em>de novo</em> variant is a type of genetic mutation that does not appear in the parental genomes and are beleived to originate from the germline.
+				Some of publications <p:link outcome="publications" value="publications"/> primarily report de novo variants, while others report also parentally inherited variants.
+				It is important to note that this type of filtering along side the scope of sequencing (genomes, exomes, or targeted genes) will influence the ratio of de novo mutations per gene reflected in the database.
+			</p>
  	  	
- 	  	<p>
- 	  	A <em>Variant Event</em> is a specific mutation that occurred on a specific proband. This counts disambiguates instances where the same proband across different cohorts is assigned different identifiers. This also accounts for instances where certain publications will report a complex variant as two events (e.g. a deletion followed by an insertion), while others may opt to report it as one (a substitution.) Unless specificied otherwise, this is count we use to do other statistics about number of variants in this database. 
- 	  	</p>
- 	  	
- 	  	<p>A <em>de novo</em> variant is a type of genetic mutation that was not inherited from a parent, but rather from a germ cell from a parent. 
- 	  	Many <p:link outcome="publications" value="publications"/> primarily report de novo variants across whole genomes, exomes, or specific targeted genes.</p>
- 	  	
- 	  	<p><em>Loss of function</em> variants are DNA mutations that affects transcription of RNA in a way that the resulting amino acid sequence is unlikely to produce a functionally relevant protein.
- 	  	These mutations are usually of the <em>frameshift</em> type, meaning an insertion (or deletion) of a block that is not a multiple of 3. This causes an offset to the codon reading frame. 
- 	  	Other loss of function variants include splice site variants; mutations that occur within 2 bases of an exon, preventing it from being spliced into the transcript. Loss of function can also be attributed to mutations that disturb a stop codon with an amino acid change, or creates a new one prematurely.  
- 	  	</p>
+			<p><em>Loss of function</em>, also called <em>protein truncating variant</em>, are DNA mutations that are predicted to alter the coding sequence often resulting in a shorter amino acid sequence.
+ 	  			These mutations can include introduction of early stop codons, which halts translation prematurely, or the loss of a stop codon. Insertions or deletions that change the reading frame (<em>frameshift</em> variants), meaning an insertion (or deletion) of a block that is not a multiple of 3 can also truncate the protein.
+				Other loss of function variants include splicing variants, where a change is made near an exon-intron boundary causing some effect on the splicing mechanisms of the protein.
+ 	  		</p>
  	  	
  	  	</p:panel>
  	  	
@@ -105,15 +116,13 @@
     	
 	</p:panelGrid>
 	</div>
-	
 
 	
 	<div class="section">
 		<h3>Variants Events Per Paper</h3>
 		<p:separator/>
 		<p>
-			The charts in this section describe the breakdown by origin for variants events included in this database. 
-			The first chart shows the papers including the highest counts of variant events, while the second chart is a complete breakdown of all papers. 
+			The charts in this section describe the breakdown by publication of origin for variants events included in this database.
 		</p>
 		<p:panelGrid columns="2" styleClass="no-border" style="margin: 0 auto;">				
 		
@@ -144,8 +153,9 @@
 		</p>
 			 
 		<p>
-			 The <em>category</em> describes the potential effect of this variant, such as synonymous and nonsynonymous single nucleotide variant (SNV), or changes in the reading frame (e.g. frameshift insertions, deletions, substitutions).  			 
-  			 The <em>function</em> represents the functional role of the area where the variant originated from (e.g. A variant from non-coding DNA would be labeled as <em>intronic.</em> ) The y-axis is log-scaled to facilitate readability. 
+			The <em>category</em> describes the potential effect of this variant, such as synonymous and nonsynonymous single nucleotide variant (SNV), or changes in the reading frame (e.g. frameshift insertions, deletions, substitutions).
+  			The <em>function</em> represents contextual role in the sequence where the variant is located (e.g. A variant from non-coding DNA would be labeled as <em>ncRNA_intronic.</em>, while a variant on an protein coding exon would be <em>exonic</em>.) The y-axis is log-scaled to facilitate readability.
+			The classifications were assigned by ANNOVAR. For more information, please read the <a target="_blank" href="http://annovar.openbioinformatics.org/en/latest/user-guide/gene/">ANNOVAR user guide</a>.
 		</p>
 
 		<p:panelGrid columns="2" styleClass="no-border" style="margin: 0 auto;">
@@ -175,7 +185,7 @@
 	<h4> More information / Contact us</h4>	
 	<div id="concludingText" style="width: 80%; margin: 0 auto; margin-left: 50px; ">
 		<p>
-				For more information about our data curation and harmonization, visit the <a href="documentation.xhtml">documentation</a> section. For any questions or comments, feel free to contact <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.  			
+				For more information about our data curation and harmonization, visit the <a href="documentation.xhtml">documentation</a> section. For any questions or comments, contact <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.
 		</p>		
 		
 	</div>
