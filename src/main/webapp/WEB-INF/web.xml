@@ -18,8 +18,7 @@
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>redmond</param-value>
-	</context-param>	
-	
+	</context-param>
 		
 	<!-- Install slf4j bridge handler -->
 <!-- 	<listener>
@@ -138,4 +137,12 @@
 		<extension>svg</extension>
 		<mime-type>image/svg+xml</mime-type>
 	</mime-mapping>
+
+
+	<error-page>
+		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
+		<location>/WEB-INF/errorpages/expired.xhtml</location>
+	</error-page>
+
+
 </web-app>
