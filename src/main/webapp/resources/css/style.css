@@ -145,3 +145,14 @@ a.iconVisit:visited {
 	// color:grey;
 	color:black;
 }
+
+.download-link {
+	text-align: right;
+}
+
+table.file-no-border, table.file-no-border tr, table.file-no-border td {
+	border: none !important;
+	border-style: none !important;
+	font-weight: bold;
+
+}

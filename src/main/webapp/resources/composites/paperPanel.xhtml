@@ -85,28 +85,24 @@
 							</p:column>
 						</p:column>
 					</p:row>
-	                <p:row>
+
+					<p:row>
 	                <p:column><h:outputText value="Variant event count"  style="font-weight:bold"  /></p:column>
 	                <p:column colspan="2">
    						<p:link outcome="variant" value="#{cc.attrs.eventCnt}" >
 						    <f:param name="paperId" value="#{cc.attrs.paper.id}" />						    
 						</p:link>
 						</p:column>
-	                </p:row> 
-  
-	 
-	 				<ui:remove>
-	 				<h:outputText value="Data Harmonization"/>	                
-	            	
-						<p:dataTable value="#{paperView.instructions}" var="step" type="ordered" tableStyle="width:auto" >
-					    	<p:column headerText="Step">
-				        		<h:outputText value="#{step.key}" />
-				    		</p:column>
-				    		<p:column headerText="Instructions">
-				        		<h:outputText value="#{step.value}" />
-				    		</p:column>
-				    	</p:dataTable>   
-			    	</ui:remove>
+	                </p:row>
+
+					<p:row>
+						<p:column><h:outputText value="Curator notes"  style="font-weight:bold"  />
+						</p:column>
+						<p:column colspan="2">
+							<h:outputLink value = "notes/#{cc.attrs.paper.paperKey}/NOTES" >View</h:outputLink>
+						</p:column>
+					</p:row>
+
 
 					<p:row rendered="#{cc.attrs.showMore}">
 						<p:column colspan="1">
