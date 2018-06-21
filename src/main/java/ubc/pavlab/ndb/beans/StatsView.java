@@ -98,7 +98,7 @@ public class StatsView implements Serializable {
                         .stream()
                         .filter(tuple -> tuple != null && tuple.getT1() != null && tuple.getT2() != null && !categoriesToAvoid.contains( tuple.getT1()) )
                         .collect( Collectors.toList() ),
-                "Total Variant Events by Category", "Category", "Variants" );
+                "Variant Events by Effect", "Effect", "Variants" );
 
         Axis xAxis = variantCategoriesBarModel.getAxis( AxisType.X );
         xAxis.setTickAngle( -25 );
@@ -106,8 +106,8 @@ public class StatsView implements Serializable {
         variantFuncBarModel = makeBarChart( statsService.getEventCntByContext()
                         .stream()
                         .filter(tuple -> tuple != null && tuple.getT1() != null && tuple.getT2() != null && !functionsToAvoid.contains( tuple.getT1()) && !tuple.getT1().contains( ";" ) )
-                        .collect( Collectors.toList() ), "Total Variant Events by Function",
-                "Function", "Variants" );
+                        .collect( Collectors.toList() ), "Variant Events by Genomic Context",
+                "Genomic Context", "Variants" );
 
         // makeCategoryCharts();
         heatmapModel = makeHeatmap();

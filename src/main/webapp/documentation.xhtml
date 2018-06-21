@@ -52,88 +52,159 @@
 			</div>
 				
 			<!-- Documentation content -->
+
+			<p>
+				VariCarta is a web-based database developed with the goal of collecting, reconciling and consistently cataloguing literature-derived genomic variants found in ASD subjects using primarily whole exome or whole genome sequencing. We put emphasis on precise, systematic curation of the data, standardized processing and reporting, identification of overlaps, and comprehensive annotation.
+			</p>
+			<p>
+				VariCarta can be used to query variants by gene, genomic location, publication or overlap between the studies (using the clickable heatmap on the <p:link  href="/stats.xhtml" >Statistics page</p:link>).
+			</p>
+
 			<h3 id="search" class="section">Searching for variants</h3>
-				MARVdb can be used to query variants, by gene, genomic location or publication.			
-				<h4>Getting started</h4>
-					<p>
-						The variant database can be queried through the search bar displayed at the top of the <p:link  href="index.xhtml" >home page</p:link>. Enter a Gene name under <strong>Gene Symbol</strong>, such as <em>ADNP, CHD8 or SYNGAP1</em>, and click <strong>Submit</strong>.
-					</p>
-					<p>
-						Alternatively, you can search for variants by genomic region. We are currently using the <strong>Hg19/GRCh37</strong> genome assembly. For search by <strong>Region</strong>, you need a chromosome, start coordinate, and stop coordinate. For example, to search the 1<sup>st</sup> choromsome from coordinates 1000000 to 2000000, enter <strong>chr1:1000000-2000000</strong>.
-					</p>			
-				<h4>Searching for variants from specific publications.</h4>
-					<p>
-						Our <p:link  href="publications.xhtml" >publications</p:link> section lists descriptions of works incorporated in our database. Click on the <span class="ui-icon ui-icon-circlesmall-plus" style="display: inline-block"/> icon of a specific paper to see the publication details. The resulting page can search for all variants included in the publication by clicking the number under <em>Variant Event Count</em>. 
-						Our <p:link  href="publications.xhtml" >publications</p:link> section lists descriptions of works incorporated in our database. Click on the <span class="ui-icon ui-icon-circlesmall-plus" style="display: inline-block"/> icon of a specific paper to see the publication details. The resulting page can search for all variants included in the publication by clicking the number under <em>Variant Event Count</em>.
-					</p>
-					<p>
-						<em>Example:</em> The <p:link href="paper.xhtml?paperId=18"> De Rubeis, 2014 </p:link> study reports <p:link href="variant.xhtml?paperId=18">1384</p:link> variants included in our database.						
-					</p>
-					
-				<h4>Searching for variants overlapping different publications.</h4>
-					<p>
-						It is possible to look up the overlapping variants between two different publications through our 
-						<p:link href="stats.xhtml">statistics</p:link> section. 
-						Simply go to the <p:link href="stats.xhtml#variantOverlap">variant overlap heatmap</p:link>, 
-						and click the grid cell with the intersecting papers of interest. 
-					</p>				
-					
-					
-				<h3 id="publications" class="section">Publications</h3>
+			<p>
+				The variant database can be queried through the search bar displayed at the top of the <p:link  href="/" >home page</p:link>.
+				Start typing a gene symbol under <strong>Gene Symbol</strong>, choose the desired gene from the offered list of suggestions and click <strong>Submit</strong>.
+			</p>
+			<p>
+				Alternatively, you can search for variants by genomic region. We are currently using the <strong>Hg19/GRCh37</strong> genome assembly.
+				For search by <strong>Region</strong>, you need a chromosome, start coordinate, and stop coordinate.
+				For example, to search the 1<sup>st</sup> chromosome from coordinates 1000000 to 2000000, enter <strong>chr1:1000000-2000000</strong>.
+			</p>
+
+			<h3>Searching for variants from specific publications.</h3>
+				<p>Our <p:link  href="/publications.xhtml" >Publication page</p:link> lists descriptions of studies incorporated in our database.
+					Click on the book icon in the Details column to see details of the specific publication. You can retrieve all the variants from the
+					paper that are included in VariCarta by clicking the number under <em>Variant Event Count</em>.
+				</p>
 				<p>
-					For a given publication listed in the table, click the <span class="ui-icon ui-icon-circlesmall-plus" style="display: inline-block"/> icon to view more information such as variants counts and breakdowns, details about the cohort, or the experimental design.						
-					The <p:link  href="publications.xhtml" >publications</p:link> section displays a summary of the following information for each publication.  This information is mostly based on what the publications reports. The fields listed in the summary are:
-			 	</p>
-						<ul>
-							<li><strong>Key: </strong> A MARVdb specific identifier. Used only within this application to refer to specific publications.</li>
-							<li><strong>Title: </strong> The title of the publication.</li>
-							<li><strong>Year: </strong> Year of publication.</li>
-							<li><strong>Scope: </strong> The breadth of the sequencing study. Smaller studies may have only sequence as little as one gene, while others performed <em>Whole-Genome Sequencing (WGS)</em> of their cohorts, which includes the entire genome. 
-							In between these, there is also <em> Whole-Exome sequencing (WES)</em>, which only includes the protein coding part of the genome.</li>
-							<li><strong>Reporting: </strong> Focus in terms of variant reporting. Some papers are looking for <em>de novo</em> variants; cases where the mutation is a inherited from the germ cell rather than the parent. 
-							When the sequenced proband's relative information is not available, variant identification is often done against a group of controls (Case-Control studies.) </li>
-							<li><strong>Effects: </strong> The publications' reported variants' functional effect or genetic context. Functional effects describe what the variant looks like, and the impact on the transcription reading frame. For example, variants that cause the reading frame to shift are called frameshift variants. If a variant does not changed the amino acid sequence, the it is a synonymous variant. The genetic context is more of less the location of the variant, such splice sites and 3'-end/5'-end untranslated region (3UTR, 5UTR). </li>
-							<li><strong>DOI: </strong> The Digital Object Identifier (DOI) is a tag assigned to digital objects, such as publications. It also serves as a permanent web URL (when prefixed with https://dx.doi.org/ ) for work that may be accessible through different databases.</li>
-						</ul> 		
+					<em>Example</em>: The <p:link href="/paper.xhtml?paperId=5">De Rubeis, 2014</p:link> study reports 1694 variants included in our database.
+				</p>
+
+			<h3>Searching for variants overlapping different publications.</h3>
+				<p>
+					It is possible to look up the overlapping variants between two different publications through our
+					<p:link href="stats.xhtml">Statistics page</p:link>.
+					Simply go to the <p:link href="stats.xhtml#variantOverlap">Variant Event Overlap heatmap</p:link>,
+					and click the grid cell with the intersecting papers of interest.
+				</p>
+
+			<h3 class="section">Variant table</h3>
+			<p>
+				Any kind of variant search will return a variant table that shows the summarized information about all the variants found in the query region.
+				It also provides links to gene information from the Ensembl and NCBI databases, genomic annotation of the region using the UCSC Genome browser,
+				information about papers that reported the variants and original, published variant data. The variants in the table are represented either as variant
+				events or complex variant events.
+			</p>
+
+			<p>
+				VariCarta’s <strong>variant event</strong> is a unique combination of a reference allele, its genomic location and alternative allele belonging to a
+				single individual. This allows us to identify and group together the same variants from the same individuals that have been reported in multiple studies.
+				Each variant event is displayed only once in VariCarta’s variant result table, with the Source column listing IDs of all publications reporting it.
+				<p:link href="/variant.xhtml?chr=11&amp;start=26587227&amp;stop=26587227"> Here</p:link> is an example of a	variant event.
+			</p>
+
+			<p>
+				VariCarta’s complex <strong>variant event</strong> is a grouping of two or more variant events from the same individual that differ but have overlapping
+				or adjacent genomic coordinates. This indicates that the grouped variant events might be describing the same underlying genotype but are incongruent due
+				to the heterogeneity of formats used across papers. A complex event is initially displayed as one row that can be expanded to show the information about
+				each grouped variant event.
+				<p:link href="/variant.xhtml?chr=5&amp;start=134059281&amp;stop=134059281">Here</p:link> is an example of a complex variant event.
+			</p>
+			<p>
+				The original variant data from the source publication can be accessed by clicking on a magnifying glass
+				icon. All query results are available for download as plain text/csv format from the spreadsheet icon in
+				the table navigation header or footer bar.
+			</p>
+
+			<h3 id="publications" class="section">Publications</h3>
+			<p>
+				Studies currently included in VariCarta are listed in a table on the Publications page.
+				This table contains basic publication information as well as some details about the scope of the study
+				(e.g. whole genome/exome vs targeted sequencing as given in the Technology column) and characteristics
+				of the studied subjects (number of subjects, cohorts used, diagnosis).
+			</p>
+			<p>
+				Clicking on a book icon in the Details column opens a page with more detailed information about the
+				study, including methodology used, size and	type of the cohort, and types of variants reported. We also
+				provide curation notes, which detail issues that had to be resolved during the curation	stage, or other
+				noteworthy information regarding the study. Clicking on the Variant Event Count will display all the
+				variants from that publication that are available in VariCarta.
+			</p>
 							
 			<h3 id="statistics" class="section">Statistics</h3>
 				<p>
-				Our <p:link href="stats.xhtml"> statistics </p:link> section includes information the data included in the database. We provide a different rankings for genes implicated in the variants in our database, based their frequency, predicted severity and inheritance.
-				 </p>
+					The <p:link href="stats.xhtml"> Statistics page</p:link>  ffers the basic database statistics,
+					including the total number of subject with unique VariCarta subject IDs, the number of all variant
+					events, as well as counts of some specific classes of variant events (de novo, LOF). We also include
+					several gene rankings based on different criteria. Even though VariCarta contains some non-coding
+					variants, these are excluded when computing gene rankings based on variant event counts.
+				</p>
 				 
 				 <p>
-				 	We define Loss of Function mutations as a variant that is either frameshift, nonsense, or that appears on the splice site (2 bases before or after the first or last exon, respectively.)
+					 The page also shows the distribution of variants across publications, functional effects and
+					 genomic features. Finally, it includes a heatmap of the variant overlap between publications, which
+					 illustrates the extent of variant double-reporting across the literature. The numbers in grid cell
+					 represent the number of same variant events that are reported in both of the intersecting papers.
+					 Hovering over a cell will produce a tool tip which list the two intersecting papers and the exact
+					 number of overlapping variants. The overlapping variants can be accessed by clicking on the number
+					 in the grid cell.
 				 </p>
-				
-				 <p>
-				 	We also include whether the variant is reported as <em>de novo</em> or not, when the information is available from the publication material.
-				 </p>
-				 
-			<h3 id="harmonizing" class="section">Data harmonization</h3>
+
+			<h3 class="section">Maintenance</h3>
 			<p>
-			To make this project possible, we had to harmonize different variant reporting conventions, coordinate schemes and genome assemblies.
+				We are committed to continue maintaining and expanding VariCarta database, curating and including
+				relevant studies as they get published. Any VariCarta updates will be immediately available on the beta
+				version of the database (http://varicarta.msl.ubc.ca), while the main site will be updated every
+				six-months. Previous releases of the database can be downloaded from http://varicarta.msl.ubc.ca/archive.
+				The source code for the web application and the variant processing pipeline is open source
+				(Apache 2 license) and available on GitHub under
+				<p:link href="https://github.com/PavlidisLab/VariCarta">https://github.com/PavlidisLab/VariCarta</p:link>
+			</p>
+
+			<h3 id="harmonizing" class="section">Variant nomenclature</h3>
+			<p>
+				To make this project possible, we had to consolidate different variant reporting conventions, coordinate
+				schemes and genome assemblies.
 			</p>
 			
 				
-			<h4>Conventions used in MARVdb</h4>
+			<h4>Conventions used in VariCarta</h4>
 			<ul>
-				<li><strong>Allele change:</strong> In cases of insertions or deletions, we use a one base anchor to disambiguate the allele change. 
-				For <p:link href="variant.xhtml?NCBIGeneId=23126">example</p:link>, an insertion of <em>CGTCATCA</em> on the chromosome 1, from coordinate 151377903 to 151377903 would be listed as T, TCGTCATCA, chr1:151377903-151377903 for its reference allele (REF), alternated allele (ALT), and genomic location. For single nucleotide variants (SNVs), we simply display the before and after nucleotides as REF and ALT.</li>
-				<li><strong>Coordinate system:</strong> The index is 1-based, meaning that a variant from 10,000-10,003 would affect 4 bases.</li>				
+				<li><strong>Allele change:</strong> : In cases of insertions or deletions, we use a one base anchor to
+					disambiguate the allele change.	For <p:link href="/variant.xhtml?NCBIGeneId=23126">example</p:link>, an
+					insertion of CGTCATCA on the chromosome 1, at the coordinate 151377903 would be listed as T,
+					TCGTCATCA, chr1:151377903-151377903	for its reference allele (REF), alternate allele (ALT), and
+					genomic location. For single nucleotide variants (SNVs), we simply display the before and after
+					nucleotides as REF and ALT.</li>
+				<li><strong>Coordinate system:</strong> The index is 1-based, meaning that a variant from 10,000-10,003 would affect 4 bases.</li>
 			</ul>
-			
-			<p> In cases of doubts, the raw data for the publication's supplied material can be view for a any given variant through the "Sources" column in the variant results. Simply click the <span class="ui-icon ui-icon-search inline-icon" style="display: inline-block"/> icon. 
-			If you find any inconsistencies, please report them to <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.</p>				        					 
-			
-						
-			<h4>Harmonizing publications</h4>
+
+			<h3 id="definitions" class="section">Some definitions</h3>
 			<p>
-				For more information about our harmonization process, please contact: <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.
+				A <strong><em>de novo</em> variant</strong>  is a type of DNA mutation that emerges for the first time
+				in a family. This type of mutation arises in a germ cell (egg or sperm) of one of the parents or in the
+				fertilized egg itself and it is not present in parental genomes of an individual. <em>De novo</em>
+				mutations are usually identified using trio or quad	family DNA sequencing. Some of publications
+				primarily report <em>de novo</em> variants, while others report also parentally inherited variants.
+				In VariCarta, the Inheritance column in	the variant table would indicate if a variant is known to be
+				<em>de novo</em>.
+
 			</p>
-			
-			<h3 id="statistics" class="section">Reporting errors</h3>
+			<p>
+				<strong>Loss of Function (LoF) variants</strong> are DNA mutations that are predicted to disrupt the
+				function of a protein coding gene. Mutations that introduce an early stop codon (nonsense variant),
+				insertions or deletions (indels) that change the reading frame (frameshift variants) and splicing
+				variants (DNA changes in the close vicinity of an exon-intron boundary affecting splicing of pre-mRNA)
+				are examples of  LoF variants. The following types of variants are considered to be LoF in VariCarta:
+				stopgain, stoploss, splicing, frameshift insertion, frameshift deletion and frameshift substitution.
+				The variant type is indicated in the Effect column in the variant table where the LoF variants are
+				highlighted in red
+
+			</p>
+
+			<h3 id="contact" class="section">Contact</h3>
 				<p> 
-					To contact us, please send an e-mail to contact <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.
+					To contact us, please send an e-mail to <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.
 				</p>
 		
 		</div>			

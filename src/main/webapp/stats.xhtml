@@ -1,199 +1,174 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:hf="http://highfaces.org/ui"> 
-	
-	<ui:define name="pageTitle">Statistics</ui:define>
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:hf="http://highfaces.org/ui">
 
-	<ui:define name="css">
-		<h:outputStylesheet library="css" name="stats.css" />
-	</ui:define>
+    <ui:define name="pageTitle">Statistics</ui:define>
 
-	<ui:define name="js">
-		<script type="text/javascript">
-	        	googleAnalyticsTrackPageviewIfConfigured( "/MARVdb/stats" );
-	    </script>
-	    
-		<script src="https://code.highcharts.com/highcharts.js"></script>
-		<script src="https://code.highcharts.com/modules/heatmap.js"></script>
-		<script src="https://code.highcharts.com/modules/exporting.js"></script>
-		<script type="text/javascript" language="javascript"
-			src="resources/js/plugins/jqplot.logAxisRenderer.js"></script>
-		<script src="resources/js/stats.js"></script>
-      
-      <script type="text/javascript">
-		heatmap_data = #{statsView.heatmapModel.dataJSON};
-		heatmap_papers = #{statsView.heatmapModel.categoriesJSON};
-		heatmap_categories = heatmap_papers.map(function(paper) {
-		   return paper.paper_key;
-		});
-		heatmap_paper_ids = heatmap_papers.map(function(paper) {
-		   return paper.id;
-		});
-		
-		goToPaperOverlap = function(paperId, overlapPaperId) {
-		   var url = '#{request.contextPath}/variant.xhtml?paperId='+ paperId + '&amp;overlapPaperId=' + overlapPaperId;
-		   window.open(url, "_self");
-		}
-      </script>
+    <ui:define name="css">
+        <h:outputStylesheet library="css" name="stats.css"/>
+    </ui:define>
 
-	</ui:define>
+    <ui:define name="js">
+        <script type="text/javascript">
+            googleAnalyticsTrackPageviewIfConfigured("/MARVdb/stats");
+        </script>
 
-	<ui:define name="content">
-	
-	<!-- BREADCRUMBS -->
-	
-	<p:panel styleClass="no-border" >
-		<p:breadCrumb style="float:left;"> 
-			<p:menuitem value="Categories" url="#" />
-			<p:menuitem value="Home" url="index.xhtml" />
-			<p:menuitem value="Statistics" url="stats.xhtml" />
-		</p:breadCrumb>  	            
-	</p:panel>
-   
-   <div class="content-area">
-	
-	<div class="section">
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/heatmap.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script type="text/javascript" language="javascript"
+                src="resources/js/plugins/jqplot.logAxisRenderer.js"></script>
+        <script src="resources/js/stats.js"></script>
 
-	<h2>Statistics</h2>
-	
-	<p:separator/>
-	
-	<p:panelGrid styleClass="no-border" columns="3" >
-	
-		
- 	  	<p:panel styleClass="no-border">
-			<p:panelGrid columns="2" style="margin:20px auto 20px auto;">
-				<f:facet name="header"> Database Statistics </f:facet>
-				<ui:include src="stat_summary.xhtml" />
-			</p:panelGrid>
-			<p:panelGrid styleClass="no-border" columns="1" style="margin:20px auto 20px auto;">
-				<ui:include src="stats_table_topdenovolof.xhtml"></ui:include>
-			</p:panelGrid>
-		</p:panel>
-    	
- 	  	<p:panel styleClass="no-border">
-			<h4>Overview</h4>
+        <script type="text/javascript">
+            heatmap_data = #{statsView.heatmapModel.dataJSON};
+            heatmap_papers = #{statsView.heatmapModel.categoriesJSON};
+            heatmap_categories = heatmap_papers.map(function (paper) {
+                return paper.paper_key;
+            });
+            heatmap_paper_ids = heatmap_papers.map(function (paper) {
+                return paper.id;
+            });
 
-			<p>
-				Genetic variant databases can hold very diverse types of events, distributed differently across genes, publications and predicted mutational effect.
-				Herein, we present a summary of our curation results and some definitions of the terminology we use.
-			</p>
+            goToPaperOverlap = function (paperId, overlapPaperId) {
+                var url = '#{request.contextPath}/variant.xhtml?paperId=' + paperId + '&amp;overlapPaperId=' + overlapPaperId;
+                window.open(url, "_self");
+            }
+        </script>
 
-			<h4>Definitions</h4>
- 	  		<p>
- 	  			A <em>Variant Event</em> is a specific mutation that occurred on a specific proband. We combine distinct variant reports for the same sample under a single <em>event</em>, and we also
-				attempt to disambiguate instances where the same sample can have different identifier across many studies.
+    </ui:define>
 
-				This also accounts for instances where certain publications will report a multi-nucleotide variant as multiple reports of single nucleotide variants (e.g. a deletion followed by an insertion can be respresented as a substitution), which are <em>Complex Events</em> in our terminology.
-				Unless specificied otherwise, we use the number of events as the count for statistics when describing summary counts of variants in this database.
- 	  		</p>
- 	  	
- 	  		<p>
-				A <em>de novo</em> variant is a type of genetic mutation that does not appear in the parental genomes and are beleived to originate from the germline.
-				Some of publications <p:link outcome="publications" value="publications"/> primarily report de novo variants, while others report also parentally inherited variants.
-				It is important to note that this type of filtering along side the scope of sequencing (genomes, exomes, or targeted genes) will influence the ratio of de novo mutations per gene reflected in the database.
-			</p>
- 	  	
-			<p><em>Loss of function</em>, also called <em>protein truncating variant</em>, are DNA mutations that are predicted to alter the coding sequence often resulting in a shorter amino acid sequence.
- 	  			These mutations can include introduction of early stop codons, which halts translation prematurely, or the loss of a stop codon. Insertions or deletions that change the reading frame (<em>frameshift</em> variants), meaning an insertion (or deletion) of a block that is not a multiple of 3 can also truncate the protein.
-				Other loss of function variants include splicing variants, where a change is made near an exon-intron boundary causing some effect on the splicing mechanisms of the protein.
- 	  		</p>
- 	  	
- 	  	</p:panel>
- 	  	
- 	  	<p:panel styleClass="no-border">
-			<p:panelGrid columns="1" style="margin:20px auto 20px auto;" styleClass="no-border">
-				<ui:include src="stats_table_topgenesbyeventcnt.xhtml"></ui:include>
-				<ui:include src="stats_table_topgenesbypapercnt.xhtml"></ui:include>
-			</p:panelGrid>
-	  	</p:panel>
- 	  
-    	
-	</p:panelGrid>
-	</div>
+    <ui:define name="content">
 
-	
-	<div class="section">
-		<h3>Variants Events Per Paper</h3>
-		<p:separator/>
-		<p>
-			The charts in this section describe the breakdown by publication of origin for variants events included in this database.
-		</p>
-		<p:panelGrid columns="2" styleClass="no-border" style="margin: 0 auto;">				
-		
-			<!--
-			<p:chart type="pie"
-						model="#{statsView.compactPieModel}" 
-						dataFormat="value"  
-				 		showDataLabels="true" 
-					 	style="width:800px;height:400px; " />
-					 	-->
-		
-			<p:chart type="pie" 
-						model="#{statsView.pieModel}" 
-						dataFormat="value"  
-				 		showDataLabels="true" 
-					 	style="width:800px;height:400px; " />
-				 	
-		</p:panelGrid>		
-	</div>
-	
+        <!-- BREADCRUMBS -->
+
+        <p:panel styleClass="no-border">
+            <p:breadCrumb style="float:left;">
+                <p:menuitem value="Categories" url="#"/>
+                <p:menuitem value="Home" url="index.xhtml"/>
+                <p:menuitem value="Statistics" url="stats.xhtml"/>
+            </p:breadCrumb>
+        </p:panel>
+
+        <div class="content-area">
+
+            <div class="section">
+
+                <h2>Statistics</h2>
+
+                <p:separator/>
 
 
-		<div class="section">
-	<h3>Variant Categories</h3>
-	<p:separator/>
-		<p>
-			Variants are reported with a <em>category</em> and a <em>function</em>. 
-		</p>
-			 
-		<p>
-			The <em>category</em> describes the potential effect of this variant, such as synonymous and nonsynonymous single nucleotide variant (SNV), or changes in the reading frame (e.g. frameshift insertions, deletions, substitutions).
-  			The <em>function</em> represents contextual role in the sequence where the variant is located (e.g. A variant from non-coding DNA would be labeled as <em>ncRNA_intronic.</em>, while a variant on an protein coding exon would be <em>exonic</em>.) The y-axis is log-scaled to facilitate readability.
-			The classifications were assigned by ANNOVAR. For more information, please read the <a target="_blank" href="http://annovar.openbioinformatics.org/en/latest/user-guide/gene/">ANNOVAR user guide</a>.
-		</p>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <ui:include src="stat_summary.xhtml"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <ui:include src="stats_table_topdenovolof.xhtml"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <ui:include src="stats_table_topgenesbypapercnt.xhtml"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <ui:include src="stats_table_topgenesbyeventcnt.xhtml"/>
+                    </div>
+                </div>
 
-		<p:panelGrid columns="2" styleClass="no-border" style="margin: 0 auto;">
-			<p:chart type="bar" model="#{statsView.variantCategoriesBarModel}" style="width:800px;height:500px;"/>		
-			<p:chart type="bar" model="#{statsView.variantFuncBarModel}" style="width:800px;height:500px;" logYAxis="true" />		
-		</p:panelGrid>
-		
-				
-	</div>
-	
-	<div class="section">
-		
-	<h3 id="variantOverlap"> Variant Event Overlap </h3>
-	<p:separator/>
-	
-	<div id="heatmapText">
-		<p>
-			The map below represents the overlap between variant events reported by different papers. The diagonal represents the total number of reported variant events included in this database originating from a given paper.
-		</p>
-		
-	</div>
-	<div id="heatmap-container" style="height: 1000px; width: 80%; margin: 0 auto;"
-	></div>
-	</div>
-	
 
-	<h4> More information / Contact us</h4>	
-	<div id="concludingText" style="width: 80%; margin: 0 auto; margin-left: 50px; ">
-		<p>
-				For more information about our data curation and harmonization, visit the <a href="documentation.xhtml">documentation</a> section. For any questions or comments, contact <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.
-		</p>		
-		
-	</div>
-	
-	</div>
-	
-	</ui:define>
+            </div>
+
+
+            <h3>Variant Event Statistics</h3>
+            <p:separator/>
+
+            <!--
+            <p:chart type="pie"
+                        model="#{statsView.compactPieModel}"
+                        dataFormat="value"
+                        showDataLabels="true"
+                        style="width:800px;height:400px; " />
+                        -->
+            <p>
+                The pie chart below shows the breakdown of variant events by publication of origin. Hovering over a
+                pie chart segment will pop-up a tool tip showing the corresponding publication and the exact number
+                of variants collected from it.
+            </p>
+            <p:chart type="pie"
+                     model="#{statsView.pieModel}"
+                     dataFormat="value"
+                     showDataLabels="true"
+                     styleClass="center-block"
+                     style="width:800px;height:400px; "/>
+
+
+            <hr/>
+
+            <p>
+                The variant events are grouped by their effect on the coding sequence of a gene. Definitions of
+                different effects are given on the <p:link
+                    href="/documentation.xhtml">Documentation</p:link> page. The effects for each variant event in the
+                database are assigned by <p:link
+                    href="http://annovar.openbioinformatics.org/">ANNOVAR</p:link> and are shown in the Effect column in the variant table. The y-axis
+                of the bar graph is log-scaled to facilitate readability. Hovering over a bar will pop-up a tool tip
+                showing the exact number of variant events in that particular category.
+            </p>
+            <p:chart type="bar"
+                     model="#{statsView.variantCategoriesBarModel}"
+                     styleClass="center-block"
+                     style="width:800px;height:500px;"/>
+
+
+            <hr/>
+
+            <p>
+                The variant events are grouped by their genomic context. The genomic context for each variant event
+                in the database are assigned by <p:link
+                    href="http://annovar.openbioinformatics.org/">ANNOVAR</p:link> and are shown in the Context column in the variant table.
+                The y-axis of the bar graph is log-scaled to facilitate readability. Hovering over a bar will pop-up
+                a tool tip showing the exact number of variant events in that particular category.
+            </p>
+            <p:chart type="bar"
+                     model="#{statsView.variantFuncBarModel}"
+                     styleClass="center-block"
+                     style="width:800px;height:500px;"
+                     logYAxis="true"/>
+
+            <hr/>
+
+
+        </div>
+
+        <div class="section">
+
+            <h3 id="variantOverlap"> Variant Event Overlap </h3>
+            <p:separator/>
+
+            <div id="heatmapText">
+                <p>
+                    The heatmap below represents the overlap between variant events reported by different papers.
+                    The numbers on the diagonal represent the total number of reported variant events collected from a
+                    given paper. The numbers off the diagonal represent the number of variant events that are reported
+                    in both of the intersecting papers. Numbers >1000 are rounded to the nearest thousand and shown with
+                    “K” (e.g. 3462 variant events collected from Lim2017 are shown as “3K” on the diagonal). Hovering
+                    over a grid cell will pop-up a tool tip which shows the two intersecting papers and the exact number
+                    of overlapping variants. The overlapping variants can be accessed by clicking on the number in the
+                    grid cell.
+                </p>
+
+            </div>
+            <div id="heatmap-container" style="height: 1000px; width: 80%; margin: 0 auto;">
+
+            </div>
+        </div>
+
+    </ui:define>
 
 </ui:composition>

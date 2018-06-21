@@ -101,13 +101,26 @@ div.content-area {
 }
 
 div.ui-datalist.datalist-small {
-	width:400px;
+
 }
 
 div.ui-datalist.datalist-right {
-	float:right;
-	clear:both;
-	margin-bottom:20px;
+	clear: both;
+	margin-bottom: 20px;
+
+}
+
+div.ui-datalist-content {
+	padding-right: 20px;
+}
+
+table.ui-datalist-content td{
+	border-radius: 25px;
+
+}
+
+.ui-panelgrid-header td {
+	padding: 4px 10px;
 }
 
 div.ui-panel.no-padding > div.ui-panel-content {
@@ -150,9 +163,21 @@ a.iconVisit:visited {
 	text-align: right;
 }
 
+table.file-no-border {
+	float:left;
+}
+
 table.file-no-border, table.file-no-border tr, table.file-no-border td {
 	border: none !important;
 	border-style: none !important;
 	font-weight: bold;
 
 }
+
+.center-block {
+	display:block;
+	margin-right:auto;
+	margin-left:auto;
+}
+
+.text-center {text-align:center}
