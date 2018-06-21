@@ -60,6 +60,10 @@ a:hover {text-decoration: underline;}
 	border-style: none;
 }
 
+.no-padding {
+	padding: none !important;
+}
+
 .no-border.ui-corner-all {
 	-moz-border-radius: 0px;
 	-webkit-border-radius: 0px;

@@ -29,28 +29,33 @@
 			</p:breadCrumb>  	            
 		</p:panel>
 		<div class="content-area">		
-			<h2>About MARVdb</h2>
+			<h2>About VariCarta</h2>
 		
 			<!--  MISSION STATEMENT -->			
 			<h4>Mission statement</h4>
-			<p>The MARVdb web application and database is an initiative aimed at harmonizing different sources of reports for genetic variants.  We hope that MARVdb provides the scientific community a comprehensive collection of genetic variants published in peer-reviewed literature.</p>
+			<p>The VariCarta web application and database is an initiative aimed at collecting, reconciling and consistently cataloguing literature-derived genomic variants found in ASD subjects. We put effort into careful curation of the data, standardizing variant reporting, adding comprehensive annotation and identifying overlaps. We hope that the scientific community will find VariCarta to be a useful resource for ASD genomic variants published in peer-reviewed literature.</p>
 
-			<h4>License and Disclaimers</h4>
-			<p>Legal and disclaimers. </p>			
-			
+			<ui:remove>
+				<h4>License and Disclaimers</h4>
+				<p>Legal and disclaimers. </p>
+			</ui:remove>
+
 			<!--  INVOLVED PARTIES -->
-			<h4>Involvement</h4>
+			<h4>Contributors</h4>
 			<p> 
-				This project is a product built by the Pavlidis Lab of the Michael Smith Laboratories at the University of British Columbia.  
-				This project is developed in tandem with other intiatives contributing to the <a href="https://sfari.org/" target="_blank">Simons Foundation Autism
-				 Research Initiative (SFARI)</a> research projects aimed to better our understanding Autism Spectrum Disorders. 
+				VariCarta is built and maintained by the Pavlidis Lab at the Michael Smith Laboratories at the University of British Columbia.
 			 </p>
-						
+
+			<p>
+				For questions and comments please contact us at: #{applicationProperties.getProperty('ndb.admin.email')}
+			</p>
+
 			<h4>Acknowlegments</h4>
-			We would like to acknowledge software and databases used to contruct MARVdb:			
+			We would like to acknowledge software and databases used to populate VariCarta:
 			<ul>
 				<li>ANNOVAR - <em>Wang, K., Li, M. &amp; Hakonarson, H. ANNOVAR: functional annotation of genetic variants from high-throughput sequencing data. Nucleic Acids Res. 38, e164 (2010).2</em></li>
-				<li>CADD v1.3 - <em>Kircher, M. et al. A general framework for estimating the relative pathogenicity of human genetic variants. Nat. Genet. 46, 310–315 (2014).</em></li>				
+				<li>CADD v1.3 - <em>Kircher, M. et al. A general framework for estimating the relative pathogenicity of human genetic variants. Nat. Genet. 46, 310–315 (2014).</em></li>
+				<li>ExAC v0.3 - <em>Lek, M. et al. Analysis of protein-coding genetic variation in 60,706 humans. Nature 536, 285–291 (2016).</em></li>
 			</ul>
 
 		</div>		

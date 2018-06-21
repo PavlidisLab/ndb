@@ -8,7 +8,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:define name="pageTitle">MARVdb</ui:define>
+	<ui:define name="pageTitle">VariCarta</ui:define>
 	
 	<ui:define name="css">
 		<h:outputStylesheet library="css" name="index.css" />
@@ -34,7 +34,7 @@
    
 	<div class="content-area">
 	  <div class="title">
-      	<h1 style="margin:0 auto;">Meta-Analysis of Rare Variants (MARVdb)</h1>
+      	<h1 style="margin:0 auto;">VariCarta</h1>
       	<p>
       	  Search for variants using a Gene symbol or genomic coordinates (Hg19/GRCh37)
       	</p> 	  
@@ -58,17 +58,25 @@
 
 			<p:panel styleClass="no-border">
 	 	  		<div>
-	 	  			<h3>About MARVdb</h3>
+	 	  			<h3>About VariCarta</h3>
 	 	  			<p>
-	 	  				MARVdb is a database of human variants reported in peer-reviewed scientific literature. 
-      	 				The collection effort focuses primarily on studies pertaining to <strong>Austism Spectrum Disorder (ASD)</strong>, 
-      	 				but may also contain variants from other forms of <em>Neurological Diseases (NDs)</em>.
+						VariCarta is a database of human DNA genetic variants found in individuals diagnosed with Autism
+						Spectrum Disorder (ASD) and reported in peer-reviewed scientific literature.
 	 	  			</p>
 	 	  			<p>	 	
-	 	  				For a full list of sources of variants in MARVdb, 
-	 	  				be sure to check our list of included <strong><p:link href="publications.xhtml">publications</p:link></strong>. 
-	 	  				More help and descriptions of our work can be found on the <strong><p:link href="documentation.xhtml">documentation</p:link></strong> page.		
+	 	  				For a full list of sources of variants in VariCarta visit the <strong><p:link href="publications.xhtml">Publications page</p:link></strong>.
+						More information about VariCarta and some help with web-site navigation can be found on the <strong><p:link href="documentation.xhtml">Documentation</p:link></strong> page.
 	 	  			</p>
+
+					<p>
+						Our development/beta instance of the database is available at https://dev.varicarta.msl.ubc.ca/.
+						Any VariCarta updates, including newly added papers, will be immediately available there, while
+						the main site will be updated every six-months.
+					</p>
+
+					<p>
+						Previous releases of the database can be downloaded from http://beta.varicarta.msl.ubc.ca/archive.
+					</p>
 				</div>
                 <div id="news">
  	  				<h3>Recent News</h3>
@@ -111,7 +119,8 @@
 					    </p:layoutUnit>
 
 
-					</p:layout>									
+					</p:layout>
+
  	  				<div style="max-width:90%;">  <hr/> </div>
  	  				<p:layout style="text-align:left;max-width:90%;min-height:50px;">
     					<p:layoutUnit position="west"  size="100" minSize="40" maxSize="200" fullPage="true">
@@ -122,9 +131,9 @@
 					 	
 					    <p:layoutUnit position="center">
                             <!-- Content -->
-					        No further announcements.
 					    </p:layoutUnit>
 					</p:layout>
+
                 </div>
  	  		</p:panel>
  	  	

@@ -1,20 +1,31 @@
-<ui:composition 
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-			 	  	<h:outputText value="Total Variant Events:" />
-			 	  	<h:outputText value="#{statsService.eventCnt}" />			 	  	
-			 	  	
-			 	  	<h:outputText value="Total Subjects:" />
-			 	  	<h:outputText value="#{statsService.subjectCnt}" />			 	  	
-			 	  	
-			 	  	<span><strong>De Novo</strong> Variant Events: </span>
-			 	  	<h:outputText value="#{statsService.denovoCnt}" />
-			 	  	
-			 	  	<span><strong>Loss of Function</strong>  Variant Events:</span>			 	  	
-			 	  	<h:outputText value="#{statsService.lofCnt}" />			 	  	
-			 	  	
-			 	  	<h:outputText value="Publications included in database:" />
-			 	  	<h:outputText value="#{statsService.paperCnt}" />			 	  	
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+    <p:panelGrid columns="2" style="float:right;width:90%;" >
+
+        <f:facet name="header"> Database Statistics </f:facet>
+
+        <h:outputText value="Total Variant Events:"/>
+        <h:outputText value="#{statsService.eventCnt}"/>
+
+        <h:outputText value="Total Subjects:"/>
+        <h:outputText value="#{statsService.subjectCnt}"/>
+
+        <span><strong>De Novo</strong> Variant Events: </span>
+        <h:outputText value="#{statsService.denovoCnt}"/>
+
+        <span><strong>Loss of Function</strong>  Variant Events:</span>
+        <h:outputText value="#{statsService.lofCnt}"/>
+
+        <h:outputText value="Publications included in database:"/>
+        <h:outputText value="#{statsService.paperCnt}"/>
+
+    </p:panelGrid>
+
+
 </ui:composition>
