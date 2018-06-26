@@ -6,7 +6,7 @@
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 	  	<p:dataList value="#{statsService.topGenesByEventCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
 	        <f:facet name="header">
-	            Top Genes by Variant Event Count
+	            Genes with the most variant events reported
 	        </f:facet>
 			<p:link outcome="variant" value="#{g.symbol}">
 			    <f:param name="NCBIGeneId" value="#{g.geneId}" />

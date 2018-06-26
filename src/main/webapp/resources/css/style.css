@@ -58,6 +58,10 @@ table.no-border, table.no-border > tbody > tr, table.no-border > tbody > tr > td
 	border: none !important;
 }
 
+td.ui-panelgrid-cell {
+	vertical-align:top;
+}
+
 div.ui-panel.blue-gradient-panel-header div.ui-panel-titlebar {
 	background:#85b2cb -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0)), to(rgba(255,255,255,0.4)));
 }

@@ -1,185 +1,198 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:pe="http://primefaces.org/ui/extensions"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:composites="http://java.sun.com/jsf/composite/composites" >
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+                xmlns:composites="http://java.sun.com/jsf/composite/composites">
 
-	<ui:define name="pageTitle">All papers</ui:define>
-	
-	<ui:define name="css">
-		<h:outputStylesheet library="css" name="style.css" />
-	</ui:define>
-	
-	<ui:define name="js">
-		<script type="text/javascript">
-	        	googleAnalyticsTrackPageviewIfConfigured( "/MARVdb/publications" );
-	    </script>
-	</ui:define>
-	
-	<ui:define name="content">
-		<p:panel styleClass="no-border clearfix" style="float:right;">
-			<ui:include src="/searchBar.xhtml" />
-		</p:panel>
+    <ui:define name="pageTitle">All papers</ui:define>
 
-		<!-- BREADCRUMBS -->
-	<p:panel styleClass="no-border" >
-		<p:breadCrumb style="float:left;"> 
-			<p:menuitem value="Categories" url="#" />
-			<p:menuitem value="Home" url="index.xhtml" />
-			<p:menuitem value="Publications" url="publications.xhtml" />			
-		</p:breadCrumb>  	            
-	</p:panel>
-	<br/>
+    <ui:define name="css">
+        <h:outputStylesheet library="css" name="style.css"/>
+    </ui:define>
 
-	<h:form style="padding:30px;">
-		<h2 style="margin:0 auto 30px auto">Publications</h2>
-	    <p>
-	    	Below is the complete list of publications included in our database. For more information about a specific publications, click
-	    	the <span class="iconVisit fa fa-book " style="display: inline-block"/> icon under "Details".
-	    </p>
-	    <p>To access the original publication, click on the <span class="ui-icon ui-icon-extlink" style="display: inline-block"/> icon under the <em>Source</em> column.</p>
-	    
-		<p:dataTable var="paper" 
-					value="#{publicationsView.papers}"
-					tableStyle="width:auto; "
-					tableStyleClass="compactTable"
-                     sortMode = "single"
-                     sortBy="#{paper.paperKey}"
+    <ui:define name="js">
+        <script type="text/javascript">
+            googleAnalyticsTrackPageviewIfConfigured("/MARVdb/publications");
+        </script>
+    </ui:define>
 
-					>
+    <ui:define name="content">
+        <p:panel styleClass="no-border clearfix" style="float:right;">
+            <ui:include src="/searchBar.xhtml"/>
+        </p:panel>
 
-		    <p:column headerText="Details" style="width:32px;text-align: center">
-               	<p:link outcome="paper" value="" target="_blank" styleClass="iconVisit fa fa-book " style="margin:0 auto;">
-				    <f:param name="paperId" value="#{paper.id}" />
-				</p:link>
-		    </p:column>
-			<ui:remove>
-			    <p:column id="headAuthor" sortBy="#{paper.author}">
-			    		<f:facet name="header">
-			     			<h:outputText value="Author"/>		                
-			                <p:tooltip trackMouse="true" id="toolTipAuthor" for="headAuthor" value="Author of the publication." atPosition="right center"/>
-			            </f:facet>
-			    			    
-			    		<h:outputText style="font-weight:bold; text-align:center;" value="#{paper.author}" /> 
-			    	
-			    </p:column>
-		    </ui:remove>
-		    
-		    <p:column id="headKey" sortBy="#{paper.paperKey}">
-		    		<f:facet name="header">
-		     			<h:outputText value="Key"/>		                
-		                <p:tooltip trackMouse="true" id="toolTipKey" for="headKey" value="Database key for publication." atPosition="right center"/>
-		            </f:facet>
-		    			    
-		    		<h:outputText style="font-weight:bold; text-align:center;" value="#{paper.paperKey}" /> 
-		    	
-		    </p:column>
-		    
-		    <p:column id="headTitle" headerText="Title" sortBy="#{paper.title}" >
-		    	<f:facet name="header">
-		     		<h:outputText value="Title"/>		                
-		            <p:tooltip trackMouse="true" id="toolTipTitle" for="headTitle" value="Publication title." atPosition="right center"/>
-		        </f:facet>		
-		        <c:set var="string1" value='#{paper.title}' />
-		        <c:set var="MAXLENGTH" value="100" />
-		        
-		        <ui:fragment rendered="#{fn:length(string1) gt MAXLENGTH}">		      
-		        	<c:set var="trimmedTitle" value="${fn:substring(string1,0,MAXLENGTH)}" />  
-		        	<h:outputText value="${trimmedTitle}" title="#{paper.title}"/>&nbsp;<h:outputText value="[...]"/>		        	
-		        </ui:fragment>		        
-		        
-		        
-		        <ui:fragment rendered="#{fn:length(paper.title) lt MAXLENGTH}">		        
-		        	<h:outputText value="${paper.title}" title="#{paper.title}"/>
-		        </ui:fragment>
-		        
-		    </p:column>
-		    
-		    <p:column id="headYear" sortBy="#{paper.year}">
-		    		<f:facet name="header">
-		     			<h:outputText value="Year"/>		                
-		                <p:tooltip trackMouse="true" id="toolTipYear" for="headYear" value="Year published." atPosition="right center"/>
-		            </f:facet>
-		    			    
-		    		<h:outputText style="font-weight:bold; text-align:center;" value="#{paper.year}" /> 
-		    	
-		    </p:column>
-		    <p:column id="headTechnology" headerText="Technology" sortBy="#{paper.technology}" >
-		    	<f:facet name="header">
-		     		<h:outputText value="Technology"/>
-		            <p:tooltip trackMouse="true" id="toolTipTechnology" for="headTechnology" value="Experimental details from sequencing (e.g. Whole-Genome Sequencing, Whole-Exome sequencing, gene specific.)" atPosition="right center"/>
-		        </f:facet>
-		        <h:outputText value="#{paper.technology}" />
-		    </p:column>
+        <!-- BREADCRUMBS -->
+        <p:panel styleClass="no-border">
+            <p:breadCrumb style="float:left;">
+                <p:menuitem value="Categories" url="#"/>
+                <p:menuitem value="Home" url="index.xhtml"/>
+                <p:menuitem value="Publications" url="publications.xhtml"/>
+            </p:breadCrumb>
+        </p:panel>
+        <br/>
 
-			<p:column id="headSubjects" headerText="Subjects" sortBy="#{paper.design}">
-				<f:facet name="header">
-					<h:outputText value="Subjects"/>
-					<p:tooltip trackMouse="true" id="toolTipSubjects" for="headSubjects" value="Samples/Subjects/Families per study." />
-				</f:facet>
-				<h:outputText value="#{paper.design}: #{paper.count}" />
-			</p:column>
+        <h:form style="padding:30px;">
+            <h2 style="margin:0 auto 30px auto">Publications</h2>
+            <p>
+                Below is the complete list of publications included in our database. For more information about a specific publications, click
+                the <span class="iconVisit fa fa-book " style="display: inline-block"/> icon under "Details".
+            </p>
+            <p>To access the original publication, click on the <span class="ui-icon ui-icon-extlink"
+                                                                      style="display: inline-block"/> icon under the
+                <em>Source</em> column.</p>
 
-			<p:column id="headCohort" headerText="Cohorts" sortBy="#{paper.cohortSource}">
-				<f:facet name="header">
-					<h:outputText value="Cohort Source"/>
-					<p:tooltip trackMouse="true" id="toolTipCohort" for="headCohort" value="Cohort sources for the study. Can be either the name of the cohort or the region/country where the cohort was recruited." />
-				</f:facet>
-				<h:outputText value="#{paper.cohortSource}" />
-			</p:column>
+            <p:dataTable var="paper"
+                         value="#{publicationsView.papers}"
+                         tableStyle="width:auto; "
+                         tableStyleClass="compactTable"
+                         sortMode="single"
+                         sortBy="#{paper.paperKey}"
 
-			<p:column id="headDiagnosis" headerText="Diagnosis" sortBy="#{paper.cases}">
-				<f:facet name="header">
-					<h:outputText value="Diagnosis"/>
-					<p:tooltip trackMouse="true" id="toolTipDiagnosis" for="headDiagnosis" value="Types of diagnosis included in each study." />
-				</f:facet>
-				<h:outputText value="#{paper.cases}" />
-			</p:column>
-		   
-		    <p:column id="headDoi" headerText="doi" sortBy="#{paper.doi}" >
-		    	<f:facet name="header">
-		     		<h:outputText value="URL"/>
-		            <p:tooltip trackMouse="true" id="toolTipDoi" for="headDoi" value="Digital object identifier." atPosition="right center"/>
-		        </f:facet>
-		        <p:link target="_blank" href="#{paper.url}">
-		        	<h:outputText value="#{paper.doi}" />
-		        </p:link>
-		    </p:column>
-			<p:column id="headPubmed" headerText="Pubmed" sortBy="#{paper.pubmed_id}">
-				<f:facet name="header">
-					<h:outputText value="Pubmed"/>
-					<p:tooltip trackMouse="true" id="toolTipPubmed" for="headPubmed" value="Publication identifier on Pubmed." />
-				</f:facet>
-				<h:outputLink value="#{paper.pubmed_url}" target="_blank" >
-					<h:outputText value="#{paper.pubmed_id}" />
-				</h:outputLink>
-			</p:column>
-		    <p:column id="headSource" headerText="Source"  >
-		    	<f:facet name="header">
-		     		<h:outputText value="Source"/>		                
-		            <p:tooltip trackMouse="true" id="toolTipSource" for="headSource" value="Link to access the original source publication." myPosition="left center"/>
-		        </f:facet>
-		    	<h:outputLink target="_blank" value="#{paper.url}">
-		    		<h:outputText styleClass="ui-icon ui-icon-extlink" style="margin:0 auto;" />
-		    	</h:outputLink>  	
-		    </p:column>			    		    
-		    
-		</p:dataTable>	        
-	    		 	
-	</h:form>
-		<div id="concludingText" style="width: 80%; margin: 0 auto; margin-left: 50px; ">
-			<p>
-				For more information about our data curation and harmonization, visit the <a href="documentation.xhtml">documentation</a> section. For any questions or comments, feel free to contact <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.  			
-			</p>				
-		</div>
-	</ui:define>
+            >
+
+                <p:column headerText="Details" style="width:32px;text-align: center">
+                    <p:link outcome="paper" value="" target="_blank" styleClass="iconVisit fa fa-book "
+                            style="margin:0 auto;">
+                        <f:param name="paperId" value="#{paper.id}"/>
+                    </p:link>
+                </p:column>
+                <ui:remove>
+                    <p:column id="headAuthor" sortBy="#{paper.author}">
+                        <f:facet name="header">
+                            <h:outputText value="Author"/>
+                            <p:tooltip trackMouse="true" id="toolTipAuthor" for="headAuthor"
+                                       value="Author of the publication." atPosition="right center"/>
+                        </f:facet>
+
+                        <h:outputText style="font-weight:bold; text-align:center;" value="#{paper.author}"/>
+
+                    </p:column>
+                </ui:remove>
+
+                <p:column id="headKey" sortBy="#{paper.paperKey}">
+                    <f:facet name="header">
+                        <h:outputText value="Key"/>
+                        <p:tooltip trackMouse="true" id="toolTipKey" for="headKey" value="Database key for publication."
+                                   atPosition="right center"/>
+                    </f:facet>
+
+                    <h:outputText style="font-weight:bold; text-align:center;" value="#{paper.paperKey}"/>
+
+                </p:column>
+
+                <p:column id="headTitle" headerText="Title" sortBy="#{paper.title}">
+                    <f:facet name="header">
+                        <h:outputText value="Title"/>
+                        <p:tooltip trackMouse="true" id="toolTipTitle" for="headTitle" value="Publication title."
+                                   atPosition="right center"/>
+                    </f:facet>
+                    <c:set var="string1" value='#{paper.title}'/>
+                    <c:set var="MAXLENGTH" value="100"/>
+
+                    <ui:fragment rendered="#{fn:length(string1) gt MAXLENGTH}">
+                        <c:set var="trimmedTitle" value="${fn:substring(string1,0,MAXLENGTH)}"/>
+                        <h:outputText value="${trimmedTitle}" title="#{paper.title}"/>&nbsp;<h:outputText
+                            value="[...]"/>
+                    </ui:fragment>
+
+
+                    <ui:fragment rendered="#{fn:length(paper.title) lt MAXLENGTH}">
+                        <h:outputText value="${paper.title}" title="#{paper.title}"/>
+                    </ui:fragment>
+
+                </p:column>
+
+                <p:column id="headYear" sortBy="#{paper.year}">
+                    <f:facet name="header">
+                        <h:outputText value="Year"/>
+                        <p:tooltip trackMouse="true" id="toolTipYear" for="headYear" value="Year published."
+                                   atPosition="right center"/>
+                    </f:facet>
+
+                    <h:outputText style="font-weight:bold; text-align:center;" value="#{paper.year}"/>
+
+                </p:column>
+                <p:column id="headTechnology" headerText="Technology" sortBy="#{paper.technology}">
+                    <f:facet name="header">
+                        <h:outputText value="Technology"/>
+                        <p:tooltip trackMouse="true" id="toolTipTechnology" for="headTechnology"
+                                   value="Experimental details from sequencing (e.g. Whole-Genome Sequencing, Whole-Exome sequencing, gene specific.)"
+                                   atPosition="right center"/>
+                    </f:facet>
+                    <h:outputText value="#{paper.technology}"/>
+                </p:column>
+
+                <p:column id="headSubjects" headerText="Subjects" sortBy="#{paper.design}">
+                    <f:facet name="header">
+                        <h:outputText value="Subjects"/>
+                        <p:tooltip trackMouse="true" id="toolTipSubjects" for="headSubjects"
+                                   value="Samples/Subjects/Families per study."/>
+                    </f:facet>
+                    <h:outputText value="#{paper.design}: #{paper.count}"/>
+                </p:column>
+
+                <p:column id="headCohort" headerText="Cohorts" sortBy="#{paper.cohortSource}">
+                    <f:facet name="header">
+                        <h:outputText value="Cohort Source"/>
+                        <p:tooltip trackMouse="true" id="toolTipCohort" for="headCohort"
+                                   value="Cohort sources for the study. Can be either the name of the cohort or the region/country where the cohort was recruited."/>
+                    </f:facet>
+                    <h:outputText value="#{paper.cohortSource}"/>
+                </p:column>
+
+                <p:column id="headDiagnosis" headerText="Diagnosis" sortBy="#{paper.cases}">
+                    <f:facet name="header">
+                        <h:outputText value="Diagnosis"/>
+                        <p:tooltip trackMouse="true" id="toolTipDiagnosis" for="headDiagnosis"
+                                   value="Types of diagnosis included in each study."/>
+                    </f:facet>
+                    <h:outputText value="#{paper.cases}"/>
+                </p:column>
+
+                <p:column id="headDoi" headerText="doi" sortBy="#{paper.doi}">
+                    <f:facet name="header">
+                        <h:outputText value="URL"/>
+                        <p:tooltip trackMouse="true" id="toolTipDoi" for="headDoi" value="Digital object identifier."
+                                   atPosition="right center"/>
+                    </f:facet>
+                    <p:link target="_blank" href="#{paper.url}">
+                        <h:outputText value="#{paper.doi}"/>
+                    </p:link>
+                </p:column>
+                <p:column id="headPubmed" headerText="Pubmed" sortBy="#{paper.pubmed_id}">
+                    <f:facet name="header">
+                        <h:outputText value="Pubmed"/>
+                        <p:tooltip trackMouse="true" id="toolTipPubmed" for="headPubmed"
+                                   value="Publication identifier on Pubmed."/>
+                    </f:facet>
+                    <h:outputLink value="#{paper.pubmed_url}" target="_blank">
+                        <h:outputText value="#{paper.pubmed_id}"/>
+                    </h:outputLink>
+                </p:column>
+                <p:column id="headSource" headerText="Source">
+                    <f:facet name="header">
+                        <h:outputText value="Source"/>
+                        <p:tooltip trackMouse="true" id="toolTipSource" for="headSource"
+                                   value="Link to access the original source publication." myPosition="left center"/>
+                    </f:facet>
+                    <h:outputLink target="_blank" value="#{paper.url}">
+                        <h:outputText styleClass="ui-icon ui-icon-extlink" style="margin:0 auto;"/>
+                    </h:outputLink>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+    </ui:define>
 
 </ui:composition>
