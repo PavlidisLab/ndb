@@ -62,7 +62,7 @@
 
 			<h3 id="search" class="section">Searching for variants</h3>
 			<p>
-				The variant database can be queried through the search bar displayed at the top of the <p:link  href="/" >home page</p:link>.
+				The variant database can be queried through the search bar displayed at the top of the <p:link  href="/" >Home page</p:link>.
 				Start typing a gene symbol under <strong>Gene Symbol</strong>, choose the desired gene from the offered list of suggestions and click <strong>Submit</strong>.
 			</p>
 			<p>
@@ -154,11 +154,12 @@
 			<p>
 				We are committed to continue maintaining and expanding VariCarta database, curating and including
 				relevant studies as they get published. Any VariCarta updates will be immediately available on the beta
-				version of the database (http://varicarta.msl.ubc.ca), while the main site will be updated every
-				six-months. Previous releases of the database can be downloaded from http://varicarta.msl.ubc.ca/archive.
+				version of the database (<p:link href="http://dev.varicarta.msl.ubc.ca">http://dev.varicarta.msl.ubc.ca
+			</p:link>); downloads available on the <p:link href="/downloads.xhtml">Download page</p:link>.
+				Previous releases of the database can be downloaded from http://varicarta.msl.ubc.ca/archive.
 				The source code for the web application and the variant processing pipeline is open source
 				(Apache 2 license) and available on GitHub under
-				<p:link href="https://github.com/PavlidisLab/VariCarta">https://github.com/PavlidisLab/VariCarta</p:link>
+				<p:link href="https://github.com/PavlidisLab/ndb/tree/development">https://github.com/PavlidisLab/ndb</p:link>
 			</p>
 
 			<h3 id="harmonizing" class="section">Variant nomenclature</h3>
@@ -171,7 +172,7 @@
 			<h4>Conventions used in VariCarta</h4>
 			<ul>
 				<li><strong>Allele change:</strong> : In cases of insertions or deletions, we use a one base anchor to
-					disambiguate the allele change.	For <p:link href="/variant.xhtml?NCBIGeneId=23126">example</p:link>, an
+					disambiguate the allele change.	For <p:link href="/variant.xhtml?chr=1&amp;start=151377903&amp;stop=151377903">example</p:link>, an
 					insertion of CGTCATCA on the chromosome 1, at the coordinate 151377903 would be listed as T,
 					TCGTCATCA, chr1:151377903-151377903	for its reference allele (REF), alternate allele (ALT), and
 					genomic location. For single nucleotide variants (SNVs), we simply display the before and after

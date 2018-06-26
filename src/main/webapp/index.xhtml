@@ -1,150 +1,147 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:define name="pageTitle">VariCarta</ui:define>
-	
-	<ui:define name="css">
-		<h:outputStylesheet library="css" name="index.css" />
-	</ui:define>
-	
-	<ui:define name="js">
-		<script type="text/javascript">
-	        	googleAnalyticsTrackPageviewIfConfigured( "/MARVdb/index" );
-	    </script>
-	</ui:define>
-	
-	<ui:define name="content">
-	
-	<!-- BREADCRUMBS -->
-	<ui:remove>
-	<p:panel styleClass="no-border" >
-		<p:breadCrumb style="float:left;"> 
-			<p:menuitem value="Categories" url="#" />
-			<p:menuitem value="Home" url="index.xhtml" />
-		</p:breadCrumb>  	            
-	</p:panel>
-	</ui:remove>
-   
-	<div class="content-area">
-	  <div class="title">
-      	<h1 style="margin:0 auto;">VariCarta</h1>
-      	<p>
-      	  Search for variants using a Gene symbol or genomic coordinates (Hg19/GRCh37)
-      	</p> 	  
- 	  </div>
- 	  <p:separator style="width:75%;"/>
- 	  	<p:panel styleClass="no-border clearfix center-search-bar">
- 			<ui:include src="/searchBar.xhtml" />
- 		</p:panel>
- 		<p:separator style="width:75%;"/>
-      	<p:panel styleClass="no-border" style="padding-top:50px;">
- 	  	<p:panelGrid styleClass="no-border" columns="2" style="width:100%;text-align:left;">
+    <ui:define name="pageTitle">VariCarta</ui:define>
 
-            <p:panelGrid styleClass="no-border" rows="2" columns="1" style="width:100%;text-align:left;">
-                <p:panel styleClass="no-border">
-                    <ui:include src="stats_table_topdenovolof.xhtml"></ui:include>
-                </p:panel>
-                    <p:panel styleClass="no-border">
-                    <ui:include src="stats_table_topgenesbyeventcnt.xhtml"></ui:include>
-                </p:panel>
-            </p:panelGrid>
+    <ui:define name="css">
+        <h:outputStylesheet library="css" name="index.css"/>
+    </ui:define>
 
-			<p:panel styleClass="no-border">
-	 	  		<div>
-	 	  			<h3>About VariCarta</h3>
-	 	  			<p>
-						VariCarta is a database of human DNA genetic variants found in individuals diagnosed with Autism
-						Spectrum Disorder (ASD) and reported in peer-reviewed scientific literature.
-	 	  			</p>
-	 	  			<p>	 	
-	 	  				For a full list of sources of variants in VariCarta visit the <strong><p:link href="publications.xhtml">Publications page</p:link></strong>.
-						More information about VariCarta and some help with web-site navigation can be found on the <strong><p:link href="documentation.xhtml">Documentation</p:link></strong> page.
-	 	  			</p>
+    <ui:define name="js">
+        <script type="text/javascript">
+            googleAnalyticsTrackPageviewIfConfigured("/MARVdb/index");
+        </script>
+    </ui:define>
 
-					<p>
-						Our development/beta instance of the database is available at https://dev.varicarta.msl.ubc.ca/.
-						Any VariCarta updates, including newly added papers, will be immediately available there, while
-						the main site will be updated every six-months.
-					</p>
+    <ui:define name="content">
 
-					<p>
-						Previous releases of the database can be downloaded from http://beta.varicarta.msl.ubc.ca/archive.
-					</p>
-				</div>
-                <div id="news">
- 	  				<h3>Recent News</h3>
+        <div class="content-area">
+            <div class="title">
+                <h1 style="margin:0 auto;">VariCarta</h1>
+                <p>
+                    Search for variants using a gene symbol or genomic coordinates (Hg19/GRCh37)
+                </p>
+            </div>
+            <p:separator style="width:75%;"/>
 
-                    <ui:remove>
-                        <p:layout style="text-align:left;max-width:80%;min-height:50px;" >
+            <p:panel styleClass="no-border clearfix center-search-bar">
+                <ui:include src="/searchBar.xhtml"/>
+            </p:panel>
+            <p:separator style="width:75%;"/>
 
-                            <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true" >
-                                <strong>
-                                    2018-04-24
-                                </strong>
-                            </p:layoutUnit>
-                            <p:layoutUnit position="center">
-                                A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long
-                            </p:layoutUnit>
-                        </p:layout>
-                    </ui:remove>
+            <p:panel styleClass="no-border" style="padding-top:50px;">
+                <p:panelGrid styleClass="no-border" columns="2" style="width:100%;text-align:left;">
+
+                    <p:panelGrid styleClass="no-border" rows="2" columns="1" style="width:100%;text-align:left;">
+                        <p:panel styleClass="no-border" >
+                            <ui:include src="stat_summary.xhtml"></ui:include>
+                        </p:panel>
+                        <p:panel styleClass="no-border">
+                            <ui:include src="stats_table_topgenesbyeventcnt.xhtml"></ui:include>
+                        </p:panel>
+                    </p:panelGrid>
+
+                    <p:panelGrid styleClass="no-border" columns="1">
+                        <p:panel  styleClass="no-border"  >
+                            <div>
+                                <h3>About VariCarta</h3>
+                                <p>
+                                    VariCarta is a database of human DNA genetic variants found in individuals diagnosed with Autism
+                                    Spectrum Disorder (ASD) and reported in peer-reviewed scientific literature.
+                                </p>
+                                <p>
+                                    For a full list of sources of variants in VariCarta visit the <strong><p:link
+                                        href="publications.xhtml">Publications page</p:link></strong>.
+                                    More information about VariCarta and some help with web-site navigation can be found on the
+                                    <strong><p:link href="documentation.xhtml">Documentation page</p:link></strong>.
+                                </p>
+
+                                <p>
+                                    Our development/beta instance of the database is available at <p:link href="https://dev.varicarta.msl.ubc.ca/">https://dev.varicarta.msl.ubc.ca/</p:link>.
+                                    Any VariCarta updates, including newly added papers, will be immediately available there, while
+                                    the main site will be updated every six-months.
+                                </p>
+
+                                <p>
+                                    Current and previous releases of the database can be downloaded from the <strong><p:link href="/downloads.xhtml">Download page</p:link></strong>.
+                                </p>
+                            </div>
+                        </p:panel>
+                        <p:separator/>
+                        <div id="news">
+                            <ui:remove>
+                            <h3>Recent News</h3>
+
+                            <ui:remove>
+                                <p:layout style="text-align:left;max-width:80%;min-height:50px;">
+
+                                    <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true">
+                                        <strong>
+                                            2018-04-24
+                                        </strong>
+                                    </p:layoutUnit>
+                                    <p:layoutUnit position="center">
+                                        A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long
+                                    </p:layoutUnit>
+                                </p:layout>
+                            </ui:remove>
 
 
-                    <p:layout style="text-align:left;max-width:80%;min-height:50px;" >
+                            <p:layout style="text-align:left;max-width:80%;min-height:50px;">
 
-                        <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true" >
-                            <strong>
-                                2018-04-23
-                            </strong>
-                        </p:layoutUnit>
-                        <p:layoutUnit position="center">
-                            Our development/beta instance is available at <a href="https://dev.marvdb.msl.ubc.ca/">https://dev.marvdb.msl.ubc.ca/</a>.
-                        </p:layoutUnit>
-                    </p:layout>
+                                <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true">
+                                    <strong>
+                                        2018-04-23
+                                    </strong>
+                                </p:layoutUnit>
+                                <p:layoutUnit position="center">
+                                    Our development/beta instance is available at <a
+                                        href="https://dev.varicarta.msl.ubc.ca/">https://dev.varicarta.msl.ubc.ca/</a>.
+                                </p:layoutUnit>
+                            </p:layout>
 
-                    <p:layout style="text-align:left;max-width:80%;min-height:150px;" >
-                        <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true" >
-							<strong>
-					        	2016-03-31
-					        </strong>
-					    </p:layoutUnit>
-					    <p:layoutUnit position="center">
-					        Thank you for using MARVdb!
-					    </p:layoutUnit>
+                            <p:layout style="text-align:left;max-width:80%;min-height:150px;">
+                                <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true">
+                                    <strong>
+                                        2016-03-31
+                                    </strong>
+                                </p:layoutUnit>
+                                <p:layoutUnit position="center">
+                                    Thank you for using VariCarta!
+                                </p:layoutUnit>
 
 
-					</p:layout>
+                            </p:layout>
 
- 	  				<div style="max-width:90%;">  <hr/> </div>
- 	  				<p:layout style="text-align:left;max-width:90%;min-height:50px;">
-    					<p:layoutUnit position="west"  size="100" minSize="40" maxSize="200" fullPage="true">
-					        <strong>
-					        	<!-- Content date -->
-					        </strong>
-					    </p:layoutUnit>
-					 	
-					    <p:layoutUnit position="center">
-                            <!-- Content -->
-					    </p:layoutUnit>
-					</p:layout>
+                            <div style="max-width:90%;">
+                            </div>
+                            <p:layout style="text-align:left;max-width:90%;min-height:50px;">
+                                <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true">
+                                    <strong>
+                                        <!-- Content date -->
+                                    </strong>
+                                </p:layoutUnit>
 
-                </div>
- 	  		</p:panel>
- 	  	
-	  		
+                                <p:layoutUnit position="center">
+                                    <!-- Content -->
+                                </p:layoutUnit>
+                            </p:layout>
+                            </ui:remove>
+                        </div>
 
-  	    	
-    		
- 	  </p:panelGrid>
- 	  </p:panel>
- 	
- 	</div>
-	</ui:define>
+                    </p:panelGrid>
+                </p:panelGrid>
+            </p:panel>
+
+        </div>
+    </ui:define>
 
 </ui:composition>
