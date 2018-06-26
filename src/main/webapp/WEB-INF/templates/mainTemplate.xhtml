@@ -1,136 +1,131 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <f:view contentType="text/html">
-	<ui:insert name="metadata" />
-	<h:head>
-		<title><ui:insert name="pageTitle" /></title>
-		
-		<link rel="icon" type="image/x-icon" href="#{resource['img/favicon.ico']}"/>
-		<link rel="icon" type="image/png" href="#{resource['img/favicon-32x32.png']}" sizes="32x32"/>
-		<link rel="icon" type="image/png" href="#{resource['img/favicon-96x96.png']}" sizes="96x96"/>
-		<link rel="icon" type="image/png" href="#{resource['img/favicon-16x16.png']}" sizes="16x16"/>
-		
-		<h:outputStylesheet name="webjars/font-awesome/4.2.0/css/font-awesome-jsf.css" />
-		<ui:insert name="css" />
-		<h:outputStylesheet library="css" name="style.css" />
-		<h:outputStylesheet library="css" name="mainTemplate.css" />
-		
+    <ui:insert name="metadata"/>
+    <h:head>
+        <title><ui:insert name="pageTitle"/></title>
 
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<!-- Prevents caching at the Proxy Server -->
-		<meta http-equiv="Expires" content="0" />
+        <link rel="icon" type="image/x-icon" href="#{resource['img/favicon.ico']}"/>
+        <link rel="icon" type="image/png" href="#{resource['img/favicon-32x32.png']}" sizes="32x32"/>
+        <link rel="icon" type="image/png" href="#{resource['img/favicon-96x96.png']}" sizes="96x96"/>
+        <link rel="icon" type="image/png" href="#{resource['img/favicon-16x16.png']}" sizes="16x16"/>
 
-		<meta name="description"
-			content="VariCarta is a curated, web-based database housing ASD-linked genes created from the meta-analysis of -omic sequencing literature" />
+        <h:outputStylesheet name="webjars/font-awesome/4.2.0/css/font-awesome-jsf.css"/>
+        <ui:insert name="css"/>
+        <h:outputStylesheet library="css" name="style.css"/>
+        <h:outputStylesheet library="css" name="mainTemplate.css"/>
 
-		<meta name="keywords"
-			content="asd,autism,curated,genomics,bioinformatics,genetics,gene,medicine,biomedical,meta-analysis,statistics,search,open source,database,software" />
-		<meta name="author" content="VariCarta Admin (#{applicationProperties.getProperty('ndb.admin.email')})" />
 
-		<ui:include src="/WEB-INF/templates/analytics.xhtml" />
-		<ui:insert name="js" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <!-- Prevents caching at the Proxy Server -->
+        <meta http-equiv="Expires" content="0"/>
 
-	</h:head>
+        <meta name="description"
+              content="VariCarta is a curated, web-based database housing ASD-linked genes created from the meta-analysis of -omic sequencing literature"/>
 
-	<h:body>
-	
-	<p:layout fullPage="true">
+        <meta name="keywords"
+              content="asd,autism,curated,genomics,bioinformatics,genetics,gene,medicine,biomedical,meta-analysis,statistics,search,open source,database,software"/>
+        <meta name="author" content="VariCarta Admin (#{applicationProperties.getProperty('ndb.admin.email')})"/>
 
-		<p:layoutUnit id="top" position="north" resizable="false" size="50">
+        <ui:include src="/WEB-INF/templates/analytics.xhtml"/>
+        <ui:insert name="js"/>
 
-			<h:form>
-				<p:menubar toggleEvent="click" style="border: 1px solid transparent" styleClass="menubar">
-					<p:menuitem value="Home" url="index.xhtml" icon="fa fa-home" />
-					<p:menuitem value="Publications" url="publications.xhtml" icon="fa fa-book" />
-					<p:menuitem value="Statistics" url="stats.xhtml" icon="fa fa-bar-chart" />
-					<p:menuitem value="Downloads" url="downloads.xhtml" icon="fa fa-download"  />
-					<p:menuitem value="About" url="about.xhtml" icon="fa fa-info-circle"  />
-					<p:menuitem value="Documentation" url="documentation.xhtml" icon="fa fa-question-circle"  />
+    </h:head>
 
-					<f:facet name="options" style="vertical-align:middle;">
-						<h4 style="position:absolute;margin:8px 0;right:30px;">Pavlidis lab, UBC</h4>
-			        </f:facet>
-				</p:menubar>
-			</h:form>
+    <h:body>
 
-		</p:layoutUnit>
+        <p:layout fullPage="true">
 
-		<p:layoutUnit id="center" position="center">
-		
+            <p:layoutUnit id="top" position="north" resizable="false" size="50">
 
-	  	<ui:insert name="content" >
-	   	</ui:insert>
-<!-- 	   	<p:separator style="margin-top:20px;"/>
-			<div class="footer">
-				<p>
-					&copy; UBC, Centre for High-throughput Biology, 2015
-					<h:link value="Terms and Conditions" outcome="/about.xhtml" />
-					<h:link value="Contact Us" outcome="/about.xhtml" style="position:absolute;right:50px;"/>
-				</p>
-			</div> -->
-		</p:layoutUnit>
-		
-		<p:layoutUnit id="bottom" position="south" resizable="false" size="50">
-			<div class="footer">
-				<p>
-					&copy; Michael Smith Laboratories, 2016
-					<h:link value="Terms and Conditions" outcome="/about.xhtml" />
-					<h:link value="Contact Us" outcome="/about.xhtml" style="position:absolute;right:50px;"/>
-				</p>
-			</div>
-		</p:layoutUnit>
-		
+                <h:form>
+                    <p:menubar toggleEvent="click" style="border: 1px solid transparent" styleClass="menubar">
+                        <p:menuitem value="Home" url="index.xhtml" icon="fa fa-home"/>
+                        <p:menuitem value="Publications" url="publications.xhtml" icon="fa fa-book"/>
+                        <p:menuitem value="Statistics" url="stats.xhtml" icon="fa fa-bar-chart"/>
+                        <p:menuitem value="Downloads" url="downloads.xhtml" icon="fa fa-download"/>
+                        <p:menuitem value="About" url="about.xhtml" icon="fa fa-info-circle"/>
+                        <p:menuitem value="Documentation" url="documentation.xhtml" icon="fa fa-question-circle"/>
 
-	</p:layout>
-	
-	<ui:insert name="dialogs">
-   <!-- a modal dialog etc. -->
-	</ui:insert>
+                        <f:facet name="options" style="vertical-align:middle;">
+                            <a href="https://www.ubc.ca/" target="_blank">
+                                <img src="#{resource['img/ubcgrey_logo_40.png']}"
+                                     alt="University of British Columbia (UBC)"></img>
+                            </a>
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
 
-<!-- 	<p:dialog modal="true" widgetVar="statusDialog" header="Status"
-		draggable="false" closable="false" resizable="false">
-		<p:graphicImage library="img" name="loader.gif" />
-	</p:dialog> -->
-<!-- 	
-		<div id="site-wrapper">
-		<div id="header">
-			<div id="top">
-			Green graphic by <a href="undefined">undefined</a> from <a href="http://logomakr.com">Logomakr</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>.Science graphic by <a href="http://www.freepik.com/">Freepik</a> from <a href="http://www.flaticon.com/">Flaticon</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Made with <a href="http://logomakr.com" title="Logo Maker">Logo Maker</a>
-				<div class="left" id="logo">
-					<h:graphicImage library="img" width="130" height="110"
-						name="logo.png" />
-				</div>
-				<div class="left navigation" id="main-nav">
-					<ul class="tabbed">
-						<li class="#{view.viewId=='/index.xhtml'?'current-tab':''}"><h:link value="Home" outcome="index.xhtml" /></li>
-						<li class="#{view.viewId=='/search.xhtml'?'current-tab':''}"><h:link value="Search" outcome="search.xhtml" /></li> 						 												
-						<li class="#{view.viewId=='/downloads.xhtml'?'current-tab':''}"><h:link value="Downloads" outcome="downloads.xhtml" /></li>
-						<li class="#{view.viewId=='/documentation.xhtml'?'current-tab':''}"><h:link value="Documentation" outcome="documentation.xhtml" /></li>						
-						<li class="#{view.viewId=='/faq.xhtml'?'current-tab':''}"><h:link value="FAQ" outcome="faq.xhtml" /></li>
-						<li class="#{view.viewId=='/contact.xhtml'?'current-tab':''}"><h:link value="Contact" outcome="contact.xhtml" /></li>
-						
-						<li class="#{view.viewId=='/about.xhtml'?'current-tab':''}"><h:link value="About" outcome="about.xhtml" /></li>
-						 
-					</ul>
-					<div class="clearer">&nbsp;</div>
-				</div>
-				<div class="clearer">&nbsp;</div>
-			</div>
-		</div>
-		
-		<div id="content">
-			<ui:insert name="content" />
-		</div> 
-		</div> -->
-		
-	</h:body>
+            </p:layoutUnit>
+
+            <p:layoutUnit id="center" position="center">
+
+
+                <ui:insert name="content">
+                </ui:insert>
+            </p:layoutUnit>
+
+            <p:layoutUnit id="bottom" position="south" resizable="false" size="50">
+                <div class="footer">
+                    <p>
+                        <span> VariCarta Copyright &copy; 2016-2018 </span>
+                        <h:link value="Contact Us" outcome="/about.xhtml" style="position:absolute;right:50px;"/>
+                    </p>
+                </div>
+            </p:layoutUnit>
+
+
+        </p:layout>
+
+        <ui:insert name="dialogs">
+            <!-- a modal dialog etc. -->
+        </ui:insert>
+
+        <!-- 	<p:dialog modal="true" widgetVar="statusDialog" header="Status"
+                draggable="false" closable="false" resizable="false">
+                <p:graphicImage library="img" name="loader.gif" />
+            </p:dialog> -->
+        <!--
+                <div id="site-wrapper">
+                <div id="header">
+                    <div id="top">
+                    Green graphic by <a href="undefined">undefined</a> from <a href="http://logomakr.com">Logomakr</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>.Science graphic by <a href="http://www.freepik.com/">Freepik</a> from <a href="http://www.flaticon.com/">Flaticon</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Made with <a href="http://logomakr.com" title="Logo Maker">Logo Maker</a>
+                        <div class="left" id="logo">
+                            <h:graphicImage library="img" width="130" height="110"
+                                name="logo.png" />
+                        </div>
+                        <div class="left navigation" id="main-nav">
+                            <ul class="tabbed">
+                                <li class="#{view.viewId=='/index.xhtml'?'current-tab':''}"><h:link value="Home" outcome="index.xhtml" /></li>
+                                <li class="#{view.viewId=='/search.xhtml'?'current-tab':''}"><h:link value="Search" outcome="search.xhtml" /></li>
+                                <li class="#{view.viewId=='/downloads.xhtml'?'current-tab':''}"><h:link value="Downloads" outcome="downloads.xhtml" /></li>
+                                <li class="#{view.viewId=='/documentation.xhtml'?'current-tab':''}"><h:link value="Documentation" outcome="documentation.xhtml" /></li>
+                                <li class="#{view.viewId=='/faq.xhtml'?'current-tab':''}"><h:link value="FAQ" outcome="faq.xhtml" /></li>
+                                <li class="#{view.viewId=='/contact.xhtml'?'current-tab':''}"><h:link value="Contact" outcome="contact.xhtml" /></li>
+
+                                <li class="#{view.viewId=='/about.xhtml'?'current-tab':''}"><h:link value="About" outcome="about.xhtml" /></li>
+
+                            </ul>
+                            <div class="clearer">&nbsp;</div>
+                        </div>
+                        <div class="clearer">&nbsp;</div>
+                    </div>
+                </div>
+
+                <div id="content">
+                    <ui:insert name="content" />
+                </div>
+                </div> -->
+
+    </h:body>
 
 </f:view>
 

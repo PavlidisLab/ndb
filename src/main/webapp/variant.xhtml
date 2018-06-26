@@ -369,8 +369,8 @@
 
 						<p:column style="width:60px; text-align: right;" sortBy="#{variant.annovar.exac03}" >
 							<f:facet name="header">
-								<h:outputText id="exacFreq" value="ExAC v0.3"/>
-								<p:tooltip id="toolTipExacFreq" for="exacFreq" value="ExAC population frequency (version 0.3)." />
+								<h:outputText id="cmplxExacFreq" value="ExAC v0.3"/>
+								<p:tooltip id="toolTipComplxExacFreq" for="exacFreq" value="ExAC population frequency (version 0.3)." />
 							</f:facet>
 							<h:outputLink target="_blank" value="http://exac.broadinstitute.org/variant/#{variant.chromosome}-#{variant.start}-#{variant.ref}-#{variant.alt}" rendered="#{variant.annovar.exac03 gt 0.0}">
 								<h:outputText value="#{variant.annovar.exac03}" />
