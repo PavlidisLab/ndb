@@ -28,7 +28,7 @@
             maxWait="10000"
             testWhileIdle="true"
             timeBetweenEvictionRunsMillis="300000"
-            url="jdbc:mysql://abe:3306/marvdb_staging"
+            url="jdbc:mysql://localhost:3307/marvdb_staging"
             driverClassName="com.mysql.jdbc.Driver"
             initialSize="0"
             alternateUsernameAllowed="true"
