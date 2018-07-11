@@ -42,3 +42,4 @@ local.properties
 # Idea
 .idea/*
 *.iml
+.Rproj.user

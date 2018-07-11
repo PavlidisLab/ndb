@@ -21,6 +21,9 @@ if [ "$#" -gt "2" ]
     if [ "$3" == "--interactive" ]
     then
 	INTERACTIVE=1
+    else
+	echo "Error! Unknown switch $3"
+	exit -1
     fi
 fi
 
@@ -38,7 +41,10 @@ echo "Loading book: $BOOK"
 
 if [ $INTERACTIVE -eq 0  ];
 then
-    PYTHONPATH="flows:../scripts/models" luigi --module tasks $JOB --book $BOOK --worker-count-last-scheduled --scheduler-port 16901 > logs/$PAPERNAME.log 2> logs/$PAPERNAME.err
+    LOGLOG=logs/$PAPERNAME.log
+    ERRLOG=logs/$PAPERNAME.err
+    PYTHONPATH="flows:../scripts/models" luigi --module tasks $JOB --book $BOOK --worker-count-last-scheduled --scheduler-port 16901 > $LOGLOG 2> $ERRLOG
+    echo "See logs at $LOGLOG / $ERRLOG"
 else
     PYTHONPATH="flows:../scripts/models" luigi --module tasks $JOB --book $BOOK --worker-count-last-scheduled --scheduler-port 16901
 fi

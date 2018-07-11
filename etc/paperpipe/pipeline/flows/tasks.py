@@ -78,12 +78,9 @@ class PPTask(luigi.Task):
                     text = line.replace("[", "") # Remove bracket
                     text = text.split(",")[0]
 
-            #header = json.loads(header)
-            #paper_id_index = header.index("id")
-            paper_id_index = 0
+            paper_id_index = 0 # TODO: Hardcoded index 0 for IDs
             arr = json.loads(text)
-            print arr
-            #model.paper_id = arr[paper_id_index]                                    
+
             model.paper_id = text
             model.data = []
 
@@ -116,14 +113,29 @@ class PPTask(luigi.Task):
         Parse commit output text to get the ID. Assumes ID is the first column.
         """
         self.paper_id = -2
+        self.paper_key = None
+
         requirement.output() # Set would-be requirement.OUTPUT name
+        HEADER = None
+        ID_IDX = None
+        KEY_IDX = None
+        
         with open( requirement.OUTPUT, 'r') as f:
             for r in f:
-                self.paper_id = ast.literal_eval(r)[0]
+                if HEADER is None:
+                    #print "HEADER",HEADER
+                    HEADER = ast.literal_eval(r)
+                    ID_IDX = HEADER.index("id")
+                    KEY_IDX = HEADER.index("paper_key")
+                else:
+                    ROW = ast.literal_eval(r)
+                    self.paper_id = ROW[ID_IDX]
+                    self.paper_key = ROW[KEY_IDX]
         return
 
     def set_paper_id_from_requirements(self, requirement):
         self.paper_id = requirement.paper_id        
+        self.paper_key = requirement.paper_key
         return
 
 class LoadPaper(PPTask):
@@ -166,6 +178,7 @@ class LoadRawKV(PPTask):
     def __init__(self, book=None):
         super(LoadRawKV, self).__init__(book=book)
         self.paper_id = -1
+        self.paper_key = None
         self.INPUT = book
         print "Initialized", type(self)
 
@@ -212,6 +225,7 @@ class LoadRawVariant(PPTask):
     def __init__(self, book=None):
         super(LoadRawVariant, self).__init__(book=book)
         self.paper_id = -1
+        self.paper_key = None
         self.INPUT = book
 
     def requires(self):
@@ -281,7 +295,7 @@ class LoadVariant(PPTask):
     def run(self):
         
         raw = self.requires() # Obtain requirement.
-        variant = Variant(self.paper_id)
+        variant = Variant(self.paper_id, paper_key=self.paper_key)
 
         variant.load(self.input())
 
@@ -344,8 +358,46 @@ class LoadAnnovar(PPTask):
                 f.write(str(row))
                 f.write("\n")
 
-            
-                
+
+class LoadCurationNotes(PPTask):
+    book = luigi.Parameter()
+
+    """
+    Load curation notes.
+    """
+    def __init__(self, book=None):
+        super(LoadCurationNotes, self).__init__(book=book)            
+        self.paper_id = -1
+        self.INPUT = book
+
+    def input(self):
+        LoadCurationNotes.OUTPUT = str("commits/curationnotes_paper"+str(self.paper_id)+".out")
+        return self.INPUT
+    
+    def output(self):
+        self.input() # Framework calls output before running tasks. This will set the output filename before checking if it exists.
+        return luigi.LocalTarget( LoadCurationNotes.OUTPUT )
+
+    def requires(self):
+        requirement = LoadPaper(book=self.INPUT)
+        check_requirement = copy.deepcopy(requirement)        
+        if os.path.isfile(check_requirement.OUTPUT):
+            self.dirty_set_paper_id(check_requirement)
+        self.input()
+        return requirement
+
+    @blockable
+    def run(self):
+        """
+        Update curation notes based on paper ID
+        """
+        print "Paper ID is", self.paper_id
+
+        # TODO: Use subprocess or make a model object for this (consistently with other tasks.)
+        STRING = "sh pushCurationNotes.sh " + self.INPUT +  " " + str(self.paper_id)
+        print("Processing: " + STRING)
+        os.system( STRING )
+
             
 class ClearAnnovar(LoadAnnovar):
     book = luigi.Parameter()
