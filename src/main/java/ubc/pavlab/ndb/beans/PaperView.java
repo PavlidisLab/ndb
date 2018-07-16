@@ -37,6 +37,9 @@ public class PaperView implements Serializable {
     private Paper paper;
     //    private int variantCnt;
     private int eventCnt;
+    private int displayCnt;
+    private boolean ambiguousSubjects;
+
     private List<Tuple2<String, Integer>> eventCntByContext;
     private List<Tuple2<String, Integer>> eventCntByCategory;
 
@@ -65,6 +68,8 @@ public class PaperView implements Serializable {
 
         // variantCnt = statsService.getVariantCntByPaperId( paperId );
         eventCnt = statsService.getEventCntByPaperId( paperId );
+        displayCnt = statsService.getDisplayCntByPaperId( paperId );
+        ambiguousSubjects = statsService.isAmbiguousSubjectsByPaperId( paperId );
         // eventCntByContext = statsService.getEventCntByContext( paperId );
         eventCntByCategory = statsService.getEventCntByCategory( paperId );
 
@@ -80,6 +85,14 @@ public class PaperView implements Serializable {
 
     public int getEventCnt() {
         return eventCnt;
+    }
+
+    public int getDisplayCnt() {
+        return displayCnt;
+    }
+
+    public boolean getAmbiguousSubjects() {
+        return ambiguousSubjects;
     }
 
     public List<Tuple2<String, Integer>> getEventCntByContext() {

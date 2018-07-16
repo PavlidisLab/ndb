@@ -99,7 +99,14 @@ public class StatsDAOImpl implements StatsDAO {
                     ") as tbl1";
 
 
-    private static final String SQL_PAPER_CNT_WITH_VARIANTS = "select COUNT(distinct paper_id) from "
+    private static final String SQL_SUBJECT_DISPLAY_CNT_BY_PAPER_ID = " SELECT display_count FROM " +
+            SQL_PAPER_TABLE +
+            " WHERE id=? ";
+
+    private static final String SQL_AMBIGUOUS_SUBJECTS_BY_PAPER_ID = " SELECT ambiguous_subjects FROM " +SQL_PAPER_TABLE+
+            " WHERE id=? ";
+
+    private static final String SQL_PAPER_CNT_WITH_VARIANTS = "SELECT COUNT(DISTINCT paper_id) FROM "
             + SQL_VARIANT_TABLE;
 
     private static final String SQL_TOP_GENES_BY_VARIANT = "SELECT gene_id, COUNT(*) cnt FROM " + SQL_VARIANT_TABLE
@@ -281,6 +288,35 @@ public class StatsDAOImpl implements StatsDAO {
         return total;
     }
 
+    @Override
+    public int findTotalDisplaySubjectsByPaperId( Integer paperId ) throws DAOException {
+        int total = 0;
+        try (Connection connection = daoFactory.getConnection();
+             PreparedStatement statement = prepareStatement(connection, SQL_SUBJECT_DISPLAY_CNT_BY_PAPER_ID, false, paperId );
+             ResultSet resultSet = statement.executeQuery();) {
+            if ( resultSet.next() ) {
+                total = resultSet.getInt( 1 );
+            }
+        } catch (SQLException e) {
+            throw new DAOException( e );
+        }
+        return total;
+    }
+
+    @Override
+    public boolean findAmbiguousSubjectsByPaperId( Integer paperId ) throws DAOException {
+        int total = 0;
+        try (Connection connection = daoFactory.getConnection();
+             PreparedStatement statement = prepareStatement(connection, SQL_AMBIGUOUS_SUBJECTS_BY_PAPER_ID, false, paperId );
+             ResultSet resultSet = statement.executeQuery();) {
+            if ( resultSet.next() ) {
+                total = resultSet.getInt( 1 );
+            }
+        } catch (SQLException e) {
+            throw new DAOException( e );
+        }
+        return total == 1;
+    }
 
     @Override
     public int findTotalPapersWithVariants() throws DAOException {

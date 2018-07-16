@@ -45,6 +45,8 @@ public final class Paper implements Comparable<Paper> {
     private final String design;
     private final String publisher;
     private final String pubmed_id;
+    private final Integer display_count;
+    private final boolean ambiguous_subjects;
 
     public Paper( PaperDTO dto ) {
         this.id = dto.getId();
@@ -64,6 +66,8 @@ public final class Paper implements Comparable<Paper> {
         this.design = dto.getDesign();
         this.publisher = dto.getPublisher();
         this.pubmed_id = dto.getPubmed_id();
+        this.display_count = dto.getDisplay_count();
+        this.ambiguous_subjects = dto.getAmbiguousSubjects();
 
     }
 
@@ -162,5 +166,14 @@ public final class Paper implements Comparable<Paper> {
         return "https://www.ncbi.nlm.nih.gov/pubmed/" + this.pubmed_id;
 
     }
+
+    public Integer getDisplay_count() {
+        return display_count;
+    }
+
+    public boolean getAmbiguous_subjects() {
+        return ambiguous_subjects;
+    }
+
 
 }

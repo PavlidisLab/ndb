@@ -53,12 +53,30 @@ public interface StatsDAO {
 
     /**
      * Returns the total number of events for a given paper Id.
-     * 
+     *
      * @param paperId paper Id to find the total number of events for.
      * @return the total number of events for the given paper Id.
      * @throws DAOException If something fails at database level.
      */
     public int findTotalEventsByPaperId( Integer paperId ) throws DAOException;
+
+    /**
+     * Returns the total number of events for a given paper Id.
+     *
+     * @param paperId paper Id to find the total number of events for.
+     * @return the total number of events for the given paper Id.
+     * @throws DAOException If something fails at database level.
+     */
+    public int findTotalDisplaySubjectsByPaperId( Integer paperId ) throws DAOException;
+
+    /**
+     * Returns a boolean on whether this paper is marked as having ambiguous subjects
+     *
+     * @param paperId paper Id to find the total number of events for.
+     * @return the total number of events for the given paper Id.
+     * @throws DAOException If something fails at database level.
+     */
+    public boolean findAmbiguousSubjectsByPaperId( Integer paperId ) throws DAOException;
 
     /**
      * Returns the total number of variants.
@@ -108,7 +126,7 @@ public interface StatsDAO {
      *  (E.g. if the sample ids are missing, it's sometimes unclear how
      *  many subjects are in the paper variant tables.)
      *
-     * @return the total number of display subjects.
+     * @return the total number of subjects.
      * @throws DAOException If something fails at database level.
      */
     public int findTotalDisplaySubjects() throws DAOException;

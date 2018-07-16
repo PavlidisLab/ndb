@@ -43,10 +43,12 @@ public final class PaperDTO {
     private final String cases;
     private final String design;
     private final String publisher;
+    private final Integer display_count;
+    private final boolean ambiguous_subjects;
 
     public PaperDTO( Integer id, String url, String title, String key, String year, String doi, String pubmed_id, String author,
             String paper_table, String technology, String cohort_source,  String count, String cases,
-            String design, String publisher ) {
+            String design, String publisher, Integer display_count, boolean ambiguous_subjects ) {
         super();
         this.id = id;
         this.url = url;
@@ -63,6 +65,8 @@ public final class PaperDTO {
         this.cases = cases;
         this.design = design;
         this.publisher = publisher;
+        this.display_count = display_count;
+        this.ambiguous_subjects = ambiguous_subjects;
     }
 
     public Integer getId() {
@@ -123,6 +127,14 @@ public final class PaperDTO {
 
     public String getTechnology() {
         return technology;
+    }
+
+    public Integer getDisplay_count() {
+        return display_count;
+    }
+
+    public boolean getAmbiguousSubjects() {
+        return ambiguous_subjects;
     }
 
 
