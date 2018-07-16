@@ -94,11 +94,24 @@ public interface StatsDAO {
 
     /**
      * Returns the total number of subjects.
-     * 
+     *
      * @return the total number of subjects.
      * @throws DAOException If something fails at database level.
      */
     public int findTotalSubjects() throws DAOException;
+
+
+    /**
+     * Returns the total number of subjects based on the paper display_count.
+     *  This value is mainly computed/partially manually entered in the
+     *  non-computable database based on knowledge of subject counts.
+     *  (E.g. if the sample ids are missing, it's sometimes unclear how
+     *  many subjects are in the paper variant tables.)
+     *
+     * @return the total number of display subjects.
+     * @throws DAOException If something fails at database level.
+     */
+    public int findTotalDisplaySubjects() throws DAOException;
 
     /**
      * Returns the total number of papers that have variants.
