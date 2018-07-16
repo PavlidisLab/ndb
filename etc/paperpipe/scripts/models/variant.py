@@ -15,9 +15,10 @@ class Variant(AbstractModel):
 
     __excluded = "id".split(",")
 
-    def __init__(self, paper_id, **kwargs):
+    def __init__(self, paper_id, paper_key = None, **kwargs):
         super(Variant, self).__init__()
         self.paper_id = paper_id
+        self.paper_key = paper_key
 
         self.sheet = "variant"
         self.database_table = self.DATABASE_TABLES['variant']
@@ -93,7 +94,7 @@ class Variant(AbstractModel):
                     raise e                    
 
                 # Apply transformation
-                h, d = self.U.transform( transform_input, transform[1], transform[2], paper_id = self.paper_id )
+                h, d = self.U.transform( transform_input, transform[1], transform[2], paper_id = self.paper_id, paper_key = self.paper_key )
 
                 for h_,d_ in zip(h,d):
                     variant[h_] = d_
