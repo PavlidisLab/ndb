@@ -1,9 +1,11 @@
 #!/bin/bash
 
 VCF=$1
-MACHINE="krusty"
+MACHINE="frink.msl.ubc.ca"
+echo "Using $MACHINE for processing."
 
-WORK="/space/grp/MARVdb/curation/tools/annovar"
+
+WORK="/space/grp/VariCarta/curation/tools/annovar"
 UNAME=$(whoami)
 
 echo "Submitting input"

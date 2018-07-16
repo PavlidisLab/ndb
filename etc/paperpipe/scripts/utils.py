@@ -49,7 +49,7 @@ class Utils(object):
         for i in xrange(0, len(l), n):
             yield l[i:i + n]
 
-    def transform(self, i, f, o, paper_id=None):
+    def transform(self, i, f, o, paper_id=None, paper_key=None):
         """
          i : input
          f : function
@@ -83,7 +83,10 @@ class Utils(object):
                      d['alt'],
                  ]
         elif f == 'prepend_paper':
-            d = [str("Paper#"+str(paper_id)+":"+str(i))]
+            if paper_key is None:
+                d = [str("Paper#"+str(paper_id)+":"+str(i))]
+            else:
+                d = [str(paper_key + ":" + str(i))]
 
         elif f == 'connect':
             if i == 'NULL': 
