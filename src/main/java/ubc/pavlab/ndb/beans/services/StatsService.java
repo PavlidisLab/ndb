@@ -370,7 +370,7 @@ public class StatsService implements Serializable {
             @Override
             public Integer get() {
                 log.info( "subjectCntSupplier" );
-                return statsDAO.findTotalSubjects();
+                return statsDAO.findTotalDisplaySubjects();
             }
         };
     }

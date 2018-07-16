@@ -40,7 +40,7 @@ import ubc.pavlab.ndb.utility.Tuples.Tuple2;
 
 /**
  * TODO Document Me
- * 
+ *
  * @author mjacobson
  * @version $Id$
  */
@@ -80,9 +80,25 @@ public class StatsDAOImpl implements StatsDAO {
             + SQL_VARIANT_TABLE + " group by func ORDER BY cnt DESC";
 
     private static final String SQL_VARIANT_CNT = "select COUNT(*) from " + SQL_VARIANT_TABLE;
+
     private static final String SQL_EVENT_CNT = "select COUNT(distinct event_id) from " + SQL_VARIANT_TABLE;
 
     private static final String SQL_SUBJECT_CNT = "select COUNT(distinct subject_id) from " + SQL_VARIANT_TABLE;
+
+    // This count uses possibly hardcoded values when subject_id are ambiguous.
+    private static final String SQL_SUBJECT_DISPLAY_CNT =
+            "SELECT SUM(display_counts) as display_counts FROM" +
+                    "(SELECT COUNT(DISTINCT subject_id) as display_counts " +
+                    " FROM (" + SQL_VARIANT_TABLE + " INNER JOIN (SELECT id, ambiguous_subjects FROM papers) as tmpPaper " +
+                    " ON " + SQL_VARIANT_TABLE + ".paper_id = tmpPaper.id)" +
+                    " WHERE ambiguous_subjects is NULL OR ambiguous_subjects = 0 " +
+                    " UNION ALL " +
+                    " SELECT SUM(display_count) display_counts " +
+                    " FROM " + SQL_PAPER_TABLE + " " +
+                    " WHERE ambiguous_subjects = 1 " +
+                    ") as tbl1";
+
+
     private static final String SQL_PAPER_CNT_WITH_VARIANTS = "select COUNT(distinct paper_id) from "
             + SQL_VARIANT_TABLE;
 
@@ -119,7 +135,7 @@ public class StatsDAOImpl implements StatsDAO {
     private static final String SQL_DENOVO_LOF_GENES = "SELECT gene_ID, count(distinct event_id) as cnt  " + "FROM "
             + SQL_VARIANT_TABLE + " as var " + " inner join " + SQL_GENE_MAP_TABLE + " vmap on var.id=vmap.variant_id "
             + " WHERE inheritance = 'd' AND "
-	    + "(func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substitution')) " // TODO: Do we still want those categories
+            + "(func = 'splicing'  OR category in ('frameshift insertion', 'frameshift deletion', 'stopgain', 'splicing', 'stoploss', 'frameshift substitution')) " // TODO: Do we still want those categories
             + "GROUP BY gene_id ORDER BY cnt DESC limit ?";
 
     // Vars ---------------------------------------------------------------------------------------
@@ -131,7 +147,7 @@ public class StatsDAOImpl implements StatsDAO {
     /**
      * Construct an Gene DAO for the given DAOFactory. Package private so that it can be constructed inside the DAO
      * package only.
-     * 
+     *
      * @param daoFactory The DAOFactory to construct this Gene DAO for.
      */
     StatsDAOImpl( DAOFactory daoFactory ) {
@@ -148,13 +164,13 @@ public class StatsDAOImpl implements StatsDAO {
     public int findTotalVariantsByPaperId( Integer paperId ) throws DAOException {
         int total = 0;
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_PAPER_ID, false,
-                        paperId );
-                ResultSet resultSet = statement.executeQuery();) {
+             PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_PAPER_ID, false,
+                     paperId );
+             ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
                 total = resultSet.getInt( 1 );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return total;
@@ -164,12 +180,12 @@ public class StatsDAOImpl implements StatsDAO {
     public int findTotalEventsByPaperId( Integer paperId ) throws DAOException {
         int total = 0;
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_PAPER_ID, false, paperId );
-                ResultSet resultSet = statement.executeQuery();) {
+             PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_PAPER_ID, false, paperId );
+             ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
                 total = resultSet.getInt( 1 );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return total;
@@ -179,12 +195,12 @@ public class StatsDAOImpl implements StatsDAO {
     public int findTotalVariants() throws DAOException {
         int total = 0;
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_VARIANT_CNT );
-                ResultSet resultSet = statement.executeQuery();) {
+             PreparedStatement statement = connection.prepareStatement( SQL_VARIANT_CNT );
+             ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
                 total = resultSet.getInt( 1 );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return total;
@@ -194,12 +210,12 @@ public class StatsDAOImpl implements StatsDAO {
     public int findTotalEvents() throws DAOException {
         int total = 0;
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_EVENT_CNT );
-                ResultSet resultSet = statement.executeQuery();) {
+             PreparedStatement statement = connection.prepareStatement( SQL_EVENT_CNT );
+             ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
                 total = resultSet.getInt( 1 );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return total;
@@ -209,12 +225,12 @@ public class StatsDAOImpl implements StatsDAO {
     public int findTotalLof() throws DAOException {
         int total = 0;
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_LOF_CNT );
-                ResultSet resultSet = statement.executeQuery();) {
+             PreparedStatement statement = connection.prepareStatement( SQL_LOF_CNT );
+             ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
                 total = resultSet.getInt( 1 );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return total;
@@ -224,12 +240,12 @@ public class StatsDAOImpl implements StatsDAO {
     public int findTotalDenovo() throws DAOException {
         int total = 0;
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_DENOVO_CNT );
-                ResultSet resultSet = statement.executeQuery();) {
+             PreparedStatement statement = connection.prepareStatement( SQL_DENOVO_CNT );
+             ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
                 total = resultSet.getInt( 1 );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return total;
@@ -239,27 +255,43 @@ public class StatsDAOImpl implements StatsDAO {
     public int findTotalSubjects() throws DAOException {
         int total = 0;
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_SUBJECT_CNT );
-                ResultSet resultSet = statement.executeQuery();) {
+             PreparedStatement statement = connection.prepareStatement( SQL_SUBJECT_CNT );
+             ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
                 total = resultSet.getInt( 1 );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return total;
     }
 
     @Override
-    public int findTotalPapersWithVariants() throws DAOException {
+    public int findTotalDisplaySubjects() throws DAOException {
         int total = 0;
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_PAPER_CNT_WITH_VARIANTS );
-                ResultSet resultSet = statement.executeQuery();) {
+             PreparedStatement statement = connection.prepareStatement( SQL_SUBJECT_DISPLAY_CNT );
+             ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
                 total = resultSet.getInt( 1 );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
+            throw new DAOException( e );
+        }
+        return total;
+    }
+
+
+    @Override
+    public int findTotalPapersWithVariants() throws DAOException {
+        int total = 0;
+        try (Connection connection = daoFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement( SQL_PAPER_CNT_WITH_VARIANTS );
+             ResultSet resultSet = statement.executeQuery();) {
+            if ( resultSet.next() ) {
+                total = resultSet.getInt( 1 );
+            }
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return total;
@@ -269,13 +301,13 @@ public class StatsDAOImpl implements StatsDAO {
     public Map<Integer, Integer> overlappingEventsBetweenPapers( Integer paper_id ) throws DAOException {
         Map<Integer, Integer> counts = Maps.newHashMap();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_OVERLAPS_BY_PAPER, false,
-                        paper_id );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
+             PreparedStatement statement = prepareStatement( connection, SQL_EVENT_OVERLAPS_BY_PAPER, false,
+                     paper_id );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
                 counts.put( resultSet.getInt( "paper_id" ), resultSet.getInt( "cnt" ) );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return counts;
@@ -286,14 +318,14 @@ public class StatsDAOImpl implements StatsDAO {
 
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CATEGORY, false );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
+             PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CATEGORY, false );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
                 String category = resultSet.getString( "category" );
                 category = StringUtils.isBlank( category ) ? "other" : category;
                 results.add( new Tuple2<>( category, resultSet.getInt( "cnt" ) ) );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return results;
@@ -304,12 +336,12 @@ public class StatsDAOImpl implements StatsDAO {
 
         List<Tuple2<String, Integer>> results = Lists.newArrayList();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CONTEXT, false );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
+             PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CONTEXT, false );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
                 results.add( new Tuple2<>( resultSet.getString( "func" ), resultSet.getInt( "cnt" ) ) );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return results;
@@ -320,12 +352,12 @@ public class StatsDAOImpl implements StatsDAO {
         log.info( "SQL: Find genes by denovo AND lof. " );
         List<Integer> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_DENOVO_LOF_GENES, false, n );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
+             PreparedStatement statement = prepareStatement( connection, SQL_DENOVO_LOF_GENES, false, n );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
                 results.add( resultSet.getInt( "gene_id" ) );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return results;
@@ -339,12 +371,12 @@ public class StatsDAOImpl implements StatsDAO {
 
         List<Integer> top = Lists.newArrayList();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_TOP_GENES_BY_VARIANT, false, n );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
+             PreparedStatement statement = prepareStatement( connection, SQL_TOP_GENES_BY_VARIANT, false, n );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
                 top.add( resultSet.getInt( "gene_id" ) );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
 
@@ -358,12 +390,12 @@ public class StatsDAOImpl implements StatsDAO {
         }
         List<Integer> top = Lists.newArrayList();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_TOP_GENES_BY_EVENT, false, n );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
+             PreparedStatement statement = prepareStatement( connection, SQL_TOP_GENES_BY_EVENT, false, n );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
                 top.add( resultSet.getInt( "gene_id" ) );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
 
@@ -378,12 +410,12 @@ public class StatsDAOImpl implements StatsDAO {
         }
         List<Integer> top = Lists.newArrayList();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_TOP_GENES_BY_PAPER, false, n );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
+             PreparedStatement statement = prepareStatement( connection, SQL_TOP_GENES_BY_PAPER, false, n );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
                 top.add( resultSet.getInt( "gene_id" ) );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
 
@@ -395,13 +427,13 @@ public class StatsDAOImpl implements StatsDAO {
     public List<Tuple2<String, Integer>> findTotalVariantsByContextForPaperId( Integer paperId ) throws DAOException {
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_CONTEXT_FOR_PAPER, false,
-                        paperId );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
+             PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_CONTEXT_FOR_PAPER, false,
+                     paperId );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
                 results.add( new Tuple2<>( resultSet.getString( 1 ), resultSet.getInt( 2 ) ) );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return results;
@@ -411,13 +443,13 @@ public class StatsDAOImpl implements StatsDAO {
     public List<Tuple2<String, Integer>> findTotalEventsByContextForPaperId( Integer paperId ) throws DAOException {
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CONTEXT_FOR_PAPER, false,
-                        paperId );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
+             PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CONTEXT_FOR_PAPER, false,
+                     paperId );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
                 results.add( new Tuple2<>( resultSet.getString( 1 ), resultSet.getInt( 2 ) ) );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return results;
@@ -427,15 +459,15 @@ public class StatsDAOImpl implements StatsDAO {
     public List<Tuple2<String, Integer>> findTotalVariantsByCategoryForPaperId( Integer paperId ) throws DAOException {
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_CATEGORY_FOR_PAPER,
-                        false, paperId );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
+             PreparedStatement statement = prepareStatement( connection, SQL_VARIANT_CNT_BY_CATEGORY_FOR_PAPER,
+                     false, paperId );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
                 String category = resultSet.getString( 1 );
                 category = StringUtils.isBlank( category ) ? "other" : category;
                 results.add( new Tuple2<>( category, resultSet.getInt( 2 ) ) );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return results;
@@ -445,15 +477,15 @@ public class StatsDAOImpl implements StatsDAO {
     public List<Tuple2<String, Integer>> findTotalEventsByCategoryForPaperId( Integer paperId ) throws DAOException {
         List<Tuple2<String, Integer>> results = new ArrayList<>();
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CATEGORY_FOR_PAPER, false,
-                        paperId );
-                ResultSet resultSet = statement.executeQuery();) {
-            while ( resultSet.next() ) {
+             PreparedStatement statement = prepareStatement( connection, SQL_EVENT_CNT_BY_CATEGORY_FOR_PAPER, false,
+                     paperId );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
                 String category = resultSet.getString( 1 );
                 category = StringUtils.isBlank( category ) ? "other" : category;
                 results.add( new Tuple2<>( category, resultSet.getInt( 2 ) ) );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return results;
@@ -465,12 +497,12 @@ public class StatsDAOImpl implements StatsDAO {
     public int findTotalPapers() throws DAOException {
         int total = 0;
         try (Connection connection = daoFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement( SQL_PAPER_CNT );
-                ResultSet resultSet = statement.executeQuery();) {
+             PreparedStatement statement = connection.prepareStatement( SQL_PAPER_CNT );
+             ResultSet resultSet = statement.executeQuery();) {
             if ( resultSet.next() ) {
                 total = resultSet.getInt( 1 );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             throw new DAOException( e );
         }
         return total;
