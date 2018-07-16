@@ -102,6 +102,8 @@ public class StatsService implements Serializable {
 
     private final Map<Integer, Integer> paperVariantCntCache = new ConcurrentHashMap<>();
     private final Map<Integer, Integer> paperEventCntCache = new ConcurrentHashMap<>();
+    private final Map<Integer, Integer> paperDisplayCntCache = new ConcurrentHashMap<>();
+    private final Map<Integer, Boolean> paperAmbiguousSubjectsCache = new ConcurrentHashMap<>();
 
     private final Map<Integer, List<Tuple2<String, Integer>>> paperEventCntByContext = new ConcurrentHashMap<>();
     private final Map<Integer, List<Tuple2<String, Integer>>> paperEventCntByFunction = new ConcurrentHashMap<>();
@@ -135,6 +137,8 @@ public class StatsService implements Serializable {
             }
 
             paperEventCntCache.put( p.getId(), statsDAO.findTotalEventsByPaperId( p.getId() ) );
+            paperDisplayCntCache.put( p.getId(), statsDAO.findTotalDisplaySubjectsByPaperId( p.getId() ) );
+            paperAmbiguousSubjectsCache.put( p.getId(), statsDAO.findAmbiguousSubjectsByPaperId( p.getId() ) );
 
             List<Tuple2<String, Integer>> l = statsDAO.findTotalEventsByContextForPaperId( ( p.getId() ) );
             Collections.sort( l, TUPLE_COMPARE_T1 );
@@ -193,6 +197,20 @@ public class StatsService implements Serializable {
             return null;
         }
         return paperEventCntCache.get( paperId );
+    }
+
+    public Integer getDisplayCntByPaperId( Integer paperId ) {
+        if ( paperId == null ) {
+            return null;
+        }
+        return paperDisplayCntCache.get( paperId );
+    }
+
+    public boolean isAmbiguousSubjectsByPaperId( Integer paperId ) {
+        if ( paperId == null ) {
+            return false;
+        }
+        return paperAmbiguousSubjectsCache.get( paperId );
     }
 
     public int getPaperCnt() {

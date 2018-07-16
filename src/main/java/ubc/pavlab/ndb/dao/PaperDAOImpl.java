@@ -45,14 +45,14 @@ public class PaperDAOImpl implements PaperDAO {
 
     // SQL Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_STAR = "id, url, paper_key, title, year, doi, author, paper_table, technology, parents, cohort_source, count, cases, design, publisher, pubmed_id";
+    private static final String SQL_STAR = "id, url, paper_key, title, year, doi, author, paper_table, technology, parents, cohort_source, count, cases, design, publisher, pubmed_id, display_count, ambiguous_subjects";
     private static final String SQL_TABLE = "papers";
 
     // SQL Statements
 
     private static final String SQL_FIND_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE id = ?";
     private static final String SQL_FIND_BY_PAPER_KEY = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE paper_key = ?";
-    private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id";
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " ORDER BY id ";
 
     // Vars ---------------------------------------------------------------------------------------
 
@@ -147,7 +147,9 @@ public class PaperDAOImpl implements PaperDAO {
                 resultSet.getString( "count" ),
                 resultSet.getString( "cases" ),
                 resultSet.getString( "design" ),
-                resultSet.getString( "publisher" )
+                resultSet.getString( "publisher" ),
+                resultSet.getInt( "display_count" ),
+                resultSet.getBoolean( "ambiguous_subjects" )
         );
     }
 
