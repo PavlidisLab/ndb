@@ -185,3 +185,7 @@ table.file-no-border, table.file-no-border tr, table.file-no-border td {
 }
 
 .text-center {text-align:center}
+
+.label-value-panel, .ui-panelgrid-cell {
+	vertical-align: middle !important;
+}
