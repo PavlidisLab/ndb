@@ -53,17 +53,13 @@
 	                <p:column><h:outputText value="Variant source"  style="font-weight:bold"  /></p:column>
 	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.paperTable}" />	</p:column>
 	                </p:row>
-					<ui:remove>
-						<p:row>
-							<p:column><h:outputText value="Subjects" style="font-weight:bold" /></p:column>
-							<p:column><h:outputText value="#{cc.attrs.paper.design}: #{cc.attrs.paper.count}" /></p:column>
-		            	</p:row>
-					</ui:remove>
+
 	            	<p:row>
 	            		<p:column><h:outputText value="Cohorts" style="font-weight:bold" /></p:column>
 	            		<p:column><h:outputText value="#{cc.attrs.paper.cohortSource}" /></p:column>
 	            	</p:row>
-	            	<p:row>
+
+					<p:row>
 	    	        	<p:column><h:outputText value="Design" style="font-weight:bold" /></p:column>
 	        	    	<p:column><h:outputText value="#{cc.attrs.paper.design}" /></p:column>
 	            	</p:row>
@@ -87,6 +83,33 @@
 					</p:row>
 
 					<p:row>
+						<p:column>
+							<h:outputText value="Subject count"  style="font-weight:bold"  />
+						</p:column>
+						<p:column colspan="2">
+							<h:outputText value="#{cc.attrs.paper.display_count}"  />
+
+
+								<h:outputText rendered="#{cc.attrs.paper.ambiguous_subjects}" value=" - " />
+								<h:outputText id="ambiguousSubjectsIcon"
+											  class="fa fa-exclamation-triangle"
+											  rendered="#{cc.attrs.paper.ambiguous_subjects}"
+											  title="The number of subjects for this study could not be determined directly
+										from the variant data; the value given is that reported by the authors in the
+										publication."
+								/>
+								<p:tooltip
+										id="toolTipAmbiguousSubjects"
+										for="ambiguousSubjectsIcon"
+										value="The number of subjects for this study could not be determined directly
+										from the variant data; the value given is that reported by the authors in the
+										publication."
+										position="top"/>
+
+						</p:column>
+					</p:row>
+
+					<p:row>
 						<p:column><h:outputText value="Variant event count"  style="font-weight:bold"  /></p:column>
 						<p:column colspan="2">
 							<p:link outcome="variant" value="#{cc.attrs.eventCnt}" >
@@ -95,24 +118,6 @@
 						</p:column>
 					</p:row>
 
-					<p:row>
-						<p:column><h:outputText value="Subject count"  style="font-weight:bold"  /></p:column>
-						<p:column colspan="2">
-							<p:link outcome="variant" value="#{cc.attrs.paper.display_count}" >
-								<f:param name="paperId" value="#{cc.attrs.paper.id}" />
-							</p:link>
-
-							<span>
-								<h:outputText rendered="#{cc.attrs.paper.ambiguous_subjects}" value=" - " />
-								<h:outputText class="fa fa-question-circle"
-										rendered="#{cc.attrs.paper.ambiguous_subjects}"
-										title="Ambigous link from subjects to variant: The number of subjects (#{cc.attrs.paper.display_count}) represents the number of subject reported from the publication text due to insufficient subject information available. "
-										/>
-							</span>
-
-
-						</p:column>
-					</p:row>
 
 					<p:row>
 						<p:column><h:outputText value="Curator notes"  style="font-weight:bold"  />
