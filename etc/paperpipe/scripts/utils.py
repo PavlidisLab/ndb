@@ -148,7 +148,6 @@ class Utils(object):
 
         return rows
 
-
     def delete_table_rows_by_field(self, table_name, id, field):
         statement = ' DELETE FROM ' + table_name + " WHERE "+field+"='" +str(id)+ "' ; "
         print "******************"
