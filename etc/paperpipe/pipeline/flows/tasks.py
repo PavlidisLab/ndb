@@ -360,6 +360,7 @@ class LoadAnnovar(PPTask):
 
 
 class LoadCurationNotes(PPTask):
+    # TODO: This should maybe also load the manual sample number we want to use for display?
     book = luigi.Parameter()
 
     """
