@@ -45,17 +45,23 @@ class RawKV(AbstractModel):
             rows.append( zip(paperid_vector, rawid_vector, header, row ) )
 
 
+        # TODO: Remove; likely dead code
         table = []
+        MAXROWS = len(rows)
         for r in rows:
-            print "Row numbers:", COUNTER
+            print "Row numbers:", COUNTER, "/", MAXROWS
             COUNTER+=1
-            table = table + r
+            table.extend( r )
 
         self.data = table
+        # self.data = rows
         self.data = [self.properties_list] + self.data
 
-    #@Override
+
     def commit(self):
+        """
+        Override the commit method for raw key values
+        """
         try:
             if len(self.data) < 1000:
                 petl.appenddb(self.data, self.U.connection, self.database_table)
@@ -74,7 +80,10 @@ class RawKV(AbstractModel):
                     
         except Exception as e:
             print "EXCEPTION on insert to " , self.database_table
-            print self.data
+            print self.data[0]
+            print self.data[1]
+            print "..."
+            print self.data[-1]
             raise e
         return self.data
         
@@ -86,9 +95,3 @@ class RawKV(AbstractModel):
         
         a.commit()
         """
-
-def bootstrap( paper_id=35 ):
-    # TODO: Remove for production
-    rkv = RawKV(paper_id)
-    rkv.load("../../exampledata/dyrk1a/variants.xlsx")
-    return rkv
