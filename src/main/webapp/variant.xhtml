@@ -20,7 +20,7 @@
 
     <ui:define name="js">
         <script type="text/javascript">
-            googleAnalyticsTrackPageviewIfConfigured("/MARVdb/variant");
+            googleAnalyticsTrackPageviewIfConfigured("/#{applicationProperties.getProperty('ndb.ga_app')}/variant");
         </script>
     </ui:define>
 

@@ -59,7 +59,7 @@ public class CSVExporter extends Exporter {
     public void loadData( Collection<Event> events ) {
         StringBuilder csvText = new StringBuilder();
         Date today = Calendar.getInstance().getTime();
-        String timestampHeader = "Downloaded from MARVdb on " + today.toString();
+        String timestampHeader = "Downloaded from VariCarta on " + today.toString();
         CSVFormat format = CSVFormat.RFC4180.withHeader(timestampHeader).withDelimiter( '\t' );
         CSVPrinter printer;
         try {
