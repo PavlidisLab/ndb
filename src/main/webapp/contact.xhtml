@@ -15,7 +15,7 @@
 	
 	<ui:define name="js">
 		<script type="text/javascript">
-	        	googleAnalyticsTrackPageviewIfConfigured( "/MARVdb/contact" );
+	        	googleAnalyticsTrackPageviewIfConfigured( "/#{applicationProperties.getProperty('ndb.ga_app')}/contact" );
 	    </script>
 	</ui:define>
 	

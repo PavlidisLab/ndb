@@ -18,7 +18,7 @@
 
     <ui:define name="js">
         <script type="text/javascript">
-            googleAnalyticsTrackPageviewIfConfigured("/MARVdb/stats");
+            googleAnalyticsTrackPageviewIfConfigured("/#{applicationProperties.getProperty('ndb.ga_app')}/stats");
         </script>
 
         <script src="https://code.highcharts.com/highcharts.js"></script>
