@@ -11,3 +11,5 @@ ps -U$(whoami) aux \
     | cut -f2 -d" " \
     | xargs kill -9
 
+# Disable the db.config symlink
+ln -s -f /dev/null db.config
