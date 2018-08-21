@@ -86,7 +86,7 @@
 						<p:column>
 							<h:outputText value="Subject count"  style="font-weight:bold"  />
 						</p:column>
-						<p:column colspan="2">
+						<p:column colspan="2" styleClass="single-numeric">
 							<h:outputText value="#{cc.attrs.paper.display_count}"  />
 
 
@@ -111,7 +111,7 @@
 
 					<p:row>
 						<p:column><h:outputText value="Variant event count"  style="font-weight:bold"  /></p:column>
-						<p:column colspan="2">
+						<p:column colspan="2" styleClass="single-numeric">
 							<p:link outcome="variant" value="#{cc.attrs.eventCnt}" >
 								<f:param name="paperId" value="#{cc.attrs.paper.id}" />
 							</p:link>
@@ -122,7 +122,7 @@
 					<p:row>
 						<p:column><h:outputText value="Curator notes"  style="font-weight:bold"  />
 						</p:column>
-						<p:column colspan="2">
+						<p:column colspan="2" styleClass="single-numeric">
 							<h:outputLink value = "notes/#{cc.attrs.paper.paperKey}/NOTES" >View</h:outputLink>
 						</p:column>
 					</p:row>
