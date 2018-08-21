@@ -20,7 +20,7 @@
 
     <ui:define name="js">
         <script type="text/javascript">
-            googleAnalyticsTrackPageviewIfConfigured("/MARVdb/variant");
+            googleAnalyticsTrackPageviewIfConfigured("/#{applicationProperties.getProperty('ndb.ga_app')}/variant");
         </script>
     </ui:define>
 
@@ -405,7 +405,7 @@
                             <p:column style="width:60px; text-align: right;" sortBy="#{variant.annovar.exac03}">
                                 <f:facet name="header">
                                     <h:outputText id="cmplxExacFreq" value="ExAC v0.3"/>
-                                    <p:tooltip id="toolTipComplxExacFreq" for="exacFreq"
+                                    <p:tooltip id="toolTipComplxExacFreq" for="cmplxExacFreq"
                                                value="ExAC population frequency (version 0.3)."/>
                                 </f:facet>
                                 <h:outputLink target="_blank"
