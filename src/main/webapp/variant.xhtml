@@ -288,7 +288,7 @@
                         <h:outputText value="-" rendered="#{event.exacFreq eq 0.0}"/>
                     </p:column>
 
-                    <p:column style="width:120px; text-align: right;" sortBy="#{event}"
+                    <p:column style="width:150px; text-align: right;" sortBy="#{event}"
                               sortFunction="#{variantView.sortByPapers}">
                         <f:facet name="header">
                             <h:outputText id="Sources" value="Sources"/>
@@ -303,7 +303,11 @@
                                 <f:setPropertyActionListener value="#{var.paper}"
                                                              target="#{variantView.selectedPaper}"/>
                             </p:commandLink>
-
+                            <span>
+                            <h:outputText styleClass="protocol-sequencing-icon genome-sequencing-icon" title="Genome sequencing" value="G"  escape="false" rendered='#{fn:toLowerCase(var.paper.technology).contains("genome") }'/>
+                            <h:outputText styleClass="protocol-sequencing-icon exome-sequencing-icon" title="Exome sequencing" value="E" escape="false" rendered='#{fn:toLowerCase(var.paper.technology).contains("exome") }'/>
+                            <h:outputText styleClass="protocol-sequencing-icon targeted-sequencing-icon" title="Targeted gene sequencing" value="T" escape="false" rendered='#{fn:toLowerCase(var.paper.technology).contains("targeted") or fn:toLowerCase(var.paper.technology).contains("probe")}'/>
+                            </span>
                             <p:commandLink update=":formResults:variantDetail"
                                            oncomplete="PF('dlg').show()"
                                            title="View Details"

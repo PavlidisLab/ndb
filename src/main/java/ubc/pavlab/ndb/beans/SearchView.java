@@ -69,7 +69,7 @@ public class SearchView implements Serializable {
 
     public String searchByRegion() {
 
-        if ( region.matches( "^(CHR|chr)?([0-9]{1,2}|X|Y):(\\d+)-(\\d+|)$" ) ) {
+        if ( region.matches( "^(?i:CHR)?([0-9]{1,2}|X|Y):(\\d+)(-(\\d+))?$" ) ) {
             String chromosome;
             String start;
             String stop;
@@ -77,9 +77,17 @@ public class SearchView implements Serializable {
                 String[] split = StringUtils.removeStart( region.toLowerCase(), "chr" ).split( "[\\:\\-]" );
                 chromosome = split[0];
                 start = split[1];
-                stop = split[2];
+
+                if (split.length == 2){
+                    // Only chr:postion
+                    stop = start;
+                } else {
+                    // Including start and stop positions.
+                    stop = split[2];
+                }
 
             } catch ( IndexOutOfBoundsException e ) {
+                // TODO: Raise error and display in UI.
                 return null;
             }
             return "variant?faces-redirect=true&chr=" + chromosome + "&start=" + start + "&stop=" + stop;
