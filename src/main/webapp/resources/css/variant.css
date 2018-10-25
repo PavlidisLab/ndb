@@ -225,3 +225,32 @@ td.allele {
     word-wrap: break-word;
     padding: 4px 2px !important ;
 }
+
+.protocol-sequencing-icon {
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 1px 2px; /* Some padding */
+    font-size: 10px; /* Set a font size */
+    cursor: help; /* Mouse pointer on hover */
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 5px;
+
+    font-weight: 600;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.genome-sequencing-icon {
+    background-color: #0066ff; /* Blue background */
+
+}
+
+.exome-sequencing-icon {
+    background-color: #669900; /* Green background */
+
+}
+
+
+.targeted-sequencing-icon {
+    background-color: #999999; /* Grey background */
+
+}
