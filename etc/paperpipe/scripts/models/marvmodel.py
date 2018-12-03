@@ -17,7 +17,7 @@ class AbstractModel(object):
                        'raw_variant',
                        'variant',
                        'annovar_scores', ]:
-        
+            # TODO: Refactor into a config file
             self.DATABASE_TABLES[table] = table + suffix
         
         self.sheet=None
