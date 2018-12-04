@@ -158,6 +158,16 @@ public interface StatsDAO {
     public List<Integer> findTopGenesByEventCnt( Integer n ) throws DAOException;
 
     /**
+     * Returns the top n genes for a given ranking of genes The list is never null.
+     *
+     * @param n number of top genes to return, default 5.
+     * @return the top n genes by event cnt.
+     * @throws DAOException If something fails at database level.
+     */
+    public List<Integer> findTopGenesByRanking( Integer n ) throws DAOException;
+
+
+    /**
      * Returns the top n genes by paper cnt. The list is never null.
      * 
      * @param n number of top genes to return, default 5.
