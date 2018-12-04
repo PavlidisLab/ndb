@@ -176,75 +176,99 @@ $(function () {
         *   2) If z == 0, then change the value to ""
         *   3) 
         */
-       
-        var zeros = [];
-           var diagonals = [];
-           var others = [];
+       var DEFAULT_FONT_SIZE = '9px';
+       var DEFAULT_FONT_WEIGHT = 'bold';
 
-           function make_zero_color_object(x, y, val){
+        var zeros = [];
+        var diagonals = [];
+        var others = [];
+
+           function make_zero_color_object(x, y, val, txtValue){
               var zero = { 'x' : x,
                            'y' : y,
                            'intValue' : "",
                            'value' : "",
-                           //'color' : '#dddddd',
-                           style: {
-                              'font-weight': 'lighter'
-                           }
-             }
+                            dataLabels: {
+                                style: {
+                                    'fontWeight': DEFAULT_FONT_WEIGHT,
+                                    'fontSize': DEFAULT_FONT_SIZE
+                                }
+                            }
+             };
+
               return zero;
            }
 
-           function make_diag_color_object(x, y, val){
-               var txtValue = String(val);
+           function make_diag_color_object(x, y, val, txtValue){
+
+
+                var diag = { 'x' : x,
+                             'y' : y,
+                             'intValue' : val,
+                             'value' : txtValue,
+                             'color' : '#ffd699',
+                             'borderColor': 'black',
+                                dataLabels: {
+                                    style: {
+                                        'fontWeight': DEFAULT_FONT_WEIGHT,
+                                        'fontSize': DEFAULT_FONT_SIZE
+                                    }
+                                }
+
+                };
+
+              return diag;
+           }
+
+           function make_unchanged_object(x, y, val, txtValue){
+               var o = { 'x' : x,
+                        'y' : y,
+                        'intValue' : val,
+                        'value' : txtValue,
+                   dataLabels: {
+                       style: {
+                           'fontWeight': DEFAULT_FONT_WEIGHT,
+                           'fontSize': DEFAULT_FONT_SIZE
+                       }
+                   }
+               };
+
+               if (o.intValue >= 1000){
+                   // Workaround to prevent 1K+ rows from becoming black.
+                   o.color = Highcharts.getOptions().colors[0];
+               }
+
+
+
+              return o;
+           }
+       
+           for (var i = 0 ; i < arr.length; i++){
+               //current = arr[i];
+               var x, y, val, txtValue;
+
+               [x, y, val] = arr[i];
+               txtValue = String(val);
 
                // Handle big numbers
                if ( txtValue.length >= 4  ){
                    txtValue = txtValue.substring(0, txtValue.length - 3) + "K";
                }
 
-              var diag = { 'x' : x,
-                           'y' : y,
-                           'intValue' : val,
-                           'value' : txtValue,
-                           'color' : '#ffd699',
-                           'borderColor': 'black',
-                           dataLabels: {
-                              style: {
-                                    'font-weight': 'bold'
-                                 }
-                           }
-                         }
-              return diag;
-           }
-
-           function make_unchanged_object(x, y, val){
-               var o = { 'x' : x,
-                        'y' : y,
-                        'intValue' : val,
-                        'value' : String(val)
-              }
-              return o;
-           }
-       
-           for (var i = 0 ; i < arr.length; i++){
-              current = arr[i];
-
-
-              if (current[0] == current[1]){
+               if (x == y){
                  // Mark diagonals
-                 diagonals.push(make_diag_color_object(current[0], current[1], current[2] ));
+                 diagonals.push(make_diag_color_object(x, y, val, txtValue));
               }
-              else if ( current[2] == 0 ) {
+              else if ( val == 0 ) {
                  // If not a diagonal, check if == 0 and mark.
-                 zeros.push( make_zero_color_object(current[0], current[1], current[2] ) );
+                 zeros.push( make_zero_color_object(x, y, val, txtValue) );
               }
               else {
-                 others.push( make_unchanged_object(current[0], current[1], current[2] ) );
+                 others.push( make_unchanged_object(x, y, val, txtValue) );
               }
+
            }
 
-        console.log("Before:")
-        console.log(merged);
 
         // Re-sort by most busy columns.
         var merged = others.concat(zeros).concat(diagonals); // Vector of Points (x,y and properties)
@@ -299,7 +323,6 @@ $(function () {
         */
         return merged;
     }
-    
     //console.log( JSON.parse($('#heatmap-container').attr('data') ) );
 });
 
