@@ -44,9 +44,11 @@
                         <p:panel styleClass="no-border" >
                             <ui:include src="stat_summary.xhtml"></ui:include>
                         </p:panel>
-                        <p:panel styleClass="no-border">
-                            <ui:include src="stats_table_topgenesbyranking.xhtml"></ui:include>
-                        </p:panel>
+                        <ui:remove>
+                            <p:panel styleClass="no-border">
+                                <ui:include src="stats_table_topgenesbyranking.xhtml"></ui:include>
+                            </p:panel>
+                        </ui:remove>
                     </p:panelGrid>
 
                     <p:panelGrid styleClass="no-border" columns="1">

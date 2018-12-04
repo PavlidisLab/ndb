@@ -9,9 +9,11 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="pageTitle">Documentation</ui:define>
-	
+
+
 	<ui:define name="css">
-			<h:outputStylesheet library="css" name="documentation.css" />
+		<h:outputStylesheet library="css" name="variant.css"/>
+		<h:outputStylesheet library="css" name="documentation.css" />
 	</ui:define>
 	
 	<ui:define name="js">
@@ -100,6 +102,15 @@
 				VariCarta’s <strong>variant event</strong> is a unique combination of a reference allele, its genomic location and alternative allele belonging to a
 				single individual. This allows us to identify and group together the same variants from the same individuals that have been reported in multiple studies.
 				Each variant event is displayed only once in VariCarta’s variant result table, with the Source column listing IDs of all publications reporting it.
+				The publication IDs are tagged to indicate the scope of sequencing study (
+				<span class="protocol-sequencing-icon genome-sequencing-icon" title="Genome sequencing">G</span>
+				whole genome sequencing,
+
+				<span class="protocol-sequencing-icon exome-sequencing-icon" title="Exome sequencing">E</span>
+				whole exome sequencing,
+
+				<span class="protocol-sequencing-icon targeted-sequencing-icon" title="Targeted gene sequencing">T</span>
+				targeted sequencing).
 				<p:link href="/variant.xhtml?chr=11&amp;start=26587227&amp;stop=26587227"> Here</p:link> is an example of a	variant event.
 			</p>
 
@@ -133,11 +144,12 @@
 							
 			<h3 id="statistics" class="section">Statistics</h3>
 				<p>
-					The <p:link href="stats.xhtml"> Statistics page</p:link>  ffers the basic database statistics,
+					The <p:link href="stats.xhtml"> Statistics page</p:link>  offers the basic database statistics,
 					including the total number of subject with unique VariCarta subject IDs, the number of all variant
 					events, as well as counts of some specific classes of variant events (de novo, LOF). We also include
-					several gene rankings based on different criteria. Even though VariCarta contains some non-coding
-					variants, these are excluded when computing gene rankings based on variant event counts.
+					several gene rankings based on different criteria. These rankings are not intended to be used for
+					ASD candidate gene pioritization because they do not exclude common variants and variants from
+					targeted studies (non-coding variants are excluded from gene ranking calculations).
 				</p>
 				 
 				 <p>
