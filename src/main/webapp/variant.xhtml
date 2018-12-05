@@ -304,9 +304,9 @@
                                                              target="#{variantView.selectedPaper}"/>
                             </p:commandLink>
                             <span>
-                            <h:outputText styleClass="protocol-sequencing-icon genome-sequencing-icon" title="Genome sequencing" value="G"  escape="false" rendered='#{fn:toLowerCase(var.paper.technology).contains("genome") }'/>
-                            <h:outputText styleClass="protocol-sequencing-icon exome-sequencing-icon" title="Exome sequencing" value="E" escape="false" rendered='#{fn:toLowerCase(var.paper.technology).contains("exome") }'/>
-                            <h:outputText styleClass="protocol-sequencing-icon targeted-sequencing-icon" title="Targeted gene sequencing" value="T" escape="false" rendered='#{fn:toLowerCase(var.paper.technology).contains("targeted") or fn:toLowerCase(var.paper.technology).contains("probe")}'/>
+                            <h:outputText styleClass="protocol-sequencing-icon genome-sequencing-icon" title="Genome sequencing" value="G"  escape="false" rendered='#{fn:toLowerCase(var.paper.display_sequencing).contains("genome") }'/>
+                            <h:outputText styleClass="protocol-sequencing-icon exome-sequencing-icon" title="Exome sequencing" value="E" escape="false" rendered='#{fn:toLowerCase(var.paper.display_sequencing).contains("exome") }'/>
+                            <h:outputText styleClass="protocol-sequencing-icon targeted-sequencing-icon" title="Targeted gene sequencing" value="T" escape="false" rendered='#{fn:toLowerCase(var.paper.display_sequencing).contains("targeted") or fn:toLowerCase(var.paper.technology).contains("probe")}'/>
                             </span>
                             <p:commandLink update=":formResults:variantDetail"
                                            oncomplete="PF('dlg').show()"
