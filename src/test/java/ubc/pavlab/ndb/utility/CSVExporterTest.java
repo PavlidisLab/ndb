@@ -120,7 +120,8 @@ public class CSVExporterTest {
                         null,
                         null,
                         0,
-                        false) );
+                        false,
+                        null) );
         Mockito.when( v.getPaper() ).thenReturn( p );
 
         variants.add( v );
@@ -173,7 +174,8 @@ public class CSVExporterTest {
                         null,
                          null,
                         0,
-                        false) );
+                        false,
+                        null) );
         Mockito.when( v.getPaper() ).thenReturn( p );
 
         variants.add( v );
@@ -225,7 +227,8 @@ public class CSVExporterTest {
                         null,
                         null,
                         0,
-                        false) );
+                        false,
+                        null) );
         Mockito.when( v.getPaper() ).thenReturn( p );
 
         variants.add( v );
