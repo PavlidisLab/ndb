@@ -37,7 +37,7 @@ public class VariantView implements Serializable {
 
     private static final Logger log = Logger.getLogger( VariantView.class );
 
-    private static final int LAZY_LOAD_MAX_SIZE = 150;
+    private static final int LAZY_LOAD_MAX_SIZE = 10;
 
     private String query;
 
