@@ -85,7 +85,7 @@
 		            </span>
                 </f:facet>
 
-                <p:column style="width:150px; text-align: left;" sortBy="#{event}"
+                <p:column style="width:120px; text-align: left;" sortBy="#{event}"
                           sortFunction="#{variantView.sortByGenes}">
                     <f:facet name="header">
                         <h:outputText id="Gene" value="Gene"/>
@@ -120,7 +120,7 @@
 
                 </p:column>
 
-                <p:column style="width:70px; text-align: Right;" sortBy="#{event.subjectId}">
+                <p:column style="width:30px; text-align: Right;" sortBy="#{event.subjectId}">
                     <f:facet name="header">
                         <h:outputText id="Subject" value="Subject"/>
                         <p:tooltip id="toolTipSubject" for="Subject"
@@ -136,7 +136,7 @@
                 </p:column>
 
 
-                <p:column style="width:200px; text-align: center;" styleClass="centeredColumn"
+                <p:column style="width:100px; text-align: center;" styleClass="centeredColumn"
                           rendered="#{not event.complex}" sortBy="#{event}"
                           sortFunction="#{variantView.sortByLocation}">
                     <f:facet name="header">
@@ -150,7 +150,7 @@
                     </h:outputLink>
                 </p:column>
 
-                <p:column style="width:50px; text-align: center;" styleClass="centeredColumn allele"
+                <p:column style="width:20px; text-align: center;" styleClass="centeredColumn allele"
                           rendered="#{not event.complex}">
                     <f:facet name="header">
                         <h:outputText id="REF" value="REF"/>
@@ -161,7 +161,7 @@
 
                 </p:column>
 
-                <p:column style="width:50px; text-align: center;" styleClass="centeredColumn allele"
+                <p:column style="width:20px; text-align: center;" styleClass="centeredColumn allele"
                           rendered="#{not event.complex}">
                     <f:facet name="header">
                         <h:outputText id="ALT" value="ALT"/>
@@ -197,7 +197,7 @@
                                   rendered="${fn:contains(event.validations, 'y')}"/>
                 </p:column>
 
-                <p:column style="width:100px; text-align: center;">
+                <p:column style="width:60px; text-align: center;">
                     <f:facet name="header">
                         <h:outputText id="inheritance" value="Inheritance"/>
                         <p:tooltip id="toolTipInheritance" for="inheritance"
@@ -210,7 +210,7 @@
 
                 </p:column>
 
-                <p:column style="width:150px; text-align: center;" styleClass="row-gradient" sortBy="#{event}"
+                <p:column style="width:120px; text-align: center;" styleClass="row-gradient" sortBy="#{event}"
                           sortFunction="#{variantView.sortByEffects}">
                     <f:facet name="header">
                         <h:outputText id="Effect" value="Effects"/>
@@ -238,7 +238,7 @@
                     </ui:repeat>
                 </p:column>
 
-                <p:column style="width:100px; text-align: left;" styleClass="centeredColumn row-gradient">
+                <p:column style="width:60px; text-align: left;" styleClass="centeredColumn row-gradient">
                     <f:facet name="header">
                         <h:outputText id="cDNA" value="cDNA"/>
                         <p:tooltip id="toolTipCDNA" for="cDNA" value="cDNA variant notation."/>
@@ -268,7 +268,7 @@
                           style="width:60px; text-align: right;"
                           styleClass="centeredColumn row-gradient #{(event.caddPhred > 50 ? 'ct6' : (event.caddPhred > 40 ? 'ct5' : (event.caddPhred > 30 ? 'ct4' : (event.caddPhred > 20 ? 'ct3' : (event.caddPhred > 10 ? 'ct2' : (event.caddPhred > 0 ? 'ct1' : ''))))))}">
                     <f:facet name="header">
-                        <h:outputText id="Cadd" value="CADD-Phred v1.0"/>
+                        <h:outputText id="Cadd" style="word-wrap: break-word;" value="CADD-Phred v1.0"/>
                         <p:tooltip id="toolTipCadd" for="Cadd"
                                    value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores."/>
 
