@@ -85,15 +85,26 @@
 		            </span>
                 </f:facet>
 
-                <p:column style="width:120px; text-align: left;" sortBy="#{event}"
-                          sortFunction="#{variantView.sortByGenes}">
+                <p:column style="width:60px ; text-align: center;"
+                          sortBy="#{event}"
+                          sortFunction="#{variantView.sortByGenes}"
+                >
                     <f:facet name="header">
                         <h:outputText id="Gene" value="Gene"/>
                         <p:tooltip id="toolTipGene" for="Gene" value="Gene symbol on which the variant is located"/>
                     </f:facet>
                     <ui:repeat var="gene" value="#{event.genes}" varStatus="statusRepeatGenes">
+                        <p:link outcome="variant" value="#{gene.symbol}">
+                            <f:param name="NCBIGeneId" value="#{gene.geneId}"/>
+                        </p:link>
+                        <span>
+                            <h:outputLink target="_blank" value="http://www.ncbi.nlm.nih.gov/gene/#{gene.geneId}">
+                                <h:graphicImage border="5" library="img" name="NCBI.gif" width="30"/>
+                            </h:outputLink>
 
-                        <ui:repeat var="x" value="#{gene.xrefs.toArray()}">
+                            <h:outputText value="&nbsp;"/>
+
+                            <ui:repeat var="x" value="#{gene.xrefs.toArray()}">
 
                             <h:outputText rendered="#{fn:startsWith(x,'Ensembl:')}" value="&nbsp;"/>
                             <h:outputLink styleClass="inline-icon" target="_blank"
@@ -101,236 +112,232 @@
                                 <h:graphicImage border="5" library="img" name="ensembl.png" height="15"
                                                 rendered="#{fn:startsWith(x,'Ensembl:')}"/>
                             </h:outputLink>
-                            <!--  Assuming every gene has an NCBI entry, let's just add commas when we have an Ensembl ID -->
+                                <!--  Assuming every gene has an NCBI entry, let's just add commas when we have an Ensembl ID -->
 
-                        </ui:repeat>
-
-                        <h:outputLink target="_blank" value="http://www.ncbi.nlm.nih.gov/gene/#{gene.geneId}">
-                            <h:graphicImage border="5" library="img" name="NCBI.gif" width="30"/>
-                        </h:outputLink>
-
-                        <h:outputText value="&nbsp;"/>
-
-                        <p:link outcome="variant" value="#{gene.symbol}">
-                            <f:param name="NCBIGeneId" value="#{gene.geneId}"/>
-                        </p:link>
-
+                            </ui:repeat>
+                        </span>
                         <h:outputText value="&lt;br/&gt;" escape="false" rendered="#{not statusRepeatGenes.last}"/>
                     </ui:repeat>
 
                 </p:column>
 
-                <p:column style="width:30px; text-align: Right;" sortBy="#{event.subjectId}">
+                <p:column style="width:30px; text-align: center;" sortBy="#{event.subjectId}">
                     <f:facet name="header">
-                        <h:outputText id="Subject" value="Subject"/>
+                        <h:outputText style="text-align: center;" id="Subject" value="ID"/>
                         <p:tooltip id="toolTipSubject" for="Subject"
                                    value="VariCarta-specific identifier for the proband source of the variant."/>
                     </f:facet>
                     <h:outputText value="#{event.subjectId}" title="#{event.sampleId}"/>
                 </p:column>
 
+               -->
                 <p:column rendered="#{event.complex}" colspan="4" style="width:360px; text-align:center;"
                           styleClass="centeredColumn inline-row-toggle inline-icon">
-                    <h:outputText value="Complex Event; expand row to view variants &#160;"/>
-                    <p:rowToggler/>
-                </p:column>
+                <!-- Complex Event multi-column span  -->
+               <h:outputText value="Complex Event; expand row to view variants &#160;"/>
+               <p:rowToggler/>
+           </p:column>
+
+           <p:column style="width:70px; text-align: center;"
+                     styleClass="centeredColumn"
+                     rendered="#{not event.complex}"
+                     sortBy="#{event}"
+                     sortFunction="#{variantView.sortByLocation}">
+               <f:facet name="header">
+                   <h:outputText id="Location" value="Location"/>
+                   <p:tooltip id="toolTipLocation" for="Location"
+                              value="Genomic location of the reference allele."/>
+               </f:facet>
+               <h:outputLink target="_blank"
+                             value="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&amp;position=chr#{event.chromosome}%3A#{event.start}-#{event.stop}">
+                   <h:outputText value="chr#{event.chromosome}:"/>
+                   <h:outputText value="&lt;br /&gt;" escape="false" rendered="#{not status.last}"/>
+                   <h:outputText  style="word-wrap: break-word;"  value="#{event.start}-#{event.stop}"/>
+               </h:outputLink>
+           </p:column>
+
+           <p:column style="width:20px; text-align: center;"
+                     styleClass="centeredColumn allele"
+                     rendered="#{not event.complex}">
+               <f:facet name="header">
+                   <h:outputText id="REF" value="REF"/>
+                   <p:tooltip id="toolTipREF" for="REF" value="Reference allele"/>
+               </f:facet>
+
+                <h:outputText value="#{event.ref}"/>
+
+           </p:column>
+
+           <p:column style="width:20px; text-align: center;" styleClass="centeredColumn allele"
+                     rendered="#{not event.complex}">
+               <f:facet name="header">
+                   <h:outputText id="ALT" value="ALT"/>
+                   <p:tooltip id="toolTipAlt" for="ALT" value="Alternate allele"/>
+               </f:facet>
+
+               <h:outputText value="#{event.alt}"/>
+
+           </p:column>
+
+           <p:column style="width:40px;  text-align: center;" rendered="#{not event.complex}" sortBy="#{event}"
+                     sortFunction="#{variantView.sortByFuncs}">
+               <f:facet name="header">
+                   <h:outputText id="Functions" value="Context"/>
+                   <p:tooltip id="toolTipFunctions" for="Functions" value="Variant functional categories"/>
+
+               </f:facet>
+
+               <ui:repeat var="f" value="#{event.funcs}" varStatus="status">
+                   <h:outputText value="#{f}"/>
+                   <h:outputText value=", " rendered="#{not status.last}"/>
+               </ui:repeat>
+
+           </p:column>
 
 
-                <p:column style="width:100px; text-align: center;" styleClass="centeredColumn"
-                          rendered="#{not event.complex}" sortBy="#{event}"
-                          sortFunction="#{variantView.sortByLocation}">
-                    <f:facet name="header">
-                        <h:outputText id="Location" value="Location"/>
-                        <p:tooltip id="toolTipLocation" for="Location"
-                                   value="Genomic location of the reference allele."/>
-                    </f:facet>
-                    <h:outputLink target="_blank"
-                                  value="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&amp;position=chr#{event.chromosome}%3A#{event.start}-#{event.stop}">
-                        <h:outputText value="chr#{event.chromosome}:#{event.start}-#{event.stop}"/>
-                    </h:outputLink>
-                </p:column>
+           <p:column style="width:10px; text-align: center;">
+               <f:facet name="header">
+                   <h:outputText class="fa fa-check-square" value="" title="Variant validation"/>
+               </f:facet>
+               <h:outputText class="fa fa-check-square validatedIcon" value=""
+                             title="Variant validated by: #{event.validationMethodsText}"
+                             rendered="${fn:contains(event.validations, 'y')}"/>
+           </p:column>
 
-                <p:column style="width:20px; text-align: center;" styleClass="centeredColumn allele"
-                          rendered="#{not event.complex}">
-                    <f:facet name="header">
-                        <h:outputText id="REF" value="REF"/>
-                        <p:tooltip id="toolTipREF" for="REF" value="Reference allele"/>
-                    </f:facet>
+           <p:column style="width:60px; text-align: center;">
+               <f:facet name="header">
+                   <h:outputText id="inheritance" value="Inheritance"/>
+                   <p:tooltip id="toolTipInheritance" for="inheritance"
+                              value="Reported de novo/inheritance status"/>
+               </f:facet>
+               <ui:repeat var="c" value="#{event.inheritances}" varStatus="status">
+                   <h:outputText value="#{c.label}"/>
+                   <h:outputText value=", " rendered="#{not status.last}"/>
+               </ui:repeat>
 
-                    <h:outputText value="#{event.ref}"/>
+           </p:column>
 
-                </p:column>
+           <p:column style="width:85px; text-align: center;" styleClass="row-gradient" sortBy="#{event}"
+                     sortFunction="#{variantView.sortByEffects}">
+               <f:facet name="header">
+                   <h:outputText id="Effect" value="Effects"/>
+                   <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect."/>
 
-                <p:column style="width:20px; text-align: center;" styleClass="centeredColumn allele"
-                          rendered="#{not event.complex}">
-                    <f:facet name="header">
-                        <h:outputText id="ALT" value="ALT"/>
-                        <p:tooltip id="toolTipAlt" for="ALT" value="Alternate allele"/>
-                    </f:facet>
+               </f:facet>
 
-                    <h:outputText value="#{event.alt}"/>
+               <ui:repeat var="c" value="#{event.categories}" varStatus="status">
+                   <h:outputText value="#{c.label}" styleClass="ct#{c.impact}" title="#{c.description}"/>
+                   <h:outputText value=", " rendered="#{not status.last}"/>
+               </ui:repeat>
+           </p:column>
 
-                </p:column>
+           <p:column style="width:80px; text-align: left;">
+               <f:facet name="header">
+                   <h:outputText id="transcript" value="Transcript"/>
+                   <p:tooltip id="toolTipTranscript" for="transcript"
+                              value="Transcript used for the cDNA/Protein mutation."/>
 
-                <p:column style="width:60px;  text-align: center;" rendered="#{not event.complex}" sortBy="#{event}"
-                          sortFunction="#{variantView.sortByFuncs}">
-                    <f:facet name="header">
-                        <h:outputText id="Functions" value="Context"/>
-                        <p:tooltip id="toolTipFunctions" for="Functions" value="Variant functional categories"/>
+               </f:facet>
 
-                    </f:facet>
+               <ui:repeat var="a" value="#{event.AAChanges}" varStatus="status">
+                   <h:outputText value="#{a.transcript}"/>
+                   <h:outputText value="&lt;br /&gt;" escape="false" rendered="#{not status.last}"/>
+               </ui:repeat>
+           </p:column>
 
-                    <ui:repeat var="f" value="#{event.funcs}" varStatus="status">
-                        <h:outputText style="word-wrap:break-word;" value="#{f}"/>
-                        <h:outputText value=", " rendered="#{not status.last}"/>
-                    </ui:repeat>
+           <p:column style="width:70px; text-align: left;" styleClass="centeredColumn row-gradient">
+               <f:facet name="header">
+                   <h:outputText id="cDNA" value="cDNA"/>
+                   <p:tooltip id="toolTipCDNA" for="cDNA" value="cDNA variant notation."/>
 
-                </p:column>
+               </f:facet>
 
+               <ui:repeat var="a" value="#{event.AAChanges}" varStatus="status">
+                   <h:outputText value="#{a.hgvsC}" title="#{a.context}"/>
+                   <h:outputText value="&lt;br /&gt;" escape="false" rendered="#{not status.last}"/>
+               </ui:repeat>
+           </p:column>
 
-                <p:column style="width:10px; text-align: center;">
-                    <f:facet name="header">
-                        <h:outputText class="fa fa-check-square" value="" title="Variant validation"/>
-                    </f:facet>
-                    <h:outputText class="fa fa-check-square validatedIcon" value=""
-                                  title="Variant validated by: #{event.validationMethodsText}"
-                                  rendered="${fn:contains(event.validations, 'y')}"/>
-                </p:column>
+           <p:column style="width:50px; text-align: left;" styleClass="centeredColumn row-gradient">
+               <f:facet name="header">
+                   <h:outputText id="protein" value="Protein"/>
+                   <p:tooltip id="toolTipProtein" for="protein" value="Protein variant notation."/>
 
-                <p:column style="width:60px; text-align: center;">
-                    <f:facet name="header">
-                        <h:outputText id="inheritance" value="Inheritance"/>
-                        <p:tooltip id="toolTipInheritance" for="inheritance"
-                                   value="De novo variant (i.e. Not inherited from parents.)"/>
-                    </f:facet>
-                    <ui:repeat var="c" value="#{event.inheritances}" varStatus="status">
-                        <h:outputText value="#{c.label}"/>
-                        <h:outputText value=", " rendered="#{not status.last}"/>
-                    </ui:repeat>
+               </f:facet>
 
-                </p:column>
+               <ui:repeat var="a" value="#{event.AAChanges}" varStatus="status">
+                   <h:outputText value="#{a.hgvsP}" title="#{a.context}"/>
+                   <h:outputText value="&lt;br /&gt;" escape="false" rendered="#{not status.last}"/>
+               </ui:repeat>
+           </p:column>
 
-                <p:column style="width:120px; text-align: center;" styleClass="row-gradient" sortBy="#{event}"
-                          sortFunction="#{variantView.sortByEffects}">
-                    <f:facet name="header">
-                        <h:outputText id="Effect" value="Effects"/>
-                        <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect."/>
+           <p:column sortBy="#{event.caddPhred}"
+                     style="width:40px; text-align: right;"
+                     styleClass="centeredColumn row-gradient #{(event.caddPhred > 50 ? 'ct6' : (event.caddPhred > 40 ? 'ct5' : (event.caddPhred > 30 ? 'ct4' : (event.caddPhred > 20 ? 'ct3' : (event.caddPhred > 10 ? 'ct2' : (event.caddPhred > 0 ? 'ct1' : ''))))))}">
+               <f:facet name="header">
+                   <h:outputText id="Cadd" style="word-wrap: break-word;" value="CADD-Phred v1.0"/>
+                   <p:tooltip id="toolTipCadd" for="Cadd"
+                              value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores."/>
 
-                    </f:facet>
+               </f:facet>
 
-                    <ui:repeat var="c" value="#{event.categories}" varStatus="status">
-                        <h:outputText value="#{c.label}" styleClass="ct#{c.impact}" title="#{c.description}"/>
-                        <h:outputText value=", " rendered="#{not status.last}"/>
-                    </ui:repeat>
-                </p:column>
+               <h:outputText value="#{event.caddPhred == 0 ? '-' : event.caddPhred}"/>
+           </p:column>
 
-                <p:column style="width:100px; text-align: left;">
-                    <f:facet name="header">
-                        <h:outputText id="transcript" value="Transcript"/>
-                        <p:tooltip id="toolTipTranscript" for="transcript"
-                                   value="Transcript used for the cDNA/Protein mutation."/>
+           <p:column style="width:55px; text-align: right;" sortBy="#{event.exacFreq}">
+               <f:facet name="header">
+                   <h:outputText id="exacFreq" value="ExAC v0.3"/>
+                   <p:tooltip id="toolTipExacFreq" for="exacFreq"
+                              value="ExAC population frequency (version 0.3)."/>
+               </f:facet>
+               <h:outputLink target="_blank"
+                             value="http://exac.broadinstitute.org/variant/#{event.chromosome}-#{event.start}-#{event.ref}-#{event.alt}"
+                             rendered="#{event.exacFreq gt 0.0}">
+                   <h:outputText value="#{event.exacFreq}"/>
+               </h:outputLink>
+               <h:outputText value="-" rendered="#{event.exacFreq eq 0.0}"/>
+           </p:column>
 
-                    </f:facet>
+           <p:column style="width:150px; text-align: right;" sortBy="#{event}"
+                     sortFunction="#{variantView.sortByPapers}">
+               <f:facet name="header">
+                   <h:outputText id="Sources" value="Sources"/>
+                   <p:tooltip id="toolTipSources" for="Sources"
+                              value="Source(s) where variants from this event are reported."/>
+               </f:facet>
 
-                    <ui:repeat var="a" value="#{event.AAChanges}" varStatus="status">
-                        <h:outputText value="#{a.transcript}"/>
-                        <h:outputText value="&lt;br /&gt;" escape="false" rendered="#{not status.last}"/>
-                    </ui:repeat>
-                </p:column>
+               <ui:repeat var="var" value="#{event.variants}" varStatus="status">
+                   <p:commandLink update=":formResults:paperDetail"
+                                  oncomplete="PF('paperdlg').show()"
+                                  title="View Details" value="#{var.paper.paperKey}">
+                       <f:setPropertyActionListener value="#{var.paper}"
+                                                    target="#{variantView.selectedPaper}"/>
+                   </p:commandLink>
+                   <span>
+                       <h:outputText styleClass="protocol-sequencing-icon genome-sequencing-icon"
+                                     title="Genome sequencing" value="G" escape="false"
+                                     rendered='#{fn:toLowerCase(var.paper.display_sequencing).contains("genome") }'/>
+                       <h:outputText styleClass="protocol-sequencing-icon exome-sequencing-icon"
+                                     title="Exome sequencing" value="E" escape="false"
+                                     rendered='#{fn:toLowerCase(var.paper.display_sequencing).contains("exome") }'/>
+                       <h:outputText styleClass="protocol-sequencing-icon targeted-sequencing-icon"
+                                     title="Targeted gene sequencing" value="T" escape="false"
+                                     rendered='#{fn:toLowerCase(var.paper.display_sequencing).contains("targeted") or fn:toLowerCase(var.paper.technology).contains("probe")}'/>
+                       </span>
+                   <p:commandLink update=":formResults:variantDetail"
+                                  oncomplete="PF('dlg').show()"
+                                  title="View Details"
+                                  styleClass="ui-icon ui-icon-search inline-icon"
+                                  style="margin-left:3px">
+                       <f:setPropertyActionListener value="#{var}" target="#{variantView.selectedVariant}"/>
+                   </p:commandLink>
 
-                <p:column style="width:60px; text-align: left;" styleClass="centeredColumn row-gradient">
-                    <f:facet name="header">
-                        <h:outputText id="cDNA" value="cDNA"/>
-                        <p:tooltip id="toolTipCDNA" for="cDNA" value="cDNA variant notation."/>
+                   <h:outputText value="&lt;br/&gt;" escape="false" rendered="#{not status.last}"/>
+               </ui:repeat>
 
-                    </f:facet>
+           </p:column>
 
-                    <ui:repeat var="a" value="#{event.AAChanges}" varStatus="status">
-                        <h:outputText value="#{a.hgvsC}" title="#{a.context}"/>
-                        <h:outputText value="&lt;br /&gt;" escape="false" rendered="#{not status.last}"/>
-                    </ui:repeat>
-                </p:column>
-
-                <p:column style="width:60px; text-align: left;" styleClass="centeredColumn row-gradient">
-                    <f:facet name="header">
-                        <h:outputText id="protein" value="Protein"/>
-                        <p:tooltip id="toolTipProtein" for="protein" value="Protein variant notation."/>
-
-                    </f:facet>
-
-                    <ui:repeat var="a" value="#{event.AAChanges}" varStatus="status">
-                        <h:outputText value="#{a.hgvsP}" title="#{a.context}"/>
-                        <h:outputText value="&lt;br /&gt;" escape="false" rendered="#{not status.last}"/>
-                    </ui:repeat>
-                </p:column>
-
-                <p:column sortBy="#{event.caddPhred}"
-                          style="width:60px; text-align: right;"
-                          styleClass="centeredColumn row-gradient #{(event.caddPhred > 50 ? 'ct6' : (event.caddPhred > 40 ? 'ct5' : (event.caddPhred > 30 ? 'ct4' : (event.caddPhred > 20 ? 'ct3' : (event.caddPhred > 10 ? 'ct2' : (event.caddPhred > 0 ? 'ct1' : ''))))))}">
-                    <f:facet name="header">
-                        <h:outputText id="Cadd" style="word-wrap: break-word;" value="CADD-Phred v1.0"/>
-                        <p:tooltip id="toolTipCadd" for="Cadd"
-                                   value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores."/>
-
-                    </f:facet>
-
-                    <h:outputText value="#{event.caddPhred == 0 ? '-' : event.caddPhred}"/>
-                </p:column>
-
-                <p:column style="width:60px; text-align: right;" sortBy="#{event.exacFreq}">
-                    <f:facet name="header">
-                        <h:outputText id="exacFreq" value="ExAC v0.3"/>
-                        <p:tooltip id="toolTipExacFreq" for="exacFreq"
-                                   value="ExAC population frequency (version 0.3)."/>
-                    </f:facet>
-                    <h:outputLink target="_blank"
-                                  value="http://exac.broadinstitute.org/variant/#{event.chromosome}-#{event.start}-#{event.ref}-#{event.alt}"
-                                  rendered="#{event.exacFreq gt 0.0}">
-                        <h:outputText value="#{event.exacFreq}"/>
-                    </h:outputLink>
-                    <h:outputText value="-" rendered="#{event.exacFreq eq 0.0}"/>
-                </p:column>
-
-                <p:column style="width:150px; text-align: right;" sortBy="#{event}"
-                          sortFunction="#{variantView.sortByPapers}">
-                    <f:facet name="header">
-                        <h:outputText id="Sources" value="Sources"/>
-                        <p:tooltip id="toolTipSources" for="Sources"
-                                   value="Source(s) where variants from this event are reported."/>
-                    </f:facet>
-
-                    <ui:repeat var="var" value="#{event.variants}" varStatus="status">
-                        <p:commandLink update=":formResults:paperDetail"
-                                       oncomplete="PF('paperdlg').show()"
-                                       title="View Details" value="#{var.paper.paperKey}">
-                            <f:setPropertyActionListener value="#{var.paper}"
-                                                         target="#{variantView.selectedPaper}"/>
-                        </p:commandLink>
-                        <span>
-                            <h:outputText styleClass="protocol-sequencing-icon genome-sequencing-icon"
-                                          title="Genome sequencing" value="G" escape="false"
-                                          rendered='#{fn:toLowerCase(var.paper.display_sequencing).contains("genome") }'/>
-                            <h:outputText styleClass="protocol-sequencing-icon exome-sequencing-icon"
-                                          title="Exome sequencing" value="E" escape="false"
-                                          rendered='#{fn:toLowerCase(var.paper.display_sequencing).contains("exome") }'/>
-                            <h:outputText styleClass="protocol-sequencing-icon targeted-sequencing-icon"
-                                          title="Targeted gene sequencing" value="T" escape="false"
-                                          rendered='#{fn:toLowerCase(var.paper.display_sequencing).contains("targeted") or fn:toLowerCase(var.paper.technology).contains("probe")}'/>
-                            </span>
-                        <p:commandLink update=":formResults:variantDetail"
-                                       oncomplete="PF('dlg').show()"
-                                       title="View Details"
-                                       styleClass="ui-icon ui-icon-search inline-icon"
-                                       style="margin-left:3px">
-                            <f:setPropertyActionListener value="#{var}" target="#{variantView.selectedVariant}"/>
-                        </p:commandLink>
-
-                        <h:outputText value="&lt;br/&gt;" escape="false" rendered="#{not status.last}"/>
-                    </ui:repeat>
-
-                </p:column>
-
-                <!-- Hack to fix a bug where the last column is not loaded using liveScroll and some rendered=false columns -->
+           <!-- Hack to fix a bug where the last column is not loaded using liveScroll and some rendered=false columns -->
                 <p:column styleClass="centeredColumn terminal" style="width:0px;padding:0;visibility:hidden">
                 </p:column>
 
@@ -379,7 +386,7 @@
                             <h:outputText value="#{variant.alt}"/>
                         </p:column>
 
-                        <p:column style="text-align: center; ">
+                        <p:column style="text-align: center; width:35px;">
                             <f:facet name="header">
                                 <h:outputText id="Function" value="Context"/>
                                 <p:tooltip id="toolTipFunction" for="Function" value="Variant functional category"/>
@@ -416,7 +423,7 @@
                                     value="#{variant.annovar.caddPhred == 0 ? '-' : variant.annovar.caddPhred}"/>
                         </p:column>
 
-                        <p:column style="width:60px; text-align: right;" sortBy="#{variant.annovar.exac03}">
+                        <p:column style="width:40px; text-align: right;" sortBy="#{variant.annovar.exac03}">
                             <f:facet name="header">
                                 <h:outputText id="cmplxExacFreq" value="ExAC v0.3"/>
                                 <p:tooltip id="toolTipComplxExacFreq" for="cmplxExacFreq"
