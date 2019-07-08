@@ -17,8 +17,8 @@ fi
 DB="$1"
 
 # Remove symlink
-rm commits
-rm db.config
+find . -type l -name "commits" -exec rm -i {} \;
+find . -type l -name "db.config" -exec rm -i {} \;
 
 # Make new symlinks
 ln -s -f "db.config.""$DB" "db.config"
