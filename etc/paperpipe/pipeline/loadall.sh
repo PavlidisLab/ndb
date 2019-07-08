@@ -1,3 +1,6 @@
+#!/bin/bash
+set -eu
+
 ./schedule_task.sh $1 LoadPaper &&
 ./schedule_task.sh $1 LoadRawKV &&
 ./schedule_task.sh $1 LoadRawVariant &&
