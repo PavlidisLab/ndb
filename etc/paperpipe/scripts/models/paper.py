@@ -18,7 +18,8 @@ class Paper(AbstractModel):
                          'count',
                          'design',
                          'pubmed_id',
-                         'pubmed_url']
+                         'pubmed_url',
+                         'display_sequencing']
     
     def __init__(self, **kwargs):
         super(Paper, self).__init__()
