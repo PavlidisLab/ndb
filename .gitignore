@@ -43,3 +43,12 @@ local.properties
 .idea/*
 *.iml
 .Rproj.user
+
+## Curation specific
+commits-*/
+curation
+
+IGNORE-*
+db.config*
+hg19.2bit
+twoBitToFa
