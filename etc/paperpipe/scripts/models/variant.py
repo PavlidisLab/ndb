@@ -3,6 +3,7 @@ import os
 import sys
 import petl
 from collections import defaultdict
+from itertools import groupby
 
 import utils
 
@@ -299,12 +300,16 @@ class Variant(AbstractModel):
             event_ids = []
             sample_events = defaultdict(list)
             sample_subjects = defaultdict(list)
+            sample_start = defaultdict(list)
+            sample_stop = defaultdict(list)
 
             if _rows:
                 header = _rows[0]
                 SID = header.index("sample_id")
                 UID = header.index("subject_id")
                 EID = header.index("event_id")
+                STARTPOS = header.index("start_hg19")
+                STOPPOS = header.index("stop_hg19")
                 rows = [row for row in _rows[1:]]
 
             for r in rows:
@@ -313,6 +318,8 @@ class Variant(AbstractModel):
                 event_ids.append( r[EID] )
                 sample_events[r[SID]].append( r[EID] )
                 sample_subjects[r[SID]].append( r[UID] )
+                sample_start[r[SID]].append( r[STARTPOS] )
+                sample_stop[r[SID]].append( r[STOPPOS] )
 
             for sample in sample_events.keys():
                 """
@@ -324,8 +331,32 @@ class Variant(AbstractModel):
                     print "Multiple subjects", subjs, "for events", events
                     raise Exception("Error: Multiple neighbouring variant subjects for same sample ID.")
                 if len(events) > 1:
-                    print "Multiple events", events, "for subjects", subjs
-                    raise Exception("Error: Multiple contiguous variant events for same sample ID. This can be caused by duplicates in the import spreadsheet.")
+                    print "Found more than one event for " + sample
+                    indices = [i for i, x in enumerate(event_ids) if x in events]
+                    ranges = []
+                    
+                    print len(indices), "indices to test."
+                    for index in indices:
+                        print "adding index", index
+                        ranges += xrange(sample_start[sample][index], sample_stop[sample][index] + 1 )
+
+                    found_overlap = ([len(list(group)) > 1 for key, group in groupby(ranges)])
+
+                    print "Overlap computed."
+                    if ( any(found_overlap) ):                                            
+                        print "Multiple events", events, "for subjects", subjs
+                        raise Exception("Error: Multiple contiguous variant events for same sample ID. This can be caused by duplicates in the import spreadsheet.")
+                    else:
+                        print "Found "+ str(sum(found_overlap)) +" `event_id`s for "+sample+" but they are non-overlapping. This is rare but possible (two previous variants with a gap contiguous with the current variant.)"
+                        print "Check beween", str(min(ranges)), "and", str(max(ranges)), "."
+                        print "Is this correct? [OK/(q)uit]"
+                        resp = raw_input()
+                        if resp in ("q", "qu", "qui", "quit"):
+                            print "User requested halt."
+                            Exception("User requested halt.")
+                        else:
+                            print "Allowed."
+
 
             if len(sample_events.keys()) > 0:
                 # Found a clustered event
