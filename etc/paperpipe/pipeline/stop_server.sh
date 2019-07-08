@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eu
 
 # Kill luigi schedulers currently running using default-scheduler-port
 
@@ -13,3 +14,7 @@ ps -U$(whoami) aux \
 
 # Disable the db.config symlink
 ln -s -f /dev/null db.config
+
+# Get rid of symlink if stale/still exists.
+touch commits
+rm commits
