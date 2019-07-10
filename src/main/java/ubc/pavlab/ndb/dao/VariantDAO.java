@@ -97,6 +97,17 @@ public interface VariantDAO {
     public List<VariantDTO> findByPosition( String chr, Integer start, Integer stop ) throws DAOException;
 
     /**
+     * Returns a list of VariantDTO from the database where the sampleID matches the sampleLike substring. The list is
+     * never null and is empty when the database does not contain any matching samples.
+     *
+     * @param sampleLike A substring to match sample by.
+     * @return The list of VariantDTO from the database with Sample IDs matching the sampleLike substring.
+     * @throws DAOException If something fails at database level.
+     */
+    public List<VariantDTO> findBySample( String sampleLike ) throws DAOException;
+
+
+    /**
      * Returns a list of all VariantDTO from the database ordered by ID. The list is never null and
      * is empty when the database does not contain any variants.
      * 
