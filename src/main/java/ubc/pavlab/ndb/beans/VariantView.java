@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import com.mysql.fabric.xmlrpc.base.Params;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.primefaces.model.StreamedContent;
@@ -86,6 +88,8 @@ public class VariantView implements Serializable {
         String stop = requestParams.get( "stop" );
         String paperIdParam = requestParams.get( "paperId" );
         String overlapPaperIdParam = requestParams.get( "overlapPaperId" );
+        String sampleLike = requestParams.get( "sampleLike" );
+        Boolean sampleExact = Boolean.parseBoolean( requestParams.get("sampleExact" ));
 
         String breadcrumbsLinksStr = null;
         String breadcrumbsTextsStr = null;
@@ -148,6 +152,23 @@ public class VariantView implements Serializable {
                 breadcrumbsCurrentStr = "Search by coordinates";
             } catch ( NumberFormatException e ) {
                 throw new IllegalArgumentException( "Invalid Coordinates: Position out of bounds of chromosome " + chr + ".");
+            }
+        } else if ( !StringUtils.isBlank( sampleLike ) ) {
+            // Search by sample
+            try {
+                String searchSampleAs = sampleLike;
+                if (sampleExact){
+                    this.query = sampleLike;
+                } else {
+                    searchSampleAs = '%'+sampleLike+'%';
+                    this.query = "*" + sampleLike + "*";
+                }
+
+                this.variants = this.variantService.fetchBySample( searchSampleAs );
+
+                breadcrumbsCurrentStr = "Search by sample";
+            } catch ( Exception e ) {
+                throw new IllegalArgumentException( "Invalid Sample: cannot parse sample " + sampleLike + ".");
             }
         } else {
             // Unknown Search
