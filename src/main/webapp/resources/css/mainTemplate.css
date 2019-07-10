@@ -60,7 +60,7 @@ a:hover {text-decoration: underline;}
 	border-style: none;
 }
 
-ul li { padding: 5px 0px; }
+ul.spaced-list  li { padding: 5px 0px; }
 
 .no-padding {
 	padding: none !important;
