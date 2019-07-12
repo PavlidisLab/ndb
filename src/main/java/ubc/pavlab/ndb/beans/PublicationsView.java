@@ -27,6 +27,8 @@ public class PublicationsView implements Serializable {
     @ManagedProperty("#{cacheService}")
     private CacheService cacheService;
     private List<Paper> papers;
+    private List<Paper> filteredPapers;
+
 
     public PublicationsView() {
         log.info( "create PublicationsView" );
@@ -58,4 +60,13 @@ public class PublicationsView implements Serializable {
     public void setPapers( List<Paper> papers ) {
         this.papers = papers;
     }
+
+    public List<Paper> getFilteredPapers() {
+        return filteredPapers;
+    }
+
+    public void setFilteredPapers(List<Paper> filteredPapers) {
+        this.filteredPapers = filteredPapers;
+    }
+
 }
