@@ -62,7 +62,6 @@
 
             <p:dataTable var="paper"
                          value="#{publicationsView.papers}"
-                         tableStyle="width:auto; "
                          tableStyleClass="compactTable"
                          sortMode="single"
                          sortBy="#{paper.paperKey}"
@@ -78,9 +77,8 @@
                 </f:facet>
 
                 <!-- DETAILS BOOK LINK -->
-                <p:column headerText="Details" style="width:32px;text-align: center" >
-                    <p:link outcome="paper" value="" target="_blank" styleClass="iconVisit fa fa-book "
-                            style="margin:0 auto;">
+                <p:column headerText="Details" style="width:40px; text-align: center" >
+                    <p:link outcome="paper" value="" target="_blank" styleClass="iconVisit fa fa-book " style="margin:0 auto;">
                         <f:param name="paperId" value="#{paper.id}"/>
                     </p:link>
                 </p:column>
@@ -99,7 +97,7 @@
                 </ui:remove>
 
                 <!-- DETAILS BOOK LINK -->
-                <p:column id="headKey" sortBy="#{paper.paperKey}" filterBy="#{paper.paperKey}">
+                <p:column id="headKey" sortBy="#{paper.paperKey}" filterMatchMode="contains" filterBy="#{paper.paperKey}">
                     <f:facet name="header">
                         <h:outputText value="Key"/>
                         <p:tooltip trackMouse="true" id="toolTipKey" for="headKey" value="Database key for publication."
@@ -111,7 +109,7 @@
                 </p:column>
 
                 <!-- PAPER TITLE -->
-                <p:column id="headTitle" headerText="Title" sortBy="#{paper.title}" filterBy="#{paper.title}">
+                <p:column id="headTitle" headerText="Title" sortBy="#{paper.title}" filterMatchMode="contains" filterBy="#{paper.title}">
                     <f:facet name="header">
                         <h:outputText value="Title"/>
                         <p:tooltip trackMouse="true" id="toolTipTitle" for="headTitle" value="Publication title."
@@ -134,7 +132,7 @@
                 </p:column>
 
                 <!-- PUBLICATION YEAR -->
-                <p:column id="headYear" sortBy="#{paper.year}" filterBy="#{paper.year}">
+                <p:column id="headYear" sortBy="#{paper.year}" filterMatchMode="contains" filterBy="#{paper.year}">
                     <f:facet name="header">
                         <h:outputText value="Year"/>
                         <p:tooltip trackMouse="true" id="toolTipYear" for="headYear" value="Year published."
@@ -146,7 +144,7 @@
                 </p:column>
 
                 <!-- TECHNOLOGY (SEQUENCING) -->
-                <p:column id="headTechnology" headerText="Technology" sortBy="#{paper.technology}" filterBy="#{paper.technology}">
+                <p:column id="headTechnology" headerText="Technology" sortBy="#{paper.technology}" filterMatchMode="contains" filterBy="#{paper.technology}">
                     <f:facet name="header">
                         <h:outputText value="Technology"/>
                         <p:tooltip trackMouse="true" id="toolTipTechnology" for="headTechnology"
@@ -157,7 +155,7 @@
                 </p:column>
 
                 <!-- COHORT DESIGN TYPE -->
-                <p:column id="headSubjects" headerText="Subjects" sortBy="#{paper.design}" filterBy="#{paper.design}">
+                <p:column id="headSubjects" headerText="Subjects" sortBy="#{paper.design}" filterMatchMode="contains" filterBy="#{paper.design}">
                     <f:facet name="header">
                         <h:outputText value="Subjects"/>
                         <p:tooltip trackMouse="true" id="toolTipSubjects" for="headSubjects"
@@ -167,7 +165,7 @@
                 </p:column>
 
                 <!-- COHORT SOURCE -->
-                <p:column id="headCohort" headerText="Cohorts" sortBy="#{paper.cohortSource}" filterBy="#{paper.cohortSource}">
+                <p:column id="headCohort" headerText="Cohorts" sortBy="#{paper.cohortSource}" filterMatchMode="contains" filterBy="#{paper.cohortSource}">
                     <f:facet name="header">
                         <h:outputText value="Cohort Source"/>
                         <p:tooltip trackMouse="true" id="toolTipCohort" for="headCohort"
@@ -177,7 +175,7 @@
                 </p:column>
 
                 <!-- DIAGNOSIS -->
-                <p:column id="headDiagnosis" headerText="Diagnosis" sortBy="#{paper.cases}" filterBy="#{paper.cases}">
+                <p:column id="headDiagnosis" headerText="Diagnosis" sortBy="#{paper.cases}" filterMatchMode="contains" filterBy="#{paper.cases}">
                     <f:facet name="header">
                         <h:outputText value="Diagnosis"/>
                         <p:tooltip trackMouse="true" id="toolTipDiagnosis" for="headDiagnosis"
@@ -187,7 +185,7 @@
                 </p:column>
 
                 <!-- DOI -->
-                <p:column id="headDoi" headerText="doi" sortBy="#{paper.doi}" filterBy="#{paper.doi}">
+                <p:column id="headDoi" headerText="doi" sortBy="#{paper.doi}" filterMatchMode="contains" filterBy="#{paper.doi}">
                     <f:facet name="header">
                         <h:outputText value="URL"/>
                         <p:tooltip trackMouse="true" id="toolTipDoi" for="headDoi" value="Digital object identifier."
@@ -199,7 +197,7 @@
                 </p:column>
 
                 <!-- PUBMED -->
-                <p:column id="headPubmed" headerText="Pubmed" sortBy="#{paper.pubmed_id}" filterBy="#{paper.pubmed_id}">
+                <p:column id="headPubmed" headerText="Pubmed" sortBy="#{paper.pubmed_id}" filterMatchMode="contains" filterBy="#{paper.pubmed_id}">
                     <f:facet name="header">
                         <h:outputText value="Pubmed"/>
                         <p:tooltip trackMouse="true" id="toolTipPubmed" for="headPubmed"
@@ -211,7 +209,7 @@
                 </p:column>
 
                 <!-- LINK OUT -->
-                <p:column id="headSource" headerText="Source" filterBy="#{paper.publisher}" filterStyle="display:none">
+                <p:column id="headSource" headerText="Source" filterBy="#{paper.publisher}" filterStyle="display:none" filterMatchMode="contains">
                     <f:facet name="header">
                         <h:outputText value="Source"/>
                         <p:tooltip trackMouse="true" id="toolTipSource" for="headSource"
