@@ -40,6 +40,7 @@ public enum Inheritance {
     mo("Mosaic"),
     mm("Mosaic Mat."),
     mp("Mosaic Pat."),
+    mi("Mosaic Inh."),
     mb("Mosaic Both");
 
     private String label;
