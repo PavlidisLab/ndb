@@ -260,6 +260,7 @@ class Annovar(AbstractModel):
         Push model's to append to the database
         """
         tbl = [self.properties_list] + self.data
+        ACCEPT_FUTURE_NONE = False
 
         # UPDATE PER VARIANTS
         # Check that vectors are the same length
@@ -300,10 +301,25 @@ class Annovar(AbstractModel):
                 gene = self.gene[i]
                 synonyms = None
                 if gene == "NONE,NONE":
-                    print "WARNING! WARNING! WARNING!"
-                    print "Annovar receives NONE,NONE, as the gene here. Possibly because the variant is on the X chromsome."
-                    print "Please check this error and fix properly"
-                    raise Exception("Annovar returned NONE,NONE as the gene.")
+                    print "[WARNING] Annovar receives NONE,NONE, as the gene here."
+                    print "Please check this is not an error and fix properly."
+                    gene = "NONE"
+                    
+                    block_on_answer = True
+                    while block_on_answer and not ACCEPT_FUTURE_NONE:
+                        print "[C]ontinue | [A]bort" | "[F]orce 'Continue' for all further cases in the paper"
+                        accept_none = raw_input()
+                        if accept_none in ["C", "A", "F"]:
+                            block_on_answer = False                        
+
+                        if accept_none == "F":
+                            print "Accepting all NONEs for this paper"
+                            ACCEPT_FUTURE_NONE=True
+                        elif accept_none == "A":
+                            print "Abort."
+                            raise Exception("Annovar returned NONE,NONE as the gene.")
+                        elif accept_none == "C":
+                            pass ## Nothing to do, block on answer already off.
 
                 while True :
                     answer = ""
