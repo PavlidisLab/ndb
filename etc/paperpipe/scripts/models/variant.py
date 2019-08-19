@@ -192,8 +192,8 @@ class Variant(AbstractModel):
             row[header.index('ref')] = REF
             row[header.index('alt')] = ALT
 
-
-            existing_subject_id = self.get_subject_for_sample(row[SAMPLE_ID])
+            current_sample = row[SAMPLE_ID].strip() # Remove whitespaces as they can be hard to spot in the spreadsheet..
+            existing_subject_id = self.get_subject_for_sample(current_sample)
             print "Existing subject id for this subject:", existing_subject_id
 
             if existing_subject_id is None:
@@ -208,7 +208,7 @@ class Variant(AbstractModel):
                                                            STOP,
                                                            tolerance=1) # Immediately adjacent or else nothing.
 
-            current_sample = row[SAMPLE_ID]
+
             
             if events and len(events[current_sample]) > 0:
                 row[EVENT_ID] = events[current_sample][0]
@@ -254,7 +254,17 @@ class Variant(AbstractModel):
         return self.data
 
     def get_subject_for_sample(self, sample):
-        query = "SELECT DISTINCT subject_id FROM {0} WHERE sample_id = '{1}'  ;".format(self.database_table, sample)
+        try : 
+            query = "SELECT DISTINCT subject_id FROM {0} WHERE sample_id = '{1}'  ;".format(self.database_table, sample)
+        except:
+            try: 
+                query = u"SELECT DISTINCT subject_id FROM {0} WHERE sample_id = '{1}'  ;".format(self.database_table, sample)
+            except Exception as e:
+                print "Error generating query to:" # ascii characters cause this issue sometimes
+                print "Database table", self.database_table
+                print "Using sample:", sample
+
+                
         print "QUERY",query
         rows = self.U.fetch_rows(query)
         print "ROWS", rows
