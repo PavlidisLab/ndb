@@ -1,78 +1,90 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:define name="pageTitle">About VariCarta</ui:define>
-	
-	<ui:define name="css">
-	</ui:define>
-	
-	<ui:define name="js">
-		<script type="text/javascript">
-	        	googleAnalyticsTrackPageviewIfConfigured( "/#{applicationProperties.getProperty('ndb.ga_app')}/about" );
-	    </script>
-	</ui:define>
-	
-	<ui:define name="content">
-		<!-- BREADCRUMBS -->
-		<p:panel styleClass="no-border" >
-			<p:breadCrumb style="float:left;"> 
-				<p:menuitem value="Categories" url="#" />
-				<p:menuitem value="Home" url="index.xhtml" />
-				<p:menuitem value="About" url="about.xhtml" />
-			</p:breadCrumb>  	            
-		</p:panel>
-		<div class="content-area">		
-			<h2>About VariCarta</h2>
+    <ui:define name="pageTitle">About VariCarta</ui:define>
 
-			<h3> Data availability and licensing</h3>
+    <ui:define name="css">
+    </ui:define>
 
-			<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img
-					alt="Creative Commons Licence" style="border-width:0"
-					src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a><br/><span
-				xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Dataset" property="dct:title"
-				rel="dct:type">VariCarta: a comprehensive database of harmonized genomic variants found in ASD sequencing studies</span> by
-			<a xmlns:cc="http://creativecommons.org/ns#" href="https://pavlab.msl.ubc.ca/"
-			   property="cc:attributionName" rel="cc:attributionURL">Pavlidis Lab, UBC</a> is licensed under a <a
-				rel="license"
-				href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+    <ui:define name="js">
+        <script type="text/javascript">
+            googleAnalyticsTrackPageviewIfConfigured("/#{applicationProperties.getProperty('ndb.ga_app')}/about");
+        </script>
+    </ui:define>
 
-			<h3> Software availability and licensing </h3>
-		
-			<!--  MISSION STATEMENT -->			
-			<h4>Mission statement</h4>
-			<p>The VariCarta web application and database is an initiative aimed at collecting, reconciling and consistently cataloguing literature-derived genomic variants found in ASD subjects. We put effort into careful curation of the data, standardizing variant reporting, adding comprehensive annotation and identifying overlaps. We hope that the scientific community will find VariCarta to be a useful resource for ASD genomic variants published in peer-reviewed literature.</p>
+    <ui:define name="content">
+        <!-- BREADCRUMBS -->
+        <p:panel styleClass="no-border">
+            <p:breadCrumb style="float:left;">
+                <p:menuitem value="Categories" url="#"/>
+                <p:menuitem value="Home" url="index.xhtml"/>
+                <p:menuitem value="About" url="about.xhtml"/>
+            </p:breadCrumb>
+        </p:panel>
+        <div class="content-area">
+            <h2>About VariCarta</h2>
 
-			<ui:remove>
-				<h4>License and Disclaimers</h4>
-				<p>Legal and disclaimers. </p>
-			</ui:remove>
 
-			<!--  INVOLVED PARTIES -->
-			<h4>Contributors</h4>
-			<p> 
-				VariCarta is built and maintained by the Pavlidis Lab at the Michael Smith Laboratories at the University of British Columbia.
-			 </p>
+            <p>The VariCarta web application and database is an initiative aimed at collecting, reconciling and consistently cataloguing literature-derived genomic variants found in ASD subjects. We put effort into careful curation of the data, standardizing variant reporting, adding comprehensive annotation and identifying overlaps. We hope that the scientific community will find VariCarta to be a useful resource for ASD genomic variants published in peer-reviewed literature.</p>
 
-			<p>
-				For questions and comments please contact us at: #{applicationProperties.getProperty('ndb.admin.email')}
-			</p>
+            <!--  INVOLVED PARTIES -->
+            <h4>Contributors</h4>
+            <p>
+                VariCarta is built and maintained by the Pavlidis Lab at the Michael Smith Laboratories at the University of British Columbia.
+            </p>
 
-			<h4>Acknowlegments</h4>
-			We would like to acknowledge software and databases used to populate VariCarta:
-			<ul>
-				<li>ANNOVAR - <em>Wang, K., Li, M. &amp; Hakonarson, H. ANNOVAR: functional annotation of genetic variants from high-throughput sequencing data. Nucleic Acids Res. 38, e164 (2010).2</em></li>
-				<li>CADD v1.0 - <em>Kircher, M. et al. A general framework for estimating the relative pathogenicity of human genetic variants. Nat. Genet. 46, 310–315 (2014).</em></li>
-				<li>ExAC v0.3 - <em>Lek, M. et al. Analysis of protein-coding genetic variation in 60,706 humans. Nature 536, 285–291 (2016).</em></li>
-			</ul>
+            <p>
+                For questions and comments please contact us at: #{applicationProperties.getProperty('ndb.admin.email')}
+            </p>
 
-		</div>		
-	</ui:define>
+            <h4>Acknowlegments</h4>
+            We would like to acknowledge software and databases used to populate VariCarta:
+            <ul>
+                <li>ANNOVAR -
+                    <em>Wang, K., Li, M. &amp; Hakonarson, H. ANNOVAR: functional annotation of genetic variants from high-throughput sequencing data. Nucleic Acids Res. 38, e164 (2010).2</em>
+                </li>
+                <li>CADD v1.0 -
+                    <em>Kircher, M. et al. A general framework for estimating the relative pathogenicity of human genetic variants. Nat. Genet. 46, 310–315 (2014).</em>
+                </li>
+                <li>ExAC v0.3 -
+                    <em>Lek, M. et al. Analysis of protein-coding genetic variation in 60,706 humans. Nature 536, 285–291 (2016).</em>
+                </li>
+            </ul>
+
+            <h3> Data availability and licensing</h3>
+
+            <p> Data can be downloaded from the <a
+                    href="downloads">download page</a> and previous versions are available on the <a
+                    href="https://github.com/PavlidisLab/VariCarta/releases">VariCarta GitHub repository</a>. </p>
+
+
+            <p>
+            These data are free to use for academic and non-commericial purposes. This work is a combination of sources from the literature using previously published source information made public. By using this database, the user agrees not to attempt to de-identify subjects.
+            </p>
+
+            <span
+                    xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Dataset"
+                    property="dct:title"
+                    rel="dct:type">VariCarta: a comprehensive database of harmonized genomic variants found in ASD sequencing studies</span> by
+            <a xmlns:cc="http://creativecommons.org/ns#" href="https://pavlab.msl.ubc.ca/"
+               property="cc:attributionName" rel="cc:attributionURL">Pavlidis Lab, UBC</a> is licensed under a <a
+                rel="license"
+                href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+            <br/>
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img
+                    alt="Creative Commons Licence" style="border-width:0"
+                    src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a>
+            <br/>
+
+        </div>
+    </ui:define>
 
 </ui:composition>

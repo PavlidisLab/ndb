@@ -59,7 +59,7 @@ public class CSVExporter extends Exporter {
     public void loadData( Collection<Event> events ) {
         StringBuilder csvText = new StringBuilder();
         Date today = Calendar.getInstance().getTime();
-        String timestampHeader = "Downloaded from VariCarta on " + today.toString();
+        String timestampHeader = "# Downloaded from VariCarta on " + today.toString() + " . These data were produced by the Pavlidis Lab, UBC and is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. See: https://varicarta.msl.ubc.ca/about";
         CSVFormat format = CSVFormat.RFC4180.withHeader(timestampHeader).withDelimiter( '\t' );
         CSVPrinter printer;
         try {

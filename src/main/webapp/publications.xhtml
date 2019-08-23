@@ -125,22 +125,9 @@
                     </ui:fragment>
 
 
-                    <ui:fragment rendered="#{fn:length(paper.title) lt MAXLENGTH}">
+                    <ui:fragment rendered="#{fn:length(paper.title) lt MAXLENGTH+1}">
                         <h:outputText value="${paper.title}" title="#{paper.title}"/>
                     </ui:fragment>
-
-                </p:column>
-
-                <!-- Variant event count -->
-                <p:column id="headEventCount" sortBy="#{publicationsView.getEventCnt(paper.id)}" filterMatchMode="contains" filterBy="#{paper.display_count}" filterStyle="display:none" style="text-align: center">
-                    <f:facet name="header">
-                        <h:outputText value="Variant event count"/>
-                        <p:tooltip trackMouse="true" id="toolEventCount" for="headEventCount" value="Number of variant event for this paper."
-                                   atPosition="right center"/>
-                    </f:facet>
-
-                    <!-- FIXME: Review call to service if this is a performance concern, could cache it instead. -->
-                    <h:outputText style="text-align:center;" value="#{publicationsView.getEventCnt(paper.id)}"/>
 
                 </p:column>
 
@@ -165,6 +152,22 @@
                                    atPosition="right center"/>
                     </f:facet>
                     <h:outputText value="#{paper.technology}"/>
+                </p:column>
+
+                <!-- Variant event count -->
+                <p:column id="headEventCount" sortBy="#{publicationsView.getEventCnt(paper.id)}" filterMatchMode="contains" filterBy="#{paper.display_count}" filterStyle="display:none" style="text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Variant event count"/>
+                        <p:tooltip trackMouse="true" id="toolEventCount" for="headEventCount" value="Number of variant event for this paper."
+                                   atPosition="right center"/>
+                    </f:facet>
+
+                    <p:link outcome="variant" value="#{publicationsView.getEventCnt(paper.id)}" >
+                        <f:param name="paperId" value="#{paper.id}" />
+                    </p:link>
+                    <!-- FIXME: Review call to service if this is a performance concern, could cache it instead. -->
+
+
                 </p:column>
 
                 <!-- COHORT DESIGN TYPE -->
