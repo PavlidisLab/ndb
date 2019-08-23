@@ -83,7 +83,7 @@
 					paper that are included in VariCarta by clicking the number under <em>Variant Event Count</em>.
 				</p>
 				<p>
-					<em>Example</em>: The <p:link href="/paper.xhtml?paperId=5">De Rubeis, 2014</p:link> study reports 1694 variants included in our database.
+					<em>Example</em>: The <p:link href="/paper.xhtml?paperId=82">De Rubeis, 2014</p:link> study reports 1694 variants included in our database.
 				</p>
 
 			<h3>Searching for variants overlapping different publications.</h3>
@@ -166,13 +166,44 @@
 					 in the grid cell.
 				 </p>
 
-			<h3 class="section">Maintenance</h3>
+			<h3 id="curation" class="section">Literature search and curation</h3>
+
 			<p>
-				Downloads available on the <p:link href="/downloads.xhtml">Download page</p:link>.
-				Previous releases of the database can be downloaded from http://varicarta.msl.ubc.ca/archive.
+			Initially we searched the literature for publications reporting genomic variants, SNVs and InDels, found in
+			subjects with an ASD diagnosis. The ongoing data collection relies on customized Google Scholar and PubMed
+			citation alerts using keywords (and their variants) “autism”, “genetic”, “variants”, and “sequencing”. We
+			exclude a paper if it has one of the following issues:
+			</p>
+
+
+				<ul class="exclusion-list" style="padding-inline-start: 80px;">
+					<li> it does not provide a clear ASD diagnosis for at least a subset of their subjects </li>
+					<li> it does not provide enough variant information to determine genomic coordinates and allele change unambiguously </li>
+					<li> it does not associate variants with subject IDs </li>
+				</ul>
+			<p>
+				We prioritize whole-genome and whole-exome studies over candidate gene studies and tend to process studies with a higher number of subjects first.
+
+				Papers currently included in VariCarta are listed on the <a href="publications">Publications</a> page.
+			</p>
+			<p>
+
+				For each publication, we applied the following curation procedures, with an intermediate goal of
+				organizing all relevant variant information in a tabular format that is ready for import. The first
+				step in this process is to copy the relevant text from the source file (typically a supplementary file)
+				as-is in a template import document. The completed document is composed of a set of predefined
+				worksheets, which contain the publication’s metadata, variant data and a description of the steps needed
+				to automatically extract, transform and load the data into a uniform variant data model. This document
+				is parsed by a computational pipeline, which validates and stores the data into a relational database.
+				The link to the pipeline’s source code as well as an example import document are found on
+				the <a href="downloads">Downloads page</a>.
+			</p>
+			<h3 class="section">Availability and usage</h3>
+			<p>
+				Data downloads and licensing information are available on the <p:link href="/downloads.xhtml">Download page</p:link>.
 				The source code for the web application and the variant processing pipeline is open source
 				(Apache 2 license) and available on GitHub under
-				<p:link href="https://github.com/PavlidisLab/ndb/tree/development">https://github.com/PavlidisLab/ndb</p:link>
+				<p:link href="https://github.com/PavlidisLab/ndb/tree/development">https://github.com/PavlidisLab/ndb</p:link>.
 			</p>
 
 			<h3 id="harmonizing" class="section">Variant nomenclature</h3>
