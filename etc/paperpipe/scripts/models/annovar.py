@@ -307,7 +307,7 @@ class Annovar(AbstractModel):
                     
                     block_on_answer = True
                     while block_on_answer and not ACCEPT_FUTURE_NONE:
-                        print "[C]ontinue | [A]bort" | "[F]orce 'Continue' for all further cases in the paper"
+                        print "[C]ontinue | [A]bort | [F]orce 'Continue' for all further cases in the paper"
                         accept_none = raw_input()
                         if accept_none in ["C", "A", "F"]:
                             block_on_answer = False                        
