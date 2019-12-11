@@ -33,8 +33,9 @@ class AbstractModel(object):
         paper = self.U.load_paper(filename, sheet=self.sheet)
         
         i=0
+        print("Loading Keys and Values")
         for row in paper:
-            key,value = row
+            key,value = row            
             self.__setattr__(key, value)
 
     def load_sheet(self, filename, sheet=None, range_string=None, row_offset=0, column_offset=0, **kwargs):

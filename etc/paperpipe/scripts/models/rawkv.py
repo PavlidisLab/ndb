@@ -30,18 +30,16 @@ class RawKV(AbstractModel):
 
         rows = []
         print "Processing headers."
-        #for r in xrange(1, len(rkv)):
+
         for r,tmp in enumerate(rkv):
             if r == 0: continue
             print "Header r=",r,"/",len(rkv)
-            #row = [str(x) if type(x) == int else x for x in rkv[r]]
+
             row = [str(x) if type(x) == int else x for x in tmp]
             paperid_vector = [self.paper_id] * len(row)
             rawid_vector = [r] * len(row)
-
-            #print rkv
-            #response=raw_input()
-            #if response == "-1": exit(-1)
+            
+            ## NOTE_10-12-2019: I believe this is what causing the None,None import errors when there's null colunms
             rows.append( zip(paperid_vector, rawid_vector, header, row ) )
 
 
@@ -49,8 +47,8 @@ class RawKV(AbstractModel):
         table = []
         MAXROWS = len(rows)
         for r in rows:
-            print "Row numbers:", COUNTER, "/", MAXROWS
             COUNTER+=1
+            print "Row numbers:", COUNTER, "/", MAXROWS
             table.extend( r )
 
         self.data = table
