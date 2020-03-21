@@ -115,9 +115,11 @@ public class VariantView implements Serializable {
                 if ( StringUtils.isBlank( overlapPaperIdParam ) ) {
                     this.query = cacheService.getPaperById( paperId ).getPaperKey();
                     this.variants = this.variantService.fetchByPaperId( paperId );
+
                     breadcrumbsLinksStr = "/publications.xhtml,/paper.xhtml?paperId=" + paperId;
                     breadcrumbsTextsStr = "Publications," + this.query + "";
                     breadcrumbsCurrentStr = "Search by paper";
+
                 } else {
                     Integer overlapPaperId = Integer.parseInt( overlapPaperIdParam );
                     if ( overlapPaperId == paperId ) {
@@ -286,13 +288,13 @@ public class VariantView implements Serializable {
     public void paperInfo() {
         String INFOTEXT = "The information here is the source variant information parsed from the supplementary tables, documents, or directly from the main text. "
                 + "<br/><br/>"
-                + "These data are unfiltered and contains more information than what is displayed in the variant search results. "
+                + "These data are unaltered (unless required for data formatting reasons, such as removing invalid characters) and may contain some additional information to what is displayed in the variant search results. "
 
         + "<br/><br/>"
                 + "This representation also precedes any modifications such as harmonization between different notation systems, or different coordinate assemblies (e.g. variant under the Hg18 assembly are displayed as is here, but lifted-over to Hg19 in the variant search results.) "
-                + "<br/><br/>" + "The results in the variant results table resolves such discrepancies. "
 
-        + "Different papers may have different fields.";
+
+        + "The fields below are unique to the current paper.";
 
         FacesContext.getCurrentInstance().addMessage( null,
                 new FacesMessage( FacesMessage.SEVERITY_INFO, "About:", INFOTEXT ) );
@@ -338,7 +340,7 @@ public class VariantView implements Serializable {
     }
 
     private String[] parseBreadcrumbs( String bc ) {
-        // Use fro comma-delimited breadcrumbs
+        // Use for comma-delimited breadcrumbs
         if ( bc == null ) {
             String[] nullArray = new String[1];
             nullArray[0] = null;
@@ -346,35 +348,5 @@ public class VariantView implements Serializable {
         }
         return bc.split( "," );
     }
-
-    public int tableHeight(){
-	//Stub. Update as needed.
-        if (variants == null) {
-            return 25;
-        }
-
-        return Math.min( 25*variants.size() + 25, 500);
-
-    }
-
-    // public String getBreadcrumbsLinks() {
-    // public String[] getBreadcrumbsLinks() {
-    // // Link to previous page
-    // if ( breadcrumbsLinks == null || breadcrumbsLinks.isEmpty() ) {
-    // return this.parseBreadcrumbs( "" );
-    // }
-    // return this.parseBreadcrumbs( breadcrumbsLinks );
-    // // return breadcrumbsLinks;
-    // }
-    //
-    // // public String getBreadcrumbsTexts() {
-    // public String[] getBreadcrumbsTexts() {
-    // // Text for link to previous page
-    // if ( breadcrumbsTexts == null || breadcrumbsTexts.isEmpty() ) {
-    // return this.parseBreadcrumbs( "" );
-    // }
-    // return this.parseBreadcrumbs( breadcrumbsTexts );
-    // // return breadcrumbsTexts;
-    // }
 
 }

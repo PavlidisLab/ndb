@@ -28,7 +28,17 @@
 	</properties>
 
 	<dependencies>
-		<!-- JSF -->
+	  
+	  <!-- JAVAX Annotations for newer javas (8+) https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
+
+		<dependency>
+		  <groupId>javax.annotation</groupId>
+		  <artifactId>javax.annotation-api</artifactId>
+		  <version>1.3.2</version>
+		</dependency>
+	  
+	  
+	  <!-- JSF -->
 
 		<dependency>
 			<groupId>com.sun.faces</groupId>
@@ -180,7 +190,8 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.35</version>
-	    <scope>provided</scope>
+			<type>jar</type>
+	    	<scope>compile</scope>
         </dependency>
 
 	<dependency>
@@ -273,7 +284,7 @@
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>sql-maven-plugin</artifactId>
                         <version>1.5</version>
-                        <dependencies><!-- specify the dependent JDBC driver here -->
+                        <dependencies> <!-- specify the dependent JDBC driver here -->
                             <dependency>
                                 <groupId>mysql</groupId>
                                 <artifactId>mysql-connector-java</artifactId>
@@ -281,7 +292,8 @@
                                 <type>jar</type>
                             </dependency>
                         </dependencies>
-                        <!-- common configuration shared by all executions -->
+
+			<!--common configuration shared by all executions-->
                         <configuration>
                             <driver>com.mysql.jdbc.Driver</driver>
                             <username>${ndb.testdb.build.user}</username>
