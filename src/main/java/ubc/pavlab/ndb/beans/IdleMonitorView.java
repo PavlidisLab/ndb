@@ -19,7 +19,7 @@ public class IdleMonitorView {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
         maxInterval = session.getMaxInactiveInterval();
-        session.setMaxInactiveInterval(30 * 1); // One half minute
+        session.setMaxInactiveInterval(60 * 10); // One half minute
     }
 
     public void onActiveWarning() {
