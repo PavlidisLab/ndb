@@ -196,7 +196,7 @@ public class VariantView implements Serializable {
 
     }
 
-    public StreamedContent getCsv() {
+    public StreamedContent getCsv() throws Exception {
         if ( !csvExporter.hasData() ) {
             csvExporter.loadData( events );
         }

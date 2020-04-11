@@ -238,7 +238,7 @@ public class CSVExporterTest {
     }
 
     @Test
-    public void testLoadData() {
+    public void testLoadData() throws Exception {
         //        "Variant Event ID", "Gene", "Subject", "REF", "ALT", "Location", "Context",
         //        "Effects", "CADD Phred", "Sources"
 
