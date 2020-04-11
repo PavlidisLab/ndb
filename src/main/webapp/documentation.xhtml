@@ -115,13 +115,13 @@
 
 				<span class="protocol-sequencing-icon targeted-sequencing-icon" title="Targeted gene sequencing">T</span>
 				targeted sequencing).
-				<p:link href="/variant.xhtml?chr=11&amp;start=26587227&amp;stop=26587227"> Here</p:link> is an example of a	variant event.
+				<p:link href="/variant.xhtml?chr=11&amp;start=26587227&amp;stop=26587227"> Here</p:link> is an example of a	variant event reported in two different papers with different sequencing methods.
 			</p>
 
 			<p>
-				VariCarta’s complex <strong>variant event</strong> is a grouping of two or more variant events from the same individual that differ but have overlapping
+				VariCarta complex <strong>variant event</strong> are a grouping of two or more variant events from the same individual that differ but have overlapping
 				or adjacent genomic coordinates. This indicates that the grouped variant events might be describing the same underlying genotype but are incongruent due
-				to the heterogeneity of formats used across papers. A complex event is initially displayed as one row that can be expanded to show the information about
+				different reporting conventions. A complex event is initially displayed as one row that can be expanded to show the information about
 				each grouped variant event.
 				<p:link href="/variant.xhtml?chr=5&amp;start=134059281&amp;stop=134059281">Here</p:link> is an example of a complex variant event.
 			</p>
@@ -130,6 +130,78 @@
 				icon. All query results are available for download as plain text/csv format from the spreadsheet icon in
 				the table navigation header or footer bar.
 			</p>
+
+			<h3>Column description</h3>
+
+			<p> Below is a description of each column found in the variant table.</p>
+
+			<table class="tg-coldef">
+				<tr>
+					<th class="tg-coldef-cell">Column name</th>
+					<th class="tg-coldef-cell">Description</th>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Gene</td>
+					<td class="tg-coldef-cell">HUGO Gene symbol. Clicking the symbol link will search all genes in the database for that gene. An icon for NCBI and Ensembl is also displayed and linked to their corresponding page. Internally, genes in VariCarta are anchored on the NCBI gene IDs.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">ID</td>
+					<td class="tg-coldef-cell">Subject/Sample identifier. We display the string identifier used in the literature (column sample_id in the exported data), and hovering your mouse cursor over the text will display the internal VariCarta subject identifier (subject_id in the exported data.)</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Location</td>
+					<td class="tg-coldef-cell">Genomic coordinated on the Hg19 human genome reference assembly. The format is CHROMOSOME:START_POSITION-END_POSITION. Coordinates use 1-based indexing.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">REF</td>
+					<td class="tg-coldef-cell">Reference DNA nucleotides.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">ALT</td>
+					<td class="tg-coldef-cell">Variant DNA nucleotides</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Context</td>
+					<td class="tg-coldef-cell">Functional context of the variant determined by annovar. Values can include: downstream, exonic, intergenic, intronic, ncRNA_exonic, ncRNA_intronic, ncRNA_splicing, splicing, upstream, UTR3, UTR5.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">☑ (Validation)</td>
+					<td class="tg-coldef-cell">Indicates whether validation of the variant was done using an orthogonal method, such as sanger sequencing. Hovering your mouse cursor over the checkmark in individual variant table rows will display the validation method reported in the study.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Inheritance</td>
+					<td class="tg-coldef-cell">Reported inheritance status for the variant. <br/><br/>Values can be: <br/>d - "De novo" - Variant was not found the parents.<br/>i - "Inherited" - Variant is reported to be inherited.<br/>p - "Paternal" - Variant is reported to be inherited from the paternal side.<br/>m - "Maternal" - Variant is reported to be inherited from the maternal side.<br/>b - "Both parents" - Both parents are carrier of the mutation.<br/>u - "Unknown" - Inheritance is reported as unknown.<br/>mo - "Mosaic" - Variant is reported to be of mosaic origins.<br/>mm - "Mosaic Mat." - Variant is reported to be mosaic and phased from the maternal side.<br/>mp - "Mosaic Pat." - Variant is reported to be mosaic and phased from the paternal side.<br/>mi - "Mosaic Inh." - Variant is reported to be inherited but may have been mosaic in the parent.<br/>mb - "Mosaic Both" - Variant is reported to be inherited and appears to be mosaic in both parents.<br/><br/>Please consider that our curators are using their best judgement based on the available information. Some cases are straightforward to interpret, but in other cases, such as with mosaicism, the information is often reported with a degree of confidence, and the variant may or may not have been phased.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Effects</td>
+					<td class="tg-coldef-cell">Transcriptional consequence of the mutation. Values can include:<br/><br/><br/>frameshift<br/>nonframeshift<br/>nonsynonymous<br/>splicing<br/>stopgain<br/>stoploss<br/>synonymous<br/>unknown</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Transcript</td>
+					<td class="tg-coldef-cell">RefSeq transcripts affected. Each transcript is on a separate line, matched by row in the following cDNA and Protein columns. Provided by Annovar.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">cDNA</td>
+					<td class="tg-coldef-cell">HGVS cDNA variant for the transcript aligned in the "Transcript" column. Provided by Annovar.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Protein</td>
+					<td class="tg-coldef-cell">HGVS protein variant for the transcript aligned in the "Transcript" column. Provided by Annovar.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">CADD-Phred v1.0</td>
+					<td class="tg-coldef-cell">The phred-scaled CADD score for prediction of deleterious variants. Higher values indicate a prediction for higher likelihood of being deleterious. <br/><br/>Note that CADD 1.3 is available in the exported data. Only coding variants are scored where CADD was predicted, meaning some indels may not be scored either.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">ExAC v0.3</td>
+					<td class="tg-coldef-cell">ExAC v0.3 population frequencies derived from over 60,000 exomes.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Sources</td>
+					<td class="tg-coldef-cell">Publications where this variant was reported. An icon display whether the study was Genomic (G), Exomic (E) or Targeted (T). <br/><br/>Clicking on the paper link in the variant table will display information about the paper, while clicking the magnifying glass will return the original source/spreadsheet data for that variant.</td>
+				</tr>
+			</table>
+
 
 			<h3 id="publications" class="section">Publications</h3>
 			<p>
