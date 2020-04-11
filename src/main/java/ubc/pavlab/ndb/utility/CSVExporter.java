@@ -20,13 +20,11 @@
 package ubc.pavlab.ndb.utility;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
 
 import com.google.common.collect.Lists;
@@ -49,14 +47,51 @@ public class CSVExporter extends Exporter {
     private static final Logger log = Logger.getLogger( CSVExporter.class );
 
     private static final String CONTENT_TYPE = "text/csv";
+    private ArrayList<String>  headers;
 
     public CSVExporter( String fileName ) {
+        super( CONTENT_TYPE, fileName );
+        this.headers = new ArrayList<String>(Arrays.asList("Paper_ID", "Paper_key", "Variant_Event_ID", "Gene",
+                "Subject", "Sample_ID", "REF", "ALT", "Location", "Context", "Effects", "HGVS", "CADD_1.0_Raw", "CADD_1.0_Phred",
+                "ExAC_0.3", "Inheritance", "Validation_Status", "Validation_Method", "Sources",
+
+                "clinvar_20150629", // Additional annovar annotations
+                "CADD13_raw",
+                "CADD13_phred",
+                "SIFT_score",
+                "SIFT_pred",
+                "Polyphen2_HDIV_score",
+                "Polyphen2_HDIV_pred",
+                "Polyphen2_HVAR_score",
+                "Polyphen2_HVAR_pred",
+                "LRT_score",
+                "LRT_pred",
+                "MutationTaster_score",
+                "MutationTaster_pred",
+                "MutationAssessor_score",
+                "MutationAssessor_pred",
+                "FATHMM_score",
+                "FATHMM_pred",
+                "RadialSVM_score",
+                "RadialSVM_pred",
+                "LR_score",
+                "LR_pred",
+                "VEST3_score",
+                "GERP_RS",
+                "phyloP46way_placental",
+                "phyloP100way_vertebrate",
+                "SiPhy_29way_logOdds"));
+
+
+    }
+
+    public CSVExporter( String fileName, String header ) {
         super( CONTENT_TYPE, fileName );
     }
 
     // Data Loaders
 
-    public void loadData( Collection<Event> events ) {
+    public void loadData( Collection<Event> events ) throws Exception{
         StringBuilder csvText = new StringBuilder();
         Date today = Calendar.getInstance().getTime();
         String timestampHeader = "# Downloaded from VariCarta on " + today.toString() + " . These data were produced by the Pavlidis Lab, UBC and is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. See: https://varicarta.msl.ubc.ca/about";
@@ -64,11 +99,10 @@ public class CSVExporter extends Exporter {
         CSVPrinter printer;
         try {
             printer = new CSVPrinter( csvText, format );
-            printer.printRecord( "Variant Event ID", "Gene", "Subject", "Sample_ID", "REF", "ALT", "Location", "Context",
-                    "Effects", "HGVS", "CADD_1.0_Phred", "ExAC_0.3", "Inheritance", "Validation_Status", "Validation_Method", "Sources" );
+            printer.printRecord( this.headers ); // TODO make header an array list
 
             for ( Event event : events ) {
-                if ( event.isComplex() ) {
+                if ( true || event.isComplex() ) { // Disabling event printing.
                     for ( Variant v : event.getVariants() ) {
                         printer.printRecord( variantToCSVLine( v ) );
                     }
@@ -85,60 +119,127 @@ public class CSVExporter extends Exporter {
         content = csvText.toString().getBytes();
     }
 
+    private static void addAnnovarToCsv(List<String> csvData, Variant e){
+        // Annovar
+        csvData.add(e.getAnnovar().getClinvar20150629());
+        csvData.add(String.valueOf(e.getAnnovar().getCaddRaw_1_3()));
+        csvData.add(String.valueOf(e.getAnnovar().getCaddPhred_1_3()));
+        csvData.add(String.valueOf(e.getAnnovar().getSiftScore()));
+        csvData.add(e.getAnnovar().getSiftPred());
+        csvData.add(String.valueOf(e.getAnnovar().getPolyphen2hdivScore()));
+        csvData.add(e.getAnnovar().getPolyphen2hdivPred());
+        csvData.add(String.valueOf(e.getAnnovar().getPolyphen2hvarScore()));
+        csvData.add(e.getAnnovar().getPolyphen2hvarPred());
+        csvData.add(String.valueOf(e.getAnnovar().getLrtScore()));
+        csvData.add(e.getAnnovar().getLrtPred());
+        csvData.add(String.valueOf(e.getAnnovar().getMutationTasterScore()));
+        csvData.add(e.getAnnovar().getMutationTasterPred());
+        csvData.add(String.valueOf(e.getAnnovar().getMutationAssessorScore()));
+        csvData.add(e.getAnnovar().getMutationAssessorPred());
+        csvData.add(String.valueOf(e.getAnnovar().getFathmmScore()));
+        csvData.add(e.getAnnovar().getFathmmPred());
+        csvData.add(String.valueOf(e.getAnnovar().getRadialSVMScore()));
+        csvData.add(e.getAnnovar().getRadialSVMPred());
+        csvData.add(String.valueOf(e.getAnnovar().getLrtScore()));
+        csvData.add(e.getAnnovar().getLrPred());
+        csvData.add(String.valueOf(e.getAnnovar().getVest3Score()));
+        csvData.add(String.valueOf(e.getAnnovar().getGerpRs()));
+        csvData.add(String.valueOf(e.getAnnovar().getPhyloP46wayPlacental()));
+        csvData.add(String.valueOf(e.getAnnovar().getPhyloP100wayVertebrate()));
+        csvData.add(String.valueOf(e.getAnnovar().getSiphy29wayLogOdds()));
+
+    }
+
     private static List<String> variantToCSVLine( Variant e ) {
+        /*
+        Build the CSV content
+         */
         List<String> csvData = Lists.newArrayList();
 
+        // Paper_ID
+        csvData.add( e.getPaper().getId().toString() );
+
+        // Paper_Key
+        csvData.add( e.getPaper().getPaperKey().toString() );
+
+        // Variant_Event_ID
         csvData.add( e.getEventId().toString() );
 
+        // Gene
         StringBuilder result = new StringBuilder();
         for ( Gene g : e.getGenes() ) {
             result.append( g.getSymbol() );
-            result.append( ";" );
+            result.append( ";" ); // Always append an ; after the symbol
         }
-        csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
-        csvData.add( e.getSubjectId().toString() );
-        csvData.add( e.getSampleId() );
-        csvData.add( e.getRef() );
-        csvData.add( e.getAlt() );
-        csvData.add( "chr" + e.getChromosome() + ":" + e.getStart().toString() + "-" + e.getStop().toString() );
-        csvData.add( e.getFunc() );
+        String genes = result.length() > 0 ? result.substring( 0, result.length() - 1 ) : ""; // Remove trailing ;
+        csvData.add( genes );
 
+        csvData.add( e.getSubjectId().toString() ); // Subject
+        csvData.add( e.getSampleId() ); // Sample_ID
+        csvData.add( e.getRef() ); // REF
+        csvData.add( e.getAlt() ); // ALT
+        csvData.add( "chr" + e.getChromosome() + ":" + e.getStart().toString() + "-" + e.getStop().toString() ); // Location
+        csvData.add( e.getFunc() ); // Context
+
+        //Effects
         if (e.getCategory() != null){
             csvData.add( e.getCategory().getLabel() );
         } else {
             csvData.add( "NULL" ); // TODO: Return Null or Nothing (or .) ?
         }
 
-
+        // HGVS
         result = new StringBuilder();
         for ( String aa : e.getAaChanges() ) {
             //result.append( aa.getTranscript() + ":" + aa.getContext() + ":" + ":" + aa.getHgvsC() + ":" + aa.getHgvsP() );
             result.append( aa );
             result.append( ";" );
         }
-        csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
-        Double cadd = e.getAnnovar().getCaddPhred();
-        csvData.add( cadd == 0 ? "-" : cadd.toString() );
+        String hgvs = result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" ;
+        csvData.add( hgvs);
+
+        // CADD_1.0_Raw
+        Double caddraw = e.getAnnovar().getCaddRaw();
+        csvData.add( caddraw == 0 ? "-" : caddraw.toString() );
+
+        // CADD_1.0_Phred
+        Double caddphred = e.getAnnovar().getCaddPhred();
+        csvData.add( caddphred == 0 ? "-" : caddphred.toString() );
+
+        // ExAC_0.3
         csvData.add( String.valueOf( e.getAnnovar().getExac03() ) );
 
+        // Inheritance
         if (e.getInheritance() == null){
             csvData.add("");
         }else{
             csvData.add(e.getInheritance().getLabel());
         }
 
+        // Validation_Status
         if (e.getValidation() == null){
             csvData.add("");
         }else{
             csvData.add(e.getValidation().getLabel());
         }
+        // 	Validation_Method
         csvData.add( e.getValidationMethod() );
+
+        //	Sources
         csvData.add( e.getPaper().getPaperKey() );
+
+        // Add annovar
+        addAnnovarToCsv(csvData, e);
 
         return csvData;
     }
 
-    private static List<String> eventToCSVLine( Event e ) {
+    private static List<String> eventToCSVLine( Event e ) throws Exception {
+
+        if (true){
+            throw new Exception("This doesn't work anymore, header doesn't line up to variant processing.");
+        }
+
         List<String> csvData = Lists.newArrayList();
 
         csvData.add( e.getId().toString() );
@@ -217,6 +318,14 @@ public class CSVExporter extends Exporter {
             result.append( ";" );
         }
         csvData.add( result.length() > 0 ? result.substring( 0, result.length() - 1 ) : "" );
+
+//        result = new StringBuilder();
+//        List<String> annovarData = Lists.newArrayList();
+//        for ( Variant v : e.getVariants() ) {
+//
+//            result.append( v.getPaper().getPaperKey() );
+//            result.append( ";" );
+//        }
 
         return csvData;
 
