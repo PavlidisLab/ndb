@@ -22,8 +22,8 @@ ndb_production.password=[PASSWORD]
 db.properties
 ```
 ndb.db=ndb_staging
-ndb.email=hi@localhost.com
-ndb.admin.email=admin@localhost.com
+ndb.email=hi@example.com
+ndb.admin.email=admin@example.com
 ```
 
 In your ~/.m2/ directory, add or edit your `settings.xml` file.

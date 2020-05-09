@@ -125,7 +125,7 @@
                     <f:facet name="header">
                         <h:outputText style="text-align: center;" id="Subject" value="ID"/>
                         <p:tooltip id="toolTipSubject" for="Subject"
-                                   value="Subject identifier"/>
+                                   value="Subject Identifier from the original study"/>
                     </f:facet>
                     <h:outputText  style="word-wrap: break-word;" title="#{event.subjectId}" value="#{event.sampleId}"/>
                 </p:column>
@@ -146,7 +146,7 @@
                <f:facet name="header">
                    <h:outputText id="Location" value="Location"/>
                    <p:tooltip id="toolTipLocation" for="Location"
-                              value="Genomic location of the reference allele."/>
+                              value="Genomic location of the reference allele"/>
                </f:facet>
                <h:outputLink target="_blank"
                              value="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&amp;position=chr#{event.chromosome}%3A#{event.start}-#{event.stop}">
@@ -197,7 +197,9 @@
 
            <p:column style="width:10px; text-align: center;">
                <f:facet name="header">
-                   <h:outputText class="fa fa-check-square" value="" title="Variant validation performed by an orthogonal method and reported."/>
+                   <h:outputText class="fa fa-check-square" value="" id="validation" />
+                   <p:tooltip id="toolTipValidation" for="validation"
+                              value="Variant validation performed by an orthogonal method and reported"/>
                </f:facet>
                <h:outputText class="fa fa-check-square validatedIcon" value=""
                              title="Variant validated by: #{event.validationMethodsText}"
@@ -208,7 +210,7 @@
                <f:facet name="header">
                    <h:outputText id="inheritance" value="Inheritance"/>
                    <p:tooltip id="toolTipInheritance" for="inheritance"
-                              value="Reported de novo/inheritance status"/>
+                              value="Reported inheritance status"/>
                </f:facet>
                <ui:repeat var="c" value="#{event.inheritances}" varStatus="status">
                    <h:outputText value="#{c.label}"/>
@@ -221,7 +223,7 @@
                      sortFunction="#{variantView.sortByEffects}">
                <f:facet name="header">
                    <h:outputText id="Effect" value="Effects"/>
-                   <p:tooltip id="toolTipEffect" for="Effect" value="Reported variant effect."/>
+                   <p:tooltip id="toolTipEffect" for="Effect" value="Variant effect on transcript per Annovar"/>
 
                </f:facet>
 
@@ -235,7 +237,7 @@
                <f:facet name="header">
                    <h:outputText id="transcript" value="Transcript"/>
                    <p:tooltip id="toolTipTranscript" for="transcript"
-                              value="Transcript used for the cDNA/Protein mutation."/>
+                              value="Transcript used for the cDNA/Protein mutation"/>
 
                </f:facet>
 
@@ -248,7 +250,7 @@
            <p:column style="width:70px; text-align: left;" styleClass="centeredColumn row-gradient">
                <f:facet name="header">
                    <h:outputText id="cDNA" value="cDNA"/>
-                   <p:tooltip id="toolTipCDNA" for="cDNA" value="cDNA variant notation."/>
+                   <p:tooltip id="toolTipCDNA" for="cDNA" value="cDNA variant notation"/>
 
                </f:facet>
 
@@ -261,7 +263,7 @@
            <p:column style="width:50px; text-align: left;" styleClass="centeredColumn row-gradient">
                <f:facet name="header">
                    <h:outputText id="protein" value="Protein"/>
-                   <p:tooltip id="toolTipProtein" for="protein" value="Protein variant notation."/>
+                   <p:tooltip id="toolTipProtein" for="protein" value="Protein variant notation"/>
 
                </f:facet>
 
@@ -277,7 +279,7 @@
                <f:facet name="header">
                    <h:outputText id="Cadd" style="word-wrap: break-word;" value="CADD-Phred v1.0"/>
                    <p:tooltip id="toolTipCadd" for="Cadd"
-                              value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores."/>
+                              value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores"/>
 
                </f:facet>
 
@@ -288,7 +290,7 @@
                <f:facet name="header">
                    <h:outputText id="exacFreq" value="ExAC v0.3"/>
                    <p:tooltip id="toolTipExacFreq" for="exacFreq"
-                              value="ExAC population frequency (version 0.3)."/>
+                              value="ExAC population frequency (version 0.3)"/>
                </f:facet>
                <h:outputLink target="_blank"
                              value="http://exac.broadinstitute.org/variant/#{event.chromosome}-#{event.start}-#{event.ref}-#{event.alt}"
@@ -303,7 +305,7 @@
                <f:facet name="header">
                    <h:outputText id="Sources" value="Sources"/>
                    <p:tooltip id="toolTipSources" for="Sources"
-                              value="Source(s) where variants from this event are reported."/>
+                              value="Source(s) where variants from this event are reported"/>
                </f:facet>
 
                <ui:repeat var="var" value="#{event.variants}" varStatus="status">
@@ -350,7 +352,7 @@
                         <!-- 						 <p:column>
                                                     <f:facet name="header">
                                                         <h:outputText id="SampleId" value="SampleId" />
-                                                        <p:tooltip id="toolTipSampleId" for="SampleId" value="Reported proband identifier." />
+                                                        <p:tooltip id="toolTipSampleId" for="SampleId" value="Reported proband identifier" />
                                                     </f:facet>
                                                     <h:outputText value="#{variant.sampleId}" />
                                                 </p:column> -->
@@ -415,7 +417,7 @@
                             <f:facet name="header">
                                 <h:outputText id="cmplxCadd" value="CADD-Phred v1.0"/>
                                 <p:tooltip id="cmplxtoolTipCadd" for="cmplxCadd"
-                                           value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores."/>
+                                           value="CADD phred-like score. This is phred-like rank score based on whole genome CADD raw scores"/>
 
                             </f:facet>
 
@@ -427,7 +429,7 @@
                             <f:facet name="header">
                                 <h:outputText id="cmplxExacFreq" value="ExAC v0.3"/>
                                 <p:tooltip id="toolTipComplxExacFreq" for="cmplxExacFreq"
-                                           value="ExAC population frequency (version 0.3)."/>
+                                           value="ExAC population frequency (version 0.3)"/>
                             </f:facet>
                             <h:outputLink target="_blank"
                                           value="http://exac.broadinstitute.org/variant/#{variant.chromosome}-#{variant.start}-#{variant.ref}-#{variant.alt}"
