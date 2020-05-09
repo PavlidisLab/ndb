@@ -15,7 +15,6 @@ public class IdleMonitorView {
 
     public void onIdleWarning() {
         final int TEN_MINUTES = 60 * 10;
-
         FacesContext facesContext = FacesContext.getCurrentInstance();
         // facesContext.addMessage("messagesWarn", new FacesMessage(FacesMessage.SEVERITY_WARN,
                 //         "No activity.", "Your session will expire soon due to inactivity."));
