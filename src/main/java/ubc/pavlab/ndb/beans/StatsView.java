@@ -106,8 +106,11 @@ public class StatsView implements Serializable {
         variantFuncBarModel = makeBarChart( statsService.getEventCntByContext()
                         .stream()
                         .filter(tuple -> tuple != null && tuple.getT1() != null && tuple.getT2() != null && !functionsToAvoid.contains( tuple.getT1()) && !tuple.getT1().contains( ";" ) )
-                        .collect( Collectors.toList() ), "Variant Events by Genomic Context",
-                "Genomic Context", "Variants" );
+                        .collect( Collectors.toList() ),
+                "Variant Events by Genomic Context",
+                "Genomic Context",
+                "Variants"
+                );
 
         // makeCategoryCharts();
         heatmapModel = makeHeatmap();
@@ -155,10 +158,9 @@ public class StatsView implements Serializable {
         Axis yAxis = barModel.getAxis( AxisType.Y );
         yAxis.setLabel( yLabel );
         yAxis.setMin( 1 );
-        /*
-         * yAxis.setTickFormat( "%d" ); yAxis.setTickCount( 11 ); yAxis.setMin( 0 ); yAxis.setMax( 4500 ); // TODO: Do
-         * this programmatically
-         */
+
+        yAxis.setTickFormat( "%d" ); yAxis.setTickCount( 11 );
+
         return barModel;
     }
 
@@ -215,7 +217,7 @@ public class StatsView implements Serializable {
 
     public PieChartModel makeCompactPie( PieChartModel pieModel ) {
 
-        final int TOP = 5; // For the top 10 items
+        final int TOP = 20; // For the top 10 items
         // final int topColor = 0x3399ff;
         // final int bottomColor = 0xe5f2ff;
 

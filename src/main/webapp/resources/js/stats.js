@@ -51,8 +51,11 @@
 
       this.cfg.axes.yaxis = {
          label : 'Counts',
+          // spacingTop: 1000,
+          ticks: [0.1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000], // TODO: Make general
          //ticks: [0.1, 1, 10, 100, 1000, 10000],
-         ticks: [0.1, 1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 25000,50000], // TODO: Make general
+         //ticks: [0.1, 1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 25000,50000],
+
          tickOptions : {
             tickDistribution : "power",
             formatString : "%'i"
