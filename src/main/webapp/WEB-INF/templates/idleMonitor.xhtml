@@ -7,10 +7,10 @@
 
 <h:form>
 
-  <p:growl id="messagesWarn" for="messagesWarn" showDetail="true" sticky="true"  />
-  <!-- Warning will occur at 50 minutes -->
+    <p:growl id="messagesWarn" for="messagesWarn" showDetail="true" sticky="true"  />
+    <!-- Warning will occur at 50 minutes (3000000) -->
     <p:idleMonitor timeout="3000000">
-        <p:ajax event="idle" listener="#{idleMonitorView.onIdleWarning}" update="messagesWarn" />
+        <p:ajax event="idle" listener="#{idleMonitorView.onIdleWarning}" update="messagesWarn" oncomplete='alert("Your session is about to expire due to inactivity.");'/>
         <p:ajax event="active" listener="#{idleMonitorView.onActiveWarning}" update="messagesWarn" />
     </p:idleMonitor>
 

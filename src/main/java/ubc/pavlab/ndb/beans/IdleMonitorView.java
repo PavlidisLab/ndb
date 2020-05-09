@@ -14,12 +14,14 @@ public class IdleMonitorView {
     private static int maxInterval;
 
     public void onIdleWarning() {
-        FacesContext.getCurrentInstance().addMessage("messagesWarn", new FacesMessage(FacesMessage.SEVERITY_WARN,
-                "No activity.", "Your session will expire soon due to inactivity."));
+        final int TEN_MINUTES = 60 * 10;
+
         FacesContext facesContext = FacesContext.getCurrentInstance();
+        // facesContext.addMessage("messagesWarn", new FacesMessage(FacesMessage.SEVERITY_WARN,
+                //         "No activity.", "Your session will expire soon due to inactivity."));
         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
         maxInterval = session.getMaxInactiveInterval();
-        session.setMaxInactiveInterval(60 * 10); // One half minute
+        session.setMaxInactiveInterval(TEN_MINUTES);
     }
 
     public void onActiveWarning() {
