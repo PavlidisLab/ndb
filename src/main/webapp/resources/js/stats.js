@@ -241,8 +241,6 @@ $(function () {
                    o.color = Highcharts.getOptions().colors[0];
                }
 
-
-
               return o;
            }
        
