@@ -1,6 +1,8 @@
 # ndb
 Web application and database providing a harmonized and comprehensive collection of genetic variants published in peer-reviewed literature.
 
+For latest application code, see the [development branch](https://github.com/PavlidisLab/ndb/tree/development).
+
 ## Getting Started
 
 ### Local installation
@@ -99,6 +101,3 @@ See also the list of [contributors](https://github.com/PavlidisLab/ndb) who part
 ## License
 
 This project is licensed under the ___ - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
