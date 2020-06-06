@@ -62,6 +62,7 @@ public class DAOFactoryBean implements Serializable {
         log.info( "DAOFactoryBean created" );
     }
 
+    // TODO: PostConstruct is deprecated
     @PostConstruct
     public void init() {
         log.info( "DAOFactoryBean init" );
@@ -81,7 +82,7 @@ public class DAOFactoryBean implements Serializable {
         return daoFactory;
     }
 
-    public void setSettingsCache( ApplicationProperties applicationProperties ) {
+    public void setApplicationProperties( ApplicationProperties applicationProperties ) {
         this.applicationProperties = applicationProperties;
     }
 

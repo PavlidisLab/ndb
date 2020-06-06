@@ -3,7 +3,59 @@
 <Context>
    
     <Resource
-        name="jdbc/ndb" 
+        name="jdbc/ndb_production" 
+        type="javax.sql.DataSource"
+        factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+        maxActive="100" 
+        maxIdle="30" 
+        maxWait="10000" 
+        testWhileIdle="true"
+        timeBetweenEvictionRunsMillis="300000"
+        url="jdbc:mysql://abe:3306/ndb"
+        driverClassName="com.mysql.jdbc.Driver"
+        initialSize="0"
+        alternateUsernameAllowed="true"
+        username="root" 
+        password="localtoast"
+    />
+
+    <Resource
+            name="jdbc/marvdb_staging"
+            type="javax.sql.DataSource"
+            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+            maxActive="100"
+            maxIdle="30"
+            maxWait="10000"
+            testWhileIdle="true"
+            timeBetweenEvictionRunsMillis="300000"
+            url="jdbc:mysql://localhost:3307/marvdb_staging"
+            driverClassName="com.mysql.jdbc.Driver"
+            initialSize="0"
+            alternateUsernameAllowed="true"
+            username="XXXXXXXXXXX"
+            password="XXXXXXXXXXX"
+    />
+
+    <Resource
+            name="jdbc/marvdb_production"
+            type="javax.sql.DataSource"
+            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+            maxActive="100"
+            maxIdle="30"
+            maxWait="10000"
+            testWhileIdle="true"
+            timeBetweenEvictionRunsMillis="300000"
+            url="jdbc:mysql://abe:3306/marvdb_production"
+            driverClassName="com.mysql.jdbc.Driver"
+            initialSize="0"
+            alternateUsernameAllowed="true"
+            username="XXXXXXXXXXX"
+            password="XXXXXXXXXXX"
+    />
+    
+    
+    <Resource
+        name="jdbc/ndb_local" 
         type="javax.sql.DataSource"
         factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
         maxActive="100" 
@@ -13,9 +65,45 @@
         timeBetweenEvictionRunsMillis="300000"
         url="jdbc:mysql://localhost:3306/ndb"
         driverClassName="com.mysql.jdbc.Driver"
-        username="ndb" 
-        password="ndb321#"
+        username="root" 
+        password="localtoast"
+        initialSize="0"
+        alternateUsernameAllowed="true"
     />
-    
+
+    <Resource
+        name="jdbc/ndb_test" 
+        type="javax.sql.DataSource"
+        factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+        maxActive="100" 
+        maxIdle="30" 
+        maxWait="10000" 
+        testWhileIdle="true"
+        timeBetweenEvictionRunsMillis="300000"
+        url="jdbc:mysql://localhost:3306/ndb_test"
+        driverClassName="com.mysql.jdbc.Driver"
+        username="root" 
+        password="localtoast"
+        initialSize="0"
+        alternateUsernameAllowed="true"
+    />
+
+    <Resource
+        name="jdbc/ndb_staging" 
+        type="javax.sql.DataSource"
+        factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+        maxActive="100" 
+        maxIdle="30" 
+        maxWait="10000" 
+        testWhileIdle="true"
+        timeBetweenEvictionRunsMillis="300000"
+        url="jdbc:mysql://localhost:3306/ndb"
+        driverClassName="com.mysql.jdbc.Driver"
+        username="root" 
+        password="localtoast"
+        initialSize="0"
+        alternateUsernameAllowed="true"
+    />
+   
 
 </Context>

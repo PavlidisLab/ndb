@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:hf="http://highfaces.org/ui">
+
+    <ui:define name="pageTitle">Statistics</ui:define>
+
+    <ui:define name="css">
+        <h:outputStylesheet library="css" name="stats.css"/>
+    </ui:define>
+
+    <ui:define name="js">
+        <script type="text/javascript">
+            googleAnalyticsTrackPageviewIfConfigured("/#{applicationProperties.getProperty('ndb.ga_app')}/stats");
+        </script>
+
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/heatmap.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script type="text/javascript" language="javascript"
+                src="resources/js/plugins/jqplot.logAxisRenderer.js"></script>
+        <script src="resources/js/stats.js"></script>
+
+        <script type="text/javascript">
+            heatmap_data = #{statsView.heatmapModel.dataJSON};
+            heatmap_papers = #{statsView.heatmapModel.categoriesJSON};
+            heatmap_categories = heatmap_papers.map(function (paper) {
+                return paper.paper_key;
+            });
+            heatmap_paper_ids = heatmap_papers.map(function (paper) {
+                return paper.id;
+            });
+
+            goToPaperOverlap = function (paperId, overlapPaperId) {
+                var url = '#{request.contextPath}/variant.xhtml?paperId=' + paperId + '&amp;overlapPaperId=' + overlapPaperId;
+                window.open(url, "_self");
+            }
+        </script>
+
+    </ui:define>
+
+    <ui:define name="content">
+
+        <!-- BREADCRUMBS -->
+
+        <p:panel styleClass="no-border">
+            <p:breadCrumb style="float:left;">
+                <p:menuitem value="Categories" url="#"/>
+                <p:menuitem value="Home" url="index.xhtml"/>
+                <p:menuitem value="Statistics" url="stats.xhtml"/>
+            </p:breadCrumb>
+        </p:panel>
+
+        <div class="content-area">
+
+            <div class="section">
+
+                <h2>Statistics</h2>
+
+                <p:separator/>
+
+
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <ui:include src="stat_summary.xhtml"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <ui:include src="stats_table_topdenovolof.xhtml"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <ui:include src="stats_table_topgenesbypapercnt.xhtml"/>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <ui:include src="stats_table_topgenesbyeventcnt.xhtml"/>
+                    </div>
+                </div>
+
+
+                These rankings are not intended to be used for ASD candidate gene pioritization because they do not exclude common variants and variants from targeted studies (non-coding variants are excluded from gene ranking calculations).
+
+
+            </div>
+
+
+            <h3>Variant Event Statistics</h3>
+            <p:separator/>
+
+            <!--
+            <p:chart type="pie"
+                        model="#{statsView.compactPieModel}"
+                        dataFormat="value"
+                        showDataLabels="true"
+                        style="width:800px;height:400px; " />
+                        -->
+            <p>
+                The pie chart below shows the breakdown of variant events by publication of origin. Hovering over a
+                pie chart segment will pop-up a tool tip showing the corresponding publication and the exact number
+                of variants collected from it.
+            </p>
+            <p:chart type="pie"
+                     model="#{statsView.compactPieModel}"
+                     dataFormat="value"
+                     showDataLabels="true"
+                     styleClass="center-block"
+                     style="width:800px;height:400px; "/>
+
+
+            <hr/>
+
+            <p>
+                The variant events are grouped by their effect on the coding sequence of a gene. Definitions of
+                different effects are given on the <p:link
+                    href="/documentation.xhtml">Documentation</p:link> page. The effects for each variant event in the
+                database are assigned by <p:link
+                    href="http://annovar.openbioinformatics.org/">ANNOVAR</p:link> and are shown in the Effect column in the variant table. The y-axis
+                of the bar graph is log-scaled to facilitate readability. Hovering over a bar will pop-up a tool tip
+                showing the exact number of variant events in that particular category.
+            </p>
+            <p:chart type="bar"
+                     model="#{statsView.variantCategoriesBarModel}"
+                     styleClass="center-block"
+                     style="width:800px;height:500px;"/>
+
+
+            <hr/>
+
+            <p>
+                The variant events are grouped by their genomic context. The genomic context for each variant event
+                in the database are assigned by <p:link
+                    href="http://annovar.openbioinformatics.org/">ANNOVAR</p:link> and are shown in the Context column in the variant table.
+                The y-axis of the bar graph is log-scaled to facilitate readability. Hovering over a bar will pop-up
+                a tool tip showing the exact number of variant events in that particular category.
+            </p>
+            <p:chart type="bar"
+                     model="#{statsView.variantFuncBarModel}"
+                     styleClass="center-block"
+                     style="width:800px;height:500px;"
+                     logYAxis="true"/>
+
+            <hr/>
+
+
+        </div>
+
+        <div class="section">
+
+            <h3 id="variantOverlap"> Variant Event Overlap </h3>
+            <p:separator/>
+
+            <div id="heatmapText">
+                <p>
+                    The heatmap below represents the overlap between variant events reported by different papers.
+                    The numbers on the diagonal represent the total number of reported variant events collected from a
+                    given paper. The numbers off the diagonal represent the number of variant events that are reported
+                    in both of the intersecting papers. Numbers >1000 are rounded to the nearest thousand and shown with
+                    “K” (e.g. 3462 variant events collected from Lim2017 are shown as “3K” on the diagonal). Hovering
+                    over a grid cell will pop-up a tool tip which shows the two intersecting papers and the exact number
+                    of overlapping variants. The overlapping variants can be accessed by clicking on the number in the
+                    grid cell. Note that we removed papers that had no overlaping variants with other papers for a more
+                    compact visualization.
+
+                </p>
+
+                <p>
+                    <a href="resources/static/variant_heatmap_latest.html" target="_blank" >(Open in a new tab)</a>
+                </p>
+
+            </div>
+            <!--
+            <div id="heatmap-container" style="height: 1400px; width: 100%; margin: 0 auto;">
+
+            </div>
+            -->
+            <ui:include src="resources/static/variant_heatmap_latest.html"/>
+
+        </div>
+
+    </ui:define>
+
+</ui:composition>

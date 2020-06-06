@@ -1,0 +1,41 @@
+#toc {    
+    display: inline-block;
+    display: table;
+    zoom: 1;
+    padding: 7px;     	
+ 	border: 1px solid #aaa;
+    background-color: #f9f9f9;
+    padding: 5px;
+    font-size: 105%;
+}
+
+#toctext {
+    display: table-cell;
+    text-decoration: inherit;
+}
+
+#toc li {
+	margin: 0 0 3px 0;   
+	width: 100%;
+}
+
+.section-content h4 {
+	padding-left: 0.5cm;	
+}
+
+.section-content p {
+	padding-left: 1cm;
+	width: 50%;	
+}
+
+.section-content li {
+	width: 50%;
+}
+
+.tg-coldef  {border-collapse:collapse;border-spacing:0; width:35%;}
+.tg-coldef td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg-coldef tr:nth-child(even) {background: #BEBEBE}
+.tg-coldef tr:nth-child(odd) {background: #FFF}
+.tg-coldef th{font-family:Arial, sans-serif;font-size:14px;font-weight:bolder;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg-coldef .tg-coldef-cell{text-align:left;vertical-align:top}
+

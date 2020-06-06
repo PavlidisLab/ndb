@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<faces-config
+        xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+        version="2.2">
+
+    <render-kit>
+        <renderer>
+            <description>Overrides the PrimeFaces table renderer with customized row expander.</description>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.DataTableRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.datatable.CustomDataTableRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+
+    <factory>
+        <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory
+        </exception-handler-factory>
+    </factory>
+
+</faces-config>

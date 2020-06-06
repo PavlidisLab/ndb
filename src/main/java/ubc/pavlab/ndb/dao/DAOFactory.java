@@ -152,11 +152,29 @@ public abstract class DAOFactory {
 
     // DAO implementation getters -----------------------------------------------------------------
 
-    /*
-     * public CacheDAO getCacheDAO() {
-     * return new CacheDAOImpl( this );
-     * }
-     */
+    public GeneDAO getGeneDAO() {
+        return new GeneDAOImpl( this );
+    }
+
+    public PaperDAO getPaperDAO() {
+        return new PaperDAOImpl( this );
+    }
+
+    public AnnovarDAO getAnnovarDAO() {
+        return new AnnovarDAOImpl( this );
+    }
+
+    public VariantDAO getVariantDAO() {
+        return new VariantDAOImpl( this );
+    }
+
+    public RawKVDAO getRawKVDAO() {
+        return new RawKVDAOImpl( this );
+    }
+
+    public StatsDAO getStatsDAO() {
+        return new StatsDAOImpl( this );
+    }
 
     // You can add more DAO implementation getters here.
 

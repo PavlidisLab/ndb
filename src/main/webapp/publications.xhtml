@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+                xmlns:composites="http://java.sun.com/jsf/composite/composites">
+
+    <ui:define name="pageTitle">All papers</ui:define>
+
+    <ui:define name="css">
+        <h:outputStylesheet library="css" name="style.css"/>
+    </ui:define>
+    <style>
+        .ui-filter-column .ui-column-customfilter .custom-filter {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .year-spinner input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+
+    <ui:define name="js">
+        <script type="text/javascript">
+            googleAnalyticsTrackPageviewIfConfigured("/#{applicationProperties.getProperty('ndb.ga_app')}/publications");
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:panel styleClass="no-border clearfix" style="float:right;">
+            <ui:include src="/searchBar.xhtml"/>
+        </p:panel>
+
+        <!-- BREADCRUMBS -->
+        <p:panel styleClass="no-border">
+            <p:breadCrumb style="float:left;">
+                <p:menuitem value="Categories" url="#"/>
+                <p:menuitem value="Home" url="index.xhtml"/>
+                <p:menuitem value="Publications" url="publications.xhtml"/>
+            </p:breadCrumb>
+        </p:panel>
+        <br/>
+
+        <h:form style="padding:30px;">
+            <h2 style="margin:0 auto 30px auto">Publications</h2>
+            <p>
+                Below is the complete list of publications included in our database. For more information about a specific publications, click
+                the <span class="iconVisit fa fa-book " style="display: inline-block"/> icon under "Details".
+            </p>
+            <p>To access the original publication, click on the <span class="ui-icon ui-icon-extlink"
+                                                                      style="display: inline-block"/> icon under the
+                <em>Source</em> column.</p>
+
+            <p:dataTable var="paper"
+                         value="#{publicationsView.papers}"
+                         tableStyleClass="compactTable"
+                         sortMode="single"
+                         sortBy="#{paper.paperKey}"
+                         widgetVar="paperTable"
+                         emptyMessage="No publications found with given criteria."
+                         filteredValue="#{publicationsView.filteredPapers}"
+            >
+                <f:facet name="header">
+                    <p:outputPanel style="text-align: right !important; padding: 0.3em 0.4em; box-sizing: border-box;">
+                        <h:outputText value="Search all fields: " />
+                        <p:inputText id="globalFilter" onkeyup="PF('paperTable').filter()" style="width:150px; " placeholder="Enter keyword"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <!-- DETAILS BOOK LINK -->
+                <p:column headerText="Details" style="width:40px; text-align: center" >
+                    <p:link outcome="paper" value="" target="_blank" styleClass="iconVisit fa fa-book " style="margin:0 auto;">
+                        <f:param name="paperId" value="#{paper.id}"/>
+                    </p:link>
+                </p:column>
+
+                <ui:remove>
+                    <p:column id="headAuthor" sortBy="#{paper.author}" filterStyle="display:none">
+                        <f:facet name="header">
+                            <h:outputText value="Author"/>
+                            <p:tooltip trackMouse="true" id="toolTipAuthor" for="headAuthor"
+                                       value="Author of the publication." atPosition="right center"/>
+                        </f:facet>
+
+                        <h:outputText style="font-weight:bold; text-align:center;" value="#{paper.author}"/>
+
+                    </p:column>
+                </ui:remove>
+
+                <!-- DETAILS BOOK LINK -->
+                <p:column id="headKey" sortBy="#{paper.paperKey}" filterMatchMode="contains" filterBy="#{paper.paperKey}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Key"/>
+                        <p:tooltip trackMouse="true" id="toolTipKey" for="headKey" value="Database key for publication."
+                                   atPosition="right center"/>
+                    </f:facet>
+
+                    <h:outputText style="font-weight:bold; text-align:center;" value="#{paper.paperKey}"/>
+
+                </p:column>
+
+                <!-- PAPER TITLE -->
+                <p:column id="headTitle" headerText="Title" sortBy="#{paper.title}" filterMatchMode="contains" filterBy="#{paper.title}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Title"/>
+                        <p:tooltip trackMouse="true" id="toolTipTitle" for="headTitle" value="Publication title."
+                                   atPosition="right center"/>
+                    </f:facet>
+                    <c:set var="string1" value='#{paper.title}'/>
+                    <c:set var="MAXLENGTH" value="100"/>
+
+                    <ui:fragment rendered="#{fn:length(string1) gt MAXLENGTH}">
+                        <c:set var="trimmedTitle" value="${fn:substring(string1,0,MAXLENGTH)}"/>
+                        <h:outputText value="${trimmedTitle}" title="#{paper.title}"/>&nbsp;<h:outputText
+                            value="[...]"/>
+                    </ui:fragment>
+
+
+                    <ui:fragment rendered="#{fn:length(paper.title) lt MAXLENGTH+1}">
+                        <h:outputText value="${paper.title}" title="#{paper.title}"/>
+                    </ui:fragment>
+
+                </p:column>
+
+                <!-- PUBLICATION YEAR -->
+                <p:column id="headYear" sortBy="#{paper.year}" filterMatchMode="contains" filterBy="#{paper.year}" filterStyle="display:none" style="text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Year"/>
+                        <p:tooltip trackMouse="true" id="toolTipYear" for="headYear" value="Year published."
+                                   atPosition="right center"/>
+                    </f:facet>
+
+                    <h:outputText style="font-weight:bold; text-align:center;" value="#{paper.year}"/>
+
+                </p:column>
+
+                <!-- TECHNOLOGY (SEQUENCING) -->
+                <p:column id="headTechnology" headerText="Technology" sortBy="#{paper.technology}" filterMatchMode="contains" filterBy="#{paper.technology}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Technology"/>
+                        <p:tooltip trackMouse="true" id="toolTipTechnology" for="headTechnology"
+                                   value="Experimental details from sequencing (e.g. Whole-Genome Sequencing, Whole-Exome sequencing, gene specific.)"
+                                   atPosition="right center"/>
+                    </f:facet>
+                    <h:outputText value="#{paper.technology}"/>
+                </p:column>
+
+                <!-- Variant event count -->
+                <p:column id="headEventCount" sortBy="#{publicationsView.getEventCnt(paper.id)}" filterMatchMode="contains" filterBy="#{paper.display_count}" filterStyle="display:none" style="text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Variant event count"/>
+                        <p:tooltip trackMouse="true" id="toolEventCount" for="headEventCount" value="Number of variant event for this paper."
+                                   atPosition="right center"/>
+                    </f:facet>
+
+                    <p:link outcome="variant" value="#{publicationsView.getEventCnt(paper.id)}" >
+                        <f:param name="paperId" value="#{paper.id}" />
+                    </p:link>
+                    <!-- FIXME: Review call to service if this is a performance concern, could cache it instead. -->
+
+
+                </p:column>
+
+                <!-- COHORT DESIGN TYPE -->
+                <p:column id="headSubjects" headerText="Subjects" sortBy="#{paper.design}" filterMatchMode="contains" filterBy="#{paper.design}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Subjects"/>
+                        <p:tooltip trackMouse="true" id="toolTipSubjects" for="headSubjects"
+                                   value="Samples/Subjects/Families per study."/>
+                    </f:facet>
+                    <h:outputText value="#{paper.design}: #{paper.count}"/>
+                </p:column>
+
+                <!-- COHORT SOURCE -->
+                <p:column id="headCohort" headerText="Cohorts" sortBy="#{paper.cohortSource}" filterMatchMode="contains" filterBy="#{paper.cohortSource}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Cohort Source"/>
+                        <p:tooltip trackMouse="true" id="toolTipCohort" for="headCohort"
+                                   value="Cohort sources for the study. Can be either the name of the cohort or the region/country where the cohort was recruited."/>
+                    </f:facet>
+                    <h:outputText value="#{paper.cohortSource}"/>
+                </p:column>
+
+                <!-- DIAGNOSIS -->
+                <p:column id="headDiagnosis" headerText="Diagnosis" sortBy="#{paper.cases}" filterMatchMode="contains" filterBy="#{paper.cases}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Diagnosis"/>
+                        <p:tooltip trackMouse="true" id="toolTipDiagnosis" for="headDiagnosis"
+                                   value="Types of diagnosis included in each study."/>
+                    </f:facet>
+                    <h:outputText value="#{paper.cases}"/>
+                </p:column>
+
+                <!-- DOI -->
+                <p:column id="headDoi" headerText="doi" sortBy="#{paper.doi}" filterMatchMode="contains" filterBy="#{paper.doi}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="URL"/>
+                        <p:tooltip trackMouse="true" id="toolTipDoi" for="headDoi" value="Digital object identifier."
+                                   atPosition="right center"/>
+                    </f:facet>
+                    <p:link target="_blank" href="#{paper.url}">
+                        <h:outputText value="#{paper.doi}"/>
+                    </p:link>
+                </p:column>
+
+                <!-- PUBMED -->
+                <p:column id="headPubmed" headerText="Pubmed" sortBy="#{paper.pubmed_id}" filterMatchMode="contains" filterBy="#{paper.pubmed_id}" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Pubmed"/>
+                        <p:tooltip trackMouse="true" id="toolTipPubmed" for="headPubmed"
+                                   value="Publication identifier on Pubmed."/>
+                    </f:facet>
+                    <h:outputLink value="#{paper.pubmed_url}" target="_blank">
+                        <h:outputText value="#{paper.pubmed_id}"/>
+                    </h:outputLink>
+                </p:column>
+
+                <!-- LINK OUT -->
+                <p:column id="headSource" headerText="Source" filterBy="#{paper.publisher}" filterMatchMode="contains" filterStyle="display:none">
+                    <f:facet name="header">
+                        <h:outputText value="Source"/>
+                        <p:tooltip trackMouse="true" id="toolTipSource" for="headSource"
+                                   value="Link to access the original source publication." myPosition="left center"/>
+                    </f:facet>
+                    <h:outputLink target="_blank" value="#{paper.url}">
+                        <h:outputText styleClass="ui-icon ui-icon-extlink" style="margin:0 auto;"/>
+                    </h:outputLink>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

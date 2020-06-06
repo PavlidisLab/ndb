@@ -1,21 +1,153 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:define name="pageTitle">Nate DB!</ui:define>
-	
-	<ui:define name="css">
-		<h:outputStylesheet library="css" name="index.css" />
-	</ui:define>
-	
-	<ui:define name="content">
-	<p>This is the index content.</p>
-	</ui:define>
+    <ui:define name="pageTitle">VariCarta</ui:define>
+
+    <ui:define name="css">
+        <h:outputStylesheet library="css" name="index.css"/>
+    </ui:define>
+
+    <ui:define name="js">
+        <script type="text/javascript">
+            googleAnalyticsTrackPageviewIfConfigured("/#{applicationProperties.getProperty('ndb.ga_app')}/index");
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="content-area">
+            <div class="title">
+                <h1 style="margin:0 auto;">VariCarta</h1>
+                <p>
+                    Search for variants using a gene symbol or genomic coordinates (Hg19/GRCh37)
+                </p>
+            </div>
+            <p:separator style="width:75%;"/>
+
+            <p:panel styleClass="no-border clearfix center-search-bar">
+                <ui:include src="/searchBar.xhtml"/>
+            </p:panel>
+            <p:separator style="width:75%;"/>
+
+            <p:panel styleClass="no-border" style="padding-top:50px;">
+                <p:panelGrid styleClass="no-border" columns="2" style="width:100%;text-align:left;">
+
+                    <p:panelGrid styleClass="no-border" rows="2" columns="1" style="width:100%;text-align:left;">
+                        <p:panel styleClass="no-border" >
+                            <ui:include src="stat_summary.xhtml"></ui:include>
+                        </p:panel>
+                        <ui:remove>
+                            <p:panel styleClass="no-border">
+                                <ui:include src="stats_table_topgenesbyranking.xhtml"></ui:include>
+                            </p:panel>
+                        </ui:remove>
+                    </p:panelGrid>
+
+                    <p:panelGrid styleClass="no-border" columns="1">
+                        <p:panel  styleClass="no-border"  >
+                            <div>
+                                <h3>About VariCarta</h3>
+                                <ul class="spaced-list">
+                                    <li>
+                                        VariCarta is a database of human DNA genetic variants found in individuals diagnosed with Autism
+                                        Spectrum Disorder (ASD) and reported in peer-reviewed scientific literature.
+                                    </li>
+                                    <li>
+                                        For a full list of sources of variants in VariCarta visit the <strong><p:link
+                                            href="publications.xhtml">Publications page</p:link></strong>.
+                                        More information about VariCarta and some help with web-site navigation can be found on the
+                                        <strong><p:link href="documentation.xhtml">Documentation page</p:link></strong>.
+                                    </li>
+
+                                    <li>
+                                        A manuscript for VariCarta is available on Autism Research: <br/>
+
+                                        "<p:link href="https://doi.org/10.1002/aur.2236" target="_blank">VariCarta: A Comprehensive Database of Harmonized Genomic Variants Found in Autism Spectrum Disorder Sequencing Studies.</p:link>" (2019) Belmadani M, Jacobson M, Holmes N, Phan M, Nguyen T, Pavlidis P, Rogic S. Autism Res. 2019 Dec;12(12):1728-1736. doi: 10.1002/aur.2236
+
+                                    </li>
+
+                                    <li>
+                                        Current and previous releases of the database can be downloaded from the
+                                        <strong><p:link href="/downloads.xhtml">Download page</p:link></strong>.
+                                    </li>
+                                </ul>
+                            </div>
+                        </p:panel>
+                        <p:separator/>
+                        <div id="news">
+                            <ui:remove>
+                            <h3>Recent News</h3>
+
+                            <ui:remove>
+                                <p:layout style="text-align:left;max-width:80%;min-height:50px;">
+
+                                    <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true">
+                                        <strong>
+                                            2018-04-24
+                                        </strong>
+                                    </p:layoutUnit>
+                                    <p:layoutUnit position="center">
+                                        A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long news item.A super long
+                                    </p:layoutUnit>
+                                </p:layout>
+                            </ui:remove>
+
+
+                            <p:layout style="text-align:left;max-width:80%;min-height:50px;">
+
+                                <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true">
+                                    <strong>
+                                        2018-04-23
+                                    </strong>
+                                </p:layoutUnit>
+                                <p:layoutUnit position="center">
+                                    Our development/beta instance is available at <a
+                                        href="https://dev.varicarta.msl.ubc.ca/">https://dev.varicarta.msl.ubc.ca/</a>.
+                                </p:layoutUnit>
+                            </p:layout>
+
+                            <p:layout style="text-align:left;max-width:80%;min-height:150px;">
+                                <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true">
+                                    <strong>
+                                        2016-03-31
+                                    </strong>
+                                </p:layoutUnit>
+                                <p:layoutUnit position="center">
+                                    Thank you for using VariCarta!
+                                </p:layoutUnit>
+
+
+                            </p:layout>
+
+                            <div style="max-width:90%;">
+                            </div>
+                            <p:layout style="text-align:left;max-width:90%;min-height:50px;">
+                                <p:layoutUnit position="west" size="100" minSize="40" maxSize="200" fullPage="true">
+                                    <strong>
+                                        <!-- Content date -->
+                                    </strong>
+                                </p:layoutUnit>
+
+                                <p:layoutUnit position="center">
+                                    <!-- Content -->
+                                </p:layoutUnit>
+                            </p:layout>
+                            </ui:remove>
+                        </div>
+
+                    </p:panelGrid>
+                </p:panelGrid>
+            </p:panel>
+
+        </div>
+    </ui:define>
 
 </ui:composition>

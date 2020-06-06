@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composites="http://java.sun.com/jsf/composite/composites">
+
+	<ui:define name="pageTitle">Documentation</ui:define>
+	
+	<ui:define name="css">
+		<h:outputStylesheet library="css" name="style.css" />
+	</ui:define>
+	
+	<ui:define name="js">
+		<script type="text/javascript">
+	        	googleAnalyticsTrackPageviewIfConfigured( "/#{applicationProperties.getProperty('ndb.ga_app')}/paper/#{paperView.paper.paperKey}" );
+	    </script>
+	</ui:define>
+	
+	<ui:define name="content">
+	<p:panel styleClass="no-border clearfix" style="float:right;">
+		<ui:include src="/searchBar.xhtml" />
+	</p:panel>
+	
+	<!-- BREADCRUMBS -->
+	<p:panel styleClass="no-border" >
+		<p:breadCrumb style="float:left;"> 
+			<p:menuitem value="Categories" url="#" />
+			<p:menuitem value="Home" url="index.xhtml" />
+			<p:menuitem value="Publications" url="publications.xhtml" />
+			<p:menuitem value="#{paperView.paper.paperKey}" url="paper.xhtml?paperId=#{paperView.paper.id}" />
+		</p:breadCrumb>  	            
+	</p:panel>
+	           
+	<br/>
+
+	<h:form style="padding:30px;">
+		<h3 style="margin:0 auto 30px auto">Publication Details</h3>
+		<h4>Results for #{paperView.paper.paperKey}:</h4>
+		<p:outputPanel id="paperSummary" style="text-align:center;">
+			<!-- Paper information -->
+			<p:panel header="Summary" style="width:600px;padding:0;" styleClass="no-border no-padding">
+			
+				<composites:paperPanel paper="#{paperView.paper}"
+									   eventCnt="#{paperView.eventCnt}"
+									   showMore="False"/>
+
+
+	    	<p:panel header="Breakdown by exonic function" style="width:600px;padding:0;margin-top:25px;" styleClass="no-border no-padding">
+	    	
+	    	<!-- Stats about paper on variant level -->
+	    	<p:dataTable var="tuple" value="#{paperView.eventCntByCategory}" style="margin-bottom:20px" >	
+						 <p:column headerText="Function">
+							<h:outputText value="#{tuple.t1}" />
+						</p:column>
+						 <p:column headerText="Variant Count">
+							<h:outputText value="#{tuple.t2}" />
+						</p:column>
+	    	</p:dataTable>
+	    	</p:panel>
+	    		
+	    	</p:panel>
+
+	    </p:outputPanel>	
+	        	
+	        	<hr/>
+		
+		<div  style="width:800px;"> 
+				<h4 style="margin:0 auto 30px auto"> What am I looking at? </h4>
+				<p>	
+				<strong>Summary: </strong>Information from the literature piece (e.g. Author, Publisher, DOI) and the study experimental design (e.g. sample size, source of probands, sequencing technology.)
+				For a full list of sources of variants, be sure to check out the <strong><p:link href="publications.xhtml">publications</p:link></strong> page. Documentation and description of our work can be found on the <strong><p:link href="help.xhtml">help</p:link></strong> page.
+				</p>
+				<p>	
+				<strong>Breakdown by exonic function: </strong> We annotated the variants with an effect prediction 
+				using <strong><p:link href="http://annovar.openbioinformatics.org/en/latest/">ANNOVAR</p:link></strong>. 
+				The functions are categories of variants, such as frameshift variants (i.e. frameshift_elongation (SO:0001909)), 
+				loss/gain of stop codon, SNVs and non-frameshift variants. See the full list of possible annotations for exonic 
+				variants in the <p:link href="http://doc-openbio.readthedocs.org/projects/annovar/en/latest/user-guide/gene">documentation</p:link>.
+				</p>	
+		</div>			 	
+	</h:form>
+
+	</ui:define>
+
+</ui:composition>

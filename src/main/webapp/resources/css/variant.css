@@ -1,0 +1,256 @@
+/* Color background cells
+
+td.row-gradient {
+	background-image:none;
+}
+
+td.row-gradient.c1 {
+    background-color:#CBF0A3;
+}
+
+td.row-gradient.c2 {
+	background-color:#D2DA9B;
+}
+
+td.row-gradient.c3 {
+	background-color:#DAC494;
+}
+
+td.row-gradient.c4 {
+	background-color:#E1AE8C;
+}
+
+td.row-gradient.c5 {
+	background-color:#E99885;
+}
+
+td.row-gradient.c6 {
+	background-color:#F1827E;
+}
+*/
+
+
+/* Color text shadow */
+td.row-gradient.ct1, 
+td.row-gradient span.ct1  {
+text-shadow: 1px 1px 0 #CBF0A3,
+    -1px 1px 0 #CBF0A3,
+    1px -1px 0 #CBF0A3,
+    -1px -1px 0 #CBF0A3,
+    0px 1px 0 #CBF0A3,
+    0px -1px 0 #CBF0A3,
+    -1px 0px 0 #CBF0A3,
+    1px 0px 0 #CBF0A3,
+    2px 2px 0 #CBF0A3,
+    -2px 2px 0 #CBF0A3,
+    2px -2px 0 #CBF0A3,
+    -2px -2px 0 #CBF0A3,
+    0px 2px 0 #CBF0A3,
+    0px -2px 0 #CBF0A3,
+    -2px 0px 0 #CBF0A3,
+    2px 0px 0 #CBF0A3,
+    1px 2px 0 #CBF0A3,
+    -1px 2px 0 #CBF0A3,
+    1px -2px 0 #CBF0A3,
+    -1px -2px 0 #CBF0A3,
+    2px 1px 0 #CBF0A3,
+    -2px 1px 0 #CBF0A3,
+    2px -1px 0 #CBF0A3,
+    -2px -1px 0 #CBF0A3;
+}
+
+
+td.row-gradient.ct2, 
+td.row-gradient span.ct2 {
+text-shadow: 1px 1px 0 #D2DA9B,
+    -1px 1px 0 #D2DA9B,
+    1px -1px 0 #D2DA9B,
+    -1px -1px 0 #D2DA9B,
+    0px 1px 0 #D2DA9B,
+    0px -1px 0 #D2DA9B,
+    -1px 0px 0 #D2DA9B,
+    1px 0px 0 #D2DA9B,
+    2px 2px 0 #D2DA9B,
+    -2px 2px 0 #D2DA9B,
+    2px -2px 0 #D2DA9B,
+    -2px -2px 0 #D2DA9B,
+    0px 2px 0 #D2DA9B,
+    0px -2px 0 #D2DA9B,
+    -2px 0px 0 #D2DA9B,
+    2px 0px 0 #D2DA9B,
+    1px 2px 0 #D2DA9B,
+    -1px 2px 0 #D2DA9B,
+    1px -2px 0 #D2DA9B,
+    -1px -2px 0 #D2DA9B,
+    2px 1px 0 #D2DA9B,
+    -2px 1px 0 #D2DA9B,
+    2px -1px 0 #D2DA9B,
+    -2px -1px 0 #D2DA9B;
+}
+
+
+td.row-gradient.ct3, 
+td.row-gradient span.ct3 {
+text-shadow: 1px 1px 0 #DAC494,
+    -1px 1px 0 #DAC494,
+    1px -1px 0 #DAC494,
+    -1px -1px 0 #DAC494,
+    0px 1px 0 #DAC494,
+    0px -1px 0 #DAC494,
+    -1px 0px 0 #DAC494,
+    1px 0px 0 #DAC494,
+    2px 2px 0 #DAC494,
+    -2px 2px 0 #DAC494,
+    2px -2px 0 #DAC494,
+    -2px -2px 0 #DAC494,
+    0px 2px 0 #DAC494,
+    0px -2px 0 #DAC494,
+    -2px 0px 0 #DAC494,
+    2px 0px 0 #DAC494,
+    1px 2px 0 #DAC494,
+    -1px 2px 0 #DAC494,
+    1px -2px 0 #DAC494,
+    -1px -2px 0 #DAC494,
+    2px 1px 0 #DAC494,
+    -2px 1px 0 #DAC494,
+    2px -1px 0 #DAC494,
+    -2px -1px 0 #DAC494;
+}
+
+
+td.row-gradient.ct4, 
+td.row-gradient span.ct4 {
+text-shadow: 1px 1px 0 #E1AE8C,
+    -1px 1px 0 #E1AE8C,
+    1px -1px 0 #E1AE8C,
+    -1px -1px 0 #E1AE8C,
+    0px 1px 0 #E1AE8C,
+    0px -1px 0 #E1AE8C,
+    -1px 0px 0 #E1AE8C,
+    1px 0px 0 #E1AE8C,
+    2px 2px 0 #E1AE8C,
+    -2px 2px 0 #E1AE8C,
+    2px -2px 0 #E1AE8C,
+    -2px -2px 0 #E1AE8C,
+    0px 2px 0 #E1AE8C,
+    0px -2px 0 #E1AE8C,
+    -2px 0px 0 #E1AE8C,
+    2px 0px 0 #E1AE8C,
+    1px 2px 0 #E1AE8C,
+    -1px 2px 0 #E1AE8C,
+    1px -2px 0 #E1AE8C,
+    -1px -2px 0 #E1AE8C,
+    2px 1px 0 #E1AE8C,
+    -2px 1px 0 #E1AE8C,
+    2px -1px 0 #E1AE8C,
+    -2px -1px 0 #E1AE8C;}
+
+
+td.row-gradient.ct5, 
+td.row-gradient span.ct5 {
+text-shadow: 1px 1px 0 #E99885,
+    -1px 1px 0 #E99885,
+    1px -1px 0 #E99885,
+    -1px -1px 0 #E99885,
+    0px 1px 0 #E99885,
+    0px -1px 0 #E99885,
+    -1px 0px 0 #E99885,
+    1px 0px 0 #E99885,
+    2px 2px 0 #E99885,
+    -2px 2px 0 #E99885,
+    2px -2px 0 #E99885,
+    -2px -2px 0 #E99885,
+    0px 2px 0 #E99885,
+    0px -2px 0 #E99885,
+    -2px 0px 0 #E99885,
+    2px 0px 0 #E99885,
+    1px 2px 0 #E99885,
+    -1px 2px 0 #E99885,
+    1px -2px 0 #E99885,
+    -1px -2px 0 #E99885,
+    2px 1px 0 #E99885,
+    -2px 1px 0 #E99885,
+    2px -1px 0 #E99885,
+    -2px -1px 0 #E99885;}
+
+td.row-gradient.ct6, 
+td.row-gradient span.ct6  {
+text-shadow: 1px 1px 0 #F1827E,
+    -1px 1px 0 #F1827E,
+    1px -1px 0 #F1827E,
+    -1px -1px 0 #F1827E,
+    0px 1px 0 #F1827E,
+    0px -1px 0 #F1827E,
+    -1px 0px 0 #F1827E,
+    1px 0px 0 #F1827E,
+    2px 2px 0 #F1827E,
+    -2px 2px 0 #F1827E,
+    2px -2px 0 #F1827E,
+    -2px -2px 0 #F1827E,
+    0px 2px 0 #F1827E,
+    0px -2px 0 #F1827E,
+    -2px 0px 0 #F1827E,
+    2px 0px 0 #F1827E,
+    1px 2px 0 #F1827E,
+    -1px 2px 0 #F1827E,
+    1px -2px 0 #F1827E,
+    -1px -2px 0 #F1827E,
+    2px 1px 0 #F1827E,
+    -2px 1px 0 #F1827E,
+    2px -1px 0 #F1827E,
+    -2px -1px 0 #F1827E;}
+    
+    td.row-gradient.ct0, 
+td.row-gradient span.ct0  {
+	/* No style */
+}
+
+
+td.panelGridKey {
+	width: 200px;	
+}
+
+.panelGridValue {
+    word-wrap: break-word;
+}
+
+
+.validatedIcon {
+    color:cornflowerblue;
+
+}
+
+td.allele {
+    table-layout: fixed;
+    word-wrap: break-word;
+    padding: 4px 2px !important ;
+}
+
+.protocol-sequencing-icon {
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 1px 2px; /* Some padding */
+    font-size: 10px; /* Set a font size */
+    cursor: help; /* Mouse pointer on hover */
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 5px;
+
+    font-weight: 600;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.genome-sequencing-icon {
+    background-color: #0066ff; /* Blue background */
+
+}
+
+.exome-sequencing-icon {
+    background-color: #669900; /* Green background */
+
+}
+
+
+.targeted-sequencing-icon {
+    background-color: #999999; /* Grey background */
+
+}

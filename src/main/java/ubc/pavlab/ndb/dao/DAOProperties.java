@@ -33,8 +33,8 @@ public class DAOProperties {
     // Constants ----------------------------------------------------------------------------------
 
     // private static final String PROPERTIES_FILE = "database.properties";
-    private static final String PROPERTIES_PATH = "/usr/local/tomcat/";
-    private static final String PROPERTIES_BACKUP_PATH = System.getProperty( "user.dir" );
+    private static final String PROPERTIES_BACKUP_PATH = System.getProperty( "user.home" );
+    private static final String PROPERTIES_PATH = System.getProperty( "catalina.base" );
     private static final String PROPERTIES_FILE = "db.properties";
     private static final PropertiesFile PROPERTIES = new PropertiesFile();
 

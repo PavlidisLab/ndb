@@ -1,0 +1,36 @@
+/*
+	Stylesheet for the stats pages
+*/
+
+/* The default tooltip text on the pie chart is not very obvious. */
+div.jqplot-highlighter-tooltip{
+				font-weight:bold;
+				font-size:15px;
+				/*text-decoration:underline;*/
+				margin-bottom: 10px;
+				background: #f3f3f3!important;
+			}
+	
+/* Change the title of the pie chart (from Primefaces) to match the style of the heatmap (from Highcharts.js)  */	
+div.jqplot-title{
+	color:#333333;
+	font-size:18px;
+	fill:#333333;
+	width:936px;"
+}
+
+.ui-panelgrid-cell {
+    vertical-align: top !important;
+}
+
+div.section {
+	margin-bottom:50px;
+}
+
+div.section hr {
+	margin-bottom:30px;
+}
+
+div.section p {
+	margin-left:30px;
+}

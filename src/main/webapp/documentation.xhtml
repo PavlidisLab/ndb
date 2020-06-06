@@ -1,0 +1,345 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="pageTitle">Documentation</ui:define>
+
+
+	<ui:define name="css">
+		<h:outputStylesheet library="css" name="variant.css"/>
+		<h:outputStylesheet library="css" name="documentation.css" />
+	</ui:define>
+	
+	<ui:define name="js">
+		<script type="text/javascript">
+	        	googleAnalyticsTrackPageviewIfConfigured( "/#{applicationProperties.getProperty('ndb.ga_app')}/documentation" );
+	    </script>
+	</ui:define>
+
+	<ui:define name="content">
+	<script>
+		$( document ).ready(function() {
+			// Build Table of Contents 
+			$('.section').each(function() {
+				$('#toclist').append(
+				   '<li><a href="#'+$(this).attr('id')+'">'+$(this).text()+'</a></li>'
+				 );
+			});
+		});
+	</script>
+		<!-- BREADCRUMBS -->
+		<p:panel styleClass="no-border" >
+			<p:breadCrumb style="float:left;"> 
+				<p:menuitem value="Categories" url="#" />
+				<p:menuitem value="Home" url="index.xhtml" />
+				<p:menuitem value="Documentation" url="documentation.xhtml" />
+			</p:breadCrumb>  	            
+		</p:panel>		
+ 		
+		<div class="content-area section-content">		
+			<h2> Documentation </h2>			
+			<!-- Table of contents. -->
+			<div id="toc" class="toc">
+				<div id="toctitle">
+					<h3>Table of contents</h3>
+				</div>
+				<!-- Content loaded dynamically on document ready. -->
+				<ul id="toclist"></ul>
+			</div>
+				
+			<!-- Documentation content -->
+
+			<p>
+				VariCarta is a web-based database developed with the goal of collecting, reconciling and consistently cataloguing literature-derived genomic variants found in ASD subjects using primarily whole exome or whole genome sequencing. We put emphasis on precise, systematic curation of the data, standardized processing and reporting, identification of overlaps, and comprehensive annotation.
+			</p>
+			<p>
+				VariCarta can be used to query variants by gene, genomic location, publication or overlap between the studies (using the clickable heatmap on the <p:link  href="/stats.xhtml" >Statistics page</p:link>).
+			</p>
+			<p>
+				A manuscript for VariCarta is available on Autism Research: "<p:link href="https://doi.org/10.1002/aur.2236" target="_blank">VariCarta: A Comprehensive Database of Harmonized Genomic Variants Found in Autism Spectrum Disorder Sequencing Studies.</p:link>" (2019) Belmadani M, Jacobson M, Holmes N, Phan M, Nguyen T, Pavlidis P, Rogic S. Autism Res. 2019 Dec;12(12):1728-1736. doi: 10.1002/aur.2236
+			</p>
+
+			<h3 id="search" class="section">Searching for variants</h3>
+			<p>
+				The variant database can be queried through the search bar displayed at the top of the <p:link  href="/" >Home page</p:link>.
+				Start typing a gene symbol under <strong>Gene Symbol</strong>, choose the desired gene from the offered list of suggestions and click <strong>Submit</strong>.
+			</p>
+			<p>
+				Alternatively, you can search for variants by genomic region. We are currently using the <strong>Hg19/GRCh37</strong> genome assembly.
+				For search by <strong>Region</strong>, you need a chromosome, start coordinate, and stop coordinate.
+				For example, to search the 1<sup>st</sup> chromosome from coordinates 1000000 to 2000000, enter <strong>chr1:1000000-2000000</strong>.
+			</p>
+
+			<h3>Searching for variants from specific publications.</h3>
+				<p>Our <p:link  href="/publications.xhtml" >Publication page</p:link> lists descriptions of studies incorporated in our database.
+					Click on the book icon in the Details column to see details of the specific publication. You can retrieve all the variants from the
+					paper that are included in VariCarta by clicking the number under <em>Variant Event Count</em>.
+				</p>
+				<p>
+					<em>Example</em>: The <p:link href="/paper.xhtml?paperId=82">De Rubeis, 2014</p:link> study reports 1694 variants included in our database.
+				</p>
+
+			<h3>Searching for variants overlapping different publications.</h3>
+				<p>
+					It is possible to look up the overlapping variants between two different publications through our
+					<p:link href="stats.xhtml">Statistics page</p:link>.
+					Simply go to the <p:link href="stats.xhtml#variantOverlap">Variant Event Overlap heatmap</p:link>,
+					and click the grid cell with the intersecting papers of interest.
+				</p>
+
+			<h3 class="section">Variant table</h3>
+			<p>
+				Any kind of variant search will return a variant table that shows the summarized information about all the variants found in the query region.
+				It also provides links to gene information from the Ensembl and NCBI databases, genomic annotation of the region using the UCSC Genome browser,
+				information about papers that reported the variants and original, published variant data. The variants in the table are represented either as variant
+				events or complex variant events.
+			</p>
+
+			<p>
+				VariCarta’s <strong>variant event</strong> is a unique combination of a reference allele, its genomic location and alternative allele belonging to a
+				single individual. This allows us to identify and group together the same variants from the same individuals that have been reported in multiple studies.
+				Each variant event is displayed only once in VariCarta’s variant result table, with the Source column listing IDs of all publications reporting it.
+				The publication IDs are tagged to indicate the scope of sequencing study (
+				<span class="protocol-sequencing-icon genome-sequencing-icon" title="Genome sequencing">G</span>
+				whole genome sequencing,
+
+				<span class="protocol-sequencing-icon exome-sequencing-icon" title="Exome sequencing">E</span>
+				whole exome sequencing,
+
+				<span class="protocol-sequencing-icon targeted-sequencing-icon" title="Targeted gene sequencing">T</span>
+				targeted sequencing).
+				<p:link href="/variant.xhtml?chr=11&amp;start=26587227&amp;stop=26587227"> Here</p:link> is an example of a	variant event reported in two different papers with different sequencing methods.
+			</p>
+
+			<p>
+				VariCarta complex <strong>variant event</strong> are a grouping of two or more variant events from the same individual that differ but have overlapping
+				or adjacent genomic coordinates. This indicates that the grouped variant events might be describing the same underlying genotype but are incongruent due
+				different reporting conventions. A complex event is initially displayed as one row that can be expanded to show the information about
+				each grouped variant event.
+				<p:link href="/variant.xhtml?chr=5&amp;start=134059281&amp;stop=134059281">Here</p:link> is an example of a complex variant event.
+			</p>
+			<p>
+				The original variant data from the source publication can be accessed by clicking on a magnifying glass
+				icon. All query results are available for download as plain text/csv format from the spreadsheet icon in
+				the table navigation header or footer bar.
+			</p>
+
+			<h3>Column description</h3>
+
+			<p> Below is a description of each column found in the variant table.</p>
+
+			<table class="tg-coldef">
+				<tr>
+					<th class="tg-coldef-cell">Column name</th>
+					<th class="tg-coldef-cell">Description</th>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Gene</td>
+					<td class="tg-coldef-cell">HUGO Gene symbol. Clicking the symbol link will search all genes in the database for that gene. An icon for NCBI and Ensembl is also displayed and linked to their corresponding page. Internally, genes in VariCarta are anchored on the NCBI gene IDs.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">ID</td>
+					<td class="tg-coldef-cell">Subject/Sample identifier. We display the string identifier used in the literature (column sample_id in the exported data), and hovering your mouse cursor over the text will display the internal VariCarta subject identifier (subject_id in the exported data.)</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Location</td>
+					<td class="tg-coldef-cell">Genomic coordinated on the Hg19 human genome reference assembly. The format is CHROMOSOME:START_POSITION-END_POSITION. Coordinates use 1-based indexing.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">REF</td>
+					<td class="tg-coldef-cell">Reference DNA nucleotides.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">ALT</td>
+					<td class="tg-coldef-cell">Variant DNA nucleotides</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Context</td>
+					<td class="tg-coldef-cell">Functional context of the variant determined by annovar. Values can include: downstream, exonic, intergenic, intronic, ncRNA_exonic, ncRNA_intronic, ncRNA_splicing, splicing, upstream, UTR3, UTR5.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">☑ (Validation)</td>
+					<td class="tg-coldef-cell">Indicates whether validation of the variant was done using an orthogonal method, such as sanger sequencing. Hovering your mouse cursor over the checkmark in individual variant table rows will display the validation method reported in the study.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Inheritance</td>
+					<td class="tg-coldef-cell">Reported inheritance status for the variant.
+						<br/>
+						<br/>Values can be:
+						<br/>d - "De novo" - Variant was not found the parents.
+						<br/>i - "Inherited" - Variant is reported to be inherited.
+						<br/>p - "Paternal" - Variant is reported to be inherited from the paternal side.
+						<br/>m - "Maternal" - Variant is reported to be inherited from the maternal side.
+						<br/>b - "Both parents" - Both parents are have the variant.
+						<br/>u - "Unknown" - Inheritance is reported as unknown.
+						<br/>mo - "Mosaic" - Variant is reported to be of mosaic origins.
+						<br/>mm - "Mosaic Mat." - Variant is reported to be mosaic and phased from the maternal side.
+						<br/>mp - "Mosaic Pat." - Variant is reported to be mosaic and phased from the paternal side.
+						<br/>mi - "Mosaic Inh." - Variant is reported to be inherited but may have been mosaic in the parent.
+						<br/>mb - "Mosaic Both" - Variant is reported to be inherited and appears to be mosaic in both parents.
+						<br/>
+						<br/>Please consider that our curators are using their best judgement based on the available information. Some studies label report mosaicism based on a qualitative confidence (High or Low), while others report an observed percentage of mosaic alleles.
+					</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Effects</td>
+					<td class="tg-coldef-cell">Transcriptional consequence of the mutation. Values can include:<br/><br/><br/>frameshift<br/>nonframeshift<br/>nonsynonymous<br/>splicing<br/>stopgain<br/>stoploss<br/>synonymous<br/>unknown</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Transcript</td>
+					<td class="tg-coldef-cell">RefSeq transcripts affected. Each transcript is on a separate line, matched by row in the following cDNA and Protein columns. Provided by Annovar.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">cDNA</td>
+					<td class="tg-coldef-cell">HGVS cDNA variant for the transcript aligned in the "Transcript" column. Provided by Annovar.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Protein</td>
+					<td class="tg-coldef-cell">HGVS protein variant for the transcript aligned in the "Transcript" column. Provided by Annovar.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">CADD-Phred v1.0</td>
+					<td class="tg-coldef-cell">The phred-scaled CADD score for prediction of deleterious variants. Higher values indicate a prediction for higher likelihood of being deleterious. <br/><br/>Note that CADD 1.3 is available in the exported data. Only coding variants are scored where CADD was predicted, meaning some indels may not be scored either.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">ExAC v0.3</td>
+					<td class="tg-coldef-cell">ExAC v0.3 population frequencies derived from over 60,000 exomes.</td>
+				</tr>
+				<tr>
+					<td class="tg-coldef-cell">Sources</td>
+					<td class="tg-coldef-cell">Publications where this variant was reported. An icon display whether the study was Genomic (G), Exomic (E) or Targeted (T). <br/><br/>Clicking on the paper link in the variant table will display information about the paper, while clicking the magnifying glass will return the original source/spreadsheet data for that variant.</td>
+				</tr>
+			</table>
+
+
+			<h3 id="publications" class="section">Publications</h3>
+			<p>
+				Studies currently included in VariCarta are listed in a table on the Publications page.
+				This table contains basic publication information as well as some details about the scope of the study
+				(e.g. whole genome/exome vs targeted sequencing as given in the Technology column) and characteristics
+				of the studied subjects (number of subjects, cohorts used, diagnosis).
+			</p>
+			<p>
+				Clicking on a book icon in the Details column opens a page with more detailed information about the
+				study, including methodology used, size and	type of the cohort, and types of variants reported. We also
+				provide curation notes, which detail issues that had to be resolved during the curation	stage, or other
+				noteworthy information regarding the study. Clicking on the Variant Event Count will display all the
+				variants from that publication that are available in VariCarta.
+			</p>
+							
+			<h3 id="statistics" class="section">Statistics</h3>
+				<p>
+					The <p:link href="stats.xhtml"> Statistics page</p:link>  offers the basic database statistics,
+					including the total number of subject with unique VariCarta subject IDs, the number of all variant
+					events, as well as counts of some specific classes of variant events (de novo, LOF). We also include
+					several gene rankings based on different criteria. These rankings are not intended to be used for
+					ASD candidate gene pioritization because they do not exclude common variants and variants from
+					targeted studies (non-coding variants are excluded from gene ranking calculations).
+				</p>
+				 
+				 <p>
+					 The page also shows the distribution of variants across publications, functional effects and
+					 genomic features. Finally, it includes a heatmap of the variant overlap between publications, which
+					 illustrates the extent of variant double-reporting across the literature. The numbers in grid cell
+					 represent the number of same variant events that are reported in both of the intersecting papers.
+					 Hovering over a cell will produce a tool tip which list the two intersecting papers and the exact
+					 number of overlapping variants. The overlapping variants can be accessed by clicking on the number
+					 in the grid cell.
+				 </p>
+
+			<h3 id="curation" class="section">Literature search and curation</h3>
+
+			<p>
+			Initially we searched the literature for publications reporting genomic variants, SNVs and InDels, found in
+			subjects with an ASD diagnosis. The ongoing data collection relies on customized Google Scholar and PubMed
+			citation alerts using keywords (and their variants) “autism”, “genetic”, “variants”, and “sequencing”. We
+			exclude a paper if it has one of the following issues:
+			</p>
+
+
+				<ul class="exclusion-list" style="padding-inline-start: 80px;">
+					<li> it does not provide a clear ASD diagnosis for at least a subset of their subjects </li>
+					<li> it does not provide enough variant information to determine genomic coordinates and allele change unambiguously </li>
+					<li> it does not associate variants with subject IDs </li>
+				</ul>
+			<p>
+				We prioritize whole-genome and whole-exome studies over candidate gene studies and tend to process studies with a higher number of subjects first.
+
+				Papers currently included in VariCarta are listed on the <a href="publications">Publications</a> page.
+			</p>
+			<p>
+
+				For each publication, we applied the following curation procedures, with an intermediate goal of
+				organizing all relevant variant information in a tabular format that is ready for import. The first
+				step in this process is to copy the relevant text from the source file (typically a supplementary file)
+				as-is in a template import document. The completed document is composed of a set of predefined
+				worksheets, which contain the publication’s metadata, variant data and a description of the steps needed
+				to automatically extract, transform and load the data into a uniform variant data model. This document
+				is parsed by a computational pipeline, which validates and stores the data into a relational database.
+				The link to the pipeline’s source code as well as an example import document are found on
+				the <a href="downloads">Downloads page</a>.
+			</p>
+			<h3 class="section">Availability and usage</h3>
+			<p>
+				Data downloads and licensing information are available on the <p:link href="/downloads.xhtml">Download page</p:link>.
+				The source code for the web application and the variant processing pipeline is open source
+				(Apache 2 license) and available on GitHub under
+				<p:link href="https://github.com/PavlidisLab/ndb/tree/development">https://github.com/PavlidisLab/ndb</p:link>.
+			</p>
+
+			<h3 id="harmonizing" class="section">Variant nomenclature</h3>
+			<p>
+				To make this project possible, we had to consolidate different variant reporting conventions, coordinate
+				schemes and genome assemblies.
+			</p>
+			
+				
+			<h4>Conventions used in VariCarta</h4>
+			<ul>
+				<li><strong>Allele change:</strong> : In cases of insertions or deletions, we use a one base anchor to
+					disambiguate the allele change.	For <p:link href="/variant.xhtml?chr=1&amp;start=151377903&amp;stop=151377903">example</p:link>, an
+					insertion of CGTCATCA on the chromosome 1, at the coordinate 151377903 would be listed as T,
+					TCGTCATCA, chr1:151377903-151377903	for its reference allele (REF), alternate allele (ALT), and
+					genomic location. For single nucleotide variants (SNVs), we simply display the before and after
+					nucleotides as REF and ALT.</li>
+				<li><strong>Coordinate system:</strong> The index is 1-based, meaning that a variant from 10,000-10,003 would affect 4 bases.</li>
+			</ul>
+
+			<h3 id="definitions" class="section">Some definitions</h3>
+			<p>
+				A <strong><em>de novo</em> variant</strong>  is a type of DNA mutation that emerges for the first time
+				in a family. This type of mutation arises in a germ cell (egg or sperm) of one of the parents or in the
+				fertilized egg itself and it is not present in parental genomes of an individual. <em>De novo</em>
+				mutations are usually identified using trio or quad	family DNA sequencing. Some of publications
+				primarily report <em>de novo</em> variants, while others report also parentally inherited variants.
+				In VariCarta, the Inheritance column in	the variant table would indicate if a variant is known to be
+				<em>de novo</em>.
+
+			</p>
+			<p>
+				<strong>Loss of Function (LoF) variants</strong> are DNA mutations that are predicted to disrupt the
+				function of a protein coding gene. Mutations that introduce an early stop codon (nonsense variant),
+				insertions or deletions (indels) that change the reading frame (frameshift variants) and splicing
+				variants (DNA changes in the close vicinity of an exon-intron boundary affecting splicing of pre-mRNA)
+				are examples of  LoF variants. The following types of variants are considered to be LoF in VariCarta:
+				stopgain, stoploss, splicing, frameshift insertion, frameshift deletion and frameshift substitution.
+				The variant type is indicated in the Effect column in the variant table where the LoF variants are
+				highlighted in red
+
+			</p>
+
+			<h3 id="contact" class="section">Contact</h3>
+				<p> 
+					To contact us, please send an e-mail to <a href="mailto:#{applicationProperties.getProperty('ndb.email')}">#{applicationProperties.getProperty('ndb.email')}</a>.
+				</p>
+		
+		</div>			
+	</ui:define>
+
+</ui:composition>
