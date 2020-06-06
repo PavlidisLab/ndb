@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="paper" />
+        <composite:attribute name="eventCnt" />
+		<composite:attribute name="showMore" default="True" />
+    </composite:interface>
+    <composite:implementation>
+    
+	            <p:panelGrid styleClass="label-value-panel" style="width:100%;">
+<!-- 	                <f:facet name="header">
+				        <p:row>
+				            <p:column colspan="3">Summary</p:column>
+				        </p:row>						
+	                </f:facet> -->
+	            	
+	            	<p:row>
+	            		<p:column><h:outputText value="Title" style="font-weight:bold" /></p:column>
+	                	<p:column colspan="2">
+	                		<em>
+	                			<h:outputText value="#{cc.attrs.paper.title}" />
+	                		</em>
+						</p:column>  
+	                </p:row>
+	                
+	 				<p:row>
+	                <p:column><h:outputText value="Authors"  style="font-weight:bold"  /></p:column>
+	                <p:column colspan="2">
+						<h:outputText value="#{cc.attrs.paper.author}" />
+	                </p:column>
+	 				</p:row>
+
+					<ui:remove>
+						<p:row>
+						<p:column><h:outputText value="Publisher"  style="font-weight:bold"  /></p:column>
+						<p:column colspan="2"><h:outputText value="#{cc.attrs.paper.publisher}  (#{cc.attrs.paper.year})" />	</p:column>
+						</p:row>
+					</ui:remove>
+	 				<p:row>
+	                <p:column><h:outputText value="Technology"  style="font-weight:bold"  /></p:column>
+	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.technology}" />	</p:column>
+	                </p:row>
+	 				<p:row>
+	                <p:column><h:outputText value="Variant source"  style="font-weight:bold"  /></p:column>
+	                <p:column colspan="2"><h:outputText value="#{cc.attrs.paper.paperTable}" />	</p:column>
+	                </p:row>
+
+	            	<p:row>
+	            		<p:column><h:outputText value="Cohorts" style="font-weight:bold" /></p:column>
+	            		<p:column><h:outputText value="#{cc.attrs.paper.cohortSource}" /></p:column>
+	            	</p:row>
+
+					<p:row>
+	    	        	<p:column><h:outputText value="Design" style="font-weight:bold" /></p:column>
+	        	    	<p:column><h:outputText value="#{cc.attrs.paper.design}" /></p:column>
+	            	</p:row>
+
+	                <p:row>	                
+	            		<p:column><h:outputText value="URL"  style="font-weight:bold"  /></p:column>
+	            		<p:column colspan="2">
+	            			<h:outputLink value="#{cc.attrs.paper.url}"  target="_blank">		            	
+	                			<h:outputText value="#{cc.attrs.paper.url}" />
+	                		</h:outputLink>
+	                	</p:column>
+	                </p:row>
+					<p:row>
+						<p:column><h:outputText value="Pubmed"  style="font-weight:bold"  />
+							<p:column colspan="2">
+								<h:outputLink value="#{cc.attrs.paper.pubmed_url}" target="_blank" >
+									<h:outputText value="#{cc.attrs.paper.pubmed_id}" />
+								</h:outputLink>
+							</p:column>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<h:outputText value="Subject count"  style="font-weight:bold"  />
+						</p:column>
+						<p:column colspan="2" styleClass="single-numeric">
+							<h:outputText value="#{cc.attrs.paper.display_count}"  />
+
+
+								<h:outputText rendered="#{cc.attrs.paper.ambiguous_subjects}" value=" - " />
+								<h:outputText id="ambiguousSubjectsIcon"
+											  class="fa fa-exclamation-triangle"
+											  rendered="#{cc.attrs.paper.ambiguous_subjects}"
+											  title="The number of subjects for this study could not be determined directly
+										from the variant data; the value given is that reported by the authors in the
+										publication."
+								/>
+								<p:tooltip
+										id="toolTipAmbiguousSubjects"
+										for="ambiguousSubjectsIcon"
+										value="The number of subjects for this study could not be determined directly
+										from the variant data; the value given is that reported by the authors in the
+										publication."
+										position="top"/>
+
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column><h:outputText value="Variant event count"  style="font-weight:bold"  /></p:column>
+						<p:column colspan="2" styleClass="single-numeric">
+							<p:link outcome="variant" value="#{cc.attrs.eventCnt}" >
+								<f:param name="paperId" value="#{cc.attrs.paper.id}" />
+							</p:link>
+						</p:column>
+					</p:row>
+
+
+					<p:row>
+						<p:column><h:outputText value="Curation notes"  style="font-weight:bold"  />
+						</p:column>
+						<p:column colspan="2" styleClass="single-numeric">
+							<h:outputLink value = "notes/#{cc.attrs.paper.paperKey}/NOTES" >View</h:outputLink>
+						</p:column>
+					</p:row>
+
+
+					<p:row rendered="#{cc.attrs.showMore}">
+						<p:column colspan="1">
+							<h:outputText />
+						</p:column>
+						<p:column colspan="1">
+							<p:link outcome="paper" value="More" >
+								<f:param name="paperId" value="#{cc.attrs.paper.id}" />
+							</p:link>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+
+</composite:implementation>
+
+
+</html>

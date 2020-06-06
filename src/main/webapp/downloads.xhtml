@@ -1,21 +1,180 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition template="/WEB-INF/templates/mainTemplate.xhtml"
-    xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="pageTitle">Nate DB!</ui:define>
-	
-	<ui:define name="css">
-		<h:outputStylesheet library="css" name="index.css" />
-	</ui:define>
-	
-	<ui:define name="content">
-	<p>This is the downloads content.</p>
-	</ui:define>
+    <ui:define name="pageTitle">Downloads</ui:define>
 
+    <ui:define name="css">
+        <h:outputStylesheet library="css" name="style.css"/>
+    </ui:define>
+
+    <ui:define name="js">
+        <script type="text/javascript">
+            googleAnalyticsTrackPageviewIfConfigured("/#{applicationProperties.getProperty('ndb.ga_app')}/downloads");
+        </script>
+    </ui:define>
+
+
+    <ui:define name="content">
+        <p:panel styleClass="no-border clearfix" style="float:right;">
+            <ui:include src="/searchBar.xhtml"/>
+        </p:panel>
+
+        <!-- BREADCRUMBS -->
+        <p:panel styleClass="no-border">
+            <p:breadCrumb style="float:left;">
+                <p:menuitem value="Categories" url="#"/>
+                <p:menuitem value="Home" url="index.xhtml"/>
+                <p:menuitem value="Downloads" url="downloads.xhtml"/>
+            </p:breadCrumb>
+        </p:panel>
+
+        <br/>
+
+        <h:form style="padding:30px;">
+
+            <br/>
+            <p:separator/>
+            <h2 style="margin:0 auto 30px auto">Data</h2>
+
+            <p>These data are free to use for academic and non-commericial purposes. This work is a combination of sources from the literature using previously published source information made public. By using this database, the user agrees not to attempt to de-identify subjects.</p>
+
+            <p:panelGrid id="panelData" cellpadding="5" border="0" styleClass="no-border">
+
+                <p:row>
+                    <p:column>
+                        <h:outputLink styleClass="download-link"
+                                      value="exports/export_latest.tsv"> Latest database export (text/.tsv) </h:outputLink>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value=" Download a database export of the latest version in .tsv format."/>
+                    </p:column>
+                </p:row>
+
+                <!--
+                <p:row>
+                    <p:column>
+                        <h:outputLink styleClass="download-link"
+                                      value="exports/export_latest.vcf"> Latest database export (text/.vcf) </h:outputLink>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value=" Download a database export of the latest version in .vcf format."/>
+                    </p:column>
+                </p:row>
+                -->
+
+                <p:row>
+                    <p:column>
+                        <h:outputLink styleClass="download-link"
+                                      value="notes/all_notes.zip"> Curation notes (.zip) </h:outputLink>
+                    </p:column>
+                    <p:column>
+                        <h:outputText
+                                value=" Zip file containing per publication curation notes (plain text) describing what was done to prepare importing variant data."/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <h:outputLink styleClass="download-link" value="exports/">Archive</h:outputLink>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value=" Browse previous versions of the database exports."/>
+                    </p:column>
+                </p:row>
+
+            </p:panelGrid>
+
+            <p:separator/>
+            <h2 style="margin:0 auto 30px auto">Software</h2>
+
+            <p:panelGrid id="panelSoftware" cellpadding="5" border="0" styleClass="no-border">
+
+
+                <p:row>
+                    <p:column>
+                        <h:outputLink styleClass="download-link"
+                                      value="https://github.com/PavlidisLab/ndb/tree/development"> Web application </h:outputLink>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="Source code for the web application."/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLink styleClass="download-link"
+                                      value="http://github.com/PavlidisLab/ndb/tree/development/etc/paperpipe"> Publication import pipeline </h:outputLink>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value=" Source code for the publication import pipeline. "/>
+                    </p:column>
+                </p:row>
+
+                <ui:remove>
+                    <p:row>
+                        <p:column>
+                            <h:outputLink styleClass="download-link"
+                                          value="database_schema.sql"> SQL Schema </h:outputLink>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value=" Current schema used for the database. "/>
+                        </p:column>
+                    </p:row>
+                </ui:remove>
+            </p:panelGrid>
+
+
+            <br/>
+            <p:separator/>
+            <h2 style="margin:0 auto 30px auto">Examples</h2>
+
+            <p:panelGrid id="panelExamples" cellpadding="5" border="0" styleClass="no-border">
+
+                <p:row>
+                    <p:column>
+                        <h:outputLink styleClass="download-link"
+                                      value="imports/Neale2012.xlsx"> Example import document (.xlsx) </h:outputLink>
+                    </p:column>
+                    <p:column>
+                        <h:outputText
+                                value=" Example of an import spreadsheet used for the Neale2012 publication."/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputLink styleClass="download-link"
+                                      value="notes/Neale2012/NOTES"> Example curation notes (.txt) </h:outputLink>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value=" Example curation notes to go with the example import spreadsheet."/>
+                    </p:column>
+                </p:row>
+
+            </p:panelGrid>
+            <p:separator/>
+
+            <br/>
+            <span
+                    xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Dataset" property="dct:title"
+                    rel="dct:type">VariCarta: a comprehensive database of harmonized genomic variants found in ASD sequencing studies</span> by
+            <a xmlns:cc="http://creativecommons.org/ns#" href="https://pavlab.msl.ubc.ca/"
+               property="cc:attributionName" rel="cc:attributionURL">Pavlidis Lab, UBC</a> is licensed under a <a
+                rel="license"
+                href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+            <br/>
+            <br/>
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img
+                    alt="Creative Commons Licence" style="border-width:0"
+                    src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a><br/>
+            <br/>
+            <br/>
+
+
+        </h:form>
+    </ui:define>
 </ui:composition>

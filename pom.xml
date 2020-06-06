@@ -11,8 +11,8 @@
 
 		<!-- Generic properties -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Web -->
@@ -28,7 +28,17 @@
 	</properties>
 
 	<dependencies>
-		<!-- JSF -->
+	  
+	  <!-- JAVAX Annotations for newer javas (8+) https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
+
+		<dependency>
+		  <groupId>javax.annotation</groupId>
+		  <artifactId>javax.annotation-api</artifactId>
+		  <version>1.3.2</version>
+		</dependency>
+	  
+	  
+	  <!-- JSF -->
 
 		<dependency>
 			<groupId>com.sun.faces</groupId>
@@ -56,7 +66,13 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>5.1</version>
+			<version>6.1</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.primefaces.themes</groupId>
+		    <artifactId>redmond</artifactId>
+		    <version>1.0.10</version>
 		</dependency>
 		
 		<!-- Apache Commons Lang -->
@@ -71,8 +87,11 @@
 			<version>3.0.0</version> </dependency> -->
 
 		<!-- Font Awesome -->
-		<!-- <dependency> <groupId>org.webjars</groupId> <artifactId>font-awesome</artifactId> 
-			<version>4.2.0</version> </dependency> -->
+		<dependency> 
+			<groupId>org.webjars</groupId> 
+			<artifactId>font-awesome</artifactId> 
+			<version>4.2.0</version> 
+		</dependency>
 
 		<!-- PDF Exporting -->
 		<!-- <dependency> <groupId>com.lowagie</groupId> <artifactId>itext</artifactId> 
@@ -84,8 +103,8 @@
 
 		<!-- Omnifaces -->
 
-		<!-- <dependency> <groupId>org.omnifaces</groupId> <artifactId>omnifaces</artifactId> 
-			<version>1.10</version> </dependency> -->
+		<dependency> <groupId>org.omnifaces</groupId> <artifactId>omnifaces</artifactId>
+			<version>1.10</version> </dependency>
 
 		<!-- Logging -->
 
@@ -131,6 +150,57 @@
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
+		
+		<!-- google concurrent-trees -->
+        <dependency>
+		    <groupId>com.googlecode.concurrent-trees</groupId>
+		    <artifactId>concurrent-trees</artifactId>
+		    <version>2.4.0</version>
+		</dependency>
+		
+		<!-- Dynamic Proxies -->
+		
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+		
+		<!-- Constructorless Object Creation (used for dynamically proxies to immutable objects) -->
+		<dependency>
+			<groupId>org.objenesis</groupId>
+			<artifactId>objenesis</artifactId>
+			<version>2.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.1</version>
+		</dependency>
+		
+		<!-- GSON -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.35</version>
+			<type>jar</type>
+	    	<scope>compile</scope>
+        </dependency>
+
+	<dependency>
+		<groupId>org.mockito</groupId>
+		<artifactId>mockito-all</artifactId>
+		<version>1.10.19</version>
+	</dependency>
+			
+
 
 	</dependencies>
 
@@ -145,7 +215,7 @@
 
 	<build>
 		<directory>target</directory>
-		<finalName>gotrack</finalName>
+		<finalName>ndb</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<outputDirectory>target/classes</outputDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
@@ -173,7 +243,7 @@
 			</testResource>
 			<testResource>
 				<targetPath>WEB-INF</targetPath>
-				<directory>target/gotrack/WEB-INF</directory>
+				<directory>target/ndb/WEB-INF</directory>
 				<includes>
 					<include>**/*.xml</include>
 				</includes>
@@ -192,11 +262,84 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
+    <profiles>
+        <profile>
+            <id>testdb.build</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>testdb.build</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>
+                        <version>1.5</version>
+                        <dependencies> <!-- specify the dependent JDBC driver here -->
+                            <dependency>
+                                <groupId>mysql</groupId>
+                                <artifactId>mysql-connector-java</artifactId>
+                                <version>5.1.10</version>
+                                <type>jar</type>
+                            </dependency>
+                        </dependencies>
+
+			<!--common configuration shared by all executions-->
+                        <configuration>
+                            <driver>com.mysql.jdbc.Driver</driver>
+                            <username>${ndb.testdb.build.user}</username>
+                            <password>${ndb.testdb.build.password}</password>
+                            <onError>abort</onError>
+                            <autocommit>true</autocommit>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>drop-add-testdb</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <url>${bootstrap.db.url}</url>
+                                    <username>${ndb.testdb.build.user}</username>
+                                    <password>${ndb.testdb.build.password}</password>
+                                    <autocommit>false</autocommit>
+                                    <sqlCommand>
+									<![CDATA[
+                                        drop database if exists ${ndb.testdb.name};
+									create database ${ndb.testdb.name}
+                                        ]]>
+                                    </sqlCommand>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>load-testdb-schema</id>
+                                <phase>process-test-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <url>${ndb.testdb.build.url}</url>
+                                    <srcFiles>
+                                        <srcFile>src/main/resources/sql/schema.sql</srcFile>
+                                        <srcFile>src/test/resources/sql/combined.sql</srcFile>
+                                    </srcFiles>
+                                    <onError>abort</onError>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+	</profiles>
 </project>

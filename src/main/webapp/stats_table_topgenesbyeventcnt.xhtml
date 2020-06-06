@@ -1,0 +1,16 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	  	<p:dataList value="#{statsService.topGenesByEventCnt}" var="g" type="ordered" styleClass="datalist-small datalist-right">
+	        <f:facet name="header">
+	            Genes with the most variant events reported
+	        </f:facet>
+			<p:link outcome="variant" value="#{g.symbol}">
+			    <f:param name="NCBIGeneId" value="#{g.geneId}" />
+			</p:link>
+	        - #{g.description}
+    	</p:dataList>
+</ui:composition>
