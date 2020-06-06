@@ -100,4 +100,4 @@ See also the list of [contributors](https://github.com/PavlidisLab/ndb) who part
 
 ## License
 
-This project is licensed under the ___ - see the [LICENSE.md](LICENSE.md) file for details
+The source code for this project is licensed under the Apache 2.0 - see the [LICENSE](LICENSE) file for details
