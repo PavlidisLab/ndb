@@ -42,6 +42,8 @@
             <p:separator/>
             <h2 style="margin:0 auto 30px auto">Data</h2>
 
+            <p>These data are free to use for academic and non-commericial purposes. This work is a combination of sources from the literature using previously published source information made public. By using this database, the user agrees not to attempt to de-identify subjects.</p>
+
             <p:panelGrid id="panelData" cellpadding="5" border="0" styleClass="no-border">
 
                 <p:row>
@@ -53,6 +55,19 @@
                         <h:outputText value=" Download a database export of the latest version in .tsv format."/>
                     </p:column>
                 </p:row>
+
+                <!--
+                <p:row>
+                    <p:column>
+                        <h:outputLink styleClass="download-link"
+                                      value="exports/export_latest.vcf"> Latest database export (text/.vcf) </h:outputLink>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value=" Download a database export of the latest version in .vcf format."/>
+                    </p:column>
+                </p:row>
+                -->
+
                 <p:row>
                     <p:column>
                         <h:outputLink styleClass="download-link"
@@ -60,7 +75,7 @@
                     </p:column>
                     <p:column>
                         <h:outputText
-                                value=" Zip file containing per publication curator notes (plain text) describing what was done to prepare importing variant data."/>
+                                value=" Zip file containing per publication curation notes (plain text) describing what was done to prepare importing variant data."/>
                     </p:column>
                 </p:row>
 
@@ -75,7 +90,6 @@
 
             </p:panelGrid>
 
-            <br/>
             <p:separator/>
             <h2 style="margin:0 auto 30px auto">Software</h2>
 
@@ -128,7 +142,7 @@
                     </p:column>
                     <p:column>
                         <h:outputText
-                                value=" Example of an import spreadsheet using for the Neale2012 publication."/>
+                                value=" Example of an import spreadsheet used for the Neale2012 publication."/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -137,11 +151,28 @@
                                       value="notes/Neale2012/NOTES"> Example curation notes (.txt) </h:outputLink>
                     </p:column>
                     <p:column>
-                        <h:outputText value=" Example curator notes to go with the example import spreadsheet."/>
+                        <h:outputText value=" Example curation notes to go with the example import spreadsheet."/>
                     </p:column>
                 </p:row>
 
             </p:panelGrid>
+            <p:separator/>
+
+            <br/>
+            <span
+                    xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Dataset" property="dct:title"
+                    rel="dct:type">VariCarta: a comprehensive database of harmonized genomic variants found in ASD sequencing studies</span> by
+            <a xmlns:cc="http://creativecommons.org/ns#" href="https://pavlab.msl.ubc.ca/"
+               property="cc:attributionName" rel="cc:attributionURL">Pavlidis Lab, UBC</a> is licensed under a <a
+                rel="license"
+                href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+            <br/>
+            <br/>
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img
+                    alt="Creative Commons Licence" style="border-width:0"
+                    src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a><br/>
+            <br/>
+            <br/>
 
 
         </h:form>

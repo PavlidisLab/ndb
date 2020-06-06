@@ -58,6 +58,8 @@ public final class AnnovarDTO {
     private final Double vest3Score;
     private final Double caddRaw;
     private final Double caddPhred;
+    private final Double caddRaw_1_3;
+    private final Double caddPhred_1_3;
     private final Double gerpRs;
     private final Double phyloP46wayPlacental;
     private final Double phyloP100wayVertebrate;
@@ -72,8 +74,8 @@ public final class AnnovarDTO {
             Double mutationTasterScore, String mutationTasterPred, Double mutationAssessorScore,
             String mutationAssessorPred, Double fathmmScore, String fathmmPred, Double radialSVMScore,
             String radialSVMPred, Double lrScore, String lrPred, Double vest3Score, Double caddRaw, Double caddPhred,
-            Double gerpRs, Double phyloP46wayPlacental, Double phyloP100wayVertebrate, Double siphy29wayLogOdds,
-            Double exac03, String clinvar20150629 ) {
+            Double caddRaw_1_3, Double caddPhred_1_3, Double gerpRs, Double phyloP46wayPlacental, Double phyloP100wayVertebrate,
+            Double siphy29wayLogOdds, Double exac03, String clinvar20150629 ) {
         this.id = id;
         this.variantId = variantId;
         this.genomicSuperDups = genomicSuperDups;
@@ -104,6 +106,8 @@ public final class AnnovarDTO {
         this.vest3Score = vest3Score;
         this.caddRaw = caddRaw;
         this.caddPhred = caddPhred;
+        this.caddRaw_1_3 = caddRaw_1_3;
+        this.caddPhred_1_3 = caddPhred_1_3;
         this.gerpRs = gerpRs;
         this.phyloP46wayPlacental = phyloP46wayPlacental;
         this.phyloP100wayVertebrate = phyloP100wayVertebrate;
@@ -230,6 +234,14 @@ public final class AnnovarDTO {
 
     public Double getCaddPhred() {
         return caddPhred;
+    }
+
+    public Double getCaddRaw_1_3() {
+        return caddRaw_1_3;
+    }
+
+    public Double getCaddPhred_1_3() {
+        return caddPhred_1_3;
     }
 
     public Double getGerpRs() {

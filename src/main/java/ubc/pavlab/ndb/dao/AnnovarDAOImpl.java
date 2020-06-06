@@ -45,10 +45,28 @@ public class AnnovarDAOImpl implements AnnovarDAO {
 
     // SQL Constants ----------------------------------------------------------------------------------
 
-    private static final String SQL_STAR = "id, variant_id, genomicSuperDups, esp6500siv2_all, 1000g2014oct_all, 1000g2014oct_afr, 1000g2014oct_eas, 1000g2014oct_eur, snp138, SIFT_score, SIFT_pred, Polyphen2_HDIV_score, Polyphen2_HDIV_pred, Polyphen2_HVAR_score, Polyphen2_HVAR_pred, LRT_score, LRT_pred, MutationTaster_score, MutationTaster_pred, MutationAssessor_score, MutationAssessor_pred, FATHMM_score, FATHMM_pred, RadialSVM_score, RadialSVM_pred, LR_score, LR_pred, VEST3_score, CADD_raw, CADD_phred, GERP_RS, phyloP46way_placental, phyloP100way_vertebrate, SiPhy_29way_logOdds, exac03, clinvar_20150629";
+    private static final String SQL_STAR = "id, variant_id, " +
+            "genomicSuperDups, " +
+            "esp6500siv2_all, 1000g2014oct_all, 1000g2014oct_afr, 1000g2014oct_eas, 1000g2014oct_eur, snp138, " +
+            "SIFT_score, SIFT_pred, " +
+            "Polyphen2_HDIV_score, Polyphen2_HDIV_pred, Polyphen2_HVAR_score, Polyphen2_HVAR_pred," +
+            "LRT_score, LRT_pred, " +
+            "MutationTaster_score, MutationTaster_pred," +
+            "MutationAssessor_score, MutationAssessor_pred," +
+            "FATHMM_score, FATHMM_pred, " +
+            "RadialSVM_score, RadialSVM_pred, " +
+            "LR_score, LR_pred, " +
+            "VEST3_score, " +
+            "CADD_raw, CADD_phred," +
+            "CADD13_raw, CADD13_phred, " +
+            "GERP_RS, " +
+            "phyloP46way_placental, phyloP100way_vertebrate," +
+            "SiPhy_29way_logOdds," +
+            "exac03," +
+            "clinvar_20150629";
     private static final String SQL_TABLE = "annovar_scores";
-    // SQL Statements
 
+    // SQL Statements
     private static final String SQL_FIND_BY_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE + " WHERE id = ?";
     private static final String SQL_FIND_BY_VARIANT_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
             + " WHERE variant_id = ?";
@@ -183,8 +201,10 @@ public class AnnovarDAOImpl implements AnnovarDAO {
                 resultSet.getDouble( "FATHMM_score" ), resultSet.getString( "FATHMM_pred" ),
                 resultSet.getDouble( "RadialSVM_score" ), resultSet.getString( "RadialSVM_pred" ),
                 resultSet.getDouble( "LR_score" ), resultSet.getString( "LR_pred" ),
-                resultSet.getDouble( "VEST3_score" ), resultSet.getDouble( "CADD_raw" ),
-                resultSet.getDouble( "CADD_phred" ), resultSet.getDouble( "GERP_RS" ),
+                resultSet.getDouble( "VEST3_score" ),
+                resultSet.getDouble( "CADD_raw" ), resultSet.getDouble( "CADD_phred" ),
+                resultSet.getDouble( "CADD13_raw" ), resultSet.getDouble( "CADD13_phred" ),
+                resultSet.getDouble( "GERP_RS" ),
                 resultSet.getDouble( "phyloP46way_placental" ), resultSet.getDouble( "phyloP100way_vertebrate" ),
                 resultSet.getDouble( "SiPhy_29way_logOdds" ), resultSet.getDouble( "exac03" ),
                 resultSet.getString( "clinvar_20150629" ) );

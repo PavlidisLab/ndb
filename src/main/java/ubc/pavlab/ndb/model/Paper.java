@@ -47,6 +47,7 @@ public final class Paper implements Comparable<Paper> {
     private final String pubmed_id;
     private final Integer display_count;
     private final boolean ambiguous_subjects;
+    private final String display_sequencing;
 
     public Paper( PaperDTO dto ) {
         this.id = dto.getId();
@@ -68,6 +69,7 @@ public final class Paper implements Comparable<Paper> {
         this.pubmed_id = dto.getPubmed_id();
         this.display_count = dto.getDisplay_count();
         this.ambiguous_subjects = dto.getAmbiguousSubjects();
+        this.display_sequencing= dto.getDisplay_sequencing();
 
     }
 
@@ -175,5 +177,7 @@ public final class Paper implements Comparable<Paper> {
         return ambiguous_subjects;
     }
 
-
+    public String getDisplay_sequencing() {
+        return display_sequencing;
+    }
 }

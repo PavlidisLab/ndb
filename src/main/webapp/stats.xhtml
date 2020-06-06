@@ -83,6 +83,9 @@
                 </div>
 
 
+                These rankings are not intended to be used for ASD candidate gene pioritization because they do not exclude common variants and variants from targeted studies (non-coding variants are excluded from gene ranking calculations).
+
+
             </div>
 
 
@@ -102,7 +105,7 @@
                 of variants collected from it.
             </p>
             <p:chart type="pie"
-                     model="#{statsView.pieModel}"
+                     model="#{statsView.compactPieModel}"
                      dataFormat="value"
                      showDataLabels="true"
                      styleClass="center-block"
@@ -160,13 +163,23 @@
                     “K” (e.g. 3462 variant events collected from Lim2017 are shown as “3K” on the diagonal). Hovering
                     over a grid cell will pop-up a tool tip which shows the two intersecting papers and the exact number
                     of overlapping variants. The overlapping variants can be accessed by clicking on the number in the
-                    grid cell.
+                    grid cell. Note that we removed papers that had no overlaping variants with other papers for a more
+                    compact visualization.
+
+                </p>
+
+                <p>
+                    <a href="resources/static/variant_heatmap_latest.html" target="_blank" >(Open in a new tab)</a>
                 </p>
 
             </div>
-            <div id="heatmap-container" style="height: 1000px; width: 80%; margin: 0 auto;">
+            <!--
+            <div id="heatmap-container" style="height: 1400px; width: 100%; margin: 0 auto;">
 
             </div>
+            -->
+            <ui:include src="resources/static/variant_heatmap_latest.html"/>
+
         </div>
 
     </ui:define>

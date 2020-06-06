@@ -60,6 +60,8 @@ a:hover {text-decoration: underline;}
 	border-style: none;
 }
 
+ul.spaced-list  li { padding: 5px 0px; }
+
 .no-padding {
 	padding: none !important;
 }
@@ -108,4 +110,3 @@ button.red span {
 .ui-widget {
     font-size: 90%;
 }
-
