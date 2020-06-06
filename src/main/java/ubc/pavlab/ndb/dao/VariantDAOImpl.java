@@ -64,6 +64,9 @@ public class VariantDAOImpl implements VariantDAO {
     private static final String SQL_FIND_BY_SUBJECT_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
             + " WHERE subject_id = ?";
 
+    private static final String SQL_MATCH_BY_SAMPLE_ID = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
+            + " WHERE sample_id LIKE ?";
+
     // TODO: Warning: This was modifed to find event by coordinates. This possibly breaks indexing from MySQL; revisit if performance suffers.
     private static final String SQL_FIND_BY_POSITION = "SELECT " + SQL_STAR + " FROM " + SQL_TABLE
             + " WHERE event_id in (SELECT event_id FROM " +SQL_TABLE+ " WHERE chromosome = ? and (start_hg19 >= ? and start_hg19 <= ? or stop_hg19 >= ? and stop_hg19 <= ?))";
@@ -142,6 +145,15 @@ public class VariantDAOImpl implements VariantDAO {
         }
         return findAll( SQL_FIND_BY_POSITION, chr, start, stop, start, stop );
     }
+
+    @Override
+    public List<VariantDTO> findBySample( String sampleLike ) throws DAOException {
+        if ( sampleLike == null ) {
+            return Lists.newArrayList();
+        }
+        return findAll( SQL_MATCH_BY_SAMPLE_ID, sampleLike );
+    }
+
 
     @Override
     public List<VariantDTO> findByPaperOverlap( Integer paperId, Integer overlapPaperId ) throws DAOException {

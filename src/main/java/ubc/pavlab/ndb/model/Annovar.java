@@ -58,6 +58,8 @@ public class Annovar {
     private final Double vest3Score;
     private final Double caddRaw;
     private final Double caddPhred;
+    private final Double caddRaw_1_3;
+    private final Double caddPhred_1_3;
     private final Double gerpRs;
     private final Double phyloP46wayPlacental;
     private final Double phyloP100wayVertebrate;
@@ -96,6 +98,8 @@ public class Annovar {
         this.vest3Score = dto.getVest3Score();
         this.caddRaw = dto.getCaddRaw();
         this.caddPhred = dto.getCaddPhred();
+        this.caddRaw_1_3 = dto.getCaddRaw_1_3();
+        this.caddPhred_1_3 = dto.getCaddPhred_1_3();
         this.gerpRs = dto.getGerpRs();
         this.phyloP46wayPlacental = dto.getPhyloP46wayPlacental();
         this.phyloP100wayVertebrate = dto.getPhyloP100wayVertebrate();
@@ -222,6 +226,14 @@ public class Annovar {
 
     public Double getCaddPhred() {
         return caddPhred;
+    }
+
+    public Double getCaddRaw_1_3() {
+        return caddRaw_1_3;
+    }
+
+    public Double getCaddPhred_1_3() {
+        return caddPhred_1_3;
     }
 
     public Double getGerpRs() {

@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import com.mysql.fabric.xmlrpc.base.Params;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.primefaces.model.StreamedContent;
@@ -37,7 +39,7 @@ public class VariantView implements Serializable {
 
     private static final Logger log = Logger.getLogger( VariantView.class );
 
-    private static final int LAZY_LOAD_MAX_SIZE = 150;
+    private static final int LAZY_LOAD_MAX_SIZE = 10;
 
     private String query;
 
@@ -86,6 +88,8 @@ public class VariantView implements Serializable {
         String stop = requestParams.get( "stop" );
         String paperIdParam = requestParams.get( "paperId" );
         String overlapPaperIdParam = requestParams.get( "overlapPaperId" );
+        String sampleLike = requestParams.get( "sampleLike" );
+        Boolean sampleExact = Boolean.parseBoolean( requestParams.get("sampleExact" ));
 
         String breadcrumbsLinksStr = null;
         String breadcrumbsTextsStr = null;
@@ -111,9 +115,11 @@ public class VariantView implements Serializable {
                 if ( StringUtils.isBlank( overlapPaperIdParam ) ) {
                     this.query = cacheService.getPaperById( paperId ).getPaperKey();
                     this.variants = this.variantService.fetchByPaperId( paperId );
+
                     breadcrumbsLinksStr = "/publications.xhtml,/paper.xhtml?paperId=" + paperId;
                     breadcrumbsTextsStr = "Publications," + this.query + "";
                     breadcrumbsCurrentStr = "Search by paper";
+
                 } else {
                     Integer overlapPaperId = Integer.parseInt( overlapPaperIdParam );
                     if ( overlapPaperId == paperId ) {
@@ -149,6 +155,23 @@ public class VariantView implements Serializable {
             } catch ( NumberFormatException e ) {
                 throw new IllegalArgumentException( "Invalid Coordinates: Position out of bounds of chromosome " + chr + ".");
             }
+        } else if ( !StringUtils.isBlank( sampleLike ) ) {
+            // Search by sample
+            try {
+                String searchSampleAs = sampleLike;
+                if (sampleExact){
+                    this.query = sampleLike;
+                } else {
+                    searchSampleAs = '%'+sampleLike+'%';
+                    this.query = "*" + sampleLike + "*";
+                }
+
+                this.variants = this.variantService.fetchBySample( searchSampleAs );
+
+                breadcrumbsCurrentStr = "Search by sample";
+            } catch ( Exception e ) {
+                throw new IllegalArgumentException( "Invalid Sample: cannot parse sample " + sampleLike + ".");
+            }
         } else {
             // Unknown Search
             throw new IllegalArgumentException( "Unknown Search Parameters" );
@@ -173,7 +196,7 @@ public class VariantView implements Serializable {
 
     }
 
-    public StreamedContent getCsv() {
+    public StreamedContent getCsv() throws Exception {
         if ( !csvExporter.hasData() ) {
             csvExporter.loadData( events );
         }
@@ -265,13 +288,13 @@ public class VariantView implements Serializable {
     public void paperInfo() {
         String INFOTEXT = "The information here is the source variant information parsed from the supplementary tables, documents, or directly from the main text. "
                 + "<br/><br/>"
-                + "These data are unfiltered and contains more information than what is displayed in the variant search results. "
+                + "These data are unaltered (unless required for data formatting reasons, such as removing invalid characters) and may contain some additional information to what is displayed in the variant search results. "
 
         + "<br/><br/>"
                 + "This representation also precedes any modifications such as harmonization between different notation systems, or different coordinate assemblies (e.g. variant under the Hg18 assembly are displayed as is here, but lifted-over to Hg19 in the variant search results.) "
-                + "<br/><br/>" + "The results in the variant results table resolves such discrepancies. "
 
-        + "Different papers may have different fields.";
+
+        + "The fields below are unique to the current paper.";
 
         FacesContext.getCurrentInstance().addMessage( null,
                 new FacesMessage( FacesMessage.SEVERITY_INFO, "About:", INFOTEXT ) );
@@ -317,7 +340,7 @@ public class VariantView implements Serializable {
     }
 
     private String[] parseBreadcrumbs( String bc ) {
-        // Use fro comma-delimited breadcrumbs
+        // Use for comma-delimited breadcrumbs
         if ( bc == null ) {
             String[] nullArray = new String[1];
             nullArray[0] = null;
@@ -325,35 +348,5 @@ public class VariantView implements Serializable {
         }
         return bc.split( "," );
     }
-
-    public int tableHeight(){
-	//Stub. Update as needed.
-        if (variants == null) {
-            return 25;
-        }
-
-        return Math.min( 25*variants.size() + 25, 500);
-
-    }
-
-    // public String getBreadcrumbsLinks() {
-    // public String[] getBreadcrumbsLinks() {
-    // // Link to previous page
-    // if ( breadcrumbsLinks == null || breadcrumbsLinks.isEmpty() ) {
-    // return this.parseBreadcrumbs( "" );
-    // }
-    // return this.parseBreadcrumbs( breadcrumbsLinks );
-    // // return breadcrumbsLinks;
-    // }
-    //
-    // // public String getBreadcrumbsTexts() {
-    // public String[] getBreadcrumbsTexts() {
-    // // Text for link to previous page
-    // if ( breadcrumbsTexts == null || breadcrumbsTexts.isEmpty() ) {
-    // return this.parseBreadcrumbs( "" );
-    // }
-    // return this.parseBreadcrumbs( breadcrumbsTexts );
-    // // return breadcrumbsTexts;
-    // }
 
 }

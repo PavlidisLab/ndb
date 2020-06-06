@@ -51,6 +51,8 @@ public class SearchView implements Serializable {
 
     private Integer geneId;
     private String region;
+    private String sample;
+    private Boolean sampleExact;
 
     public SearchView() {
         log.info( "SearchView created" );
@@ -97,6 +99,18 @@ public class SearchView implements Serializable {
 
     }
 
+    public String searchBySample() {
+        /*
+        Only requirement for search by sample is that it is not empty.
+         */
+        if ( !sample.isEmpty() ) {
+            return "variant?faces-redirect=true&sampleLike=" + sample + "&sampleExact=" + sampleExact  ;
+        } else {
+            return null;
+        }
+
+    }
+
     public List<Gene> completeSymbol( String query ) {
         log.info( query );
         return cacheService.searchGeneBySymbol( query );
@@ -116,6 +130,22 @@ public class SearchView implements Serializable {
 
     public void setRegion( String region ) {
         this.region = region;
+    }
+
+    public String getSample() {
+        return sample;
+    }
+
+    public void setSample( String sample ) {
+        this.sample = sample;
+    }
+
+    public Boolean getSampleExact() {
+        return sampleExact;
+    }
+
+    public void setSampleExact( Boolean sampleExact ) {
+        this.sampleExact = sampleExact;
     }
 
     public void setCacheService( CacheService cacheService ) {
