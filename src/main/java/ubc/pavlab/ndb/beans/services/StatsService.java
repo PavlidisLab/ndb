@@ -92,6 +92,10 @@ public class StatsService implements Serializable {
     private final Supplier<List<Gene>> latestTopGenesByEventCnt = Suppliers
             .memoizeWithExpiration( topGenesByEventCntSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
 
+    private final Supplier<List<Gene>> latestTopGenesByRanking = Suppliers
+            .memoizeWithExpiration( topGenesByRankingSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
+
+
     private final Supplier<List<Gene>> latestTopGenesByPaperCnt = Suppliers
             .memoizeWithExpiration( topGenesByPaperCntSupplier(), EXPIRATION_TIME, EXPIRATION_TIME_UNIT );
 
@@ -245,6 +249,10 @@ public class StatsService implements Serializable {
         return latestTopGenesByEventCnt.get();
     }
 
+    public List<Gene> getTopGenesByRanking() {
+        return latestTopGenesByRanking.get();
+    }
+
     public List<Gene> getTopGenesByPaperCnt() {
         return latestTopGenesByPaperCnt.get();
     }
@@ -294,6 +302,26 @@ public class StatsService implements Serializable {
             }
         };
     }
+
+    private Supplier<List<Gene>> topGenesByRankingSupplier() {
+        return new Supplier<List<Gene>>() {
+            @Override
+            public List<Gene> get() {
+                log.info( "topGenesByRankingSupplier" );
+                List<Integer> geneIds = statsDAO.findTopGenesByRanking( 100 ); // TODO: Currently just returning all.
+
+                List<Gene> genes = new ArrayList<>();
+
+                for ( Integer geneId : geneIds ) {
+                    genes.add( cacheService.getGeneById( geneId ) );
+                }
+
+                return genes;
+
+            }
+        };
+    }
+
 
     private Supplier<List<Gene>> topGenesByPaperCntSupplier() {
         return new Supplier<List<Gene>>() {

@@ -1,6 +1,8 @@
 # ndb
 Web application and database providing a harmonized and comprehensive collection of genetic variants published in peer-reviewed literature.
 
+For latest application code, see the [development branch](https://github.com/PavlidisLab/ndb/tree/development).
+
 ## Getting Started
 
 ### Local installation
@@ -22,8 +24,8 @@ ndb_production.password=[PASSWORD]
 db.properties
 ```
 ndb.db=ndb_staging
-ndb.email=hi@localhost.com
-ndb.admin.email=admin@localhost.com
+ndb.email=hi@example.com
+ndb.admin.email=admin@example.com
 ```
 
 In your ~/.m2/ directory, add or edit your `settings.xml` file.
@@ -98,7 +100,4 @@ See also the list of [contributors](https://github.com/PavlidisLab/ndb) who part
 
 ## License
 
-This project is licensed under the ___ - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
+The source code for this project is licensed under the Apache 2.0 - see the [LICENSE](LICENSE) file for details

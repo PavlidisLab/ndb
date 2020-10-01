@@ -35,7 +35,13 @@ public enum Inheritance {
     p("Paternal"),
     f("Paternal"), // FIXME: 'f' values for inheritance should be replaced by 'p' in the database, then this should be removed.
     m("Maternal"),
-    u("Unknown");
+    b("Both parents"),
+    u("Unknown"),
+    mo("Mosaic"),
+    mm("Mosaic Mat."),
+    mp("Mosaic Pat."),
+    mi("Mosaic Inh."),
+    mb("Mosaic Both");
 
     private String label;
 

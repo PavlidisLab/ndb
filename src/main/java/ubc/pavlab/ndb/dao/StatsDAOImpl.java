@@ -36,6 +36,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import ubc.pavlab.ndb.exceptions.DAOException;
+import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.utility.Tuples.Tuple2;
 
 /**
@@ -53,6 +54,8 @@ public class StatsDAOImpl implements StatsDAO {
     private static final String SQL_PAPER_TABLE = "papers";
     private static final String SQL_VARIANT_TABLE = "variant";
     private static final String SQL_GENE_MAP_TABLE = "variant_gene";
+    private static final String SQL_GENE_TABLE = "gene";
+    private static final String SQL_GENE_RANKS_TABLE = "gene_ranks";
 
     // SQL Statements
 
@@ -116,6 +119,12 @@ public class StatsDAOImpl implements StatsDAO {
     private static final String SQL_TOP_GENES_BY_EVENT = "SELECT gene_id, COUNT(distinct event_id) cnt FROM "
             + SQL_VARIANT_TABLE + " var INNER JOIN " + SQL_GENE_MAP_TABLE
             + " vmap ON var.id=vmap.variant_id WHERE func IN ('exonic', 'splicing', 'splicing;exonic')  GROUP BY gene_id ORDER BY cnt DESC LIMIT ?";
+
+    private static final String SQL_TOP_GENES_BY_SFARI = "SELECT g.gene_id, COUNT(event_id) cnt FROM " + SQL_VARIANT_TABLE + " var "
+            + " INNER JOIN " + SQL_GENE_MAP_TABLE + " vmap ON var.id=vmap.variant_id "
+            + " LEFT JOIN " + SQL_GENE_TABLE+ " g ON g.gene_id = vmap.gene_id "
+            + "LEFT JOIN " + SQL_GENE_RANKS_TABLE+ " gr ON g.symbol = gr.symbol "
+            + "WHERE func IN ('exonic', 'splicing', 'splicing;exonic') AND gr.score = 1  GROUP BY gene_id ORDER BY cnt DESC LIMIT ?";
 
     private static final String SQL_TOP_GENES_BY_PAPER = "SELECT gene_id, COUNT(distinct paper_id) cnt FROM "
             + SQL_VARIANT_TABLE + " var INNER JOIN " + SQL_GENE_MAP_TABLE
@@ -438,6 +447,28 @@ public class StatsDAOImpl implements StatsDAO {
         return top;
 
     }
+
+    @Override
+    public List<Integer> findTopGenesByRanking( Integer n ) throws DAOException {
+        // TODO: Make this a generic approach; allow collection to be specified.
+        if ( n == null || n <= 0 ) {
+            n = 5;
+        }
+        List<Integer> top = Lists.newArrayList();
+        try (Connection connection = daoFactory.getConnection();
+             PreparedStatement statement = prepareStatement( connection, SQL_TOP_GENES_BY_SFARI, false, n );
+             ResultSet resultSet = statement.executeQuery();) {
+            while (resultSet.next()) {
+                top.add( resultSet.getInt( "gene_id" ) );
+            }
+        } catch (SQLException e) {
+            throw new DAOException( e );
+        }
+
+        return top;
+
+    }
+
 
     @Override
     public List<Integer> findTopGenesByPaperCnt( Integer n ) throws DAOException {

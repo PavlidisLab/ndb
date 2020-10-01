@@ -44,35 +44,41 @@
                         <p:panel styleClass="no-border" >
                             <ui:include src="stat_summary.xhtml"></ui:include>
                         </p:panel>
-                        <p:panel styleClass="no-border">
-                            <ui:include src="stats_table_topgenesbyeventcnt.xhtml"></ui:include>
-                        </p:panel>
+                        <ui:remove>
+                            <p:panel styleClass="no-border">
+                                <ui:include src="stats_table_topgenesbyranking.xhtml"></ui:include>
+                            </p:panel>
+                        </ui:remove>
                     </p:panelGrid>
 
                     <p:panelGrid styleClass="no-border" columns="1">
                         <p:panel  styleClass="no-border"  >
                             <div>
                                 <h3>About VariCarta</h3>
-                                <p>
-                                    VariCarta is a database of human DNA genetic variants found in individuals diagnosed with Autism
-                                    Spectrum Disorder (ASD) and reported in peer-reviewed scientific literature.
-                                </p>
-                                <p>
-                                    For a full list of sources of variants in VariCarta visit the <strong><p:link
-                                        href="publications.xhtml">Publications page</p:link></strong>.
-                                    More information about VariCarta and some help with web-site navigation can be found on the
-                                    <strong><p:link href="documentation.xhtml">Documentation page</p:link></strong>.
-                                </p>
+                                <ul class="spaced-list">
+                                    <li>
+                                        VariCarta is a database of human DNA genetic variants found in individuals diagnosed with Autism
+                                        Spectrum Disorder (ASD) and reported in peer-reviewed scientific literature.
+                                    </li>
+                                    <li>
+                                        For a full list of sources of variants in VariCarta visit the <strong><p:link
+                                            href="publications.xhtml">Publications page</p:link></strong>.
+                                        More information about VariCarta and some help with web-site navigation can be found on the
+                                        <strong><p:link href="documentation.xhtml">Documentation page</p:link></strong>.
+                                    </li>
 
-                                <p>
-                                    Our development/beta instance of the database is available at <p:link href="https://dev.varicarta.msl.ubc.ca/">https://dev.varicarta.msl.ubc.ca/</p:link>.
-                                    Any VariCarta updates, including newly added papers, will be immediately available there, while
-                                    the main site will be updated every six-months.
-                                </p>
+                                    <li>
+                                        A manuscript for VariCarta is available on Autism Research: <br/>
 
-                                <p>
-                                    Current and previous releases of the database can be downloaded from the <strong><p:link href="/downloads.xhtml">Download page</p:link></strong>.
-                                </p>
+                                        "<p:link href="https://doi.org/10.1002/aur.2236" target="_blank">VariCarta: A Comprehensive Database of Harmonized Genomic Variants Found in Autism Spectrum Disorder Sequencing Studies.</p:link>" (2019) Belmadani M, Jacobson M, Holmes N, Phan M, Nguyen T, Pavlidis P, Rogic S. Autism Res. 2019 Dec;12(12):1728-1736. doi: 10.1002/aur.2236
+
+                                    </li>
+
+                                    <li>
+                                        Current and previous releases of the database can be downloaded from the
+                                        <strong><p:link href="/downloads.xhtml">Download page</p:link></strong>.
+                                    </li>
+                                </ul>
                             </div>
                         </p:panel>
                         <p:separator/>

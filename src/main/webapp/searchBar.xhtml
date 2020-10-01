@@ -9,7 +9,7 @@
 				
 				
 				
-	            <h:panelGrid columns="3" styleClasses="no-border" >
+	            <h:panelGrid columns="5" styleClasses="no-border" >
 	            	<h:form id="geneSearchForm" prependId="false">				
 		            	<h:outputLabel for="gene" value="Gene Symbol:" style="font-weight:bold;margin-right:15px;"/>  
 			    		<p:autoComplete id="gene" value="#{searchView.geneId}" 
@@ -28,15 +28,29 @@
 			    	</h:form>
 		    	<h:outputText value="or"/>
 		    	<h:form id="regionSearchForm" prependId="false">
-		    	<h:outputLabel for="regionInput" value="Region:" style="font-weight:bold;margin-right:15px;"/>
-		    	<p:inputText id="regionInput" value="#{searchView.region}" placeholder="chr6:20154683-29987457" style="margin-right:8px;width:150px;" >
-		    		<!-- <f:validateRegex pattern="^(?i:CHR)?([0-9]{1,2}|X|Y):(\d+)-(\d+|)$"  /> -->
-		    	</p:inputText>
-			    <p:commandButton value="Submit" styleClass="ui-priority-primary"
-			    					action="#{searchView.searchByRegion}"
-			    					icon="ui-icon-check" update="regionSearchForm"
-			    					/>
+					<h:outputLabel for="regionInput" value="Region:" style="font-weight:bold;margin-right:15px;"/>
+					<p:inputText id="regionInput" value="#{searchView.region}" placeholder="chr6:20154683-29987457" style="margin-right:8px;width:150px;" >
+						<!-- <f:validateRegex pattern="^(?i:CHR)?([0-9]{1,2}|X|Y):(\d+)-(\d+|)$"  /> -->
+					</p:inputText>
+					<p:commandButton value="Submit" styleClass="ui-priority-primary"
+										action="#{searchView.searchByRegion}"
+										icon="ui-icon-check" update="regionSearchForm"
+										/>
 			    </h:form>
+				<h:outputText value="or"/>
+				<h:form id="sampleSearchForm" prependId="false">
+					<h:outputLabel for="sampleInput" value="Sample:" style="font-weight:bold;margin-right:15px;"/>
+					<p:inputText id="sampleInput" value="#{searchView.sample}" placeholder="11114.p1" style="margin-right:8px;width:150px;" >
+
+						<!-- <f:validateRegex pattern="^(?i:CHR)?([0-9]{1,2}|X|Y):(\d+)-(\d+|)$"  /> -->
+					</p:inputText>
+					<p:selectBooleanCheckbox value="#{searchView.sampleExact}" itemLabel="Exact"/>
+					<p:commandButton value="Submit" styleClass="ui-priority-primary"
+									 action="#{searchView.searchBySample}"
+									 icon="ui-icon-check" update="sampleSearchForm"
+					/>
+				</h:form>
+
 			    </h:panelGrid>
 			   
 			    

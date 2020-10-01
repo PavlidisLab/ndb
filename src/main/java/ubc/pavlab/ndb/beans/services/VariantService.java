@@ -151,6 +151,13 @@ public class VariantService implements Serializable {
         return map( variantDAO.findByPosition( chr, start, stop ) );
     }
 
+    public List<Variant> fetchBySample( String sampleLike ) {
+        if ( sampleLike == null  ) {
+            return Lists.newArrayList();
+        }
+        return map( variantDAO.findBySample( sampleLike) );
+    }
+
     public List<Variant> fetchByGeneId( Integer geneId ) {
         if ( geneId == null ) {
             return Lists.newArrayList();

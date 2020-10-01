@@ -120,7 +120,8 @@ public class CSVExporterTest {
                         null,
                         null,
                         0,
-                        false) );
+                        false,
+                        null) );
         Mockito.when( v.getPaper() ).thenReturn( p );
 
         variants.add( v );
@@ -173,7 +174,8 @@ public class CSVExporterTest {
                         null,
                          null,
                         0,
-                        false) );
+                        false,
+                        null) );
         Mockito.when( v.getPaper() ).thenReturn( p );
 
         variants.add( v );
@@ -225,7 +227,8 @@ public class CSVExporterTest {
                         null,
                         null,
                         0,
-                        false) );
+                        false,
+                        null) );
         Mockito.when( v.getPaper() ).thenReturn( p );
 
         variants.add( v );
@@ -235,7 +238,7 @@ public class CSVExporterTest {
     }
 
     @Test
-    public void testLoadData() {
+    public void testLoadData() throws Exception {
         //        "Variant Event ID", "Gene", "Subject", "REF", "ALT", "Location", "Context",
         //        "Effects", "CADD Phred", "Sources"
 
