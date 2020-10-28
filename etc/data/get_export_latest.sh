@@ -3,18 +3,20 @@ set -eu
 
 if [ $# -lt 2 ]; then
     echo "Usage:"
-    echo $0 USERNAME DATABASE
+    echo $0 USERNAME DATABASE PORT
     exit
 fi
 
 PASSWORD=""
-if [ $# -eq 3 ]; then
-    PASSWORD=$3
+if [ $# -eq 4 ]; then
+    PASSWORD=$4
 fi
 
 DUMP_ROOT="../out/"
 DBUSER="$1"
 DATABASE="$2"
+PORT="$3"
+
 HOST="127.0.0.1"
 
 QUERY=\
@@ -93,7 +95,7 @@ OUTDUMP="${DUMP_ROOT}"/"${DATABASE}"/varicarta_dump_"${TIMESTAMP}".tsv
 OUTLATEST="${DUMP_ROOT}"/export_latest.tsv
 
 # Execute query to dump database
-echo " $QUERY" | mysql -u$DBUSER -h$HOST -p$PASSWORD --default-character-set=utf8 -p > $OUTDUMP
+echo " $QUERY" | mysql -u$DBUSER -h$HOST -P "${PORT}" -p$PASSWORD --default-character-set=utf8 -p > $OUTDUMP
 
 echo "Wrote database to $OUTDUMP"
 echo "Update pointer to 'latest' version?"
