@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- THIS FILE SHOULD BE ALTERED FOR YOUR TOMCAT CONFIGURATION -->
+<Context>
+
+    <Resource
+        name="jdbc/ndb_staging"
+        type="javax.sql.DataSource"
+        factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+        maxActive="100" 
+        maxIdle="30" 
+        maxWait="10000" 
+        testWhileIdle="true"
+        timeBetweenEvictionRunsMillis="300000"
+        url="jdbc:mysql://127.0.0.1:3307/marvdb_staging"
+        driverClassName="com.mysql.jdbc.Driver"
+        username="XXXXXXX" 
+        password="XXXXXXX"
+        initialSize="0"
+        alternateUsernameAllowed="true"
+    />
+   
+
+</Context>
