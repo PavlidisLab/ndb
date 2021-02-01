@@ -21,7 +21,7 @@ ndb_production.username=[USER]
 ndb_production.password=[PASSWORD]
 ```
 
-db.properties
+ndb.properties
 ```
 ndb.db=ndb_staging
 ndb.email=hi@example.com
