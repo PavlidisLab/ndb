@@ -17,7 +17,7 @@ DBUSER="$1"
 DATABASE="$2"
 PORT="$3"
 
-HOST="127.0.0.1"
+HOST="prod-db"
 
 QUERY=\
 "use $DATABASE; 
