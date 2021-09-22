@@ -218,9 +218,13 @@ class Annovar(AbstractModel):
                     v = aa_text
 
                 if k == "Func.refGene":
-                    func_text = v.replace("\\x3b", ";") # Hex encoding issue with annovar.
-                    func_text = func_text.replace("x3b", ";") # Hex encoding issue with annovar.
-                    func_text = ";".join( list(set(func_text.split(";"))) )
+                    if v is not None:
+                        func_text = v.replace("\\x3b", ";") # Hex encoding issue with annovar.
+                        func_text = func_text.replace("x3b", ";") # Hex encoding issue with annovar.
+                        func_text = ";".join( list(set(func_text.split(";"))) )
+                    else:
+                        func_text = ""
+
                     k = "func"
                     v = func_text
 
