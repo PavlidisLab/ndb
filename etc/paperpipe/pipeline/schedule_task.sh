@@ -38,8 +38,8 @@ if [ $INTERACTIVE -eq 0  ];
 then
     LOGLOG=logs/$PAPERNAME.log
     ERRLOG=logs/$PAPERNAME.err
-    PYTHONPATH="flows:../scripts/models" luigi --module tasks $JOB --book $BOOK --worker-count-last-scheduled --scheduler-port 16901 > $LOGLOG 2> $ERRLOG
+    PYTHONPATH="flows:../scripts/models" luigi --module tasks $JOB --book $BOOK --worker-count-last-scheduled > $LOGLOG 2> $ERRLOG
     echo "See logs at $LOGLOG / $ERRLOG"
 else
-    PYTHONPATH="flows:../scripts/models" luigi --module tasks $JOB --book $BOOK --worker-count-last-scheduled --scheduler-port 16901
+    PYTHONPATH="flows:../scripts/models" luigi --module tasks $JOB --book $BOOK --worker-count-last-scheduled 
 fi
