@@ -15,8 +15,8 @@
         driverClassName="com.mysql.jdbc.Driver"
         initialSize="0"
         alternateUsernameAllowed="true"
-        username="root" 
-        password="localtoast"
+        username="XXXXXXXXX" 
+        password="XXXXXXXXX"
     />
 
     <Resource
@@ -65,8 +65,8 @@
         timeBetweenEvictionRunsMillis="300000"
         url="jdbc:mysql://localhost:3306/ndb"
         driverClassName="com.mysql.jdbc.Driver"
-        username="root" 
-        password="localtoast"
+        username="XXXXXXXXX" 
+        password="XXXXXXXXX"
         initialSize="0"
         alternateUsernameAllowed="true"
     />
@@ -82,8 +82,8 @@
         timeBetweenEvictionRunsMillis="300000"
         url="jdbc:mysql://localhost:3306/ndb_test"
         driverClassName="com.mysql.jdbc.Driver"
-        username="root" 
-        password="localtoast"
+        username="XXXXXXXXX" 
+        password="XXXXXXXXX"
         initialSize="0"
         alternateUsernameAllowed="true"
     />
@@ -99,8 +99,8 @@
         timeBetweenEvictionRunsMillis="300000"
         url="jdbc:mysql://localhost:3306/ndb"
         driverClassName="com.mysql.jdbc.Driver"
-        username="root" 
-        password="localtoast"
+        username="XXXXXXXXX" 
+        password="XXXXXXXXX"
         initialSize="0"
         alternateUsernameAllowed="true"
     />

@@ -17,7 +17,7 @@ DBUSER="$1"
 DATABASE="$2"
 PORT="$3"
 
-HOST="127.0.0.1"
+HOST="prod-db"
 
 QUERY=\
 "use $DATABASE; 
@@ -99,5 +99,5 @@ echo " $QUERY" | mysql -u$DBUSER -h$HOST -P "${PORT}" -p$PASSWORD --default-char
 
 echo "Wrote database to $OUTDUMP"
 echo "Update pointer to 'latest' version?"
-rm -i "${OUTLATEST}" # Prompt for overwrite if needed.
+rm -fi "${OUTLATEST}" # Prompt for overwrite if needed.
 ln -s "${OUTDUMP}" "${OUTLATEST}"
