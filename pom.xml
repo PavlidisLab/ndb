@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ubc.pavlab</groupId>
 	<artifactId>ndb</artifactId>
@@ -29,17 +29,17 @@
 	</properties>
 
 	<dependencies>
-	  
-	  <!-- JAVAX Annotations for newer javas (8+) https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
+
+		<!-- JAVAX Annotations for newer javas (8+) https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
 
 		<dependency>
-		  <groupId>javax.annotation</groupId>
-		  <artifactId>javax.annotation-api</artifactId>
-		  <version>1.3.2</version>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
 		</dependency>
-	  
-	  
-	  <!-- JSF -->
+
+
+		<!-- JSF -->
 
 		<dependency>
 			<groupId>com.sun.faces</groupId>
@@ -69,13 +69,13 @@
 			<artifactId>primefaces</artifactId>
 			<version>6.1</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.primefaces.themes</groupId>
-		    <artifactId>redmond</artifactId>
-		    <version>1.0.10</version>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>redmond</artifactId>
+			<version>1.0.10</version>
 		</dependency>
-		
+
 		<!-- Apache Commons Lang -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -84,28 +84,31 @@
 		</dependency>
 
 
-		<!-- <dependency> <groupId>org.primefaces.extensions</groupId> <artifactId>primefaces-extensions</artifactId> 
+		<!-- <dependency> <groupId>org.primefaces.extensions</groupId> <artifactId>primefaces-extensions</artifactId>
 			<version>3.0.0</version> </dependency> -->
 
 		<!-- Font Awesome -->
-		<dependency> 
-			<groupId>org.webjars</groupId> 
-			<artifactId>font-awesome</artifactId> 
-			<version>4.2.0</version> 
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>font-awesome</artifactId>
+			<version>4.2.0</version>
 		</dependency>
 
 		<!-- PDF Exporting -->
-		<!-- <dependency> <groupId>com.lowagie</groupId> <artifactId>itext</artifactId> 
+		<!-- <dependency> <groupId>com.lowagie</groupId> <artifactId>itext</artifactId>
 			<version>4.2.1</version> </dependency> -->
 
 		<!-- XLS Exporting -->
-		<!-- <dependency> <groupId>org.apache.poi</groupId> <artifactId>poi</artifactId> 
+		<!-- <dependency> <groupId>org.apache.poi</groupId> <artifactId>poi</artifactId>
 			<version>3.11</version> </dependency> -->
 
 		<!-- Omnifaces -->
 
-		<dependency> <groupId>org.omnifaces</groupId> <artifactId>omnifaces</artifactId>
-			<version>1.10</version> </dependency>
+		<dependency>
+			<groupId>org.omnifaces</groupId>
+			<artifactId>omnifaces</artifactId>
+			<version>1.10</version>
+		</dependency>
 
 		<!-- Logging -->
 
@@ -145,7 +148,7 @@
 			<version>0.9.1</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-core</artifactId>
@@ -160,35 +163,35 @@
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
-		
+
 		<!-- google concurrent-trees -->
-        <dependency>
-		    <groupId>com.googlecode.concurrent-trees</groupId>
-		    <artifactId>concurrent-trees</artifactId>
-		    <version>2.4.0</version>
+		<dependency>
+			<groupId>com.googlecode.concurrent-trees</groupId>
+			<artifactId>concurrent-trees</artifactId>
+			<version>2.4.0</version>
 		</dependency>
-		
+
 		<!-- Dynamic Proxies -->
-		
+
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 			<version>3.2.0</version>
 		</dependency>
-		
+
 		<!-- Constructorless Object Creation (used for dynamically proxies to immutable objects) -->
 		<dependency>
 			<groupId>org.objenesis</groupId>
 			<artifactId>objenesis</artifactId>
 			<version>2.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-csv</artifactId>
 			<version>1.1</version>
 		</dependency>
-		
+
 		<!-- GSON -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -196,20 +199,19 @@
 			<version>2.5</version>
 		</dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.35</version>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.35</version>
 			<type>jar</type>
-	    	<scope>compile</scope>
-        </dependency>
+			<scope>compile</scope>
+		</dependency>
 
-	<dependency>
-		<groupId>org.mockito</groupId>
-		<artifactId>mockito-all</artifactId>
-		<version>1.10.19</version>
-	</dependency>
-			
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+		</dependency>
 
 
 	</dependencies>
@@ -287,77 +289,77 @@
 		</plugins>
 	</build>
 
-    <profiles>
-        <profile>
-            <id>testdb.build</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-                <property>
-                    <name>testdb.build</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>sql-maven-plugin</artifactId>
-                        <version>1.5</version>
-                        <dependencies> <!-- specify the dependent JDBC driver here -->
-                            <dependency>
-                                <groupId>mysql</groupId>
-                                <artifactId>mysql-connector-java</artifactId>
-                                <version>5.1.10</version>
-                                <type>jar</type>
-                            </dependency>
-                        </dependencies>
+	<profiles>
+		<profile>
+			<id>testdb.build</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>testdb.build</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>sql-maven-plugin</artifactId>
+						<version>1.5</version>
+						<dependencies> <!-- specify the dependent JDBC driver here -->
+							<dependency>
+								<groupId>mysql</groupId>
+								<artifactId>mysql-connector-java</artifactId>
+								<version>5.1.10</version>
+								<type>jar</type>
+							</dependency>
+						</dependencies>
 
-			<!--common configuration shared by all executions-->
-                        <configuration>
-                            <driver>com.mysql.jdbc.Driver</driver>
-                            <username>${ndb.testdb.build.user}</username>
-                            <password>${ndb.testdb.build.password}</password>
-                            <onError>abort</onError>
-                            <autocommit>true</autocommit>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>drop-add-testdb</id>
-                                <phase>initialize</phase>
-                                <goals>
-                                    <goal>execute</goal>
-                                </goals>
-                                <configuration>
-                                    <url>${bootstrap.db.url}</url>
-                                    <username>${ndb.testdb.build.user}</username>
-                                    <password>${ndb.testdb.build.password}</password>
-                                    <autocommit>false</autocommit>
-                                    <sqlCommand>
+						<!--common configuration shared by all executions-->
+						<configuration>
+							<driver>com.mysql.jdbc.Driver</driver>
+							<username>${ndb.testdb.build.user}</username>
+							<password>${ndb.testdb.build.password}</password>
+							<onError>abort</onError>
+							<autocommit>true</autocommit>
+						</configuration>
+						<executions>
+							<execution>
+								<id>drop-add-testdb</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<url>${bootstrap.db.url}</url>
+									<username>${ndb.testdb.build.user}</username>
+									<password>${ndb.testdb.build.password}</password>
+									<autocommit>false</autocommit>
+									<sqlCommand>
 									<![CDATA[
-                                        drop database if exists ${ndb.testdb.name};
-									create database ${ndb.testdb.name}
-                                        ]]>
+										drop database if exists ${ndb.testdb.name};
+										create database ${ndb.testdb.name}
+										]]>
                                     </sqlCommand>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>load-testdb-schema</id>
-                                <phase>process-test-resources</phase>
-                                <goals>
-                                    <goal>execute</goal>
-                                </goals>
-                                <configuration>
-                                    <url>${ndb.testdb.build.url}</url>
-                                    <srcFiles>
-                                        <srcFile>src/main/resources/sql/schema.sql</srcFile>
-                                        <srcFile>src/test/resources/sql/combined.sql</srcFile>
-                                    </srcFiles>
-                                    <onError>abort</onError>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+								</configuration>
+							</execution>
+							<execution>
+								<id>load-testdb-schema</id>
+								<phase>process-test-resources</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<url>${ndb.testdb.build.url}</url>
+									<srcFiles>
+										<srcFile>src/main/resources/sql/schema.sql</srcFile>
+										<srcFile>src/test/resources/sql/combined.sql</srcFile>
+									</srcFiles>
+									<onError>abort</onError>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 </project>
