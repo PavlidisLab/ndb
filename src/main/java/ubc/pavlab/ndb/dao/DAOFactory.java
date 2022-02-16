@@ -60,7 +60,7 @@ import ubc.pavlab.ndb.exceptions.ConfigurationException;
  * 
  * <pre>
  * javabase.jdbc.url = jdbc:mysql://localhost:3306/javabase
- * javabase.jdbc.driver = com.mysql.jdbc.Driver
+ * javabase.jdbc.driver = com.mysql.cj.jdbc.Driver
  * javabase.jdbc.username = java
  * javabase.jdbc.password = d$7hF_r!9Y
  * </pre>

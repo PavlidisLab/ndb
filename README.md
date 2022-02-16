@@ -101,10 +101,10 @@ mysql> set GLOBAL sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,E
 
 ### Prerequisites
 
-* Java EE 8 
-* Tomcat7
-* MySQL 5.6
-* Maven 3.3.9
+* Java 8
+* Tomcat 8.5
+* MySQL 5.7+
+* Maven 3.0.5+
 
 ## Authors
 

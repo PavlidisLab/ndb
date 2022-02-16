@@ -1,46 +1,101 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ubc.pavlab</groupId>
+
+	<parent>
+		<groupId>ubc.pavlab</groupId>
+		<artifactId>pavlab-starter-parent</artifactId>
+		<version>1.1.2</version>
+	</parent>
+
 	<artifactId>ndb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>ndb</name>
 
 	<properties>
-
 		<!-- Generic properties -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
 		<!-- Web -->
-		<servlet.version>3.0.1</servlet.version>
-		<jsf.version>2.2.2</jsf.version>
-
-		<!-- logging -->
-		<log4j.version>2.17.1</log4j.version>
-		<slf4j.version>1.6.6</slf4j.version>
-
-		<!-- Test -->
-		<junit.version>4.13.1</junit.version>
-
+		<jsf.version>2.2.20</jsf.version>
 	</properties>
 
 	<dependencies>
 
-		<!-- JAVAX Annotations for newer javas (8+) https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
-
+		<!-- Dynamic Proxies -->
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<version>1.3.2</version>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>3.3.0</version>
 		</dependency>
 
+		<!-- Guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>31.1-jre</version>
+		</dependency>
+
+		<!-- google concurrent-trees -->
+		<dependency>
+			<groupId>com.googlecode.concurrent-trees</groupId>
+			<artifactId>concurrent-trees</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+
+		<!-- Constructorless Object Creation (used for dynamically proxies to immutable objects) -->
+		<dependency>
+			<groupId>org.objenesis</groupId>
+			<artifactId>objenesis</artifactId>
+			<version>3.2</version>
+		</dependency>
+
+		<!-- CSV & flat file generation -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.9.0</version>
+		</dependency>
+
+		<!-- GSON -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+
+		<!-- Apache Commons -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-1.2-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-web</artifactId>
+		</dependency>
+
+		<!-- Database -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
 
 		<!-- JSF -->
-
 		<dependency>
 			<groupId>com.sun.faces</groupId>
 			<artifactId>jsf-api</artifactId>
@@ -50,20 +105,20 @@
 			<groupId>com.sun.faces</groupId>
 			<artifactId>jsf-impl</artifactId>
 			<version>${jsf.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>${servlet.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- Primefaces -->
-
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
@@ -74,209 +129,76 @@
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>redmond</artifactId>
 			<version>1.0.10</version>
+			<scope>runtime</scope>
 		</dependency>
-
-		<!-- Apache Commons Lang -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.3</version>
-		</dependency>
-
-
-		<!-- <dependency> <groupId>org.primefaces.extensions</groupId> <artifactId>primefaces-extensions</artifactId>
-			<version>3.0.0</version> </dependency> -->
 
 		<!-- Font Awesome -->
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>font-awesome</artifactId>
 			<version>4.2.0</version>
+			<scope>runtime</scope>
 		</dependency>
 
-		<!-- PDF Exporting -->
-		<!-- <dependency> <groupId>com.lowagie</groupId> <artifactId>itext</artifactId>
-			<version>4.2.1</version> </dependency> -->
-
-		<!-- XLS Exporting -->
-		<!-- <dependency> <groupId>org.apache.poi</groupId> <artifactId>poi</artifactId>
-			<version>3.11</version> </dependency> -->
-
 		<!-- Omnifaces -->
-
 		<dependency>
 			<groupId>org.omnifaces</groupId>
 			<artifactId>omnifaces</artifactId>
 			<version>1.10</version>
-		</dependency>
-
-		<!-- Logging -->
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-1.2-api</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-web</artifactId>
-			<version>${log4j.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- Test Artifacts -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20140107</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path-assert</artifactId>
-			<version>0.9.1</version>
+			<version>2.7.0</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-core</artifactId>
-			<version>1.3</version>
-		</dependency>
-
-
-		<!-- Guava -->
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>18.0</version>
-		</dependency>
-
-		<!-- google concurrent-trees -->
-		<dependency>
-			<groupId>com.googlecode.concurrent-trees</groupId>
-			<artifactId>concurrent-trees</artifactId>
-			<version>2.4.0</version>
-		</dependency>
-
-		<!-- Dynamic Proxies -->
-
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-			<version>3.2.0</version>
-		</dependency>
-
-		<!-- Constructorless Object Creation (used for dynamically proxies to immutable objects) -->
-		<dependency>
-			<groupId>org.objenesis</groupId>
-			<artifactId>objenesis</artifactId>
+			<artifactId>hamcrest</artifactId>
 			<version>2.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-csv</artifactId>
-			<version>1.1</version>
-		</dependency>
-
-		<!-- GSON -->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.35</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.10.19</version>
+			<artifactId>mockito-core</artifactId>
 		</dependency>
 
-
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>
 		<repository>
+			<id>pavlab</id>
+			<name>PavLab</name>
+			<url>https://maven2.pavlab.msl.ubc.ca/</url>
+		</repository>
+		<repository>
 			<id>prime-repo</id>
 			<name>PrimeFaces Maven Repository</name>
-			<url>http://repository.primefaces.org</url>
-			<layout>default</layout>
+			<url>https://repository.primefaces.org</url>
 		</repository>
 	</repositories>
 
 	<build>
-		<directory>target</directory>
 		<finalName>ndb</finalName>
-		<sourceDirectory>src/main/java</sourceDirectory>
-		<outputDirectory>target/classes</outputDirectory>
-		<testSourceDirectory>src/test/java</testSourceDirectory>
-		<testOutputDirectory>target/test-classes</testOutputDirectory>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>target/generated-sources/resources</directory>
-				<includes>
-					<include>**/*</include>
-				</includes>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<includes>
-					<include>**/*</include>
-				</includes>
-			</testResource>
-			<testResource>
-				<targetPath>WEB-INF</targetPath>
-				<directory>target/ndb/WEB-INF</directory>
-				<includes>
-					<include>**/*.xml</include>
-				</includes>
-			</testResource>
-			<testResource>
-				<targetPath>WEB-INF</targetPath>
-				<directory>src/main/webapp/WEB-INF</directory>
-				<includes>
-					<include>**/*.xml</include>
-				</includes>
-			</testResource>
-		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
+				<artifactId>maven-enforcer-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -308,14 +230,14 @@
 							<dependency>
 								<groupId>mysql</groupId>
 								<artifactId>mysql-connector-java</artifactId>
-								<version>5.1.10</version>
+								<version>${mysql.version}</version>
 								<type>jar</type>
 							</dependency>
 						</dependencies>
 
 						<!--common configuration shared by all executions-->
 						<configuration>
-							<driver>com.mysql.jdbc.Driver</driver>
+							<driver>com.mysql.cj.jdbc.Driver</driver>
 							<username>${ndb.testdb.build.user}</username>
 							<password>${ndb.testdb.build.password}</password>
 							<onError>abort</onError>
@@ -336,7 +258,7 @@
 									<sqlCommand>
 									<![CDATA[
 										drop database if exists ${ndb.testdb.name};
-										create database ${ndb.testdb.name}
+										create database ${ndb.testdb.name} character set utf8mb4;
 										]]>
                                     </sqlCommand>
 								</configuration>
