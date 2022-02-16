@@ -37,13 +37,15 @@ In your ~/.m2/ directory, add or edit your `settings.xml` file.
     <profiles>
         <profile>
             <id>dev</id>
-            <properties>             
-                <!-- ndb -->
-                <ndb.db.name>ndb</ndb.db.name>
+            <properties>
+                <!-- ndb production configuration (only required for dumping data & updating the heatmap) -->
+                <ndb.db.host>[HOST]</ndb.db.host>
+                <ndb.db.port>[PORT]</ndb.db.port>
+                <ndb.db.database>[DATABASE]</ndb.db.database>
+                <ndb.db.user>[USER]</ndb.db.user>
+                <ndb.db.password>[PASSWORD]</ndb.db.password>
+                <!-- ndb testing configuration -->
                 <ndb.testdb.name>ndbtest</ndb.testdb.name>
-                <ndb.db.build.user>[USER]</ndb.db.build.user>
-                <ndb.db.build.password>[PASSWORD]</ndb.db.build.password>
-                <ndb.db.build.url>jdbc:mysql://127.0.0.1:3306/ndb</ndb.db.build.url>
                 <ndb.testdb.build.user>[USER]</ndb.testdb.build.user>
                 <ndb.testdb.build.password>[PASSWORD]</ndb.testdb.build.password>
                 <ndb.testdb.build.url>jdbc:mysql://127.0.0.1:3306/ndbtest</ndb.testdb.build.url>
@@ -60,7 +62,19 @@ In your ~/.m2/ directory, add or edit your `settings.xml` file.
 
 Finally, edit username and password fields in ndb/src/main/webapp/META-INF/context.xml
 
-### Live deployment 
+```mvn
+mvn package
+```
+
+To update the heatmap and data dumps, you must provide `-Pexport-data-and-visualization` to Maven. Generating the heatmap and VCF output require Python 3, Bokeh and Pandas.
+
+```mvn
+mvn package -Pexport-data-and-visualization
+```
+
+The heatmap will be updated under `src/main/webapp/resources/static/variant_heatmap_latest.html` and the data export under `target/etc/data/export_latest.tsv` and `target/etc/data/export_latest.vcf`.
+
+### Live deployment
 Contact pavlab-support@msl.ubc.ca for further information.
 
 ### Troubleshooting
