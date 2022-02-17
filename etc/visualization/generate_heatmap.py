@@ -8,9 +8,8 @@ import numpy as np
 
 from bokeh.plotting import (figure,
                             output_file,
-                            output_notebook,
-                            show)
-from bokeh.models import (ColumnDataSource, LabelSet, OpenURL, TapTool,
+                            save)
+from bokeh.models import (ColumnDataSource, LabelSet, TapTool,
                           CustomJS)
 from bokeh.transform import dodge
 
@@ -20,7 +19,7 @@ parser.add_argument('data_file')
 parser.add_argument('output_file')
 args = parser.parse_args()
 
-variant_data = pd.read_csv(args.data_file, sep="\t", low_memory=False)
+variant_data = pd.read_table(args.data_file)
 
 # ### Prepare data for bokeh format
 #
@@ -166,11 +165,12 @@ p.toolbar.logo = None  # Remove Bokeh logo
 # Add callback
 taptool = p.select(type=TapTool)
 taptool.callback = CustomJS(args=dict(source=data), code=js_callback)
-# OpenURL(url="@url", )
 
 # Produce file
 output_file(args.output_file)  # Save to file.
-show(p)  # Show the plot
+save(p)  # Show the plot
 
 # #### Fix a bug with the meta tag not having a closing slash
 run(['sed', '-i', 's|\\(.*meta.*\\)>|\\1/>|g', args.output_file])
+
+print(f'The heatmap has been exported to {args.output_file}.')

@@ -61,7 +61,7 @@ VCF_HEADER = '''##fileformat=VCFv4.3
            VARICARTA_VERSION='latest'
            )
 
-variant_data = pd.read_csv(args.data_file, sep="\t", low_memory=False)
+variant_data = pd.read_table(args.data_file)
 
 # Map required columns
 COLS_USED = {
@@ -98,4 +98,4 @@ with open(args.output_file, 'w') as f:
     f.write("\n".join(INFO_HEADER) + "\n")  # Write header
     df_vcf.sort_values(['#CHROM', 'POS']).to_csv(f, sep="\t", index=False)
 
-print(f'Wrote VCF to {args.output_file}')
+print(f'The VCF output has been exported to {args.output_file}.')

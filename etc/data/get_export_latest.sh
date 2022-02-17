@@ -92,6 +92,6 @@ OUTLATEST="${DUMP_ROOT}/export_latest.tsv"
 # Execute query to dump database
 echo " $QUERY" | mysql -h "$HOST" -P "$PORT"  -u "$USERNAME" "-p$PASSWORD" --default-character-set=utf8 "$DATABASE" > "$OUTDUMP"
 
-echo "Wrote database to $OUTDUMP"
+echo "The database has been exported to $OUTDUMP."
 ln -sf "${DATABASE}/varicarta_dump_${TIMESTAMP}.tsv" "${OUTLATEST}"
-echo "Updated symlink to the latest version export_latest.tsv -> ${DATABASE}/varicarta_dump_${TIMESTAMP}.tsv"
+echo "The symlink to the latest version has been updated: export_latest.tsv -> ${DATABASE}/varicarta_dump_${TIMESTAMP}.tsv."
