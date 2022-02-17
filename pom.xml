@@ -361,5 +361,46 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>export-data-and-visualization</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>export-data-and-visualization</id>
+								<phase>generate-resources</phase>
+								<configuration>
+									<target>
+										<exec executable="${project.basedir}/etc/data/get_export_latest.sh">
+											<arg value="${ndb.db.host}"/>
+											<arg value="${ndb.db.port}"/>
+											<arg value="${ndb.db.database}"/>
+											<arg value="${ndb.db.user}"/>
+											<arg value="${ndb.db.password}"/>
+											<arg value="${project.build.directory}/etc/data"/>
+										</exec>
+										<exec executable="${project.basedir}/etc/data/generate_vcf.py">
+											<arg value="${project.build.directory}/etc/data/export_latest.tsv"/>
+											<arg value="${project.build.directory}/etc/data/export_latest.vcf"/>
+										</exec>
+										<exec executable="${project.basedir}/etc/visualization/generate_heatmap.py">
+											<arg value="${project.build.directory}/etc/data/export_latest.tsv"/>
+											<arg value="${project.basedir}/src/main/webapp/resources/static/variant_heatmap_latest.html"/>
+										</exec>
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 </project>

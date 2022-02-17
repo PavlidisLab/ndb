@@ -1,27 +1,22 @@
-#!/bin/bash
+#!/bin/sh
 set -eu
 
-if [ $# -lt 2 ]; then
+if [ $# -lt 6 ]; then
     echo "Usage:"
-    echo $0 USERNAME DATABASE PORT
+    echo "$0" HOST PORT DATABASE USERNAME PASSWORD DUMP_ROOT
     exit
 fi
 
-PASSWORD=""
-if [ $# -eq 4 ]; then
-    PASSWORD=$4
-fi
-
-DUMP_ROOT="../out/"
-DBUSER="$1"
-DATABASE="$2"
-PORT="$3"
-
-HOST="prod-db"
+HOST="$1"
+PORT="$2"
+DATABASE="$3"
+USERNAME="$4"
+PASSWORD="$5"
+DUMP_ROOT="$6"
 
 QUERY=\
-"use $DATABASE; 
-SELECT 
+"use $DATABASE;
+SELECT
     pid,
     paper_key,
     v.id,
@@ -77,7 +72,7 @@ SELECT
     phyloP100way_vertebrate,
     SiPhy_29way_logOdds
 FROM variant v
-    LEFT JOIN annovar_scores on annovar_scores.variant_id = v.id 
+    LEFT JOIN annovar_scores on annovar_scores.variant_id = v.id
     LEFT JOIN (SELECT id as pid, paper_key, display_sequencing as sequencing_study_type from papers) p ON p.pid = v.paper_id
     LEFT JOIN (SELECT gene_id, variant_id from variant_gene) vg ON vg.variant_id = v.id
     LEFT JOIN (SELECT symbol, gene_id from gene) g ON g.gene_id = vg.gene_id;"
@@ -86,18 +81,17 @@ FROM variant v
 TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
 
 # Make sure the directory exists
-mkdir -p "${DUMP_ROOT}"/"${DATABASE}" 
+mkdir -p "${DUMP_ROOT}/${DATABASE}"
 
 # Write current database
-OUTDUMP="${DUMP_ROOT}"/"${DATABASE}"/varicarta_dump_"${TIMESTAMP}".tsv
+OUTDUMP="${DUMP_ROOT}/${DATABASE}/varicarta_dump_${TIMESTAMP}.tsv"
 
 # Pointer to latest dump
-OUTLATEST="${DUMP_ROOT}"/export_latest.tsv
+OUTLATEST="${DUMP_ROOT}/export_latest.tsv"
 
 # Execute query to dump database
-echo " $QUERY" | mysql -u$DBUSER -h$HOST -P "${PORT}" -p$PASSWORD --default-character-set=utf8 -p > $OUTDUMP
+echo " $QUERY" | mysql -h "$HOST" -P "$PORT"  -u "$USERNAME" "-p$PASSWORD" --default-character-set=utf8 "$DATABASE" > "$OUTDUMP"
 
-echo "Wrote database to $OUTDUMP"
-echo "Update pointer to 'latest' version?"
-rm -fi "${OUTLATEST}" # Prompt for overwrite if needed.
-ln -s "${OUTDUMP}" "${OUTLATEST}"
+echo "The database has been exported to $OUTDUMP."
+ln -sf "${DATABASE}/varicarta_dump_${TIMESTAMP}.tsv" "${OUTLATEST}"
+echo "The symlink to the latest version has been updated: export_latest.tsv -> ${DATABASE}/varicarta_dump_${TIMESTAMP}.tsv."
