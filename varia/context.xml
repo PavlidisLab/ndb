@@ -11,13 +11,10 @@
         maxWait="10000"
         testWhileIdle="true"
         timeBetweenEvictionRunsMillis="300000"
-        url="jdbc:mysql://abe:3306/ndb"
+        url="jdbc:mysql://prod-db:3306/ndb"
         driverClassName="com.mysql.cj.jdbc.Driver"
         initialSize="0"
-        alternateUsernameAllowed="true"
-        username="XXXXXXXXX"
-        password="XXXXXXXXX"
-    />
+        alternateUsernameAllowed="true"/>
 
     <Resource
         name="jdbc/marvdb_staging"
@@ -31,10 +28,7 @@
         url="jdbc:mysql://localhost:3307/marvdb_staging"
         driverClassName="com.mysql.cj.jdbc.Driver"
         initialSize="0"
-        alternateUsernameAllowed="true"
-        username="XXXXXXXXXXX"
-        password="XXXXXXXXXXX"
-    />
+        alternateUsernameAllowed="true"/>
 
     <Resource
         name="jdbc/marvdb_production"
@@ -45,13 +39,10 @@
         maxWait="10000"
         testWhileIdle="true"
         timeBetweenEvictionRunsMillis="300000"
-        url="jdbc:mysql://abe:3306/marvdb_production"
+        url="jdbc:mysql://prod-db:3306/marvdb_production"
         driverClassName="com.mysql.cj.jdbc.Driver"
         initialSize="0"
-        alternateUsernameAllowed="true"
-        username="XXXXXXXXXXX"
-        password="XXXXXXXXXXX"
-    />
+        alternateUsernameAllowed="true"/>
 
 
     <Resource
@@ -65,11 +56,8 @@
         timeBetweenEvictionRunsMillis="300000"
         url="jdbc:mysql://localhost:3306/ndb"
         driverClassName="com.mysql.cj.jdbc.Driver"
-        username="XXXXXXXXX"
-        password="XXXXXXXXX"
         initialSize="0"
-        alternateUsernameAllowed="true"
-    />
+        alternateUsernameAllowed="true"/>
 
     <Resource
         name="jdbc/ndb_test"
@@ -82,11 +70,8 @@
         timeBetweenEvictionRunsMillis="300000"
         url="jdbc:mysql://localhost:3306/ndb_test"
         driverClassName="com.mysql.cj.jdbc.Driver"
-        username="XXXXXXXXX"
-        password="XXXXXXXXX"
         initialSize="0"
-        alternateUsernameAllowed="true"
-    />
+        alternateUsernameAllowed="true"/>
 
     <Resource
         name="jdbc/ndb_staging"
@@ -99,11 +84,8 @@
         timeBetweenEvictionRunsMillis="300000"
         url="jdbc:mysql://localhost:3306/ndb"
         driverClassName="com.mysql.cj.jdbc.Driver"
-        username="XXXXXXXXX"
-        password="XXXXXXXXX"
         initialSize="0"
-        alternateUsernameAllowed="true"
-    />
+        alternateUsernameAllowed="true"/>
 
 
 </Context>

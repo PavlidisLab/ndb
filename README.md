@@ -1,34 +1,73 @@
 # ndb
-Web application and database providing a harmonized and comprehensive collection of genetic variants published in peer-reviewed literature.
 
-For latest application code, see the [development branch](https://github.com/PavlidisLab/ndb/tree/development).
+Web application and database providing a harmonized and comprehensive collection of genetic variants published in
+peer-reviewed literature.
 
-## Getting Started
+For the latest application code, see the [development branch](https://github.com/PavlidisLab/ndb/tree/development).
 
-### Local installation
+## Prerequisites
 
-* Clone the git repository. 
-* Create these three files (content is an example only) in your home and create symlinks to them in your tomcat directory:
+* Java 8
+* Tomcat 8.5
+* MySQL 5.7+
+* Maven 3.0.5+
 
-db.properties
+
+## Local installation
+
+1. Clone the git repository.
+2. Create these two files (content is an example only) in your home directory:
+
+   `ndb.properties`
+   
+   ```properties
+   ndb.db=ndb_staging
+   ndb.email=hi@example.com
+   ndb.admin.email=admin@example.com
+   ```
+   
+   `db.properties`
+   
+   ```properties
+   ndb_staging.url=java:comp/env/jdbc/ndb_staging
+   ndb_staging.username=[USER]
+   ndb_staging.password=[PASSWORD]
+   ```
+
+3. Add the `<Resource/>` tag to your Tomcat configuration under `conf/context.xml`:
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <Context>
+       <Resource
+           name="jdbc/ndb_staging"
+           type="javax.sql.DataSource"
+           factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+           maxActive="100"
+           maxIdle="30"
+           maxWait="10000"
+           testWhileIdle="true"
+           timeBetweenEvictionRunsMillis="300000"
+           url="jdbc:mysql://localhost/ndb_staging"
+           driverClassName="com.mysql.cj.jdbc.Driver"
+           initialSize="0"
+           alternateUsernameAllowed="true"/>
+   </Context>
+   ```
+   
+Now, all you need to do is to deploy the `ndb.war` file.
+   
+## Build from sources
+
+```bash
+mvn package
 ```
-ndb_staging.url=java:comp/env/jdbc/ndb_staging
-ndb_staging.username=[USER]
-ndb_staging.password=[PASSWORD]
 
-ndb_production.url=java:comp/env/jdbc/ndb_production
-ndb_production.username=[USER]
-ndb_production.password=[PASSWORD]
-```
+To run integration tests, you will need to configure a test database and specify some options in your Maven
+configuration.
 
-ndb.properties
-```
-ndb.db=ndb_staging
-ndb.email=hi@example.com
-ndb.admin.email=admin@example.com
-```
+In your `~/.m2/` directory, add or edit your `settings.xml` file.
 
-In your ~/.m2/ directory, add or edit your `settings.xml` file.
 ```
 <?xml version="1.0"?>
 <settings>
@@ -60,57 +99,53 @@ In your ~/.m2/ directory, add or edit your `settings.xml` file.
 </settings>
 ```
 
-Finally, edit username and password fields in ndb/src/main/webapp/META-INF/context.xml
+## Update the heatmap and data dumps
 
-```mvn
-mvn package
-```
+To update the heatmap and data dumps, you must provide `-Pexport-data-and-visualization` flag to Maven. Generating
+the heatmap and VCF output require Python 3, Bokeh and Pandas. (optional)
 
-To update the heatmap and data dumps, you must provide `-Pexport-data-and-visualization` to Maven. Generating the heatmap and VCF output require Python 3, Bokeh and Pandas.
-
-```mvn
+```bash
 mvn package -Pexport-data-and-visualization
 ```
 
-The heatmap will be updated under `src/main/webapp/resources/static/variant_heatmap_latest.html` and the data export under `target/etc/data/export_latest.tsv` and `target/etc/data/export_latest.vcf`.
+The heatmap will be updated under `src/main/webapp/resources/static/variant_heatmap_latest.html` and the data export
+under `target/etc/data/export_latest.tsv` and `target/etc/data/export_latest.vcf`.
 
-### Live deployment
+## Live deployment
+
 Contact pavlab-support@msl.ubc.ca for further information.
 
-### Troubleshooting
-#### com.mysql.jdbc.driver problem
-If you get errors with com.mysql.jdbc.driver during deployment, download "mysql-connector-java" (https://dev.mysql.com/downloads/connector/j/) and put the jar (unpacked from the tar.gz) to your tomcat lib directory.
+## Troubleshooting
 
-#### sql_mode=only_full_group_by problem
+### com.mysql.jdbc.driver problem
+
+If you get errors with com.mysql.jdbc.driver during deployment, download [mysql-connector-java](https://dev.mysql.com/downloads/connector/j/),
+unpack it and put the JAR to your Tomcat `lib/` directory.
+
+### sql_mode=only_full_group_by problem
+
 If the project is deployed but instead of homepage you see an error like this:
-> Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'gene_id' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
-This can be fixed by configuration via the instructions here for creating a local.cnf file: Developer Workstation Setup#MySQL
+> Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'gene_id' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by This can be fixed by configuration via the instructions here for creating a local.cnf file: Developer Workstation Setup#MySQL
 
 Alternatively, the manual instructions:
+
 * Then run a mysql terminal and remove the 'ONLY_FULL_GROUP_BY' flag from global.sql_mode variable.
 * Useful commands for that:
+
 ```
 #returns current content of the sql_mode variable
 mysql> select @@global.sql_mode;
-  
+
 #Copy-pasted the output of the first command and removed the ONLY_FULL_GROUP_BY part
 mysql> set GLOBAL sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
 ```
-
-
-
-### Prerequisites
-
-* Java 8
-* Tomcat 8.5
-* MySQL 5.7+
-* Maven 3.0.5+
 
 ## Authors
 
 * **Pavlidis Lab** - *Developers and maintainers* - [GitHub](https://github.com/PavlidisLab/)
 
-See also the list of [contributors](https://github.com/PavlidisLab/ndb) who participated in this project.
+See also the list of [contributors](https://github.com/PavlidisLab/ndb/graphs/contributors) who participated in this
+project.
 
 ## License
 
