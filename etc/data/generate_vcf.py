@@ -61,7 +61,7 @@ VCF_HEADER = '''##fileformat=VCFv4.3
            VARICARTA_VERSION='latest'
            )
 
-variant_data = pd.read_table(args.data_file)
+variant_data = pd.read_table(args.data_file, low_memory=False)
 
 # Map required columns
 COLS_USED = {
