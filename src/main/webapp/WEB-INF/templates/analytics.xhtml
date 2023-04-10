@@ -3,44 +3,21 @@
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-    <f:verbatim rendered="#{empty (applicationProperties.getProperty('ndb.ga_tracker'))}">
-        <script type="text/javascript">
-        		console.log("No Tracker.");
-                if ( typeof googleAnalyticsTrackPageviewIfConfigured === 'undefined' ) {
-                   var googleAnalyticsTrackPageviewIfConfigured = function(pageURL) {/* no op, for sandbox and development */
-                      console.log("Didn't track: " + pageURL);
-                   };
-                }
-        </script>
-        </f:verbatim>
-
 	<f:verbatim rendered="#{not empty (applicationProperties.getProperty('ndb.ga_tracker'))}">
-		<script type="text/javascript">
+		<!-- Google tag (gtag.js) -->
+		<script async="async"
+				src="https://www.googletagmanager.com/gtag/js?id=#{applicationProperties.getProperty('ndb.ga_tracker')}">
+		</script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
 
-         // Start Google Analytics
+			function gtag() {
+				dataLayer.push(arguments);
+			}
 
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', "#{applicationProperties.getProperty('ndb.ga_tracker')}", {
-            cookieDomain: "#{applicationProperties.getProperty('ndb.ga_domain')}"
-        });
-        ga('require', 'linkid', 'linkid.js');
-        ga('send', 'pageview');
-
-       if (typeof googleAnalyticsTrackPageviewIfConfigured === 'undefined') {
-           var googleAnalyticsTrackPageviewIfConfigured = googleAnalyticsTrackPageviewIfConfigured || function (pageURL) {
-                   if (typeof ga !== 'undefined') {
-                       ga('create', "#{applicationProperties.getProperty('ndb.ga_tracker')}", {
-                           cookieDomain: "#{applicationProperties.getProperty('ndb.ga_domain')}"
-                       });
-                       ga('send', 'pageview', pageURL);
-                   }
-               };
-       }
-      </script>
+			gtag('js', new Date());
+			gtag('config', "#{applicationProperties.getProperty('ndb.ga_tracker')}");
+		</script>
 	</f:verbatim>
 
 </ui:composition>
