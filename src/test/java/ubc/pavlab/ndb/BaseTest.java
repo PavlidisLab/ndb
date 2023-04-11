@@ -18,6 +18,7 @@ import ubc.pavlab.ndb.beans.services.StatsService;
 import ubc.pavlab.ndb.beans.services.VariantService;
 import ubc.pavlab.ndb.dao.DAOFactory;
 import ubc.pavlab.ndb.exceptions.ConfigurationException;
+import ubc.pavlab.ndb.junit.categories.IntegrationTest;
 import ubc.pavlab.ndb.model.Annovar;
 import ubc.pavlab.ndb.model.Gene;
 import ubc.pavlab.ndb.model.Paper;
@@ -49,6 +50,7 @@ import ubc.pavlab.ndb.model.enums.Category;
  * @author mjacobson
  * @version $Id$
  */
+@org.junit.experimental.categories.Category( IntegrationTest.class )
 public class BaseTest {
 
     private static final Logger log = Logger.getLogger( BaseTest.class );
