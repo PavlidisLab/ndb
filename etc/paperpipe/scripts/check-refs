@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -e
+
+dir=$(dirname "$0")
+dest=$(mktemp -d)
+
+if [ -z "$1" -o -z "$2" ]; then
+	echo "Usage: check-refs input.xlsx genome.fa"
+	exit 1
+fi
+
+for f in "$1" "$2"; do
+	if [ ! -r "$f" ]; then
+		echo "$f does not exist or is not readable"
+		exit 1
+	fi
+done
+
+# convert Excel to TSV
+echo "Converting $1 to VCF..."
+"$dir/convert-to-vcf" "$1" "$dest/original.vcf"
+
+echo "Compressing and indexing..."
+bgzip -c "$dest/original.vcf" > "$dest/original.vcf.gz"
+tabix -f "$dest/original.vcf.gz"
+
+echo "Filling in the correct alleles..."
+bcftools +fill-from-fasta "$dest/original.vcf.gz" -- -f "$2" -c REF > "$dest/fixed.vcf"
+
+diff "$dest/original.vcf" "$dest/fixed.vcf"
