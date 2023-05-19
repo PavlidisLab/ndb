@@ -17,9 +17,11 @@ for f in "$1" "$2"; do
 	fi
 done
 
+echo "Files will be written in $dest"
+
 # convert Excel to TSV
 echo "Converting $1 to VCF..."
-"$dir/convert-to-vcf" "$1" "$dest/original.vcf"
+"$dir/xlsx-to-vcf" "$1" "$dest/original.vcf"
 
 echo "Compressing and indexing..."
 bgzip -c "$dest/original.vcf" > "$dest/original.vcf.gz"
