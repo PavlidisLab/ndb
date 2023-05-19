@@ -30,4 +30,4 @@ tabix -f "$dest/original.vcf.gz"
 echo "Filling in the correct alleles..."
 bcftools +fill-from-fasta "$dest/original.vcf.gz" -- -f "$2" -c REF > "$dest/fixed.vcf"
 
-diff "$dest/original.vcf" "$dest/fixed.vcf"
+diff -y --suppress-common-lines "$dest/original.vcf" "$dest/fixed.vcf" | less
