@@ -3,6 +3,10 @@
 import pandas as pd
 import sys
 
+if len(sys.argv) != 3:
+    print("Usage: input.xlsx output.vcf")
+    sys.exit(1)
+
 _, in_file, out_file = sys.argv
 
 print('Reading ' + in_file + '...')
