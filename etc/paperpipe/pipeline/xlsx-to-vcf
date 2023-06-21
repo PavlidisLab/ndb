@@ -10,11 +10,15 @@ if len(sys.argv) != 3:
 _, in_file, out_file = sys.argv
 
 print('Reading ' + in_file + '...')
+legend = pd.read_excel(in_file, sheet_name='rawvariant', index_col='Mapping').Field
 variants_df = pd.read_excel(in_file, sheet_name='rawdata')
 
 print('Writing variants to VCF...')
 with open(out_file, 'w') as f:
     f.write('##fileformat=VCFv4.2\n')
     f.write('#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n')
-    for (ix, line) in variants_df.sort_values(['VARICARTA_Chr', 'VARICARTA_Start']).iterrows():
-        f.write('\t'.join(['chr' + str(line.VARICARTA_Chr), str(line.VARICARTA_Start), str(line["Child ID"]), line.VARICARTA_Ref, line.VARICARTA_Alt, '.', '.', '.']) + '\n')
+    for (ix, line) in variants_df.sort_values([legend.chromosome, legend.start_hg19]).iterrows():
+        c = str(line[legend.chromosome])
+        if not c.startswith('chr'):
+            c = 'chr' + c
+        f.write('\t'.join([c, str(line[legend.start_hg19]), str(line[legend.sample_id]), line[legend.ref], line[legend.alt], '.', '.', '.']) + '\n')
