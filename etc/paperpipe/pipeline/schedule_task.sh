@@ -15,31 +15,12 @@ if [ "$#" -lt "2" ]
     exit
 fi
 
-INTERACTIVE=1
-if [ "$#" -gt "2" ]
-  then
-    if [ "$3" == "--silent" ]
-    then
-	INTERACTIVE=0
-    else
-	echo "Error! Unknown switch $3"
-	exit -1
-    fi
-fi
-
 BOOK=$1
 JOB=$2
+LUIGI_ARGS="--worker-count-last-scheduled ${@:3}"
 
 PAPERNAME=$(echo $BOOK | rev | cut -f1 -d"/" | cut -d"." -f2 | rev )
 
-echo "Loading book: $BOOK"
+echo "Loading book: $BOOK Job: $JOB Extra args: $LUIGI_ARGS"
 
-if [ $INTERACTIVE -eq 0  ];
-then
-    LOGLOG=logs/$PAPERNAME.log
-    ERRLOG=logs/$PAPERNAME.err
-    PYTHONPATH="flows:../scripts/models" luigi --module tasks $JOB --book $BOOK --worker-count-last-scheduled > $LOGLOG 2> $ERRLOG
-    echo "See logs at $LOGLOG / $ERRLOG"
-else
-    PYTHONPATH="flows:../scripts/models" luigi --module tasks $JOB --book $BOOK --worker-count-last-scheduled 
-fi
+PYTHONPATH="flows:../scripts/models" exec luigi --module tasks "$JOB" --book "$BOOK" $LUIGI_ARGS
