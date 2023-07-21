@@ -28,9 +28,13 @@ class Variant(AbstractModel):
         self.excluded = Variant._Variant__excluded
         self.LOGDIR="variant_log/"
         self.LOGFILE=self.LOGDIR+str(self.paper_id)+".log"        
+        self.LOGERR =self.LOGDIR+str(self.paper_id)+"-error.log"
 
         if os.path.exists(self.LOGFILE):
             os.remove(self.LOGFILE)
+
+        if os.path.exists(self.LOGERR):
+            os.remove(self.LOGERR)
 
         if not os.path.exists(self.LOGDIR):
             os.makedirs(self.LOGDIR, 0775)
@@ -174,7 +178,7 @@ class Variant(AbstractModel):
                     print "Could not fix:", old
                     print "Skipping"
                     with open(self.LOGFILE, 'a') as f:
-                        f.write("Could not fix", _data[i])
+                        f.write("Could not fix"+ _data[i])
                         f.write("\n")
                         continue
                 else:
@@ -357,16 +361,16 @@ class Variant(AbstractModel):
                         print "Multiple events", events, "for subjects", subjs
                         raise Exception("Error: Multiple contiguous variant events for same sample ID. This can be caused by duplicates in the import spreadsheet.")
                     else:
-                        print "WARNING: Found "+ str(sum(found_overlap)) +" `event_id`s for "+sample+" but they are non-overlapping. "+\
-                              "This is rare but possible (two previous variants with a gap contiguous with the current variant.)"
-                        print "WARNING: Check beween", str(min(ranges)), "and", str(max(ranges)), "."
-#                        print "Is this correct? [OK/(q)uit]"
-#                        resp = raw_input()
-#                        if resp in ("q", "qu", "qui", "quit"):
-#                            print "User requested halt."
-#                            Exception("User requested halt.")
-#                        else:
-#                            print "Allowed."
+                        mess =  "WARNING: Found "+ str(sum(found_overlap)) +" `event_id`s for "+sample+" but they are non-overlapping. "+\
+                                "This is rare but possible (two previous variants with a gap contiguous with the current variant).\n"+\
+                                "WARNING: Check beween "+ str(min(ranges)) +" and "+ str(max(ranges)) +"."
+                        print mess
+                        try:
+                            with open(self.LOGERR, 'a') as f:
+                                f.write(mess+"\n")
+                        except Exception as e:
+                            print "Failure trying to write to error log file."
+                            raise e
 
             if len(sample_events.keys()) > 0:
                 # Found a clustered event
