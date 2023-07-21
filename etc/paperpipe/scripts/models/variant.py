@@ -357,16 +357,16 @@ class Variant(AbstractModel):
                         print "Multiple events", events, "for subjects", subjs
                         raise Exception("Error: Multiple contiguous variant events for same sample ID. This can be caused by duplicates in the import spreadsheet.")
                     else:
-                        print "Found "+ str(sum(found_overlap)) +" `event_id`s for "+sample+" but they are non-overlapping. This is rare but possible (two previous variants with a gap contiguous with the current variant.)"
-                        print "Check beween", str(min(ranges)), "and", str(max(ranges)), "."
-                        print "Is this correct? [OK/(q)uit]"
-                        resp = raw_input()
-                        if resp in ("q", "qu", "qui", "quit"):
-                            print "User requested halt."
-                            Exception("User requested halt.")
-                        else:
-                            print "Allowed."
-
+                        print "WARNING: Found "+ str(sum(found_overlap)) +" `event_id`s for "+sample+" but they are non-overlapping. "+\
+                              "This is rare but possible (two previous variants with a gap contiguous with the current variant.)"
+                        print "WARNING: Check beween", str(min(ranges)), "and", str(max(ranges)), "."
+#                        print "Is this correct? [OK/(q)uit]"
+#                        resp = raw_input()
+#                        if resp in ("q", "qu", "qui", "quit"):
+#                            print "User requested halt."
+#                            Exception("User requested halt.")
+#                        else:
+#                            print "Allowed."
 
             if len(sample_events.keys()) > 0:
                 # Found a clustered event
