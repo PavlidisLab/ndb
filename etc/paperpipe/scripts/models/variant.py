@@ -346,7 +346,8 @@ class Variant(AbstractModel):
                     raise Exception("Error: Multiple neighbouring variant subjects for same sample ID.")
                 if len(events) > 1:
                     print "Found more than one event for " + sample
-                    indices = [i for i, x in enumerate(event_ids) if x in events]
+                    #indices = [i for i, x in enumerate(event_ids) if x in events]
+                    indices = [i for i, x in enumerate(sample_events[sample])]
                     ranges = []
                     
                     print len(indices), "indices to test."
