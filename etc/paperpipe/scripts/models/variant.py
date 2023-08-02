@@ -344,7 +344,7 @@ class Variant(AbstractModel):
                 if len(subjs) > 1:
                     print "Multiple subjects", subjs, "for events", events
                     raise Exception("Error: Multiple neighbouring variant subjects for same sample ID.")
-                if len(events) > 1:
+                if len(events) < 1: # effectively disable it (was >1)
                     print "Found more than one event for " + sample
                     #indices = [i for i, x in enumerate(event_ids) if x in events]
                     indices = [i for i, x in enumerate(sample_events[sample])]
