@@ -440,4 +440,7 @@ public class StatsService implements Serializable {
         return latestDenovoCnt;
     }
 
+    public Date getLastUpdatedPaper() {
+        return daoFactoryBean.getDAOFactory().getPaperDAO().getLastUpdate();
+    }
 }

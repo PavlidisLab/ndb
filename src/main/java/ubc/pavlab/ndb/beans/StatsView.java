@@ -63,6 +63,8 @@ public class StatsView implements Serializable {
 
     private HeatmapModel<Paper> heatmapModel;
 
+    private Date lastUpdatedPaper;
+
     @ManagedProperty("#{cacheService}")
     private CacheService cacheService;
 
@@ -115,6 +117,7 @@ public class StatsView implements Serializable {
         // makeCategoryCharts();
         heatmapModel = makeHeatmap();
 
+        lastUpdatedPaper = statsService.getLastUpdatedPaper();
     }
 
     private HeatmapModel<Paper> makeHeatmap() {
@@ -313,4 +316,7 @@ public class StatsView implements Serializable {
         return variantFuncBarModel;
     }
 
+    public Date getLastUpdatedPaper() {
+        return lastUpdatedPaper;
+    }
 }

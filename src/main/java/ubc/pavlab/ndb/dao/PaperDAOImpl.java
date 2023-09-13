@@ -19,19 +19,19 @@
 
 package ubc.pavlab.ndb.dao;
 
-import static ubc.pavlab.ndb.dao.DAOUtil.prepareStatement;
+import org.apache.log4j.Logger;
+import ubc.pavlab.ndb.exceptions.DAOException;
+import ubc.pavlab.ndb.model.dto.PaperDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
-import ubc.pavlab.ndb.exceptions.DAOException;
-import ubc.pavlab.ndb.model.dto.PaperDTO;
+import static ubc.pavlab.ndb.dao.DAOUtil.prepareStatement;
 
 /**
  * TODO Document Me
@@ -80,6 +80,21 @@ public class PaperDAOImpl implements PaperDAO {
     @Override
     public PaperDTO find( String paperKey ) throws DAOException {
         return find( SQL_FIND_BY_PAPER_KEY, paperKey );
+    }
+
+    @Override
+    public Date getLastUpdate() throws DAOException {
+        try ( Connection connection = daoFactory.getConnection() ) {
+            PreparedStatement ps = connection.prepareStatement( "select update_time from information_schema.tables where table_schema=? and table_name='papers'" );
+            ps.setString( 1, connection.getCatalog() );
+            ResultSet rs = ps.executeQuery();
+            if ( rs.next() ) {
+                return rs.getDate( 1 );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        }
+        return null;
     }
 
     /**
