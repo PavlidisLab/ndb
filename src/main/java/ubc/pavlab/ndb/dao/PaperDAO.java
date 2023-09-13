@@ -19,6 +19,7 @@
 
 package ubc.pavlab.ndb.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import ubc.pavlab.ndb.exceptions.DAOException;
@@ -50,6 +51,11 @@ public interface PaperDAO {
      * @throws DAOException If something fails at database level.
      */
     public PaperDTO find( String author ) throws DAOException;
+
+    /**
+     * Returns the date of the last paper update.
+     */
+    public Date getLastUpdate() throws DAOException;
 
     /**
      * Returns a list of all papers from the database ordered by paper ID. The list is never null and is empty when the
