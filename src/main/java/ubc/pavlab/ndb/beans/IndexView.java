@@ -20,6 +20,7 @@
 package ubc.pavlab.ndb.beans;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -51,4 +52,7 @@ public class IndexView implements Serializable {
 
     }
 
+    public Integer getCurrentYear() {
+        return 1900 + new Date().getYear();
+    }
 }
