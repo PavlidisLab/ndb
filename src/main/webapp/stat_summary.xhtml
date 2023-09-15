@@ -10,9 +10,6 @@
 
         <f:facet name="header"> Database Statistics </f:facet>
 
-        <h:outputText value="Last Updated:"/>
-        <h:outputText value="#{statsView.lastUpdatedPaper}"/>
-
         <h:outputText value="Total Variant Events:"/>
         <h:outputText value="#{statsService.eventCnt}"/>
 
@@ -27,6 +24,9 @@
 
         <h:outputText value="Publications included in database:"/>
         <h:outputText value="#{statsService.paperCnt}"/>
+
+        <h:outputText value="Last Updated:"/>
+        <h:outputText value="#{statsView.lastUpdatedPaper}"/>
 
     </p:panelGrid>
 
