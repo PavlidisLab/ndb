@@ -85,7 +85,7 @@ public class PaperDAOImpl implements PaperDAO {
     @Override
     public Date getLastUpdate() throws DAOException {
         try ( Connection connection = daoFactory.getConnection() ) {
-            PreparedStatement ps = connection.prepareStatement( "select update_time from information_schema.tables where table_schema=? and table_name='papers'" );
+            PreparedStatement ps = connection.prepareStatement( "select coalesce(update_time, create_time) from information_schema.tables where table_schema=? and table_name='papers'" );
             ps.setString( 1, connection.getCatalog() );
             ResultSet rs = ps.executeQuery();
             if ( rs.next() ) {
