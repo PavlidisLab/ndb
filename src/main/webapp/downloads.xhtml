@@ -39,6 +39,7 @@
 
             <p:panelGrid id="panelData" cellpadding="5" border="0" styleClass="no-border">
 
+                <!--
                 <p:row>
                     <p:column>
                         <h:outputLink styleClass="download-link"
@@ -49,7 +50,6 @@
                     </p:column>
                 </p:row>
 
-                <!--
                 <p:row>
                     <p:column>
                         <h:outputLink styleClass="download-link"
@@ -63,21 +63,21 @@
 
                 <p:row>
                     <p:column>
+                        <h:outputLink styleClass="download-link" value="exports/">Database exports (text/.tsv)</h:outputLink>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value=" Browse current and previous versions of the database exports."/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
                         <h:outputLink styleClass="download-link"
                                       value="notes/all_notes.zip"> Curation notes (.zip) </h:outputLink>
                     </p:column>
                     <p:column>
                         <h:outputText
                                 value=" Zip file containing per publication curation notes (plain text) describing what was done to prepare importing variant data."/>
-                    </p:column>
-                </p:row>
-
-                <p:row>
-                    <p:column>
-                        <h:outputLink styleClass="download-link" value="exports/">Archive</h:outputLink>
-                    </p:column>
-                    <p:column>
-                        <h:outputText value=" Browse previous versions of the database exports."/>
                     </p:column>
                 </p:row>
 
