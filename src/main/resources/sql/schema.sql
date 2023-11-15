@@ -109,6 +109,7 @@ CREATE TABLE `papers`
     `display_count`      int,
     `ambiguous_subjects` bit(1),
     `display_sequencing` varchar(255),
+    `created_at`         timestamp           default CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 );
 

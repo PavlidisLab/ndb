@@ -85,11 +85,10 @@ public class PaperDAOImpl implements PaperDAO {
     @Override
     public Date getLastUpdate() throws DAOException {
         try ( Connection connection = daoFactory.getConnection() ) {
-            PreparedStatement ps = connection.prepareStatement( "select coalesce(update_time, create_time) from information_schema.tables where table_schema=? and table_name='papers'" );
-            ps.setString( 1, connection.getCatalog() );
+            PreparedStatement ps = connection.prepareStatement( "select max(created_at) from " + SQL_TABLE );
             ResultSet rs = ps.executeQuery();
             if ( rs.next() ) {
-                return rs.getDate( 1 );
+                return new Date( rs.getTimestamp( 1 ).getTime() );
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
