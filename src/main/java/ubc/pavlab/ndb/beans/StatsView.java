@@ -19,6 +19,7 @@
 package ubc.pavlab.ndb.beans;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -316,7 +317,7 @@ public class StatsView implements Serializable {
         return variantFuncBarModel;
     }
 
-    public Date getLastUpdatedPaper() {
-        return lastUpdatedPaper;
+    public String getLastUpdatedPaper() {
+        return DateFormat.getDateInstance().format( lastUpdatedPaper );
     }
 }
