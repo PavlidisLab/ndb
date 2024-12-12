@@ -145,27 +145,16 @@ public class StatsService implements Serializable {
             paperAmbiguousSubjectsCache.put( p.getId(), statsDAO.findAmbiguousSubjectsByPaperId( p.getId() ) );
 
             List<Tuple2<String, Integer>> l = statsDAO.findTotalEventsByContextForPaperId( ( p.getId() ) );
-            Collections.sort( l, TUPLE_COMPARE_T1 );
+            l.sort( Comparator.comparing( Tuple2::getT1, Comparator.nullsLast( Comparator.naturalOrder() ) ) );
             paperEventCntByContext.put( p.getId(), ImmutableList.copyOf( l ) );
 
             l = statsDAO.findTotalEventsByCategoryForPaperId( ( p.getId() ) );
-            Collections.sort( l, TUPLE_COMPARE_T1 );
+            l.sort( Comparator.comparing( Tuple2::getT1, Comparator.nullsLast( Comparator.naturalOrder() ) ) );
             paperEventCntByFunction.put( p.getId(), ImmutableList.copyOf( l ) );
         }
 
         papersWithVariants = papersWithVariantsBuilder.build();
     }
-
-    private static final Comparator<Tuple2<String, Integer>> TUPLE_COMPARE_T1 = new Comparator<Tuple2<String, Integer>>() {
-
-        @Override
-        public int compare( Tuple2<String, Integer> e1, Tuple2<String, Integer> e2 ) {
-
-            return e1.getT1().compareTo( e2.getT1() );
-
-        }
-
-    };
 
     public List<Tuple2<String, Integer>> getEventCntByCategory( Integer paperId ) {
         return paperEventCntByFunction.get( paperId );
