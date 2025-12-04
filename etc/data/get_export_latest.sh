@@ -19,7 +19,6 @@ QUERY=\
 SELECT
     pid,
     paper_key,
-    v.id,
     paper_id,
     sequencing_study_type,
     event_id,
